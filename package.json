@@ -1,0 +1,93 @@
+{
+  "name": "music-follower",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "prettier",
+      "simple-import-sort"
+    ],
+    "extends": [
+      "xo",
+      "xo-typescript",
+      "plugin:unicorn/recommended",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "error",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off"
+    },
+    "ignorePatterns": [
+      "node_modules",
+      "dist"
+    ]
+  },
+  "prettier": {
+    "editorconfig": true,
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "endOfLine": "lf",
+    "printWidth": 120,
+    "proseWrap": "preserve",
+    "quoteProps": "consistent",
+    "semi": true,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": false,
+    "trailingComma": "all"
+  },
+  "scripts": {
+    "transpile": "swc src -d dist",
+    "clean": "rm -rf ./dist",
+    "lint": "eslint src --ext .ts",
+    "knex": "knex --knexfile ./knexfile.mjs",
+    "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.223",
+    "@types/config": "^3.3.0",
+    "@types/koa": "^2.13.5",
+    "@types/node": "^18.6.3",
+    "@types/rss": "^0.0.29",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-xo": "^0.41.0",
+    "eslint-config-xo-typescript": "^0.52.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-unicorn": "^43.0.2",
+    "nodemon": "^2.0.19",
+    "pino-pretty": "^8.1.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  },
+  "engines": {
+    "node": "16.16.0"
+  },
+  "dependencies": {
+    "auto-changelog": "^2.4.0",
+    "better-sqlite3": "^7.6.2",
+    "config": "^3.3.7",
+    "http-graceful-shutdown": "^3.1.8",
+    "knex": "^2.2.0",
+    "koa": "^2.13.4",
+    "node-fetch": "^3.2.10",
+    "objection": "^3.0.1",
+    "pino": "^8.4.0",
+    "rss": "^1.2.2"
+  }
+}

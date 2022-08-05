@@ -1,0 +1,6 @@
+node_modules
+dist
+database/data/*
+!database/data/.gitkeep
+database/db.sqlite
+pm2/apps/**/main.json

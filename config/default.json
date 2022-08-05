@@ -1,0 +1,23 @@
+{
+  "apps": {
+    "rss": {
+      "host": "0.0.0.0",
+      "port": 4321
+    }
+  },
+  "database": {
+    "client": "better-sqlite3",
+    "useNullAsDefault": true,
+    "connection": {
+      "filename": "./database/db.sqlite"
+    },
+    "migrations": {
+      "directory": "./database/migrations",
+      "loadExtensions": [".mjs"],
+      "extension": "mjs"
+    }
+  },
+  "releases": {
+    "sourceUrl": "https://itunes.apple.com/lookup?id={{id}}&entity=album&media=music&sort=recent&limit=15"
+  }
+}

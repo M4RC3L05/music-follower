@@ -1,0 +1,11 @@
+{
+  "cwd": ".",
+  "name": "rss-feed",
+  "script": "dist/apps/rss/main.js",
+  "exec_mode": "fork",
+  "wait_ready": true,
+  "instances": 1,
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
