@@ -1,6 +1,10 @@
 import fs from "node:fs/promises";
 import { knex } from "#src/core/clients/knex.js";
 import { makeLogger } from "#src/core/clients/logger.js";
+import { Model } from "objection";
+import { artistRepository } from "#src/entities/artist/repositories/artist-repostory.js";
+
+Model.knex(knex);
 
 const logger = makeLogger("update-artists-command");
 
@@ -17,19 +21,13 @@ const data = JSON.parse(await fs.readFile("./database/data/artists.json", { enco
 }>;
 
 if (data.length > 0) {
-  const trx = await knex.transaction();
-
   try {
-    await trx.delete().from("artists");
-    const updateResult = await trx.insert(data).into("artists");
-    await trx.commit();
+    const updateResult = await artistRepository.syncArtists(data);
 
-    logger.info({ updateResult }, "Artists updated.");
+    logger.info({ updateResult: updateResult.length }, "Artists updated.");
   } catch (error: unknown) {
-    await trx.rollback();
-
     logger.error(error, "Could not update artists.");
-  } finally {
-    await knex.destroy();
   }
 }
+
+await knex.destroy();
