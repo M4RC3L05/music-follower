@@ -5,9 +5,9 @@ import { makeLogger } from "#src/core/clients/logger.js";
 import fetch from "node-fetch";
 import { setTimeout } from "node:timers/promises";
 import config from "config";
-import { artistRepository } from "#src/entities/artist/repositories/artist-repostory.js";
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 import { Model } from "objection";
+import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
 
 Model.knex(knex);
 
