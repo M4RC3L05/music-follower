@@ -22,7 +22,28 @@ npm run dev
 
 > This projects manages it apps with pm2
 
-Clone this project if the first time deploying, after that make sure to checkout to the wanted version tag.
+Clone this project if the first time deploying.
+
+Import some artists by creating `database/data/artists.json`, example:
+
+```jsonc
+[
+  {
+    "id": 123, // itunes/apple music artist id
+    "name": "foo",
+    "imageUrl": "https://...."
+  }
+  // ....
+]
+```
+
+and then import them:
+
+```bash
+npm run transpile && node dist/commands/update-artits.js
+```
+
+After that make sure to checkout to the wanted version tag
 
 ```bash
 git checkout v*.*.*
@@ -45,6 +66,8 @@ pm2 restart pm2/apps/rss/main.json pm2/apps/rss/main.json --update-env
 # restart specific app
 pm2 restart pm2/apps/rss/main.json --update-env
 ```
+
+The RSS feed will be available ast the root of the domain.
 
 ## Release
 
