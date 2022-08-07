@@ -55,19 +55,9 @@ Cleanup and transpilation
 npm run clean && npm run transpile
 ```
 
-Replicate pm2 config from the example config in pm2/apps and fill with the correct configuration.
+Deploy with your prefered system, exeample: pm2, systemd, etc...
 
-Deploy with pm2
-
-```bash
-# restart all apps
-pm2 restart pm2/apps/rss/main.json pm2/apps/rss/main.json --update-env
-
-# restart specific app
-pm2 restart pm2/apps/rss/main.json --update-env
-```
-
-The RSS feed will be available ast the root of the domain.
+The RSS feed will be available at the root of the domain.
 
 ## Release
 
