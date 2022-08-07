@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "imports": {
     "#src/*": "./dist/*"
   },
@@ -45,15 +48,14 @@
   },
   "scripts": {
     "transpile": "swc src -d dist",
+    "prepare": "husky install",
     "clean": "rm -rf ./dist",
     "lint": "eslint src --ext .ts",
+    "lint-staged": "lint-staged",
     "knex": "knex --knexfile ./knexfile.mjs",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
     "version": "offline-github-changelog --next=${npm_new_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.223",
@@ -70,6 +72,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^43.0.2",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "nodemon": "^2.0.19",
     "offline-github-changelog": "^2.5.0",
     "pino-pretty": "^8.1.0",
