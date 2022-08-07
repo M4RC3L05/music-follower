@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.1 - 2022-08-07
+
+- Release 1.1.1 - [4fd4e12](https://github.com/M4RC3L05/music-follower/commit/4fd4e12a6e1e64a0f0c6d3e03bc240dd8eac1408)
+- Use in house changelog generator - [abd8abc](https://github.com/M4RC3L05/music-follower/commit/abd8abc945629f9d5102a2dc315b3084c0ac6318)
+
 ## v1.1.0 - 2022-08-07
 
 - Release 1.1.0 - [04e58c2](https://github.com/M4RC3L05/music-follower/commit/04e58c28e72cde46ff0197e21af60842122ca5c1)
