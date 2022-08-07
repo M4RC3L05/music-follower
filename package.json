@@ -53,7 +53,7 @@
     "lint": "eslint src --ext .ts",
     "lint-staged": "lint-staged",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
-    "version": "offline-github-changelog --next=${npm_new_version} > CHANGELOG.md && git add CHANGELOG.md"
+    "postversion": "./.bin/changelog-generator > CHANGELOG.md && git add CHANGELOG.md && git commit --amend --no-edit"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
@@ -74,7 +74,6 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "nodemon": "^2.0.19",
-    "offline-github-changelog": "^2.5.0",
     "pino-pretty": "^8.1.0",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
@@ -83,7 +82,6 @@
     "node": "16.16.0"
   },
   "dependencies": {
-    "auto-changelog": "^2.4.0",
     "better-sqlite3": "^7.6.2",
     "config": "^3.3.7",
     "http-graceful-shutdown": "^3.1.8",

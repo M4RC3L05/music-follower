@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+set -e
+
+get_remote_browser_url() {
+  local remote_url=`git remote get-url origin`
+  local remote_url_with_https=${remote_url/git@/"https://"}
+  local remote_url_with_dashes=${remote_url_with_https/.com:/".com/"}
+  local remote_url_without_git=${remote_url_with_dashes/.git/""}
+
+  echo "$remote_url_without_git"
+}
+
+GIT_TAGS=(`git tag | tac`)
+TAGS_COUNT=`git tag | wc -l`
+REMOTE_BROWSER_URL=`get_remote_browser_url`
+
+echo "# Changelog"
+echo
+
+for ((i=0; i < TAGS_COUNT; i++)) do
+  tag=${GIT_TAGS[$i]}
+  last=$(($TAGS_COUNT-1))
+  next=$(($i+1))
+  current_tag_date=`git log -1 --format=%as $tag`
+
+  echo "## $tag - $current_tag_date"
+
+  echo
+  if [ "$i" -eq "$last" ]; then
+    git log $tag --format="- %s - [%h]($REMOTE_BROWSER_URL/commit/%H)" | cat
+  else
+    next_tag=${GIT_TAGS[$next]}
+    git log $next_tag..$tag --format="- %s - [%h]($REMOTE_BROWSER_URL/commit/%H)" | cat
+
+    echo
+  fi
+done
