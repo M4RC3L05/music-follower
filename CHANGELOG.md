@@ -1,3 +1,10 @@
+### v1.0.0 (2022-08-07)
+
+- [Replace changelog generator package](https://github.com/M4RC3L05/music-follower/commit/406e6a637e2c780de30d3121220b99141dc671ec) ([m4rc3l05](mailto:15786310+M4RC3L05@users.noreply.github.com))
+- [Fix `readme` typo and update deploy notes](https://github.com/M4RC3L05/music-follower/commit/39def753055e6432bb079ac1afbd5a4af0dc8fd9) ([m4rc3l05](mailto:15786310+M4RC3L05@users.noreply.github.com))
+- [Add `.log` directory and remove pm2 dependencies](https://github.com/M4RC3L05/music-follower/commit/5a5bcc0111a68603f9da5d7e88dc7a0b8d7bc379) ([m4rc3l05](mailto:15786310+M4RC3L05@users.noreply.github.com))
+- [Use iso string for time in logger](https://github.com/M4RC3L05/music-follower/commit/3f5ef322110863dea3395ab1ae0f2a06b4cf39c7) ([m4rc3l05](mailto:15786310+M4RC3L05@users.noreply.github.com))
+
 ### v0.2.1 (2022-08-06)
 
 - [Release 0.2.1](https://github.com/M4RC3L05/music-follower/commit/6a8a227127cf3820b290213763d21d910d15cf5f) ([m4rc3l05](mailto:15786310+M4RC3L05@users.noreply.github.com))
