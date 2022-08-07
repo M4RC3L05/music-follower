@@ -49,7 +49,7 @@
     "lint": "eslint src --ext .ts",
     "knex": "knex --knexfile ./knexfile.mjs",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "version": "offline-github-changelog --next=${npm_new_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
   "keywords": [],
   "author": "",
@@ -71,6 +71,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^43.0.2",
     "nodemon": "^2.0.19",
+    "offline-github-changelog": "^2.5.0",
     "pino-pretty": "^8.1.0",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
