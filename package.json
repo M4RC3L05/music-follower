@@ -52,7 +52,6 @@
     "clean": "rm -rf ./dist",
     "lint": "eslint src --ext .ts",
     "lint-staged": "lint-staged",
-    "knex": "knex --knexfile ./knexfile.mjs",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
     "version": "offline-github-changelog --next=${npm_new_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
