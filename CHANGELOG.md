@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.2 - 2022-08-08
+
+- Release 1.1.2 - [6ec1392](https://github.com/M4RC3L05/music-follower/commit/6ec1392f6d87694c728fd44e3aa1602304f064be)
+- Use version instead of alias in tool-version - [c0cae02](https://github.com/M4RC3L05/music-follower/commit/c0cae02a266f85d00e8a1a8c1ea8d506d1cf0aca)
+- Release 1.1.1 - [05252e2](https://github.com/M4RC3L05/music-follower/commit/05252e24f0d7d259078bdad80d2bfe4fd6a49bbc)
+
 ## v1.1.1 - 2022-08-07
 
 - Release 1.1.1 - [4fd4e12](https://github.com/M4RC3L05/music-follower/commit/4fd4e12a6e1e64a0f0c6d3e03bc240dd8eac1408)
