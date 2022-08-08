@@ -53,7 +53,7 @@
     "lint": "eslint src --ext .ts",
     "lint-staged": "lint-staged",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
-    "postversion": "./.bin/changelog-generator > CHANGELOG.md && git add CHANGELOG.md && git commit --amend --no-edit"
+    "release": "./.bin/release"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
