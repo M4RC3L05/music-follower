@@ -1,42 +1,38 @@
 # Changelog
 
+## v1.1.3 - 2022-08-09
+
+- Add release script - [8be3ad9](https://github.com/M4RC3L05/music-follower/commit/8be3ad9bdd0f6915e0d2c63e242471c2af52c7d5)
+
 ## v1.1.2 - 2022-08-08
 
-- Release 1.1.2 - [6ec1392](https://github.com/M4RC3L05/music-follower/commit/6ec1392f6d87694c728fd44e3aa1602304f064be)
-- Use version instead of alias in tool-version - [c0cae02](https://github.com/M4RC3L05/music-follower/commit/c0cae02a266f85d00e8a1a8c1ea8d506d1cf0aca)
-- Release 1.1.1 - [05252e2](https://github.com/M4RC3L05/music-follower/commit/05252e24f0d7d259078bdad80d2bfe4fd6a49bbc)
+- Use version instead of alias in tool-version - [4e1c7f6](https://github.com/M4RC3L05/music-follower/commit/4e1c7f6b385041cb806c0d5efcbb03caa3cee8f0)
 
 ## v1.1.1 - 2022-08-07
 
-- Release 1.1.1 - [4fd4e12](https://github.com/M4RC3L05/music-follower/commit/4fd4e12a6e1e64a0f0c6d3e03bc240dd8eac1408)
-- Use in house changelog generator - [abd8abc](https://github.com/M4RC3L05/music-follower/commit/abd8abc945629f9d5102a2dc315b3084c0ac6318)
+- Use in house changelog generator - [652f8e5](https://github.com/M4RC3L05/music-follower/commit/652f8e5257b7a75b6f40d5387bd9d47a007d836b)
 
 ## v1.1.0 - 2022-08-07
 
-- Release 1.1.0 - [04e58c2](https://github.com/M4RC3L05/music-follower/commit/04e58c28e72cde46ff0197e21af60842122ca5c1)
-- Remove knex script and update config file - [296b2bc](https://github.com/M4RC3L05/music-follower/commit/296b2bcd8ab2e7809c62a7670b5bbf0d0e2cd23f)
-- Add husky and lint-staged - [fc27d56](https://github.com/M4RC3L05/music-follower/commit/fc27d56fb68989a37f161fdfcdd2cf62438cf7d6)
+- Remove knex script and update config file - [d6ec420](https://github.com/M4RC3L05/music-follower/commit/d6ec4204af294e34e0884520d681a358418f7c36)
+- Add husky and lint-staged - [3cb14c5](https://github.com/M4RC3L05/music-follower/commit/3cb14c5df3357e5edb06f2fe61c536075c57fa24)
 
 ## v1.0.0 - 2022-08-07
 
-- Release 1.0.0 - [099d63a](https://github.com/M4RC3L05/music-follower/commit/099d63aa553abfc362be2ecb24dc60c82910f8b8)
-- Replace changelog generator package - [406e6a6](https://github.com/M4RC3L05/music-follower/commit/406e6a637e2c780de30d3121220b99141dc671ec)
-- Fix `readme` typo and update deploy notes - [39def75](https://github.com/M4RC3L05/music-follower/commit/39def753055e6432bb079ac1afbd5a4af0dc8fd9)
-- Add `.log` directory and remove pm2 dependencies - [5a5bcc0](https://github.com/M4RC3L05/music-follower/commit/5a5bcc0111a68603f9da5d7e88dc7a0b8d7bc379)
-- Use iso string for time in logger - [3f5ef32](https://github.com/M4RC3L05/music-follower/commit/3f5ef322110863dea3395ab1ae0f2a06b4cf39c7)
+- Replace changelog generator package - [e54596f](https://github.com/M4RC3L05/music-follower/commit/e54596f843f5f4a9297ba029a8399f1f90560ed3)
+- Fix `readme` typo and update deploy notes - [8d363e3](https://github.com/M4RC3L05/music-follower/commit/8d363e3bef158206f090825a5b7eeea36b9c454b)
+- Add `.log` directory and remove pm2 dependencies - [0e86931](https://github.com/M4RC3L05/music-follower/commit/0e86931d62cd7b7ca6e1f2ac6fe3331e5f42c7fc)
+- Use iso string for time in logger - [98462cb](https://github.com/M4RC3L05/music-follower/commit/98462cb5b024dff98e73a2d709b526bea577095f)
 
 ## v0.2.1 - 2022-08-06
 
-- Release 0.2.1 - [6a8a227](https://github.com/M4RC3L05/music-follower/commit/6a8a227127cf3820b290213763d21d910d15cf5f)
-- Fix import for `artist-repository` - [a4590b2](https://github.com/M4RC3L05/music-follower/commit/a4590b2ccaaabf14f6ea51f693bd5ca54d08e718)
+- Fix import for `artist-repository` - [b7b682c](https://github.com/M4RC3L05/music-follower/commit/b7b682c09f30ce695db50f53c2c4742ecdff199f)
 
 ## v0.2.0 - 2022-08-06
 
-- Release 0.2.0 - [09275ca](https://github.com/M4RC3L05/music-follower/commit/09275ca6848f6e5ce1e89c3c8f6be264e344d39a)
-- Improve README.md - [019e7cb](https://github.com/M4RC3L05/music-follower/commit/019e7cb5f2668fcf5b41406b20fc69fc7a5c8d1e)
-- Fix file typo and make `update-artists` use the `artists` repository - [f08b91a](https://github.com/M4RC3L05/music-follower/commit/f08b91a2439484b0f42213217dc9146ed5b7195f)
+- Improve README.md - [5c5da5f](https://github.com/M4RC3L05/music-follower/commit/5c5da5fafbebf4af541a9a14a792855ed6652c67)
+- Fix file typo and make `update-artists` use the `artists` repository - [2dc0304](https://github.com/M4RC3L05/music-follower/commit/2dc03044c7caaff761a15c41d9366cf04a65c58d)
 
 ## v0.1.0 - 2022-08-06
 
-- Release 0.1.0 - [387f372](https://github.com/M4RC3L05/music-follower/commit/387f372bcb7b3911d5f6850b4440342ed58f889c)
 - Init commit - [00543e0](https://github.com/M4RC3L05/music-follower/commit/00543e0ba64d4d4329829206c7dc3b2cd68cc682)
