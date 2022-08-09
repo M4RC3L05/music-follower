@@ -62,7 +62,7 @@ The RSS feed will be available at the root of the domain.
 ## Release
 
 ```bash
-npm run release [major | minor | patch]
+npm version [major | minor | patch] -m "Release v%s"
 
 git push origin main --tags
 ```
