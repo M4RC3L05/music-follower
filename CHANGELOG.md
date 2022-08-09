@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.6 - 2022-08-09
+
+- Add `mjs` extension to lint staged - [0b0c630](https://github.com/M4RC3L05/music-follower/commit/0b0c6302146ed75fdfb202ce5c2b094b71dc96fc)
+
 ## v1.1.5 - 2022-08-09
 
 - Update release section on readme - [285e31a](https://github.com/M4RC3L05/music-follower/commit/285e31aad27d953c840454db5a0216f9db37d9c5)
