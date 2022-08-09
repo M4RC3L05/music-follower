@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.5 - 2022-08-09
+
+- Update release section on readme - [285e31a](https://github.com/M4RC3L05/music-follower/commit/285e31aad27d953c840454db5a0216f9db37d9c5)
+
 ## v1.1.4 - 2022-08-09
 
 - Use zx for scrips - [78c39f6](https://github.com/M4RC3L05/music-follower/commit/78c39f6a5a6f5885f8aac3b7187735d18e0b6038)
