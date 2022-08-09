@@ -1,3 +1,7 @@
+### v1.1.7 (2022-08-09)
+
+- [Use `offline-github-changelog` and rever scripts](https://github.com/M4RC3L05/music-follower/commit/47ed4d663c02e9828aa7cb9bfff9f2025c633f7a) 
+
 ### v1.1.6
 
 - [Add `mjs` extension to lint staged](https://github.com/M4RC3L05/music-follower/commit/0b0c6302146ed75fdfb202ce5c2b094b71dc96fc) 
