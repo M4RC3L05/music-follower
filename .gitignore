@@ -3,4 +3,5 @@ dist
 database/data/*
 !database/data/.gitkeep
 database/db.sqlite
-.logs/*.log
+.pm2/*
+!.pm2/*.example

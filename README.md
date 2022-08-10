@@ -55,9 +55,18 @@ Cleanup and transpilation
 npm run clean && npm run transpile
 ```
 
-Deploy with your prefered system, exeample: pm2, systemd, etc...
+Deploy with your prefered system, example: pm2, systemd, etc...
 
 The RSS feed will be available at the root of the domain.
+
+### pm2
+
+Duplicate the example files from `.pm2` directory and fill them with the correct values:
+Then, start the services:
+
+```bash
+pm2 start/restart .pm2/rss --update-env
+```
 
 ## Release
 
