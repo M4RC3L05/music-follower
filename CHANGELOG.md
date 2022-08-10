@@ -1,3 +1,7 @@
+### v3.0.0 (2022-08-10)
+
+- [Revert "Replace better-sqlite3 to sqlite3"](https://github.com/M4RC3L05/music-follower/commit/2e26a7e03a3e15eea16b3ec7c6ac77994d1f6216)
+
 ### v2.0.0 (2022-08-10)
 
 - [Replace better-sqlite3 to sqlite3](https://github.com/M4RC3L05/music-follower/commit/1eaa988f43ca0610763e44ef5d1dd4de4ecb524e)
