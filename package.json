@@ -85,7 +85,6 @@
     "node": "16.16.0"
   },
   "dependencies": {
-    "better-sqlite3": "^7.6.2",
     "config": "^3.3.7",
     "cron": "^2.1.0",
     "http-graceful-shutdown": "^3.1.8",
@@ -94,6 +93,7 @@
     "node-fetch": "^3.2.10",
     "objection": "^3.0.1",
     "pino": "^8.4.0",
-    "rss": "^1.2.2"
+    "rss": "^1.2.2",
+    "sqlite3": "^5.0.11"
   }
 }
