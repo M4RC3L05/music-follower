@@ -1,3 +1,9 @@
+### v2.0.0 (2022-08-10)
+
+- [Replace better-sqlite3 to sqlite3](https://github.com/M4RC3L05/music-follower/commit/1eaa988f43ca0610763e44ef5d1dd4de4ecb524e)
+- [Re add pm2 support](https://github.com/M4RC3L05/music-follower/commit/75fd4b8a5fc19dfaf4b55e8901a5426e9e5c5399)
+- [Fix version command sed regex](https://github.com/M4RC3L05/music-follower/commit/8a9ff83ceb3b74b4bdb38c5e2e4386d2a3f9a296)
+
 ### v1.1.7 (2022-08-09)
 
 - [Use `offline-github-changelog` and rever scripts](https://github.com/M4RC3L05/music-follower/commit/47ed4d663c02e9828aa7cb9bfff9f2025c633f7a)
