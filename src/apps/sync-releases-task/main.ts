@@ -14,7 +14,7 @@ const job = new CronJob("0 12 * * *", async () => {
   try {
     await run();
 
-    logger.info("`sync-release-task` finisehd");
+    logger.info("`sync-release-task` finished");
   } catch (error: unknown) {
     logger.error(error, "Failed to run `sync-release-task` cron job.");
   } finally {
