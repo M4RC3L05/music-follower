@@ -3,13 +3,15 @@ import { app } from "#src/apps/rss/app.js";
 import { makeLogger } from "#src/core/clients/logger.js";
 import { Model } from "objection";
 import { knex } from "#src/core/clients/knex.js";
+import config from "config";
 
 Model.knex(knex);
 
 const logger = makeLogger("main");
 const api = app();
+const { host, port } = config.get<{ host: string; port: number }>("apps.rss");
 
-const server = api.listen(4321, "0.0.0.0", () => {
+const server = api.listen(port, host, () => {
   const addr = server.address();
 
   if (typeof addr === "string") {
