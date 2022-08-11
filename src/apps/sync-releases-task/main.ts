@@ -25,6 +25,8 @@ const job = new CronJob("0 12 * * *", async () => {
 job.start();
 
 if (typeof process.send === "function") {
+  logger.info("Sending ready signal");
+
   process.send("ready");
 }
 
