@@ -50,7 +50,7 @@
     "transpile": "swc src -d dist",
     "prepare": "husky install",
     "clean": "rm -rf ./dist",
-    "lint": "eslint src bin --ext .ts",
+    "lint": "eslint src --ext .ts",
     "lint-staged": "lint-staged",
     "dev": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md"
