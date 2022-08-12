@@ -8,6 +8,7 @@ export class ReleaseModel extends Model {
   name!: string;
   releasedAt!: Date;
   coverUrl!: string;
+  type!: "collection" | "track";
 
   $beforeUpdate() {
     if (this.releasedAt) {

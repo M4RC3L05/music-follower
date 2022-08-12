@@ -9,8 +9,37 @@ export class ReleaseRepository {
       .limit(50);
   }
 
-  async upsertReleases(releases: Array<ModelObject<ReleaseModel>>) {
-    return ReleaseModel.query().upsertGraph(releases, { insertMissing: true });
+  async upsertReleases(releases: Array<ModelObject<ReleaseModel & { collectionId?: number; isStreamable?: boolean }>>) {
+    for (const { collectionId, isStreamable, ...release } of releases) {
+      if (release.type === "collection") {
+        // eslint-disable-next-line no-await-in-loop
+        await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
+
+        continue;
+      }
+
+      if (release.releasedAt instanceof Date) {
+        continue;
+      }
+
+      if (!isStreamable) {
+        continue;
+      }
+
+      // This is for music releases that are a part of an album that is
+      // yet to be releases but some songs are already available.
+
+      // eslint-disable-next-line no-await-in-loop
+      const album = await ReleaseModel.query().where({ id: collectionId }).first();
+
+      // If the album was already released we return
+      if (album && album.releasedAt.valueOf() < Date.now()) {
+        continue;
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
+    }
   }
 }
 
