@@ -18,6 +18,7 @@
     }
   },
   "releases": {
-    "sourceUrl": "https://itunes.apple.com/lookup?id={{id}}&entity=album&media=music&sort=recent&limit=15"
+    "albums": "https://itunes.apple.com/lookup?id={{id}}&entity=album&media=music&sort=recent&limit=70",
+    "songs": "https://itunes.apple.com/lookup?id={{id}}&entity=song&media=music&sort=recent&limit=100"
   }
 }
