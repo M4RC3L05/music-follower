@@ -1,3 +1,7 @@
+### v3.2.0 (2022-08-13)
+
+- [Improve release inclusion for music from unreleased albums logic](https://github.com/M4RC3L05/music-follower/commit/66b46976f777bed515e6dff5d6e1acac6c974913)
+
 ### v3.1.0 (2022-08-12)
 
 - [Add patch-package and patch `offline-github-changelog` to allow unlimited commits in changelog](https://github.com/M4RC3L05/music-follower/commit/96dc5a87abda82b36bf5d82dad70eb6162257178)
