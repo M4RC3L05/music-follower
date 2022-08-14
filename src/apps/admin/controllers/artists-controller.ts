@@ -50,6 +50,7 @@ export async function index(context: RouterContext) {
     query,
     remoteArtists: remoteArtistsSearch,
     remoteArtistQuery,
+    _csrf: context.state._csrf,
   });
 }
 

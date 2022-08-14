@@ -25,6 +25,7 @@
                 </div>
                 <div class="card-footer text-muted">
                   <form action="/admin/artists/subscribe" method="post">
+                    <input type="hidden" name="_csrf" value="<%= _csrf %>" />
                     <input type="hidden" name="artistName" value="<%= remoteArtists.artistName %>">
                     <input type="hidden" name="artistId" value="<%= remoteArtists.artistId %>">
                     <input type="hidden" name="artistImage" value="<%= remoteArtists.image %>">
@@ -49,6 +50,7 @@
           <div class="col">
             <div class="card text-bg-dark" style="z-index: 1;">
               <form action="/admin/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>" />
                 <input type="hidden" name="id" value="<%= artist.id %>">
                 <button type="submit" class="btn btn-danger">&times;</button>
               </form>

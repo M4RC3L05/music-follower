@@ -1,6 +1,7 @@
 import config from "config";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
+import Csrf from "koa-csrf";
 import render from "koa-ejs";
 import qs from "koa-qs";
 import session from "koa-session";
@@ -25,6 +26,7 @@ export const app = () => {
 
   koa.use(session({ ...config.get("apps.admin.session") }, koa));
   koa.use(bodyParser());
+  koa.use(new Csrf());
   koa.use(koaStatic(path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../../../public")));
   koa.use(router.middleware());
   koa.use(router.allowedMethods());
