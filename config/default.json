@@ -3,6 +3,10 @@
     "rss": {
       "host": "0.0.0.0",
       "port": 4321
+    },
+    "admin": {
+      "host": "0.0.0.0",
+      "port": 4322
     }
   },
   "database": {
@@ -16,6 +20,13 @@
       "loadExtensions": [".mjs"],
       "extension": "mjs"
     }
+  },
+  "itunes": {
+    "searchUrl": "https://itunes.apple.com/search",
+    "lookup": "https://itunes.apple.com/lookup"
+  },
+  "media": {
+    "placeholderImage": "https://via.placeholder.com/512"
   },
   "releases": {
     "albums": "https://itunes.apple.com/lookup?id={{id}}&entity=album&media=music&sort=recent&limit=70",

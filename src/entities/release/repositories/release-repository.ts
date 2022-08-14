@@ -2,6 +2,18 @@ import { ReleaseModel } from "#src/entities/release/models/release-model.js";
 import { ModelObject, raw } from "objection";
 
 export class ReleaseRepository {
+  async search({ limit = 10, page = 0, q }: { page: number; limit: number; q?: string }) {
+    const query = ReleaseModel.query().orderBy("releasedAt", "desc");
+
+    if (q) {
+      void query
+        .where(raw('lower("name")'), "like", `%${q.toLowerCase()}%`)
+        .orWhere(raw('lower("artistName")'), "like", `%${q.toLowerCase()}%`);
+    }
+
+    return query.page(page, limit);
+  }
+
   async getCurrent50LatestReleases() {
     return ReleaseModel.query()
       .where(raw("DATE(\"releasedAt\", 'utc')"), "<=", raw("DATE('now', 'utc')"))
