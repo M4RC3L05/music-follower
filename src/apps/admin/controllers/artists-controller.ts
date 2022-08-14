@@ -51,13 +51,24 @@ export async function index(context: RouterContext) {
     remoteArtists: remoteArtistsSearch,
     remoteArtistQuery,
     _csrf: context.state._csrf,
+    flashMessages: context.flash(),
   });
 }
 
 export async function subscribe(context: RouterContext) {
   const { artistName, artistId, artistImage } = context.request.body;
 
-  await artistRepository.addArtist({ id: artistId, name: artistName, imageUrl: artistImage });
+  try {
+    logger.info({ artistName, artistId, artistImage }, "Subscribing");
+
+    await artistRepository.addArtist({ id: artistId, name: artistName, imageUrl: artistImage });
+
+    context.flash("success", `Successfully subscribed to "${artistName as string}"`);
+  } catch (error: unknown) {
+    logger.error(error, `Could not subscribe to artists "${artistName as string}"`);
+
+    context.flash("error", `Could not subscribe to artists "${artistName as string}"`);
+  }
 
   context.redirect("back");
 }
@@ -65,7 +76,15 @@ export async function subscribe(context: RouterContext) {
 export async function unsubscribe(context: RouterContext) {
   const { id } = context.request.body;
 
-  await artistRepository.deleteArtist(id);
+  try {
+    await artistRepository.deleteArtist(id);
+
+    context.flash("success", `Successfully unsubscribed`);
+  } catch (error: unknown) {
+    logger.error(error, `Could not unsubscribe from artists "${id as string}"`);
+
+    context.flash("error", `Could not subscribe from artist`);
+  }
 
   context.redirect("back");
 }

@@ -103,6 +103,7 @@
     "http-graceful-shutdown": "^3.1.8",
     "knex": "^2.2.0",
     "koa": "^2.13.4",
+    "koa-better-flash": "^0.0.4",
     "koa-bodyparser": "^4.3.0",
     "koa-csrf": "^5.0.1",
     "koa-ejs": "^4.3.0",
