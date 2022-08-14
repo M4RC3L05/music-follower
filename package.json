@@ -25,7 +25,9 @@
     "rules": {
       "prettier/prettier": "error",
       "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unsafe-call": "off"
+      "@typescript-eslint/no-unsafe-call": "off",
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error"
     },
     "ignorePatterns": [
       "node_modules",

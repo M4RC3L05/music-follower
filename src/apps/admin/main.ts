@@ -1,9 +1,10 @@
-import gracefullShutdown from "http-graceful-shutdown";
-import { app } from "#src/apps/admin/app.js";
-import { makeLogger } from "#src/core/clients/logger.js";
-import { Model } from "objection";
-import { knex } from "#src/core/clients/knex.js";
 import config from "config";
+import gracefullShutdown from "http-graceful-shutdown";
+import { Model } from "objection";
+
+import { app } from "#src/apps/admin/app.js";
+import { knex } from "#src/core/clients/knex.js";
+import { makeLogger } from "#src/core/clients/logger.js";
 
 Model.knex(knex);
 

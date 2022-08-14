@@ -1,10 +1,11 @@
+import { RouterContext } from "@koa/router";
+import config from "config";
+
 import { makeLogger } from "#src/core/clients/logger.js";
 import { appleMusicMediaService } from "#src/core/services/apple-music-media-service.js";
 import { ItunesArtistSearchResult, itunesSearchService } from "#src/core/services/itunes-search-service.js";
 import { ArtistModel } from "#src/entities/artist/models/artist-model.js";
 import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
-import { RouterContext } from "@koa/router";
-import config from "config";
 
 const logger = makeLogger("artists-controller");
 

@@ -1,6 +1,7 @@
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 import { BaseContext } from "koa";
 import RSS from "rss";
+
+import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 
 export async function rssMiddleware(context: BaseContext) {
   const releases = await releaseRepository.getCurrent50LatestReleases();

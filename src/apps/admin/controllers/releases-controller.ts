@@ -1,5 +1,6 @@
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 import { RouterContext } from "@koa/router";
+
+import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 
 export async function index(context: RouterContext) {
   const page = context.request.query?.page ? Number(context.request.query?.page) : 0;

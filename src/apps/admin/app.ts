@@ -1,10 +1,11 @@
 import Koa from "koa";
+import bodyParser from "koa-bodyparser";
+import render from "koa-ejs";
+import qs from "koa-qs";
+import koaStatic from "koa-static";
 import path from "node:path";
 import url from "node:url";
-import render from "koa-ejs";
-import koaStatic from "koa-static";
-import qs from "koa-qs";
-import bodyParser from "koa-bodyparser";
+
 import router from "#src/apps/admin/router.js";
 
 export const app = () => {

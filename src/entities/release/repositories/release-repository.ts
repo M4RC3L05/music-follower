@@ -1,5 +1,6 @@
-import { ReleaseModel } from "#src/entities/release/models/release-model.js";
 import { ModelObject, raw } from "objection";
+
+import { ReleaseModel } from "#src/entities/release/models/release-model.js";
 
 export class ReleaseRepository {
   async search({ limit = 10, page = 0, q }: { page: number; limit: number; q?: string }) {

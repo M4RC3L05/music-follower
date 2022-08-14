@@ -1,8 +1,9 @@
+import { CronJob } from "cron";
+import { Model } from "objection";
+
 import { run } from "#src/apps/sync-releases-task/task.js";
 import { knex } from "#src/core/clients/knex.js";
 import { makeLogger } from "#src/core/clients/logger.js";
-import { CronJob } from "cron";
-import { Model } from "objection";
 
 const logger = makeLogger("main.ts");
 

@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
+import { Model } from "objection";
+
 import { knex } from "#src/core/clients/knex.js";
 import { makeLogger } from "#src/core/clients/logger.js";
-import { Model } from "objection";
 import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
 
 Model.knex(knex);

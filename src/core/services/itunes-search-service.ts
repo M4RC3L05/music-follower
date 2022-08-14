@@ -1,6 +1,7 @@
-import fetch from "node-fetch";
-import LRU from "lru-cache";
 import config from "config";
+import LRU from "lru-cache";
+import fetch from "node-fetch";
+
 import { makeLogger } from "#src/core/clients/logger.js";
 
 export type ItunesArtistSearchResult = {

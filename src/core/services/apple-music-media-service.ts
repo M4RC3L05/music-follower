@@ -1,7 +1,8 @@
-import { makeLogger } from "#src/core/clients/logger.js";
+import config from "config";
 import LRU from "lru-cache";
 import fetch from "node-fetch";
-import config from "config";
+
+import { makeLogger } from "#src/core/clients/logger.js";
 
 const logger = makeLogger("apple-music-media-service");
 
