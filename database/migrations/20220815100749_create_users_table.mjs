@@ -1,5 +1,7 @@
 /* eslint-disable unicorn/filename-case */
 
+import bcrypt from "bcrypt";
+
 /**
  * @param { import("knex").Knex } knex
  */
@@ -19,7 +21,7 @@ export async function up(knex) {
     .insert({
       username: "admin",
       email: "admin@music-follower.com",
-      password: "$2y$12$5qOVW7lz9kjlMitKZKaTa.Od171QzkTDiJQ9P7x.oWea8FcH.LFVO",
+      password: await bcrypt.hash("root", 12),
       role: "admin",
     })
     .into("users");
