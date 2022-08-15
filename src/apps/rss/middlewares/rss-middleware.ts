@@ -1,10 +1,30 @@
-import { BaseContext } from "koa";
+import { Context } from "koa";
 import RSS from "rss";
 
+import { makeLogger } from "#src/core/clients/logger.js";
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
+import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 
-export async function rssMiddleware(context: BaseContext) {
-  const releases = await releaseRepository.getCurrent50LatestReleases();
+const logger = makeLogger("rss-middleware");
+
+export async function rssMiddleware(context: Context) {
+  if (!context.request.query?.email) {
+    logger.error({ email: context.request.query?.email }, "No email provided");
+
+    context.throw(400, "No user email provided");
+  }
+
+  const user = await userRepository.getUserByEmail(context.request.query.email as string);
+
+  if (!user) {
+    logger.error({ email: context.request.query?.email }, "No user found");
+
+    context.throw(404, "Could not find feed");
+  }
+
+  logger.info({ email: context.request.query?.email }, "Getting latest releases");
+
+  const releases = await releaseRepository.getCurrent50LatestReleases(user.id);
 
   const feed = new RSS({
     title: "Music releases",
