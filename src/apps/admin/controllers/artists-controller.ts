@@ -52,6 +52,7 @@ export async function index(context: RouterContext) {
     remoteArtistQuery,
     _csrf: context.state._csrf,
     flashMessages: context.flash(),
+    authenticated: typeof context.session.user?.email === "string",
   });
 }
 

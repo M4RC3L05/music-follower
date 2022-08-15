@@ -7,7 +7,11 @@ import { userRepository } from "#src/entities/user/repositories/user-repository.
 const logger = makeLogger("auth-controller");
 
 export async function login(context: RouterContext) {
-  await context.render("auth/login", { _csrf: context.state._csrf, flashMessages: context.flash() });
+  await context.render("auth/login", {
+    _csrf: context.state._csrf,
+    flashMessages: context.flash(),
+    authenticated: typeof context.session.user?.email === "string",
+  });
 }
 
 export async function postLogin(context: RouterContext) {
