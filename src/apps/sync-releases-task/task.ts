@@ -129,8 +129,14 @@ export const run = async () => {
     try {
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      await releaseRepository.upsertReleases(releases.filter(({ type }) => type === "collection"));
-      await releaseRepository.upsertReleases(releases.filter(({ type }) => type === "track"));
+      await releaseRepository.upsertReleases(
+        artist.id,
+        releases.filter(({ type }) => type === "collection"),
+      );
+      await releaseRepository.upsertReleases(
+        artist.id,
+        releases.filter(({ type }) => type === "track"),
+      );
     } catch (error: unknown) {
       logger.error(error, "Something wrong ocurred while upserting releases");
     }
