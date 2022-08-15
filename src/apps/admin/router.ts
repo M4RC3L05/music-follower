@@ -5,6 +5,7 @@ import * as authController from "#src/apps/admin/controllers/auth-controller.js"
 import * as pagesController from "#src/apps/admin/controllers/pages-controller.js";
 import * as profileController from "#src/apps/admin/controllers/profile-controller.js";
 import * as releasesController from "#src/apps/admin/controllers/releases-controller.js";
+import * as usersController from "#src/apps/admin/controllers/users-controller.js";
 import { authenticationMiddleware } from "#src/apps/admin/middlewares/authentication-middleware.js";
 import { notAuthenticationMiddleware } from "#src/apps/admin/middlewares/not-authenticated-middleware.js";
 import { permissionMiddleware } from "#src/apps/admin/middlewares/permission-middleware.js";
@@ -31,5 +32,11 @@ router.post(
   permissionMiddleware(["user"]),
   artistsController.unsubscribe,
 );
+router.get("/admin/users", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.index);
+router.post("/admin/users/delete", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.destroy);
+router.get("/admin/users/edit", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.edit);
+router.post("/admin/users/edit", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.update);
+router.get("/admin/users/create", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.create);
+router.post("/admin/users/create", authenticationMiddleware, permissionMiddleware(["admin"]), usersController.store);
 
 export default router;

@@ -18,11 +18,16 @@
               <a class="nav-link" href="/admin/artists">Artists</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/admin/releases">Releases</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="/admin/profile">Profile</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/releases">Releases</a>
+            </li>
+            <% if (userRole === "admin") { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/users">Users</a>
+              </li>
+            <% } %>
           <% } else { %>
             <li class="nav-item">
               <a class="nav-link" href="/admin/auth/login">Login</a>

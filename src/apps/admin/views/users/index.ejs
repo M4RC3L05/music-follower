@@ -1,0 +1,51 @@
+<div class="container-xl mt-4">
+  <div class="row">
+    <div class="col">
+      <h1>Users</h1> <span><a href="/admin/users/create">Create user</a></span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <form method="get" action="/admin/users?<%= query ? `q=${query}` : "" %>">
+        <div class="mb-3">
+          <input type="search" placeholder="Search users..." name="q" class="form-control" value="<%= query %>">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4 mb-4">
+    <% users.forEach((user) => { %>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= user.username %> <span class="badge text-bg-info"><%= user.role %></span></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= user.email %></h6>
+          </div>
+          <div class="card-footer d-flex">
+            <a href="/admin/users/edit?id=<%= user.id %> " class="card-link btn btn-primary" style="margin-right: 8px;">Edit</a>
+            <form action="/admin/users/delete" method="post">
+              <input type="hidden" name="id" value="<%= user.id %>">
+              <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+              <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/users?page=0<%= query ? `&q=${query}` : "" %>">Start</a></li>
+          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/users?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %>">Previous</a></li>
+          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/users?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %>">Next</a></li>
+          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/users?page=<%= Math.floor(total / limit) %><%= query ? `&q=${query}` : "" %>">End</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
