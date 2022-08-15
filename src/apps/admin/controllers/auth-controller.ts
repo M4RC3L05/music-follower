@@ -37,3 +37,9 @@ export async function postLogin(context: RouterContext) {
   context.flash("success", `Welcome "${user.username}"`);
   context.redirect("/admin/artists");
 }
+
+export async function logout(context: RouterContext) {
+  // eslint-disable-next-line unicorn/no-null
+  context.session = null;
+  context.redirect("/admin");
+}

@@ -24,6 +24,10 @@
           </li>
         </ul>
       </div>
+      <form class="d-flex" action="/admin/auth/logout" method="post">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+        <button class="btn btn-outline-danger" type="submit">Logout</button>
+      </form>
     </div>
   </nav>
 

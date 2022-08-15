@@ -12,6 +12,7 @@ const router = new Router();
 router.get("/admin", pagesController.index);
 router.get("/admin/auth/login", notAuthenticationMiddleware, authController.login);
 router.post("/admin/auth/login", notAuthenticationMiddleware, authController.postLogin);
+router.post("/admin/auth/logout", authenticationMiddleware, authController.logout);
 router.get("/admin/releases", authenticationMiddleware, releasesController.index);
 router.get("/admin/artists", authenticationMiddleware, artistsController.index);
 router.post("/admin/artists/subscribe", authenticationMiddleware, artistsController.subscribe);

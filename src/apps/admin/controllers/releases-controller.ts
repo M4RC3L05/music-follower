@@ -8,5 +8,13 @@ export async function index(context: RouterContext) {
   const limit = 12;
   const { results: releases, total } = await releaseRepository.search({ limit, page, q: query as string });
 
-  await context.render("releases/index", { releases, limit, page, query, total, flashMessages: context.flash() });
+  await context.render("releases/index", {
+    _csrf: context.state._csrf,
+    releases,
+    limit,
+    page,
+    query,
+    total,
+    flashMessages: context.flash(),
+  });
 }
