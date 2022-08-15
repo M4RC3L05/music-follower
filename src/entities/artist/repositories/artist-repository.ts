@@ -1,14 +1,30 @@
 import { ModelObject, raw } from "objection";
 
 import { ArtistModel } from "#src/entities/artist/models/artist-model.js";
+import { ArtistUserModel } from "#src/entities/artist/models/artist-user-model.js";
+import { UserModel } from "#src/entities/user/models/user-model.js";
 
 export class ArtistRepository {
   async getArtists() {
     return ArtistModel.query();
   }
 
-  async searchArtists({ page = 0, limit = 12, q }: { page: number; limit: number; q?: string }) {
+  async searchArtists({
+    user,
+    page = 0,
+    limit = 12,
+    q,
+  }: {
+    user: ModelObject<UserModel>;
+    page: number;
+    limit: number;
+    q?: string;
+  }) {
     const query = ArtistModel.query().orderBy("name", "asc");
+
+    if (user.role !== "admin") {
+      void query.whereIn("id", ArtistUserModel.query().select("artistId").where({ userId: user.id }));
+    }
 
     if (q) {
       void query.where(raw('lower("name")'), "like", `%${q.toLowerCase()}%`);

@@ -4,8 +4,9 @@ import config from "config";
 import { makeLogger } from "#src/core/clients/logger.js";
 import { appleMusicMediaService } from "#src/core/services/apple-music-media-service.js";
 import { ItunesArtistSearchResult, itunesSearchService } from "#src/core/services/itunes-search-service.js";
-import { ArtistModel } from "#src/entities/artist/models/artist-model.js";
 import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
+import { artistUserRepository } from "#src/entities/artist/repositories/artist-user-repository.js";
+import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 
 const logger = makeLogger("artists-controller");
 
@@ -14,7 +15,13 @@ export async function index(context: RouterContext) {
   const query = context.request.query?.q;
   const remoteArtistQuery = context.request.query?.remoteArtistQ as string;
   const limit = 12;
-  const { results: artists, total } = await artistRepository.searchArtists({ limit, page, q: query as string });
+  const authUser = await userRepository.getUserByEmail(context.session.user.email);
+  const { results: artists, total } = await artistRepository.searchArtists({
+    user: authUser,
+    limit,
+    page,
+    q: query as string,
+  });
 
   let remoteArtistsSearch: ItunesArtistSearchResult[] = [];
 
@@ -37,7 +44,7 @@ export async function index(context: RouterContext) {
     remoteArtistsSearch = await Promise.all(
       remoteArtistsSearch.map(async (artist) => ({
         ...artist,
-        isSubscribed: (await artistRepository.getArtist(artist.artistId)) instanceof ArtistModel,
+        isSubscribed: await artistUserRepository.isSubscribed(artist.artistId, authUser.id),
       })),
     );
   }
@@ -53,6 +60,7 @@ export async function index(context: RouterContext) {
     _csrf: context.state._csrf,
     flashMessages: context.flash(),
     authenticated: typeof context.session.user?.email === "string",
+    userRole: authUser.role,
   });
 }
 
@@ -62,7 +70,15 @@ export async function subscribe(context: RouterContext) {
   try {
     logger.info({ artistName, artistId, artistImage }, "Subscribing");
 
-    await artistRepository.addArtist({ id: artistId, name: artistName, imageUrl: artistImage });
+    const authUser = await userRepository.getUserByEmail(context.session.user.email);
+
+    if (!(await artistRepository.getArtist(artistId))) {
+      logger.info("Artist not in database, creating");
+
+      await artistRepository.addArtist({ id: artistId, name: artistName, imageUrl: artistImage });
+    }
+
+    await artistUserRepository.subscribe(artistId, authUser.id);
 
     context.flash("success", `Successfully subscribed to "${artistName as string}"`);
   } catch (error: unknown) {
@@ -78,7 +94,8 @@ export async function unsubscribe(context: RouterContext) {
   const { id } = context.request.body;
 
   try {
-    await artistRepository.deleteArtist(id);
+    const authUser = await userRepository.getUserByEmail(context.session.user.email);
+    await artistUserRepository.unsubscribe(id, authUser.id);
 
     context.flash("success", `Successfully unsubscribed`);
   } catch (error: unknown) {

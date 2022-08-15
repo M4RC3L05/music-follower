@@ -7,6 +7,7 @@ import * as profileController from "#src/apps/admin/controllers/profile-controll
 import * as releasesController from "#src/apps/admin/controllers/releases-controller.js";
 import { authenticationMiddleware } from "#src/apps/admin/middlewares/authentication-middleware.js";
 import { notAuthenticationMiddleware } from "#src/apps/admin/middlewares/not-authenticated-middleware.js";
+import { permissionMiddleware } from "#src/apps/admin/middlewares/permission-middleware.js";
 
 const router = new Router();
 
@@ -18,7 +19,17 @@ router.get("/admin/profile", authenticationMiddleware, profileController.index);
 router.post("/admin/profile/edit", authenticationMiddleware, profileController.edit);
 router.get("/admin/releases", authenticationMiddleware, releasesController.index);
 router.get("/admin/artists", authenticationMiddleware, artistsController.index);
-router.post("/admin/artists/subscribe", authenticationMiddleware, artistsController.subscribe);
-router.post("/admin/artists/unsubscribe", authenticationMiddleware, artistsController.unsubscribe);
+router.post(
+  "/admin/artists/subscribe",
+  authenticationMiddleware,
+  permissionMiddleware(["user"]),
+  artistsController.subscribe,
+);
+router.post(
+  "/admin/artists/unsubscribe",
+  authenticationMiddleware,
+  permissionMiddleware(["user"]),
+  artistsController.unsubscribe,
+);
 
 export default router;
