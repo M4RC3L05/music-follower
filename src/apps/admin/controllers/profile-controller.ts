@@ -15,6 +15,7 @@ export async function index(context: RouterContext) {
     user,
     flashMessages: context.flash(),
     authenticated: typeof context.session.user?.email === "string",
+    userRole: user.role,
   });
 }
 
