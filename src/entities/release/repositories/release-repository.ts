@@ -1,15 +1,33 @@
 import { ModelObject, raw } from "objection";
 
 import { ReleaseModel } from "#src/entities/release/models/release-model.js";
+import { ReleaseUserModel } from "#src/entities/release/models/release-user-mode.js";
+import { UserModel } from "#src/entities/user/models/user-model.js";
 
 export class ReleaseRepository {
-  async search({ limit = 10, page = 0, q }: { page: number; limit: number; q?: string }) {
+  async search({
+    user,
+    limit = 10,
+    page = 0,
+    q,
+  }: {
+    user: ModelObject<UserModel>;
+    page: number;
+    limit: number;
+    q?: string;
+  }) {
     const query = ReleaseModel.query().orderBy("releasedAt", "desc");
 
+    if (user.role !== "admin") {
+      void query.whereIn("id", ReleaseUserModel.query().select("releaseId").where({ userId: user.id }));
+    }
+
     if (q) {
-      void query
-        .where(raw('lower("name")'), "like", `%${q.toLowerCase()}%`)
-        .orWhere(raw('lower("artistName")'), "like", `%${q.toLowerCase()}%`);
+      void query.where((qb) => {
+        void qb
+          .orWhere(raw('lower("artistName")'), "like", `%${q.toLowerCase()}%`)
+          .orWhere(raw('lower("name")'), "like", `%${q.toLowerCase()}%`);
+      });
     }
 
     return query.page(page, limit);
