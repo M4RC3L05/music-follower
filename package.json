@@ -56,6 +56,7 @@
     "lint-staged": "lint-staged",
     "dev:rss": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
     "dev:admin": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/admin/main.js | ./node_modules/.bin/pino-pretty'",
+    "dev:sync-releases-task": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/sync-releases-task/main.js | ./node_modules/.bin/pino-pretty'",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
     "postinstall": "patch-package"
   },
