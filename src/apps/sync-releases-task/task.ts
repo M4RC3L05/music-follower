@@ -61,7 +61,16 @@ export const run = async () => {
         const { results: songs } = (await songsResponse.json()) as any;
 
         songs.splice(0, 1);
-        results = [...results, ...songs];
+        results = [
+          ...results,
+          // Ignore compilations
+          ...songs.filter(({ collectionArtistName }) =>
+            // eslint-disable-next-line no-negated-condition
+            !collectionArtistName
+              ? true
+              : !collectionArtistName?.toLowerCase().includes("Various Artists".toLowerCase()),
+          ),
+        ];
       }
 
       results = results.filter(({ releaseDate, wrapperType }, _, data) => {

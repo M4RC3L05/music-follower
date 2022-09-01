@@ -80,12 +80,7 @@ export class ReleaseRepository {
       // eslint-disable-next-line no-await-in-loop
       const album = await ReleaseModel.query().where({ id: collectionId }).first();
 
-      // If we do not have the album, do not include it.
-      if (!album) {
-        continue;
-      }
-
-      // If the album was already released we return
+      // If we have an album and the album was already released we return
       if (album && album.releasedAt.valueOf() < Date.now()) {
         continue;
       }
