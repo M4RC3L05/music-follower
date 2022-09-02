@@ -1,3 +1,11 @@
+### v4.1.0 (2022-09-02)
+
+- [Remove console log](https://github.com/M4RC3L05/music-follower/commit/3c9b43717b4decc0e1829f27047fa2c3505455d4)
+- [Improve release sync logic](https://github.com/M4RC3L05/music-follower/commit/0e46d09a0c11fd05f771b6309745e7838a51072c)
+- [Improve release sync logic](https://github.com/M4RC3L05/music-follower/commit/3a4988ec9478351bb27904614d6d03d16b853145)
+- [Add `dev:sync-releases-task` npm script](https://github.com/M4RC3L05/music-follower/commit/8ebb4f52bf0323d5d1da78ef3bcc299acc605f44)
+- [Ignore `local.json` config file](https://github.com/M4RC3L05/music-follower/commit/2094f700af94f6969325354a332f58db1c9d667a)
+
 ### v4.0.0 (2022-08-15)
 
 - [Update sync releases task to account for multiple users](https://github.com/M4RC3L05/music-follower/commit/2357e26cb05ce381dc0b427296826756ddc62943)
