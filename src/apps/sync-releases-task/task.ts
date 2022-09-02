@@ -75,7 +75,7 @@ export const run = async () => {
 
       results = results.filter(({ releaseDate, wrapperType }, _, data) => {
         if (typeof releaseDate === "string") {
-          return new Date(releaseDate).getUTCFullYear() === new Date().getUTCFullYear();
+          return new Date(releaseDate).getUTCFullYear() >= new Date().getUTCFullYear();
         }
 
         if (wrapperType === "track" && (releaseDate === undefined || releaseDate === undefined)) {
