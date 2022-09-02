@@ -59,8 +59,6 @@ export async function store(context: RouterContext) {
 export async function edit(context: RouterContext) {
   const { id } = context.request.query;
 
-  console.log("id", id);
-
   if (!id) {
     context.flash("error", "No user id provided to edit");
     context.redirect("back");
