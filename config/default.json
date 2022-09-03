@@ -15,6 +15,9 @@
         "sameSite": "strict",
         "renew": true
       }
+    },
+    "sync-releases-task": {
+      "cron": "0 */12 * * *"
     }
   },
   "database": {

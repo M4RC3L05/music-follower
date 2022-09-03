@@ -1,3 +1,4 @@
+import config from "config";
 import { CronJob } from "cron";
 import { Model } from "objection";
 
@@ -11,7 +12,7 @@ Model.knex(knex);
 
 logger.info("Registering `sync-release-task` cron job");
 
-const job = new CronJob("0 12 * * *", async () => {
+const job = new CronJob(config.get<string>("apps.sync-releases-task.cron"), async () => {
   try {
     await run();
 
