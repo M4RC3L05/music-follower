@@ -1,4 +1,10 @@
-### v4.1.0 (2022-09-02)
+### v4.2.0 (2022-09-03)
+
+- [Fix lint errors from packages upgrade](https://github.com/M4RC3L05/music-follower/commit/ab1e9d641dce6e4fbfcbb3109690b382fc253499)
+- [Upgrade dependencies](https://github.com/M4RC3L05/music-follower/commit/06ec57953baf26843eaa1995373e67861a171057)
+- [Make cron time configurable](https://github.com/M4RC3L05/music-follower/commit/ef97ca9e4bd6cc3ff3a03efdc3f96631bb9cf9d2)
+
+### v4.1.0 (2022-09-03)
 
 - [Remove console log](https://github.com/M4RC3L05/music-follower/commit/3c9b43717b4decc0e1829f27047fa2c3505455d4)
 - [Improve release sync logic](https://github.com/M4RC3L05/music-follower/commit/0e46d09a0c11fd05f771b6309745e7838a51072c)
