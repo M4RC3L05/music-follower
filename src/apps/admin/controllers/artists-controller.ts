@@ -1,9 +1,10 @@
-import { RouterContext } from "@koa/router";
+import type { RouterContext } from "@koa/router";
 import config from "config";
 
 import { makeLogger } from "#src/core/clients/logger.js";
 import { appleMusicMediaService } from "#src/core/services/apple-music-media-service.js";
-import { ItunesArtistSearchResult, itunesSearchService } from "#src/core/services/itunes-search-service.js";
+import type { ItunesArtistSearchResult } from "#src/core/services/itunes-search-service.js";
+import { itunesSearchService } from "#src/core/services/itunes-search-service.js";
 import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
 import { artistUserRepository } from "#src/entities/artist/repositories/artist-user-repository.js";
 import { userRepository } from "#src/entities/user/repositories/user-repository.js";

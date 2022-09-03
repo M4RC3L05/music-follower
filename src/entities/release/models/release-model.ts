@@ -1,4 +1,5 @@
-import Objection, { Model } from "objection";
+import type Objection from "objection";
+import { Model } from "objection";
 
 export class ReleaseModel extends Model {
   static tableName = "releases";

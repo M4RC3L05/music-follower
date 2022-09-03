@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/no-await-expression-member */
 
-import { RouterContext } from "@koa/router";
+import type { RouterContext } from "@koa/router";
 
 import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 

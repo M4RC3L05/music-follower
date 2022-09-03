@@ -1,5 +1,5 @@
-import { RouterContext } from "@koa/router";
-import { Next } from "koa";
+import type { RouterContext } from "@koa/router";
+import type { Next } from "koa";
 
 import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 

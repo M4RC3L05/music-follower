@@ -1,8 +1,9 @@
-import { ModelObject, raw } from "objection";
+import type { ModelObject } from "objection";
+import { raw } from "objection";
 
 import { ArtistModel } from "#src/entities/artist/models/artist-model.js";
 import { ArtistUserModel } from "#src/entities/artist/models/artist-user-model.js";
-import { UserModel } from "#src/entities/user/models/user-model.js";
+import type { UserModel } from "#src/entities/user/models/user-model.js";
 
 export class ArtistRepository {
   async getArtists() {

@@ -1,10 +1,11 @@
-import { Model, ModelObject, raw } from "objection";
+import type { ModelObject } from "objection";
+import { Model, raw } from "objection";
 
 import { makeLogger } from "#src/core/clients/logger.js";
 import { ArtistUserModel } from "#src/entities/artist/models/artist-user-model.js";
 import { ReleaseModel } from "#src/entities/release/models/release-model.js";
 import { ReleaseUserModel } from "#src/entities/release/models/release-user-mode.js";
-import { UserModel } from "#src/entities/user/models/user-model.js";
+import type { UserModel } from "#src/entities/user/models/user-model.js";
 
 const logger = makeLogger("release-repository");
 

@@ -1,4 +1,4 @@
-import { RouterContext } from "@koa/router";
+import type { RouterContext } from "@koa/router";
 
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 import { userRepository } from "#src/entities/user/repositories/user-repository.js";

@@ -1,4 +1,5 @@
-import { ModelObject, raw } from "objection";
+import type { ModelObject } from "objection";
+import { raw } from "objection";
 
 import { UserModel } from "#src/entities/user/models/user-model.js";
 

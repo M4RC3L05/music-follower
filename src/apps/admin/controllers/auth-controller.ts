@@ -1,4 +1,4 @@
-import { RouterContext } from "@koa/router";
+import type { RouterContext } from "@koa/router";
 import bcrypt from "bcrypt";
 
 import { makeLogger } from "#src/core/clients/logger.js";

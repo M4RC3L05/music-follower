@@ -1,4 +1,4 @@
-import { Context } from "koa";
+import type { Context } from "koa";
 import RSS from "rss";
 
 import { makeLogger } from "#src/core/clients/logger.js";
