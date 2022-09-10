@@ -17,7 +17,7 @@ export async function login(context: RouterContext) {
 export async function postLogin(context: RouterContext) {
   const { email, password } = context.request.body;
 
-  const user = await userRepository.getUserByEmail(email);
+  const user = await userRepository.getUserByEmail(email as string);
 
   if (!user) {
     logger.warn({ email }, "Could not find a user with credentials");
@@ -28,7 +28,9 @@ export async function postLogin(context: RouterContext) {
     return;
   }
 
-  if (!(await bcrypt.compare(password, user.password))) {
+  const isValid = await bcrypt.compare(password as string, user.password);
+
+  if (!isValid) {
     logger.warn({ email }, "Password is not valid");
 
     context.flash("error", "Could not login, input correct credentials");

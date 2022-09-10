@@ -22,8 +22,9 @@ export async function index(context: RouterContext) {
 export async function edit(context: RouterContext) {
   const { username, email, currentPassword, newPassword } = context.request.body;
   const user = await userRepository.getUserByEmail(context.session.user.email);
+  const isValid = await bcrypt.compare(currentPassword as string, user.password);
 
-  if (!(await bcrypt.compare(currentPassword, user.password))) {
+  if (!isValid) {
     logger.error("Password mismatch");
     context.flash("error", "Password mismatch");
     context.redirect("back");
@@ -40,7 +41,7 @@ export async function edit(context: RouterContext) {
   }
 
   if (email !== user.email) {
-    const exists = (await userRepository.getUserByEmail(email)) instanceof UserModel;
+    const exists = (await userRepository.getUserByEmail(email as string)) instanceof UserModel;
 
     if (exists) {
       logger.info({ prev: user.email, new: email }, "Email in use");
@@ -57,7 +58,7 @@ export async function edit(context: RouterContext) {
   if (newPassword) {
     logger.info("Updating password");
 
-    (toUpdate as any).password = await bcrypt.hash(newPassword, 12);
+    (toUpdate as any).password = await bcrypt.hash(newPassword as string, 12);
   }
 
   await userRepository.updateUser(user.id, toUpdate as any);

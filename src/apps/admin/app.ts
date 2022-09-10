@@ -1,3 +1,6 @@
+import path from "node:path";
+import url from "node:url";
+
 import config from "config";
 import Koa from "koa";
 import flash from "koa-better-flash";
@@ -7,8 +10,6 @@ import render from "koa-ejs";
 import qs from "koa-qs";
 import session from "koa-session";
 import koaStatic from "koa-static";
-import path from "node:path";
-import url from "node:url";
 
 import router from "#src/apps/admin/router.js";
 

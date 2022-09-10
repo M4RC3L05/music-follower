@@ -73,13 +73,17 @@ export async function subscribe(context: RouterContext) {
 
     const authUser = await userRepository.getUserByEmail(context.session.user.email);
 
-    if (!(await artistRepository.getArtist(artistId))) {
+    if (!(await artistRepository.getArtist(Number(artistId as string)))) {
       logger.info("Artist not in database, creating");
 
-      await artistRepository.addArtist({ id: artistId, name: artistName, imageUrl: artistImage });
+      await artistRepository.addArtist({
+        id: Number(artistId as string),
+        name: artistName as string,
+        imageUrl: artistImage as string,
+      });
     }
 
-    await artistUserRepository.subscribe(artistId, authUser.id);
+    await artistUserRepository.subscribe(Number(artistId as string), authUser.id);
 
     context.flash("success", `Successfully subscribed to "${artistName as string}"`);
   } catch (error: unknown) {
@@ -96,7 +100,7 @@ export async function unsubscribe(context: RouterContext) {
 
   try {
     const authUser = await userRepository.getUserByEmail(context.session.user.email);
-    await artistUserRepository.unsubscribe(id, authUser.id);
+    await artistUserRepository.unsubscribe(Number(id as string), authUser.id);
 
     context.flash("success", `Successfully unsubscribed`);
   } catch (error: unknown) {

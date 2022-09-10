@@ -38,16 +38,22 @@ export async function create(context: RouterContext) {
 }
 
 export async function store(context: RouterContext) {
-  const { username, email, password, role } = context.request.body;
+  const { username, email, password, role } = context.request.body as {
+    username: string;
+    email: string;
+    password: string;
+    role: any;
+  };
 
   try {
     if (!["admin", "user"].includes(role)) {
-      throw new Error(`Invalid role ${role as string}`);
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Invalid role ${role}`);
     }
 
     await userRepository.createUser({ username, email, password: await bcrypt.hash(password, 12), role });
 
-    context.flash("success", `Successfully created ${username as string}`);
+    context.flash("success", `Successfully created ${username}`);
   } catch (error: unknown) {
     logger.error(error, "Could not create user");
     context.flash("error", "Could not create user, check you inputs and try again.");
@@ -98,7 +104,7 @@ export async function destroy(context: RouterContext) {
     return;
   }
 
-  await userRepository.deleteUser(id);
+  await userRepository.deleteUser(Number(id));
 
   context.flash("success", "Successfully delete user");
   context.redirect("back");
@@ -115,7 +121,7 @@ export async function update(context: RouterContext) {
     return;
   }
 
-  const user = await userRepository.getUser(id);
+  const user = await userRepository.getUser(Number(id));
 
   const toUpdate: any = {};
 
@@ -128,7 +134,7 @@ export async function update(context: RouterContext) {
   }
 
   try {
-    await userRepository.updateUser(id, toUpdate);
+    await userRepository.updateUser(Number(id), toUpdate);
 
     context.flash("success", "Successfully edited user");
     context.redirect("/admin/users");

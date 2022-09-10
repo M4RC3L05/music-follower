@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
 
-import config from "config";
 import { setTimeout } from "node:timers/promises";
+
+import config from "config";
 import fetch from "node-fetch";
 
 import { makeLogger } from "#src/core/clients/logger.js";
