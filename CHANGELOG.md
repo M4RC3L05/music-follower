@@ -1,3 +1,8 @@
+### v4.3.0 (2022-09-10)
+
+- [Fix lint errors from packages upgrade](https://github.com/M4RC3L05/music-follower/commit/a2e681921568d38c5f47b468b24e6f48bdf3dec0)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/ccc8974841602db4de8ba53f5c7277cabb227e5d)
+
 ### v4.2.0 (2022-09-03)
 
 - [Fix lint errors from packages upgrade](https://github.com/M4RC3L05/music-follower/commit/ab1e9d641dce6e4fbfcbb3109690b382fc253499)
