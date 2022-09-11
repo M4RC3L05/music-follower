@@ -13,8 +13,7 @@ export class ArtistUserRepository {
   async unsubscribe(artistId: number, userId: number) {
     logger.info({ artistId, userId }, "Unsubscribing to artist");
 
-    const query = ArtistUserModel.query().where({ artistId, userId }).delete();
-    await query;
+    await ArtistUserModel.query().where({ artistId, userId }).delete();
   }
 
   async isSubscribed(artistId: number, userId: number) {
