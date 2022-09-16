@@ -1,5 +1,5 @@
+import { Feed } from "feed";
 import type { Context } from "koa";
-import RSS from "rss";
 
 import { makeLogger } from "#src/core/clients/logger.js";
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
@@ -8,34 +8,44 @@ import { userRepository } from "#src/entities/user/repositories/user-repository.
 const logger = makeLogger("rss-middleware");
 
 export async function rssMiddleware(context: Context) {
-  if (!context.request.query?.email) {
-    logger.error({ email: context.request.query?.email }, "No email provided");
+  const { email, format } = context.request.query;
 
-    context.throw(400, "No user email provided");
+  if (!email || typeof email !== "string") {
+    logger.error({ email }, "Invalid email provided");
+
+    context.throw(400, "Invalid email provided");
   }
 
-  const user = await userRepository.getUserByEmail(context.request.query.email as string);
+  if (!format || typeof format !== "string" || !["rss", "atom", "json"].includes(format)) {
+    logger.error({ format }, "Invalid feed format provided");
+
+    context.throw(400, "Invalid feed format provided");
+  }
+
+  const user = await userRepository.getUserByEmail(email);
 
   if (!user) {
-    logger.error({ email: context.request.query?.email }, "No user found");
+    logger.error({ email }, "No user found");
 
     context.throw(404, "Could not find feed");
   }
 
-  logger.info({ email: context.request.query?.email }, "Getting latest releases");
+  logger.info({ email }, "Getting latest releases");
 
   const releases = await releaseRepository.getCurrent50LatestReleases(user.id);
 
-  const feed = new RSS({
+  const feed = new Feed({
     title: "Music releases",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    feed_url: "",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    site_url: "",
+    description: "Get the latest music releases from artist you follow",
+    id: user.email,
+    language: "en",
+    copyright: "Music Follower",
+    updated: new Date(),
+    generator: "Music follower",
   });
 
   for (const release of releases) {
-    feed.item({
+    feed.addItem({
       date: new Date(release.releasedAt),
       description: `
       <img src="${release.coverUrl}" />
@@ -43,10 +53,35 @@ export async function rssMiddleware(context: Context) {
       <p>${new Date(release.releasedAt).getFullYear()}</p>
       `.trim(),
       title: `${release.name} by ${release.artistName}`,
-      guid: `${release.id}`,
-      url: release.coverUrl,
+      id: String(release.id),
+      link: release.coverUrl,
+      image: release.coverUrl,
     });
   }
 
-  context.body = feed.xml();
+  switch (format) {
+    case "rss": {
+      context.type = "text/xml";
+      context.body = feed.rss2();
+      return;
+    }
+
+    case "atom": {
+      context.type = "text/xml";
+      context.body = feed.atom1();
+      return;
+    }
+
+    case "json": {
+      context.type = "application/json";
+      context.body = feed.json1();
+      return;
+    }
+
+    default: {
+      logger.warn({ format, email }, "Someow an invalid feed format");
+
+      context.throw(500, "Invalid feed format");
+    }
+  }
 }
