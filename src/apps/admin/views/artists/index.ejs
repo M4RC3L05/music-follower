@@ -7,7 +7,7 @@
     <div class="col-xl-4">
       <form method="get" action="/admin/artists">
         <div class="mb-3">
-          <input type="search" class="form-control" name="remoteArtistQ" placeholder="Search artists to follow..." value="<%= remoteArtistQuery %>" <%- userRole === "admin" ? "disabled" : "" %> >
+          <input type="search" class="form-control" name="remoteArtistQ" placeholder="Search artists to follow..." value="<%= remoteArtistQuery %>">
         </div>
       </form>
       <% if (remoteArtists.length > 0) { %>
@@ -49,13 +49,12 @@
         <% artists.forEach((artist) => { %>
           <div class="col">
             <div class="card text-bg-dark" style="z-index: 1;">
-              <% if (userRole !== "admin") { %>
-                <form action="/admin/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
-                  <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-                  <input type="hidden" name="id" value="<%= artist.id %>">
-                  <button type="submit" class="btn btn-danger">&times;</button>
-                </form>
-              <% } %>
+              <form action="/admin/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
+                <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                <input type="hidden" name="id" value="<%= artist.id %>">
+                <button type="submit" class="btn btn-danger">&times;</button>
+              </form>
+
               <img src="<%= artist.imageUrl %>" class="card-img" style="aspect-ratio: 1 / 1;">
               <div class="card-img-overlay" style="display: flex; justify-content: end; flex-direction: column; background: linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)">
                 <h5 class="card-title"><strong><%= artist.name %></strong></h5>
@@ -71,7 +70,7 @@
             <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=0<%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Start</a></li>
             <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Previous</a></li>
             <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Next</a></li>
-            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= Math.floor(total / limit) %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">End</a></li>
+            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">End</a></li>
           </ul>
         </nav>
       </div>

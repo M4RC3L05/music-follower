@@ -4,18 +4,11 @@ import type { Context } from "koa";
 import { makeLogger } from "#src/core/clients/logger.js";
 import type { CollectionMetadata, TrackMetadata } from "#src/entities/release/models/release-model.js";
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
-import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 
 const logger = makeLogger("rss-middleware");
 
 export async function rssMiddleware(context: Context) {
-  const { email, format } = context.request.query;
-
-  if (!email || typeof email !== "string") {
-    logger.error({ email }, "Invalid email provided");
-
-    context.throw(400, "Invalid email provided");
-  }
+  const { format } = context.request.query;
 
   if (!format || typeof format !== "string" || !["rss", "atom", "json"].includes(format)) {
     logger.error({ format }, "Invalid feed format provided");
@@ -23,26 +16,18 @@ export async function rssMiddleware(context: Context) {
     context.throw(400, "Invalid feed format provided");
   }
 
-  const user = await userRepository.getUserByEmail(email);
+  logger.info("Getting latest releases");
 
-  if (!user) {
-    logger.error({ email }, "No user found");
-
-    context.throw(404, "Could not find feed");
-  }
-
-  logger.info({ email }, "Getting latest releases");
-
-  const releases = await releaseRepository.getCurrent50LatestReleases(user.id);
+  const releases = await releaseRepository.getCurrent50LatestReleases();
 
   const feed = new Feed({
     title: "Music releases",
     description: "Get the latest music releases from artist you follow",
-    id: user.email,
+    id: "music_follower",
     language: "en",
     copyright: "Music Follower",
     updated: new Date(),
-    generator: "Music follower",
+    generator: "Music Follower",
   });
 
   for (const release of releases) {
@@ -87,9 +72,9 @@ export async function rssMiddleware(context: Context) {
     }
 
     default: {
-      logger.warn({ format, email }, "Someow an invalid feed format");
+      logger.warn({ format }, "Somehow an invalid feed format");
 
-      context.throw(500, "Invalid feed format");
+      context.throw(400, "Invalid feed format provided");
     }
   }
 }

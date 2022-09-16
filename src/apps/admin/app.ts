@@ -3,6 +3,7 @@ import url from "node:url";
 
 import config from "config";
 import Koa from "koa";
+import basicAuth from "koa-basic-auth";
 import flash from "koa-better-flash";
 import bodyParser from "koa-bodyparser";
 import Csrf from "koa-csrf";
@@ -31,6 +32,7 @@ export const app = () => {
   koa.use(bodyParser());
   koa.use(new Csrf());
   koa.use(koaStatic(path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../../../public")));
+  koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
   koa.use(router.middleware());
   koa.use(router.allowedMethods());
 

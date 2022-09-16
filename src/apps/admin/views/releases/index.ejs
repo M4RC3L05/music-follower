@@ -38,7 +38,7 @@
           <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=0<%= query ? `&q=${query}` : "" %>">Start</a></li>
           <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %>">Previous</a></li>
           <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %>">Next</a></li>
-          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= Math.floor(total / limit) %><%= query ? `&q=${query}` : "" %>">End</a></li>
+          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %>">End</a></li>
         </ul>
       </nav>
     </div>

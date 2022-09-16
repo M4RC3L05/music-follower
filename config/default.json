@@ -9,11 +9,15 @@
       "keys": ["foo", "bar"],
       "port": 4322,
       "session": {
-        "maxAge": 300000,
+        "maxAge": "session",
         "httpOnly": true,
         "secure": false,
         "sameSite": "strict",
         "renew": true
+      },
+      "basicAuth": {
+        "name": "foo",
+        "pass": "bar"
       }
     },
     "sync-releases-task": {

@@ -1,31 +1,14 @@
 import type { ModelObject } from "objection";
-import { Model, raw } from "objection";
+import { raw } from "objection";
 
 import { makeLogger } from "#src/core/clients/logger.js";
-import { ArtistUserModel } from "#src/entities/artist/models/artist-user-model.js";
 import { ReleaseModel } from "#src/entities/release/models/release-model.js";
-import { ReleaseUserModel } from "#src/entities/release/models/release-user-mode.js";
-import type { UserModel } from "#src/entities/user/models/user-model.js";
 
 const logger = makeLogger("release-repository");
 
 export class ReleaseRepository {
-  async search({
-    user,
-    limit = 10,
-    page = 0,
-    q,
-  }: {
-    user: ModelObject<UserModel>;
-    page: number;
-    limit: number;
-    q?: string;
-  }) {
+  async search({ limit = 10, page = 0, q }: { page: number; limit: number; q?: string }) {
     const query = ReleaseModel.query().orderBy("releasedAt", "desc");
-
-    if (user.role !== "admin") {
-      void query.whereIn("id", ReleaseUserModel.query().select("releaseId").where({ userId: user.id }));
-    }
 
     if (q) {
       void query.where((qb) => {
@@ -38,9 +21,8 @@ export class ReleaseRepository {
     return query.page(page, limit);
   }
 
-  async getCurrent50LatestReleases(userId: number) {
+  async getCurrent50LatestReleases() {
     return ReleaseModel.query()
-      .whereIn("id", ReleaseUserModel.query().select("releaseId").where({ userId }))
       .where(raw("DATE(\"releasedAt\", 'utc')"), "<=", raw("DATE('now', 'utc')"))
       .orderBy("releasedAt", "desc")
       .limit(50);
@@ -56,21 +38,10 @@ export class ReleaseRepository {
   ) {
     logger.info({ artistId }, "Upserting releases for artist");
 
-    const usersSubscribedToArtist = await ArtistUserModel.query().where({ artistId });
-
-    logger.info({ count: usersSubscribedToArtist.length, artistId }, "Users subscribed");
-
     for (const { collectionId, isStreamable, ...release } of releases) {
       if (release.type === "collection") {
         // eslint-disable-next-line no-await-in-loop
-        await Model.transaction(async (trx) => {
-          await ReleaseModel.query(trx).upsertGraph(release, { insertMissing: true });
-
-          await ReleaseUserModel.query(trx).upsertGraph(
-            usersSubscribedToArtist.map(({ userId }) => ({ userId, releaseId: release.id, releaseType: release.type })),
-            { insertMissing: true },
-          );
-        });
+        await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
 
         continue;
       }
@@ -96,14 +67,7 @@ export class ReleaseRepository {
       }
 
       // eslint-disable-next-line no-await-in-loop
-      await Model.transaction(async (trx) => {
-        await ReleaseModel.query(trx).upsertGraph(release, { insertMissing: true });
-
-        await ReleaseUserModel.query(trx).upsertGraph(
-          usersSubscribedToArtist.map(({ userId }) => ({ userId, releaseId: release.id, releaseType: release.type })),
-          { insertMissing: true },
-        );
-      });
+      await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
     }
   }
 }
