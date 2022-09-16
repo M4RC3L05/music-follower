@@ -1,3 +1,11 @@
+### v5.0.0 (2022-09-16)
+
+- [Remove user account and add basic auth](https://github.com/M4RC3L05/music-follower/commit/7c480f39c05d4a8e4b632e70755599b06829191d)
+- [Add metadata column to releases](https://github.com/M4RC3L05/music-follower/commit/8bc91a11139eed9241d0f3a1488a1a9037823d40)
+- [Fix knex config file](https://github.com/M4RC3L05/music-follower/commit/4548126a19dcac28e5f56ab078b8c87cc089157b)
+- [Add suport for rss atom and json feed](https://github.com/M4RC3L05/music-follower/commit/1b20eb85717009baec60efbe564b27410f03e5be)
+- [Remove useless variable declaration](https://github.com/M4RC3L05/music-follower/commit/5d8a9c7706ad2cf75b5dde66fba046dd9cf14358)
+
 ### v4.3.0 (2022-09-10)
 
 - [Fix lint errors from packages upgrade](https://github.com/M4RC3L05/music-follower/commit/a2e681921568d38c5f47b468b24e6f48bdf3dec0)
