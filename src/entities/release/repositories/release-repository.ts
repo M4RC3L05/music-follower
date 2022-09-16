@@ -46,6 +46,10 @@ export class ReleaseRepository {
       .limit(50);
   }
 
+  async updateRelease(data: Partial<ModelObject<ReleaseModel>>, id: number) {
+    return ReleaseModel.query().updateAndFetchById(id, data);
+  }
+
   async upsertReleases(
     artistId: number,
     releases: Array<ModelObject<ReleaseModel & { collectionId?: number; isStreamable?: boolean }>>,

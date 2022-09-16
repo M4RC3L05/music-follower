@@ -101,31 +101,20 @@ export const run = async () => {
       continue;
     }
 
-    const releases = results.map(
-      ({
-        trackName,
-        wrapperType,
-        isStreamable,
-        artistName,
-        trackId,
-        artworkUrl100,
-        collectionId,
-        collectionName,
-        releaseDate,
-      }) => ({
-        id: wrapperType === "collection" ? collectionId : trackId,
-        collectionId,
-        isStreamable,
-        name: wrapperType === "collection" ? collectionName : trackName,
-        type: wrapperType,
-        artistName,
-        releasedAt: releaseDate ? new Date(releaseDate) : undefined,
-        coverUrl: artworkUrl100
-          .split("/")
-          .map((segment, index, array) => (index === array.length - 1 ? "640x640bb.jpg" : segment))
-          .join("/"),
-      }),
-    );
+    const releases = results.map((data) => ({
+      id: data.wrapperType === "collection" ? data.collectionId : data.trackId,
+      collectionId: data.collectionId,
+      isStreamable: data.isStreamable,
+      name: data.wrapperType === "collection" ? data.collectionName : data.trackName,
+      type: data.wrapperType,
+      artistName: data.artistName,
+      releasedAt: data.releaseDate ? new Date(data.releaseDate) : undefined,
+      coverUrl: data.artworkUrl100
+        .split("/")
+        .map((segment, index, array) => (index === array.length - 1 ? "640x640bb.jpg" : segment))
+        .join("/"),
+      metadata: { ...data },
+    }));
 
     if (releases.length <= 0) {
       logger.info("Waiting 5 seconds before processing next artist");
@@ -139,14 +128,8 @@ export const run = async () => {
     try {
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      await releaseRepository.upsertReleases(
-        artist.id,
-        releases.filter(({ type }) => type === "collection"),
-      );
-      await releaseRepository.upsertReleases(
-        artist.id,
-        releases.filter(({ type }) => type === "track"),
-      );
+      await releaseRepository.upsertReleases(artist.id, releases.filter(({ type }) => type === "collection") as any);
+      await releaseRepository.upsertReleases(artist.id, releases.filter(({ type }) => type === "track") as any);
     } catch (error: unknown) {
       logger.error(error, "Something wrong ocurred while upserting releases");
     }

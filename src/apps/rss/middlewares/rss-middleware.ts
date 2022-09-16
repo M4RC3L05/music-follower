@@ -2,6 +2,7 @@ import { Feed } from "feed";
 import type { Context } from "koa";
 
 import { makeLogger } from "#src/core/clients/logger.js";
+import type { CollectionMetadata, TrackMetadata } from "#src/entities/release/models/release-model.js";
 import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
 import { userRepository } from "#src/entities/user/repositories/user-repository.js";
 
@@ -54,20 +55,27 @@ export async function rssMiddleware(context: Context) {
       `.trim(),
       title: `${release.name} by ${release.artistName}`,
       id: String(release.id),
-      link: release.coverUrl,
+      link:
+        release.type === "collection"
+          ? (release.metadata as CollectionMetadata).collectionViewUrl ?? release.coverUrl
+          : release.type === "track"
+          ? (release.metadata as TrackMetadata).trackViewUrl ??
+            (release.metadata as TrackMetadata).collectionViewUrl ??
+            release.coverUrl
+          : release.coverUrl,
       image: release.coverUrl,
     });
   }
 
   switch (format) {
     case "rss": {
-      context.type = "text/xml";
+      context.type = "application/xml";
       context.body = feed.rss2();
       return;
     }
 
     case "atom": {
-      context.type = "text/xml";
+      context.type = "application/atom+xml";
       context.body = feed.atom1();
       return;
     }
