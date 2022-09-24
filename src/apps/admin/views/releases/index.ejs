@@ -4,7 +4,7 @@
   </div>
 
   <div class="row">
-    <form method="get" action="/admin/releases?<%= query ? `q=${query}` : "" %>">
+    <form method="get" action="/releases?<%= query ? `q=${query}` : "" %>">
       <div class="mb-3">
         <input type="search" placeholder="Search releases..." name="q" class="form-control" value="<%= query %>">
       </div>
@@ -35,10 +35,10 @@
     <div class="col">
       <nav>
         <ul class="pagination justify-content-center">
-          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=0<%= query ? `&q=${query}` : "" %>">Start</a></li>
-          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %>">Previous</a></li>
-          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %>">Next</a></li>
-          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/admin/releases?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %>">End</a></li>
+          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/releases?page=0<%= query ? `&q=${query}` : "" %>">Start</a></li>
+          <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/releases?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %>">Previous</a></li>
+          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/releases?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %>">Next</a></li>
+          <li class="page-item <%= (page + 1) * limit >= total - 1 ? "disabled" : "" %>"><a class="page-link" href="/releases?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %>">End</a></li>
         </ul>
       </nav>
     </div>

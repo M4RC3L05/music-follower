@@ -6,10 +6,10 @@ import * as releasesController from "#src/apps/admin/controllers/releases-contro
 
 const router = new Router();
 
-router.get("/admin", pagesController.index);
-router.get("/admin/releases", releasesController.index);
-router.get("/admin/artists", artistsController.index);
-router.post("/admin/artists/subscribe", artistsController.subscribe);
-router.post("/admin/artists/unsubscribe", artistsController.unsubscribe);
+router.get("/", pagesController.index);
+router.get("/releases", releasesController.index);
+router.get("/artists", artistsController.index);
+router.post("/artists/subscribe", artistsController.subscribe);
+router.post("/artists/unsubscribe", artistsController.unsubscribe);
 
 export default router;

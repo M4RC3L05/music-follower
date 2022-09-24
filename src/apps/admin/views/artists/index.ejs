@@ -5,7 +5,7 @@
 
   <div class="row">
     <div class="col-xl-4">
-      <form method="get" action="/admin/artists">
+      <form method="get" action="/artists">
         <div class="mb-3">
           <input type="search" class="form-control" name="remoteArtistQ" placeholder="Search artists to follow..." value="<%= remoteArtistQuery %>">
         </div>
@@ -24,7 +24,7 @@
                   <h5 class="card-title"><%= remoteArtists.artistName %></h5>
                 </div>
                 <div class="card-footer text-muted">
-                  <form action="/admin/artists/subscribe" method="post">
+                  <form action="/artists/subscribe" method="post">
                     <input type="hidden" name="_csrf" value="<%= _csrf %>" />
                     <input type="hidden" name="artistName" value="<%= remoteArtists.artistName %>">
                     <input type="hidden" name="artistId" value="<%= remoteArtists.artistId %>">
@@ -39,7 +39,7 @@
       <% } %>
     </div>
     <div class="col-xl-8">
-      <form method="get" action="/admin/artists?<%= query ? `q=${query}` : "" %>">
+      <form method="get" action="/artists?<%= query ? `q=${query}` : "" %>">
         <div class="mb-3">
           <input type="search" placeholder="Search Artists..." name="q" class="form-control" value="<%= query %>">
         </div>
@@ -49,7 +49,7 @@
         <% artists.forEach((artist) => { %>
           <div class="col">
             <div class="card text-bg-dark" style="z-index: 1;">
-              <form action="/admin/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
+              <form action="/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
                 <input type="hidden" name="_csrf" value="<%= _csrf %>" />
                 <input type="hidden" name="id" value="<%= artist.id %>">
                 <button type="submit" class="btn btn-danger">&times;</button>
@@ -67,10 +67,10 @@
       <div class="col-12">
         <nav>
           <ul class="pagination justify-content-center">
-            <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=0<%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Start</a></li>
-            <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Previous</a></li>
-            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Next</a></li>
-            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/admin/artists?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">End</a></li>
+            <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/artists?page=0<%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Start</a></li>
+            <li class="page-item <%= page <= 0 ? "disabled" : "" %>"><a class="page-link" href="/artists?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Previous</a></li>
+            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/artists?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Next</a></li>
+            <li class="page-item <%= (page + 1) * limit >= total ? "disabled" : "" %>"><a class="page-link" href="/artists?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">End</a></li>
           </ul>
         </nav>
       </div>
