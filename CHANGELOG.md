@@ -1,3 +1,11 @@
+### v5.1.0 (2022-09-24)
+
+- [Make knex use typescript](https://github.com/M4RC3L05/music-follower/commit/3007148e0e9c0269ec5052cfeaed27a554c19117)
+- [Remove unused swcrc](https://github.com/M4RC3L05/music-follower/commit/b271eb56b007768a4f0dcc052001ca03243e0f24)
+- [Use ts-node with swc to run directy without transpile](https://github.com/M4RC3L05/music-follower/commit/8eb2568ed0c0c21db8e7a894bdbdfcb998492701)
+- [Ignore husky if it is not installed](https://github.com/M4RC3L05/music-follower/commit/93e5661eced6c1789a58c76a66f1f76b2abfa7ae)
+- [Make admin app to ser from \/ instead of \/admin](https://github.com/M4RC3L05/music-follower/commit/bd193b9253a1c263cdb6c79974897a71ed06b5a7)
+
 ### v5.0.0 (2022-09-16)
 
 - [Remove user account and add basic auth](https://github.com/M4RC3L05/music-follower/commit/7c480f39c05d4a8e4b632e70755599b06829191d)
