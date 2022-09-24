@@ -49,9 +49,7 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "transpile": "swc src -D -d dist",
-    "prepare": "husky install",
-    "clean": "rm -rf ./dist",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "lint": "eslint src --ext .ts",
     "lint-staged": "lint-staged",
     "dev:rss": "npm run clean && npm run transpile && nodemon --watch 'src/**/*' -e ts --exec 'npm run clean && npm run transpile && node dist/apps/rss/main.js | ./node_modules/.bin/pino-pretty'",
