@@ -1,5 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/swcrc",
+  "module": {
+    "type": "es6",
+    "strict": true,
+    "noInterop": false,
+    "strictMode": true
+    
+  },
   "jsc": {
     "parser": {
       "syntax": "typescript",
@@ -7,6 +14,7 @@
       "decorators": false
     },
     "target": "es2022",
+    "preserveAllComments": false,
     "loose": false,
     "externalHelpers": false
   },
