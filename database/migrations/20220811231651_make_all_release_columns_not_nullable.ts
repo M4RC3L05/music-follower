@@ -1,10 +1,8 @@
 /* eslint-disable unicorn/filename-case */
 
-/**
- * @param { import("knex").Knex } knex
- */
+import type { Knex } from "knex";
 
-export async function up(knex) {
+export async function up(knex: Knex) {
   await knex.schema.alterTable("releases", (table) => {
     table.bigInteger("id").primary().notNullable().alter();
     table.text("artistName").notNullable().alter();
@@ -18,10 +16,6 @@ export async function up(knex) {
   });
 }
 
-/**
- * @param { import("knex").Knex } knex
- */
-
-export async function down(_knex) {
+export async function down(_knex: Knex) {
   throw new Error("Rollback not supported");
 }

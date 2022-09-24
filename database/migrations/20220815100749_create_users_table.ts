@@ -1,14 +1,11 @@
 /* eslint-disable unicorn/filename-case */
 
 import bcrypt from "bcrypt";
+import type { Knex } from "knex";
 
-/**
- * @param { import("knex").Knex } knex
- */
-
-export async function up(knex) {
+export async function up(knex: Knex) {
   await knex.schema.createTable("users", (table) => {
-    table.increments("id", true);
+    table.increments("id", { primaryKey: true });
     table.text("username").notNullable();
     table.text("email").notNullable().unique();
     table.text("password").notNullable();
@@ -27,10 +24,6 @@ export async function up(knex) {
     .into("users");
 }
 
-/**
- * @param { import("knex").Knex } knex
- */
-
-export async function down(_knex) {
+export async function down(_knex: Knex) {
   throw new Error("Rollback not supported");
 }
