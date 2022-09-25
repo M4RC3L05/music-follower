@@ -1,8 +1,8 @@
 import Router from "@koa/router";
 
-import * as artistsController from "#src/apps/admin/controllers/artists-controller.js";
-import * as pagesController from "#src/apps/admin/controllers/pages-controller.js";
-import * as releasesController from "#src/apps/admin/controllers/releases-controller.js";
+import * as artistsController from "#src/apps/admin/controllers/artists-controller.ts";
+import * as pagesController from "#src/apps/admin/controllers/pages-controller.ts";
+import * as releasesController from "#src/apps/admin/controllers/releases-controller.ts";
 
 const router = new Router();
 

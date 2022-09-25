@@ -1,8 +1,8 @@
 import type { ModelObject } from "objection";
 import { raw } from "objection";
 
-import { makeLogger } from "#src/core/clients/logger.js";
-import { ReleaseModel } from "#src/entities/release/models/release-model.js";
+import { makeLogger } from "#src/core/clients/logger.ts";
+import { ReleaseModel } from "#src/entities/release/models/release-model.ts";
 
 const logger = makeLogger("release-repository");
 

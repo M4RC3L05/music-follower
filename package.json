@@ -2,7 +2,7 @@
   "name": "music-follower",
   "version": "5.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "keywords": [],
   "author": "",
@@ -50,7 +50,7 @@
   "scripts": {
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "knex": "ts-node ./node_modules/.bin/knex",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint . --ext .ts",
     "lint-staged": "lint-staged",
     "dev:rss": "nodemon src/apps/rss/main.ts | ./node_modules/.bin/pino-pretty",
     "dev:admin": "nodemon src/apps/admin/main.ts | ./node_modules/.bin/pino-pretty",

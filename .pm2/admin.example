@@ -1,7 +1,7 @@
 {
   "name": "@music-follower/admin",
   "cwd": "<project/root/path>",
-  "script": "dist/apps/admin/main.js",
+  "script": "dist/apps/admin/main.ts",
   "interpreter": "<interpreter>",
   "exec_mode": "fork",
   "watch": false,

@@ -2,7 +2,7 @@ import config from "config";
 import LRU from "lru-cache";
 import fetch from "node-fetch";
 
-import { makeLogger } from "#src/core/clients/logger.js";
+import { makeLogger } from "#src/core/clients/logger.ts";
 
 export type ItunesArtistSearchResult = {
   wrapperType: string;

@@ -1,9 +1,9 @@
 import { Feed } from "feed";
 import type { Context } from "koa";
 
-import { makeLogger } from "#src/core/clients/logger.js";
-import type { CollectionMetadata, TrackMetadata } from "#src/entities/release/models/release-model.js";
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
+import { makeLogger } from "#src/core/clients/logger.ts";
+import type { CollectionMetadata, TrackMetadata } from "#src/entities/release/models/release-model.ts";
+import { releaseRepository } from "#src/entities/release/repositories/release-repository.ts";
 
 const logger = makeLogger("rss-middleware");
 

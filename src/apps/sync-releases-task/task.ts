@@ -5,9 +5,9 @@ import { setTimeout } from "node:timers/promises";
 import config from "config";
 import fetch from "node-fetch";
 
-import { makeLogger } from "#src/core/clients/logger.js";
-import { artistRepository } from "#src/entities/artist/repositories/artist-repository.js";
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
+import { makeLogger } from "#src/core/clients/logger.ts";
+import { artistRepository } from "#src/entities/artist/repositories/artist-repository.ts";
+import { releaseRepository } from "#src/entities/release/repositories/release-repository.ts";
 
 const logger = makeLogger("sync-releases-command");
 

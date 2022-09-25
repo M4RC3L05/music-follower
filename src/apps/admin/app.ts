@@ -12,7 +12,7 @@ import qs from "koa-qs";
 import session from "koa-session";
 import koaStatic from "koa-static";
 
-import router from "#src/apps/admin/router.js";
+import router from "#src/apps/admin/router.ts";
 
 export const app = () => {
   const koa = new Koa();

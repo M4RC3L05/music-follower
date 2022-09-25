@@ -1,7 +1,7 @@
 {
   "name": "@music-follower/rss",
   "cwd": "<project/root/path>",
-  "script": "dist/apps/rss/main.js",
+  "script": "dist/apps/rss/main.ts",
   "interpreter": "<interpreter>",
   "exec_mode": "fork",
   "watch": false,

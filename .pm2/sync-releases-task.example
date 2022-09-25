@@ -1,7 +1,7 @@
 {
   "name": "@music-follower/sync-release-task",
   "cwd": "<project/root/path>",
-  "script": "dist/apps/sync-releases-task/main.js",
+  "script": "dist/apps/sync-releases-task/main.ts",
   "interpreter": "<interpreter>",
   "exec_mode": "fork",
   "watch": false,

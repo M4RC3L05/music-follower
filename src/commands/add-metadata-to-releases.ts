@@ -4,10 +4,10 @@ import { setTimeout } from "node:timers/promises";
 import fetch from "node-fetch";
 import { Model } from "objection";
 
-import { knex } from "#src/core/clients/knex.js";
-import { makeLogger } from "#src/core/clients/logger.js";
-import { ReleaseModel } from "#src/entities/release/models/release-model.js";
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.js";
+import { knex } from "#src/core/clients/knex.ts";
+import { makeLogger } from "#src/core/clients/logger.ts";
+import { ReleaseModel } from "#src/entities/release/models/release-model.ts";
+import { releaseRepository } from "#src/entities/release/repositories/release-repository.ts";
 
 Model.knex(knex);
 
