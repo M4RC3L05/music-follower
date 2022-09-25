@@ -1,4 +1,8 @@
-### v5.1.0 (2022-09-24)
+### v5.1.1 (2022-09-25)
+
+- [Use .ts on imports](https://github.com/M4RC3L05/music-follower/commit/78ab8e4e5a0ddfc305c83525ad66c3c93536b158)
+
+### v5.1.0 (2022-09-25)
 
 - [Make knex use typescript](https://github.com/M4RC3L05/music-follower/commit/3007148e0e9c0269ec5052cfeaed27a554c19117)
 - [Remove unused swcrc](https://github.com/M4RC3L05/music-follower/commit/b271eb56b007768a4f0dcc052001ca03243e0f24)
