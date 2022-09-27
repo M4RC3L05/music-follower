@@ -71,11 +71,11 @@
     "@types/koa-qs": "^2.0.0",
     "@types/koa-session": "^5.10.6",
     "@types/koa-static": "^4.0.2",
-    "@types/node": "^18.7.18",
+    "@types/node": "^18.7.23",
     "@types/node-cron": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^5.37.0",
-    "@typescript-eslint/parser": "^5.37.0",
-    "eslint": "^8.23.1",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-xo": "^0.42.0",
     "eslint-config-xo-typescript": "^0.53.0",
@@ -116,7 +116,7 @@
     "node-fetch": "^3.2.10",
     "objection": "^3.0.1",
     "patch-package": "^6.4.7",
-    "pino": "^8.5.0",
+    "pino": "^8.6.0",
     "ts-node": "^10.9.1"
   }
 }
