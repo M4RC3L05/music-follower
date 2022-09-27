@@ -52,7 +52,7 @@
               <form action="/artists/unsubscribe" method="post" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
                 <input type="hidden" name="_csrf" value="<%= _csrf %>" />
                 <input type="hidden" name="id" value="<%= artist.id %>">
-                <button type="submit" class="btn btn-danger">&times;</button>
+                <button type="submit" class="btn btn-danger"><i class="bi bi-person-dash-fill"></i></button>
               </form>
 
               <img src="<%= artist.imageUrl %>" class="card-img" style="aspect-ratio: 1 / 1;">
