@@ -1,3 +1,12 @@
+### v5.2.0 (2022-09-27)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/8b74d9eafd56bac0dc4000c55bf966255ea2fbf0)
+- [Add show release details route](https://github.com/M4RC3L05/music-follower/commit/be0f5ae13d7efc3e63f08059f4318e47f9354b3a)
+- [Add get releases by id repository method](https://github.com/M4RC3L05/music-follower/commit/fac5caa2717937f623588f1216419f75cba2ca9c)
+- [Add show release details view](https://github.com/M4RC3L05/music-follower/commit/e86a75388a94000a4bc64b7955a1529bbd4f826f)
+- [Use icons on artists unsubscribe button](https://github.com/M4RC3L05/music-follower/commit/052c1facb00403f74907adea381248a204bd025f)
+- [Add bootstrap icons](https://github.com/M4RC3L05/music-follower/commit/bd0a3a694a36d6be3120874bb1c576ca705f58ab)
+
 ### v5.1.1 (2022-09-25)
 
 - [Use .ts on imports](https://github.com/M4RC3L05/music-follower/commit/78ab8e4e5a0ddfc305c83525ad66c3c93536b158)
