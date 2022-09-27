@@ -22,3 +22,11 @@ export async function index(context: RouterContext) {
     flashMessages: context.flash(),
   });
 }
+
+export async function show(context: RouterContext) {
+  const id = Number(context.params.id);
+
+  const release = await releaseRepository.getById(id);
+
+  await context.render("releases/show", { _csrf: context.state._csrf, release, flashMessages: context.flash() });
+}

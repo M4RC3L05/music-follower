@@ -8,6 +8,7 @@ const router = new Router();
 
 router.get("/", pagesController.index);
 router.get("/releases", releasesController.index);
+router.get("/releases/:id", releasesController.show);
 router.get("/artists", artistsController.index);
 router.post("/artists/subscribe", artistsController.subscribe);
 router.post("/artists/unsubscribe", artistsController.unsubscribe);
