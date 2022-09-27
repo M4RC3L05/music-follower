@@ -15,6 +15,8 @@
     <% releases.forEach((release) => { %>
       <div class="col">
         <div class="card text-bg-dark">
+          <a href="/releases/<%= release.id %> " style="position: absolute; top: 8px; right: 8px; z-index: 2;" class="btn btn-primary"><i class="bi bi-info-circle-fill"></i></a>
+
           <img src="<%= release.coverUrl %>" class="card-img" style="aspect-ratio: 1 / 1;">
           <div class="card-img-overlay" style="display: flex; justify-content: end; flex-direction: column; background: linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)">
             <div class="mb-2">
