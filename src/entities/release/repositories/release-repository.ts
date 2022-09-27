@@ -21,6 +21,10 @@ export class ReleaseRepository {
     return query.page(page, limit);
   }
 
+  async getById(id: number) {
+    return ReleaseModel.query().where({ id }).first();
+  }
+
   async getCurrent50LatestReleases() {
     return ReleaseModel.query()
       .where(raw("DATE(\"releasedAt\", 'utc')"), "<=", raw("DATE('now', 'utc')"))
