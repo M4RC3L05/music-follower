@@ -1,3 +1,15 @@
+### v6.0.0 (2022-10-14)
+
+- [Update readme](https://github.com/M4RC3L05/music-follower/commit/66416d6dd9e3b88fe295a58208bf2b8e3bd22366)
+- [Update .pm2 ecosystem files](https://github.com/M4RC3L05/music-follower/commit/4a053ffbbcbf1c848ca1f22d1445780148c6a298)
+- [Add basic tests](https://github.com/M4RC3L05/music-follower/commit/469cd6a8ef21867a48535c6e8212f4e0dc8b3008)
+- [Refator project](https://github.com/M4RC3L05/music-follower/commit/a51625cb871c31fca6d378827e30de7db83dafc2)
+- [Fix release detail page mobile bug](https://github.com/M4RC3L05/music-follower/commit/a34c1e6123d1d06762ac7ac29138e4b2d963effd)
+- [Update node version and add dependencies for tests](https://github.com/M4RC3L05/music-follower/commit/88b87abb5c6f88fcffb339914185797187ef18b1)
+- [Update node to 16.18.0](https://github.com/M4RC3L05/music-follower/commit/c55c7587b5e46648c25c68b36bc9df4379b3bcc7)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/ea01c6dd658c8cf341e06a8b19a51382f54f478d)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/67278f9fdf6f3093037b14c25ba4f381e12c33e7)
+
 ### v5.2.0 (2022-09-27)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/8b74d9eafd56bac0dc4000c55bf966255ea2fbf0)
