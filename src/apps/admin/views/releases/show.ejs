@@ -1,6 +1,6 @@
 <div class="container-xl mt-4">
   <div class="row">
-    <div class="col-6 offset-3">
+    <div class="col-md-6 offset-md-3 text-center">
       <img src="<%= release.coverUrl %>" alt="" class="img-fluid">
       <h1><%= release.name %></h1>
       <p class="lead">by <%= release.artistName %></p>
@@ -18,7 +18,7 @@
       <% } %>
       
       <p>Metadata:</p>
-      <pre><%= JSON.stringify(release.metadata, null, 2) %></pre>
+      <pre style="text-align: start;"><%= JSON.stringify(release.metadata, null, 2) %></pre>
     </div>
   </div>
 </div>
