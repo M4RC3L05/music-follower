@@ -2,11 +2,11 @@ import config from "config";
 import LRU from "lru-cache";
 import fetch from "node-fetch";
 
-import { makeLogger } from "#src/core/clients/logger.ts";
+import makeLogger from "#src/core/clients/logger.js";
 
-const logger = makeLogger("apple-music-media-service");
+const logger = makeLogger(import.meta.url);
 
-class AppleMusicMediaService {
+class AppleMusicMediaRemote {
   #cache = new LRU({ max: 10_000, ttl: 1000 * 60 * 60 * 24 });
 
   async getArtistImage(url: string) {
@@ -23,28 +23,30 @@ class AppleMusicMediaService {
         throw new Error("An error ocurred while searching for artist image");
       }
 
-      const html = await new Promise<string>((resolve, reject) => {
+      const html = await new Promise<string>((resolve, _reject) => {
         let temporary = "";
 
-        response.body.on("data", (chunk) => {
+        response.body!.on("data", (chunk) => {
           temporary += chunk.toString() as string;
 
           if (/<meta property="og:image".*>/.test(temporary)) {
             resolve(temporary);
 
-            response.body.removeAllListeners();
+            response.body!.removeAllListeners();
           }
         });
       });
 
-      const result = /<meta\s+property="og:image"\s+content="([^"]*)"/gm.exec(html).at(1);
-      if (result.includes("apple-music-")) {
+      const result = /<meta\s+property="og:image"\s+content="([^"]*)"/gm.exec(html)?.at(1);
+
+      if (!result || result.includes("apple-music-")) {
         this.#cache.set(url, config.get("media.placeholderImage"));
-        logger.info({ url, image: result }, "Image is not for a artist, suing placeholder");
+
+        logger.info({ url, image: result }, "Image is not for a artist, using placeholder");
       } else {
         const imageSplitted = result.split("/");
-        const imageFile = imageSplitted.at(-1).split(".");
-        imageSplitted[imageSplitted.length - 1] = `512x512.${imageFile.at(1)}`;
+        const imageFile = imageSplitted.at(-1)!.split(".");
+        imageSplitted[imageSplitted.length - 1] = `256x256.${imageFile.at(1)!}`;
 
         logger.info({ url, image: imageSplitted.join("/") }, "Retrieved image for artist");
 
@@ -56,4 +58,4 @@ class AppleMusicMediaService {
   }
 }
 
-export const appleMusicMediaService = new AppleMusicMediaService();
+export default new AppleMusicMediaRemote();

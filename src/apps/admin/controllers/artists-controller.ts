@@ -1,13 +1,13 @@
 import type { RouterContext } from "@koa/router";
 import config from "config";
 
-import { makeLogger } from "#src/core/clients/logger.ts";
-import { appleMusicMediaService } from "#src/core/services/apple-music-media-service.ts";
-import type { ItunesArtistSearchResult } from "#src/core/services/itunes-search-service.ts";
-import { itunesSearchService } from "#src/core/services/itunes-search-service.ts";
-import { artistRepository } from "#src/entities/artist/repositories/artist-repository.ts";
+import makeLogger from "#src/core/clients/logger.js";
+import artistRepository from "#src/data/artist/repositories/artist-repository.js";
+import type { ItunesArtistSearchModel } from "#src/data/itunes/models/itunes-artists-search-model.js";
+import itunesMediaRepository from "#src/data/itunes/repositories/itunes-media-repository.js";
+import itunesSearchRepository from "#src/data/itunes/repositories/itunes-search-repository.js";
 
-const logger = makeLogger("artists-controller");
+const logger = makeLogger(import.meta.url);
 
 export async function index(context: RouterContext) {
   const page = context.request.query?.page ? Number(context.request.query?.page) : 0;
@@ -20,27 +20,22 @@ export async function index(context: RouterContext) {
     q: query as string,
   });
 
-  let remoteArtistsSearch: ItunesArtistSearchResult[] = [];
+  let remoteArtists: Array<ItunesArtistSearchModel & { image: string; isSubscribed: boolean }> = [];
 
   if (remoteArtistQuery && remoteArtistQuery.trim().length > 0) {
-    remoteArtistsSearch = (await itunesSearchService.searchArtists(remoteArtistQuery)) as ItunesArtistSearchResult[];
+    const artistsSearch = await itunesSearchRepository.searchArtists(remoteArtistQuery);
+
     const images = await Promise.allSettled(
-      remoteArtistsSearch.map(async ({ artistLinkUrl }) => appleMusicMediaService.getArtistImage(artistLinkUrl)),
+      artistsSearch.results.map(async ({ artistLinkUrl }) => itunesMediaRepository.getArtistsImage(artistLinkUrl)),
     );
-    remoteArtistsSearch = remoteArtistsSearch.map((artist, index_) => {
-      const img = images[index_];
 
-      if (img.status === "rejected") {
-        logger.warn({ img }, "Artist image does not seams to be a valid image");
-
-        return { ...artist, image: config.get("media.placeholderImage") };
-      }
-
-      return { ...artist, image: img.value };
-    });
-    remoteArtistsSearch = await Promise.all(
-      remoteArtistsSearch.map(async (artist) => ({
+    remoteArtists = await Promise.all(
+      artistsSearch.results.map(async (artist, index) => ({
         ...artist,
+        image:
+          images.at(index)?.status === "rejected"
+            ? config.get("media.placeholderImage")
+            : (images.at(index) as PromiseFulfilledResult<string>).value,
         isSubscribed: Boolean(await artistRepository.getArtist(artist.artistId)),
       })),
     );
@@ -52,7 +47,7 @@ export async function index(context: RouterContext) {
     page,
     limit,
     query,
-    remoteArtists: remoteArtistsSearch,
+    remoteArtists,
     remoteArtistQuery,
     _csrf: context.state._csrf,
     flashMessages: context.flash(),
@@ -60,36 +55,41 @@ export async function index(context: RouterContext) {
 }
 
 export async function subscribe(context: RouterContext) {
-  const { artistName, artistId, artistImage } = context.request.body;
+  const { artistName, artistId, artistImage } = context.request.body as {
+    artistName: string;
+    artistId: string;
+    artistImage: string;
+  };
 
   try {
     logger.info({ artistName, artistId, artistImage }, "Subscribing");
 
     await artistRepository.addArtist({
-      id: Number(artistId as string),
-      name: artistName as string,
-      imageUrl: artistImage as string,
+      id: Number(artistId),
+      name: artistName,
+      imageUrl: artistImage,
     });
 
-    context.flash("success", `Successfully subscribed to "${artistName as string}"`);
+    context.flash("success", `Successfully subscribed to "${artistName}"`);
   } catch (error: unknown) {
-    logger.error(error, `Could not subscribe to artists "${artistName as string}"`);
+    console.log("eee", error);
+    logger.error(error, `Could not subscribe to artists "${artistName}"`);
 
-    context.flash("error", `Could not subscribe to artists "${artistName as string}"`);
+    context.flash("error", `Could not subscribe to artists "${artistName}"`);
   }
 
   context.redirect("back");
 }
 
 export async function unsubscribe(context: RouterContext) {
-  const { id } = context.request.body;
+  const { id } = context.request.body as { id: string };
 
   try {
     await artistRepository.removeArtists(Number(id));
 
     context.flash("success", `Successfully unsubscribed`);
   } catch (error: unknown) {
-    logger.error(error, `Could not unsubscribe from artists "${id as string}"`);
+    logger.error(error, `Could not unsubscribe from artists "${id}"`);
 
     context.flash("error", `Could not subscribe from artist`);
   }

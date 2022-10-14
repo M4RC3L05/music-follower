@@ -1,10 +1,10 @@
 import type { ModelObject } from "objection";
 import { raw } from "objection";
 
-import { makeLogger } from "#src/core/clients/logger.ts";
-import { ReleaseModel } from "#src/entities/release/models/release-model.ts";
+import makeLogger from "#src/core/clients/logger.js";
+import { ReleaseModel } from "#src/data/release/models/release-model.js";
 
-const logger = makeLogger("release-repository");
+const logger = makeLogger(import.meta.url);
 
 export class ReleaseRepository {
   async search({ limit = 10, page = 0, q }: { page: number; limit: number; q?: string }) {
@@ -25,11 +25,11 @@ export class ReleaseRepository {
     return ReleaseModel.query().where({ id }).first();
   }
 
-  async getCurrent50LatestReleases() {
+  async getLatestReleases(max = 50) {
     return ReleaseModel.query()
       .where(raw("DATE(\"releasedAt\", 'utc')"), "<=", raw("DATE('now', 'utc')"))
       .orderBy("releasedAt", "desc")
-      .limit(50);
+      .limit(max);
   }
 
   async updateRelease(data: Partial<ModelObject<ReleaseModel>>, id: number) {
@@ -76,4 +76,4 @@ export class ReleaseRepository {
   }
 }
 
-export const releaseRepository = new ReleaseRepository();
+export default new ReleaseRepository();

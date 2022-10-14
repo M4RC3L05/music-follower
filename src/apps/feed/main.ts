@@ -1,7 +1,7 @@
 import config from "config";
 import { Model } from "objection";
 
-import { app } from "#src/apps/admin/app.js";
+import { app } from "#src/apps/feed/app.js";
 import { knex } from "#src/core/clients/knex.js";
 import makeLogger from "#src/core/clients/logger.js";
 import { onProcessSignals } from "#src/core/process/process.js";
@@ -10,7 +10,7 @@ Model.knex(knex);
 
 const logger = makeLogger(import.meta.url);
 const api = app();
-const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
+const { host, port } = config.get<{ host: string; port: number }>("apps.feed");
 
 const server = api.listen(port, host, () => {
   const addr = server.address();

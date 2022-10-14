@@ -1,13 +1,15 @@
+import config from "config";
 import { Feed } from "feed";
 import type { Context } from "koa";
 
-import { makeLogger } from "#src/core/clients/logger.ts";
-import type { CollectionMetadata, TrackMetadata } from "#src/entities/release/models/release-model.ts";
-import { releaseRepository } from "#src/entities/release/repositories/release-repository.ts";
+import makeLogger from "#src/core/clients/logger.js";
+import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
+import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
+import releaseRepository from "#src/data/release/repositories/release-repository.js";
 
-const logger = makeLogger("rss-middleware");
+const logger = makeLogger(import.meta.url);
 
-export async function rssMiddleware(context: Context) {
+export async function feedMiddleware(context: Context) {
   const { format } = context.request.query;
 
   if (!format || typeof format !== "string" || !["rss", "atom", "json"].includes(format)) {
@@ -18,7 +20,7 @@ export async function rssMiddleware(context: Context) {
 
   logger.info("Getting latest releases");
 
-  const releases = await releaseRepository.getCurrent50LatestReleases();
+  const releases = await releaseRepository.getLatestReleases(config.get<number>("apps.feed.maxReleases"));
 
   const feed = new Feed({
     title: "Music releases",
@@ -42,10 +44,10 @@ export async function rssMiddleware(context: Context) {
       id: String(release.id),
       link:
         release.type === "collection"
-          ? (release.metadata as CollectionMetadata).collectionViewUrl ?? release.coverUrl
+          ? (release.metadata as ItunesLookupAlbumModel).collectionViewUrl ?? release.coverUrl
           : release.type === "track"
-          ? (release.metadata as TrackMetadata).trackViewUrl ??
-            (release.metadata as TrackMetadata).collectionViewUrl ??
+          ? (release.metadata as ItunesLookupSongModel).trackViewUrl ??
+            (release.metadata as ItunesLookupSongModel).collectionViewUrl ??
             release.coverUrl
           : release.coverUrl,
       image: release.coverUrl,
@@ -54,7 +56,7 @@ export async function rssMiddleware(context: Context) {
 
   switch (format) {
     case "rss": {
-      context.type = "application/xml";
+      context.type = "application/rss+xml";
       context.body = feed.rss2();
       return;
     }
@@ -71,6 +73,7 @@ export async function rssMiddleware(context: Context) {
       return;
     }
 
+    /* istanbul ignore next */
     default: {
       logger.warn({ format }, "Somehow an invalid feed format");
 

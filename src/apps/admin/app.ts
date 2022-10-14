@@ -4,6 +4,8 @@ import url from "node:url";
 import config from "config";
 import Koa from "koa";
 import basicAuth from "koa-basic-auth";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+// @ts-ignore
 import flash from "koa-better-flash";
 import bodyParser from "koa-bodyparser";
 import Csrf from "koa-csrf";
@@ -12,7 +14,7 @@ import qs from "koa-qs";
 import session from "koa-session";
 import koaStatic from "koa-static";
 
-import router from "#src/apps/admin/router.ts";
+import router from "#src/apps/admin/router.js";
 
 export const app = () => {
   const koa = new Koa();

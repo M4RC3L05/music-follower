@@ -1,13 +1,13 @@
 import Koa from "koa";
 import qs from "koa-qs";
 
-import { rssMiddleware } from "#src/apps/rss/middlewares/rss-middleware.ts";
+import { feedMiddleware } from "#src/apps/feed/middlewares/feed-middleware.js";
 
 export const app = () => {
   const koa = new Koa();
   qs(koa);
 
-  koa.use(rssMiddleware);
+  koa.use(feedMiddleware);
 
   return koa;
 };

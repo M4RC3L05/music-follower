@@ -1,7 +1,7 @@
 import type { ModelObject } from "objection";
 import { raw } from "objection";
 
-import { ArtistModel } from "#src/entities/artist/models/artist-model.ts";
+import { ArtistModel } from "#src/data/artist/models/artist-model.js";
 
 export class ArtistRepository {
   removeArtists(id: number) {
@@ -42,4 +42,4 @@ export class ArtistRepository {
   }
 }
 
-export const artistRepository = new ArtistRepository();
+export default new ArtistRepository();

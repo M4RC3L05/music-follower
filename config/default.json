@@ -1,8 +1,9 @@
 {
   "apps": {
-    "rss": {
+    "feed": {
       "host": "0.0.0.0",
-      "port": 4321
+      "port": 4321,
+      "maxReleases": 50
     },
     "admin": {
       "host": "0.0.0.0",
@@ -20,8 +21,10 @@
         "pass": "bar"
       }
     },
-    "sync-releases-task": {
-      "cron": "0 */12 * * *"
+    "jobs": {
+      "sync-releases": {
+        "cron": "41 * * * *"
+      }
     }
   },
   "database": {
@@ -34,15 +37,26 @@
       "directory": "./database/migrations"
     }
   },
-  "itunes": {
-    "searchUrl": "https://itunes.apple.com/search",
-    "lookup": "https://itunes.apple.com/lookup"
+  "remote": {
+    "itunes": {
+      "search": {
+        "url": "https://itunes.apple.com/search",
+        "searchArtists": {
+          "limit": 8
+        }
+      },
+      "lookup": {
+        "url": "https://itunes.apple.com/lookup",
+        "getLatestsArtistMusicReleases": {
+          "limit": 70
+        },
+        "getLatestsArtistAlbumReleases": {
+          "limit": 50
+        }
+      }
+    }
   },
   "media": {
     "placeholderImage": "https://via.placeholder.com/512"
-  },
-  "releases": {
-    "albums": "https://itunes.apple.com/lookup?id={{id}}&entity=album&media=music&sort=recent&limit=70",
-    "songs": "https://itunes.apple.com/lookup?id={{id}}&entity=song&media=music&sort=recent&limit=100"
   }
 }

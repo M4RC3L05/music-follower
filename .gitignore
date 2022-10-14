@@ -6,3 +6,4 @@ database/db.sqlite
 .pm2/*
 !.pm2/*.example
 config/local.json
+coverage

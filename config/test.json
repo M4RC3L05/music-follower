@@ -1,0 +1,7 @@
+{
+  "database": {
+    "connection": {
+      "filename": ":memory:"
+    }
+  }
+}
