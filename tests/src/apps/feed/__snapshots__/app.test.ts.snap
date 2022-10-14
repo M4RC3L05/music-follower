@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app it should provide a feed in the format "atom" 1`] = `
+"<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>music_follower</id>
+    <title>Music releases</title>
+    <updated>1970-01-01T00:00:00.000Z</updated>
+    <generator>Music Follower</generator>
+    <subtitle>Get the latest music releases from artist you follow</subtitle>
+    <rights>Music Follower</rights>
+    <entry>
+        <title type="html"><![CDATA[fiz by foo]]></title>
+        <id>3</id>
+        <link href="http://foo.local/foo.png"/>
+        <updated>1970-01-01T00:00:02.000Z</updated>
+        <summary type="html"><![CDATA[<img src="http://foo.local/foo.png" />
+      <h1>fiz</h1><p>foo</p>
+      <p>1970</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[fiz by foo]]></title>
+        <id>2</id>
+        <link href="http://foo.local/foo.png"/>
+        <updated>1970-01-01T00:00:01.000Z</updated>
+        <summary type="html"><![CDATA[<img src="http://foo.local/foo.png" />
+      <h1>fiz</h1><p>foo</p>
+      <p>1970</p>]]></summary>
+    </entry>
+</feed>"
+`;
+
+exports[`app it should provide a feed in the format "json" 1`] = `
+"{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Music releases",
+    "description": "Get the latest music releases from artist you follow",
+    "items": [
+        {
+            "id": "3",
+            "url": "http://foo.local/foo.png",
+            "title": "fiz by foo",
+            "summary": "<img src=\\"http://foo.local/foo.png\\" />\\n      <h1>fiz</h1><p>foo</p>\\n      <p>1970</p>",
+            "image": "http://foo.local/foo.png",
+            "date_modified": "1970-01-01T00:00:02.000Z"
+        },
+        {
+            "id": "2",
+            "url": "http://foo.local/foo.png",
+            "title": "fiz by foo",
+            "summary": "<img src=\\"http://foo.local/foo.png\\" />\\n      <h1>fiz</h1><p>foo</p>\\n      <p>1970</p>",
+            "image": "http://foo.local/foo.png",
+            "date_modified": "1970-01-01T00:00:01.000Z"
+        }
+    ]
+}"
+`;
+
+exports[`app it should provide a feed in the format "rss" 1`] = `
+"<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Music releases</title>
+        <link>undefined</link>
+        <description>Get the latest music releases from artist you follow</description>
+        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Music Follower</generator>
+        <language>en</language>
+        <copyright>Music Follower</copyright>
+        <item>
+            <title><![CDATA[fiz by foo]]></title>
+            <link>http://foo.local/foo.png</link>
+            <guid>3</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:02 GMT</pubDate>
+            <description><![CDATA[<img src="http://foo.local/foo.png" />
+      <h1>fiz</h1><p>foo</p>
+      <p>1970</p>]]></description>
+            <enclosure url="http://foo.local/foo.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[fiz by foo]]></title>
+            <link>http://foo.local/foo.png</link>
+            <guid>2</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:01 GMT</pubDate>
+            <description><![CDATA[<img src="http://foo.local/foo.png" />
+      <h1>fiz</h1><p>foo</p>
+      <p>1970</p>]]></description>
+            <enclosure url="http://foo.local/foo.png" length="0" type="image/png"/>
+        </item>
+    </channel>
+</rss>"
+`;
