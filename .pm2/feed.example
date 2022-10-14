@@ -1,8 +1,8 @@
 {
-  "name": "@music-follower/sync-release-task",
+  "name": "@music-follower/feed",
   "cwd": "<project/root/path>",
-  "script": "dist/apps/sync-releases-task/main.ts",
-  "interpreter": "<interpreter>",
+  "script": "src/apps/feed/main.ts",
+  "interpreter": "node_modules/.bin/ts-node",
   "exec_mode": "fork",
   "watch": false,
   "instances": 1,
