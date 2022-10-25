@@ -1,3 +1,7 @@
+### v6.1.1 (2022-10-25)
+
+- [Fix yargs import bug](https://github.com/M4RC3L05/music-follower/commit/f8dd5997d95f43f9b50a310450da84c4d5298e82)
+
 ### v6.1.0 (2022-10-25)
 
 - [Replace eslint with xo](https://github.com/M4RC3L05/music-follower/commit/4c66bde030f5d539deeb3b3888b38be12102bb79)
