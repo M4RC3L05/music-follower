@@ -1,3 +1,9 @@
+### v6.1.0 (2022-10-25)
+
+- [Replace eslint with xo](https://github.com/M4RC3L05/music-follower/commit/4c66bde030f5d539deeb3b3888b38be12102bb79)
+- [Replace koa-ejs with @koa\/ejs](https://github.com/M4RC3L05/music-follower/commit/cd34f3b0e8c3483974e70378958f0ec2e668c664)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/dc09e1a6aa14eb0716f77f06aff63dfdc26f325f)
+
 ### v6.0.0 (2022-10-14)
 
 - [Update readme](https://github.com/M4RC3L05/music-follower/commit/66416d6dd9e3b88fe295a58208bf2b8e3bd22366)
