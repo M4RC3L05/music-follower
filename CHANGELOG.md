@@ -1,3 +1,7 @@
+### v6.1.2 (2022-10-25)
+
+- [Fix @koa\/ejs cache bug](https://github.com/M4RC3L05/music-follower/commit/4152570d797b9486339313a60b571807c1defe5d)
+
 ### v6.1.1 (2022-10-25)
 
 - [Fix yargs import bug](https://github.com/M4RC3L05/music-follower/commit/f8dd5997d95f43f9b50a310450da84c4d5298e82)
