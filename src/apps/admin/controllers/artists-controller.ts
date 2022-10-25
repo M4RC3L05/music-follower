@@ -41,6 +41,7 @@ export async function index(context: RouterContext) {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await context.render("artists/index", {
     artists,
     total,
@@ -50,6 +51,7 @@ export async function index(context: RouterContext) {
     remoteArtists,
     remoteArtistQuery,
     _csrf: context.state._csrf,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     flashMessages: context.flash(),
   });
 }
@@ -70,11 +72,13 @@ export async function subscribe(context: RouterContext) {
       imageUrl: artistImage,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully subscribed to "${artistName}"`);
   } catch (error: unknown) {
     console.log("eee", error);
     logger.error(error, `Could not subscribe to artists "${artistName}"`);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("error", `Could not subscribe to artists "${artistName}"`);
   }
 
@@ -87,10 +91,12 @@ export async function unsubscribe(context: RouterContext) {
   try {
     await artistRepository.removeArtists(Number(id));
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully unsubscribed`);
   } catch (error: unknown) {
     logger.error(error, `Could not unsubscribe from artists "${id}"`);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("error", `Could not subscribe from artist`);
   }
 

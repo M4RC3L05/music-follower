@@ -12,6 +12,7 @@ export async function index(context: RouterContext) {
     q: query as string,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await context.render("releases/index", {
     _csrf: context.state._csrf,
     releases,
@@ -19,6 +20,7 @@ export async function index(context: RouterContext) {
     page,
     query,
     total,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     flashMessages: context.flash(),
   });
 }
@@ -28,5 +30,6 @@ export async function show(context: RouterContext) {
 
   const release = await releaseRepository.getById(id);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   await context.render("releases/show", { _csrf: context.state._csrf, release, flashMessages: context.flash() });
 }

@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import config from "config";
 import { Model } from "objection";
 

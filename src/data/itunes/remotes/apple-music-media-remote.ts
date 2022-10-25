@@ -27,6 +27,7 @@ class AppleMusicMediaRemote {
         let temporary = "";
 
         response.body!.on("data", (chunk) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           temporary += chunk.toString() as string;
 
           if (/<meta property="og:image".*>/.test(temporary)) {

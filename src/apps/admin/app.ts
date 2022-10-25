@@ -1,4 +1,5 @@
 import path from "node:path";
+import process from "node:process";
 import url from "node:url";
 
 // @ts-expect-error no typedefs
@@ -21,6 +22,7 @@ export const app = () => {
   koa.keys = config.get("apps.admin.keys");
 
   qs(koa);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   render(koa, {
     root: path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "views"),
     layout: "main",
@@ -30,6 +32,7 @@ export const app = () => {
   });
 
   koa.use(session({ ...config.get("apps.admin.session") }, koa));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   koa.use(flash());
   koa.use(bodyParser());
   koa.use(new Csrf());

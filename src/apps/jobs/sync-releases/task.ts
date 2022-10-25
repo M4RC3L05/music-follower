@@ -49,6 +49,7 @@ export async function run() {
 
       if (albumsResult.status === "rejected" && songsResult.status === "rejected") {
         log.error(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           { albumsCause: albumsResult.reason.cause, songsCause: songsResult.reason.cause },
           "Could not get albums and songs as the request has failed for both.",
         );

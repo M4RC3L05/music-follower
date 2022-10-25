@@ -17,6 +17,7 @@ export class ReleaseModel extends Model {
 
   $beforeUpdate() {
     if (this.releasedAt) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.releasedAt = new Date(this.releasedAt).toISOString() as any;
     }
   }
@@ -29,6 +30,7 @@ export class ReleaseModel extends Model {
     }
 
     if (json.metadata !== null && json.metadata !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       json.metadata = JSON.parse(json.metadata as string);
     }
 

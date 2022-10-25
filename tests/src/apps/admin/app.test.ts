@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { createServer } from "node:http";
 
 import { describe, expect, test } from "@jest/globals";

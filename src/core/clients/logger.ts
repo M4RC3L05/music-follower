@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import { pino } from "pino";
 
 export default function makeLogger(namespace: string) {

@@ -1,5 +1,7 @@
 import { describe, expect, jest, test } from "@jest/globals";
 
+import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
+import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
 import { ReleaseModel } from "#src/data/release/models/release-model.js";
 import releaseRepository from "#src/data/release/repositories/release-repository.js";
 import * as fixtures from "#tests/fixtures/index.js";
@@ -16,7 +18,7 @@ describe("ReleaseRepository", () => {
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
-          metadata: songRelease as any,
+          metadata: songRelease as ItunesLookupSongModel | ItunesLookupAlbumModel,
           type: "track",
           collectionId: 1,
           coverUrl: "foo",
@@ -39,7 +41,7 @@ describe("ReleaseRepository", () => {
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
-          metadata: songRelease as any,
+          metadata: songRelease as ItunesLookupSongModel | ItunesLookupAlbumModel,
           type: "track",
           collectionId: 1,
           coverUrl: "foo",
@@ -72,7 +74,7 @@ describe("ReleaseRepository", () => {
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
-          metadata: songRelease as any,
+          metadata: songRelease as ItunesLookupSongModel | ItunesLookupAlbumModel,
           type: "track",
           collectionId: 2,
           coverUrl: "foo",
@@ -103,7 +105,7 @@ describe("ReleaseRepository", () => {
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
-          metadata: songRelease as any,
+          metadata: songRelease as ItunesLookupSongModel | ItunesLookupAlbumModel,
           type: "track",
           collectionId: 2,
           coverUrl: "foo",
@@ -122,7 +124,8 @@ describe("ReleaseRepository", () => {
           artistName: "foobar",
           id: 123,
           isStreamable: true,
-          metadata: {} as any,
+          // @ts-expect-error empty object
+          metadata: {},
           type: "collection",
           collectionId: 2,
           coverUrl: "foo",

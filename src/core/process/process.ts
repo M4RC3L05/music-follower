@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import makeLogger from "#src/core/clients/logger.js";
 
 const log = makeLogger(import.meta.url);
