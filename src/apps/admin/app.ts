@@ -1,15 +1,15 @@
 import path from "node:path";
 import url from "node:url";
 
+// @ts-expect-error no typedefs
+import render from "@koa/ejs";
 import config from "config";
 import Koa from "koa";
 import basicAuth from "koa-basic-auth";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
-// @ts-ignore
+// @ts-expect-error no typedefs
 import flash from "koa-better-flash";
 import bodyParser from "koa-bodyparser";
 import Csrf from "koa-csrf";
-import render from "koa-ejs";
 import qs from "koa-qs";
 import session from "koa-session";
 import koaStatic from "koa-static";
