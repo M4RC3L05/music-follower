@@ -7,6 +7,7 @@ import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-looku
 import { ReleaseModel } from "#src/data/release/models/release-model.js";
 import releaseRepository from "#src/data/release/repositories/release-repository.js";
 import * as fixtures from "#tests/fixtures/index.js";
+import { loadRelease } from "#tests/fixtures/index.js";
 
 describe("ReleaseRepository", () => {
   describe("upsertReleases", () => {
@@ -30,7 +31,7 @@ describe("ReleaseRepository", () => {
         },
       ]);
 
-      expect(ReleaseModel.query).toHaveBeenCalledTimes(0);
+      expect(ReleaseModel.query).toHaveBeenCalledTimes(1);
       expect(await ReleaseModel.query().where({ id: 123 }).first()).toBeUndefined();
     });
 
@@ -54,7 +55,7 @@ describe("ReleaseRepository", () => {
         },
       ]);
 
-      expect(ReleaseModel.query).toHaveBeenCalledTimes(1);
+      expect(ReleaseModel.query).toHaveBeenCalledTimes(2);
       expect(await ReleaseModel.query().where({ id: 123 }).first()).toBeUndefined();
     });
 
@@ -89,7 +90,7 @@ describe("ReleaseRepository", () => {
         },
       ]);
 
-      expect(ReleaseModel.query).toHaveBeenCalledTimes(1);
+      expect(ReleaseModel.query).toHaveBeenCalledTimes(2);
       expect(await ReleaseModel.query().where({ id: 123 }).first()).toBeUndefined();
     });
 
@@ -240,9 +241,77 @@ describe("ReleaseRepository", () => {
         expect.objectContaining({ id: 124 }),
         expect.objectContaining({ id: 123 }),
       ]);
+
       for (const { feedAt } of releases) {
         expect(feedAt.toISOString()).not.toEqual(releasedAt.toISOString());
       }
+    });
+
+    test("it should use the already stored `feedAt`", async () => {
+      const releasedAt = new Date(0);
+
+      const release = await fixtures.loadRelease({
+        feedAt: new Date(1000),
+        artistName: "foo",
+        coverUrl: "bar",
+        id: 123,
+        name: "biz",
+        releasedAt,
+        type: "collection",
+      });
+
+      await releaseRepository.upsertReleases(1, [
+        {
+          artistName: "foobar",
+          id: 123,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+        {
+          artistName: "foobar",
+          id: 124,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+        {
+          artistName: "foobar",
+          id: 125,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+      ]);
+
+      const releases = await ReleaseModel.query().orderBy("feedAt", "DESC");
+
+      expect(releases).toEqual([
+        expect.objectContaining({ id: 125 }),
+        expect.objectContaining({ id: 124 }),
+        expect.objectContaining({ id: 123 }),
+      ]);
+
+      for (const { feedAt } of releases) {
+        expect(feedAt.toISOString()).not.toEqual(releasedAt.toISOString());
+      }
+
+      expect(release.feedAt.toISOString()).toEqual(releases.at(-1)?.feedAt.toISOString());
     });
   });
 });

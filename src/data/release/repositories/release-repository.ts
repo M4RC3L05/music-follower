@@ -43,6 +43,9 @@ export class ReleaseRepository {
     logger.info({ artistId }, "Upserting releases for artist");
 
     for (const { collectionId, isStreamable, ...release } of releases) {
+      // eslint-disable-next-line no-await-in-loop
+      const storedRelease = await ReleaseModel.query().where({ id: release.id }).first();
+
       // Determine the feed position, defaults to using provided `feedAt`.
       // If the collection/track is a pre-release (the releasedAt is an upcomming date) we use the releasedAt,
       // this way we maintain the order of the release in the feed.
@@ -50,6 +53,8 @@ export class ReleaseRepository {
       // the last release being processed will be the first in the list and so on.
       const feedAt = release.feedAt
         ? release.feedAt
+        : storedRelease?.feedAt
+        ? storedRelease.feedAt
         : new Date(release.releasedAt).getTime() > Date.now()
         ? new Date(release.releasedAt)
         : new Date();
