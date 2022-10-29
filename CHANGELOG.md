@@ -1,3 +1,7 @@
+### v6.2.1 (2022-10-29)
+
+- [Use the already stored `feedAt` for the release](https://github.com/M4RC3L05/music-follower/commit/07fbac7321bd453fd0c0b100d70a5d6dd267ea80)
+
 ### v6.2.0 (2022-10-29)
 
 - [Remove `--coverage` from test command](https://github.com/M4RC3L05/music-follower/commit/2df7683141aaf4343228cb8ce52d8d4cf78e7dde)
