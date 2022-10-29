@@ -26,6 +26,7 @@ describe("app", () => {
 
   test('it should provide a feed in the format "rss"', async () => {
     await loadRelease({
+      feedAt: new Date(2),
       id: 1,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -34,6 +35,7 @@ describe("app", () => {
       type: "collection",
     });
     await loadRelease({
+      feedAt: new Date(0),
       id: 2,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -42,6 +44,7 @@ describe("app", () => {
       type: "track",
     });
     await loadRelease({
+      feedAt: new Date(1),
       id: 3,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -60,6 +63,7 @@ describe("app", () => {
 
   test('it should provide a feed in the format "atom"', async () => {
     await loadRelease({
+      feedAt: new Date(2),
       id: 1,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -68,6 +72,7 @@ describe("app", () => {
       type: "collection",
     });
     await loadRelease({
+      feedAt: new Date(0),
       id: 2,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -76,6 +81,7 @@ describe("app", () => {
       type: "track",
     });
     await loadRelease({
+      feedAt: new Date(1),
       id: 3,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -94,6 +100,7 @@ describe("app", () => {
 
   test('it should provide a feed in the format "json"', async () => {
     await loadRelease({
+      feedAt: new Date(2),
       id: 1,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -102,6 +109,7 @@ describe("app", () => {
       type: "collection",
     });
     await loadRelease({
+      feedAt: new Date(0),
       id: 2,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",
@@ -110,6 +118,7 @@ describe("app", () => {
       type: "track",
     });
     await loadRelease({
+      feedAt: new Date(1),
       id: 3,
       artistName: "foo",
       coverUrl: "http://foo.local/foo.png",

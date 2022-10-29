@@ -34,7 +34,7 @@ export async function feedMiddleware(context: Context) {
 
   for (const release of releases) {
     feed.addItem({
-      date: new Date(release.releasedAt),
+      date: new Date(release.feedAt),
       description: `
       <img src="${release.coverUrl}" />
       <h1>${release.name}</h1><p>${release.artistName}</p>

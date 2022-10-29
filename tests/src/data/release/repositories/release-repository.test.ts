@@ -1,3 +1,5 @@
+import { inspect } from "node:util";
+
 import { describe, expect, jest, test } from "@jest/globals";
 
 import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
@@ -15,6 +17,7 @@ describe("ReleaseRepository", () => {
 
       await releaseRepository.upsertReleases(1, [
         {
+          feedAt: new Date(songRelease.releaseDate!),
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
@@ -38,6 +41,7 @@ describe("ReleaseRepository", () => {
 
       await releaseRepository.upsertReleases(1, [
         {
+          feedAt: new Date(songRelease.releaseDate!),
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
@@ -58,6 +62,7 @@ describe("ReleaseRepository", () => {
       const releasedAt = new Date();
       releasedAt.setUTCFullYear(releasedAt.getUTCFullYear() - 1);
       await fixtures.loadRelease({
+        feedAt: releasedAt,
         artistName: "foo",
         coverUrl: "bar",
         id: 2,
@@ -71,6 +76,7 @@ describe("ReleaseRepository", () => {
 
       await releaseRepository.upsertReleases(1, [
         {
+          feedAt: new Date(songRelease.releaseDate!),
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
@@ -91,6 +97,7 @@ describe("ReleaseRepository", () => {
       const releasedAt = new Date();
       releasedAt.setUTCFullYear(releasedAt.getUTCFullYear() + 1);
       await fixtures.loadRelease({
+        feedAt: releasedAt,
         artistName: "foo",
         coverUrl: "bar",
         id: 2,
@@ -102,6 +109,7 @@ describe("ReleaseRepository", () => {
 
       await releaseRepository.upsertReleases(1, [
         {
+          feedAt: new Date(songRelease.releaseDate!),
           artistName: "foobar",
           id: 123,
           isStreamable: songRelease.isStreamable,
@@ -136,6 +144,105 @@ describe("ReleaseRepository", () => {
 
       // eslint-disable-next-line unicorn/no-await-expression-member
       expect((await ReleaseModel.query().where({ id: 123 }).first())?.toJSON()).toBeTruthy();
+    });
+
+    test("it should use `feedAt` provided by default", async () => {
+      await releaseRepository.upsertReleases(1, [
+        {
+          feedAt: new Date(0),
+          artistName: "foobar",
+          id: 123,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt: new Date(),
+        },
+      ]);
+
+      const release = await ReleaseModel.query().where({ id: 123 }).first();
+      expect(release?.toJSON()).toBeTruthy();
+      expect(release?.feedAt.toISOString()).toBe(new Date(0).toISOString());
+    });
+
+    test("it should use the `releasedAt` for `feedAt` if it is a pre release", async () => {
+      const releasedAt = new Date(Date.now() + 10_000);
+
+      await releaseRepository.upsertReleases(1, [
+        {
+          artistName: "foobar",
+          id: 123,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+      ]);
+
+      const release = await ReleaseModel.query().where({ id: 123 }).first();
+      expect(release?.toJSON()).toBeTruthy();
+      expect(release?.feedAt.toISOString()).toBe(releasedAt.toISOString());
+    });
+
+    test("it should use the time as it was processed for the `feedAt`", async () => {
+      const releasedAt = new Date(0);
+
+      await releaseRepository.upsertReleases(1, [
+        {
+          artistName: "foobar",
+          id: 123,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+        {
+          artistName: "foobar",
+          id: 124,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+        {
+          artistName: "foobar",
+          id: 125,
+          isStreamable: true,
+          // @ts-expect-error empty object
+          metadata: {},
+          type: "collection",
+          collectionId: 2,
+          coverUrl: "foo",
+          name: "bar",
+          releasedAt,
+        },
+      ]);
+
+      const releases = await ReleaseModel.query().orderBy("feedAt", "DESC");
+
+      expect(releases).toEqual([
+        expect.objectContaining({ id: 125 }),
+        expect.objectContaining({ id: 124 }),
+        expect.objectContaining({ id: 123 }),
+      ]);
+      for (const { feedAt } of releases) {
+        expect(feedAt.toISOString()).not.toEqual(releasedAt.toISOString());
+      }
     });
   });
 });

@@ -14,6 +14,7 @@ export class ReleaseModel extends Model {
   coverUrl!: string;
   type!: "collection" | "track";
   metadata!: ItunesLookupSongModel | ItunesLookupAlbumModel;
+  feedAt!: Date;
 
   $beforeUpdate() {
     if (this.releasedAt) {
@@ -29,6 +30,10 @@ export class ReleaseModel extends Model {
       json.releasedAt = new Date(json.releasedAt as string);
     }
 
+    if (json.feedAt !== null && json.feedAt !== undefined) {
+      json.feedAt = new Date(json.feedAt as string);
+    }
+
     if (json.metadata !== null && json.metadata !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       json.metadata = JSON.parse(json.metadata as string);
@@ -42,6 +47,10 @@ export class ReleaseModel extends Model {
 
     if (json.releasedAt !== null && json.releasedAt !== undefined) {
       json.releasedAt = new Date(json.releasedAt as string).toISOString();
+    }
+
+    if (json.feedAt !== null && json.feedAt !== undefined) {
+      json.feedAt = new Date(json.feedAt as string).toISOString();
     }
 
     if (json.metadata !== null && json.metadata !== undefined) {

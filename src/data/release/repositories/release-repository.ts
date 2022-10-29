@@ -28,7 +28,7 @@ export class ReleaseRepository {
   async getLatestReleases(max = 50) {
     return ReleaseModel.query()
       .where(raw("DATE(\"releasedAt\", 'utc')"), "<=", raw("DATE('now', 'utc')"))
-      .orderBy("releasedAt", "desc")
+      .orderBy("feedAt", "desc")
       .limit(max);
   }
 
@@ -43,9 +43,20 @@ export class ReleaseRepository {
     logger.info({ artistId }, "Upserting releases for artist");
 
     for (const { collectionId, isStreamable, ...release } of releases) {
+      // Determine the feed position, defaults to using provided `feedAt`.
+      // If the collection/track is a pre-release (the releasedAt is an upcomming date) we use the releasedAt,
+      // this way we maintain the order of the release in the feed.
+      // If it was released, we set the current date, this way, it will appear in the feed in the reverse order as the releases were processed.
+      // the last release being processed will be the first in the list and so on.
+      const feedAt = release.feedAt
+        ? release.feedAt
+        : new Date(release.releasedAt).getTime() > Date.now()
+        ? new Date(release.releasedAt)
+        : new Date();
+
       if (release.type === "collection") {
         // eslint-disable-next-line no-await-in-loop
-        await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
+        await ReleaseModel.query().upsertGraph({ ...release, feedAt }, { insertMissing: true });
 
         continue;
       }
@@ -71,7 +82,7 @@ export class ReleaseRepository {
       }
 
       // eslint-disable-next-line no-await-in-loop
-      await ReleaseModel.query().upsertGraph(release, { insertMissing: true });
+      await ReleaseModel.query().upsertGraph({ ...release, feedAt }, { insertMissing: true });
     }
   }
 }
