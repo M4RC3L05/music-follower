@@ -1,3 +1,9 @@
+### v6.2.0 (2022-10-29)
+
+- [Remove `--coverage` from test command](https://github.com/M4RC3L05/music-follower/commit/2df7683141aaf4343228cb8ce52d8d4cf78e7dde)
+- [Add `feedAt` to releases](https://github.com/M4RC3L05/music-follower/commit/e82621b187ba21f17b5cc3f99cf515f7038e01ca)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/cea273c020b0f759e8cec5f41b51c55995c36d65)
+
 ### v6.1.2 (2022-10-25)
 
 - [Fix @koa\/ejs cache bug](https://github.com/M4RC3L05/music-follower/commit/4152570d797b9486339313a60b571807c1defe5d)
