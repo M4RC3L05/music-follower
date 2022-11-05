@@ -23,20 +23,15 @@ class AppleMusicMediaRemote {
         throw new Error("An error ocurred while searching for artist image");
       }
 
-      const html = await new Promise<string>((resolve, _reject) => {
-        let temporary = "";
+      let html = "";
 
-        response.body!.on("data", (chunk) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          temporary += chunk.toString() as string;
+      for await (const chunk of response.body!) {
+        html += chunk.toString();
 
-          if (/<meta property="og:image".*>/.test(temporary)) {
-            resolve(temporary);
-
-            response.body!.removeAllListeners();
-          }
-        });
-      });
+        if (/<meta property="og:image".*>/.test(html)) {
+          break;
+        }
+      }
 
       const result = /<meta\s+property="og:image"\s+content="([^"]*)"/gm.exec(html)?.at(1);
 
