@@ -1,3 +1,10 @@
+### v7.0.1 (2022-11-28)
+
+- [Fix lint error](https://github.com//M4RC3L05/music-follower/commit/f517f5a2ad2876fb6d30fa9614b9919fd7f39efb)
+- [Update dependencies](https://github.com//M4RC3L05/music-follower/commit/2177d9bae776f70416b132b83a2f502b8ac71a0b)
+- [Update dependencies](https://github.com//M4RC3L05/music-follower/commit/b6383d391dcde5d707b84ccf8ae6bde342dfa3b4)
+- [Fix package.json formating](https://github.com//M4RC3L05/music-follower/commit/5ea7804c15da5ff412bfab19b47e3ee8988fb0c1)
+
 ### v7.0.0 (2022-11-05)
 
 - [Fix changelog git urls](https://github.com//M4RC3L05/music-follower/commit/ab3263115fd4fac8705d79dcf167123279306066)
