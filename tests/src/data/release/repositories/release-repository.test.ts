@@ -1,5 +1,3 @@
-import { inspect } from "node:util";
-
 import { describe, expect, jest, test } from "@jest/globals";
 
 import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
@@ -7,7 +5,6 @@ import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-looku
 import { ReleaseModel } from "#src/data/release/models/release-model.js";
 import releaseRepository from "#src/data/release/repositories/release-repository.js";
 import * as fixtures from "#tests/fixtures/index.js";
-import { loadRelease } from "#tests/fixtures/index.js";
 
 describe("ReleaseRepository", () => {
   describe("upsertReleases", () => {
@@ -148,9 +145,10 @@ describe("ReleaseRepository", () => {
     });
 
     test("it should use `feedAt` provided by default", async () => {
+      const feedAt = new Date(0);
       await releaseRepository.upsertReleases(1, [
         {
-          feedAt: new Date(0),
+          feedAt,
           artistName: "foobar",
           id: 123,
           isStreamable: true,
@@ -166,7 +164,7 @@ describe("ReleaseRepository", () => {
 
       const release = await ReleaseModel.query().where({ id: 123 }).first();
       expect(release?.toJSON()).toBeTruthy();
-      expect(release?.feedAt.toISOString()).toBe(new Date(0).toISOString());
+      expect(release?.feedAt.toISOString()).toBe(feedAt.toISOString());
     });
 
     test("it should use the `releasedAt` for `feedAt` if it is a pre release", async () => {
@@ -194,6 +192,7 @@ describe("ReleaseRepository", () => {
 
     test("it should use the time as it was processed for the `feedAt`", async () => {
       const releasedAt = new Date(0);
+      const now = Date.now();
 
       await releaseRepository.upsertReleases(1, [
         {
@@ -235,7 +234,6 @@ describe("ReleaseRepository", () => {
       ]);
 
       const releases = await ReleaseModel.query().orderBy("feedAt", "DESC");
-
       expect(releases).toEqual([
         expect.objectContaining({ id: 125 }),
         expect.objectContaining({ id: 124 }),
@@ -244,6 +242,7 @@ describe("ReleaseRepository", () => {
 
       for (const { feedAt } of releases) {
         expect(feedAt.toISOString()).not.toEqual(releasedAt.toISOString());
+        expect(feedAt.getTime()).toBeGreaterThanOrEqual(now);
       }
     });
 

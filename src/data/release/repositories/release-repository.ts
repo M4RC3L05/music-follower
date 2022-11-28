@@ -51,13 +51,10 @@ export class ReleaseRepository {
       // this way we maintain the order of the release in the feed.
       // If it was released, we set the current date, this way, it will appear in the feed in the reverse order as the releases were processed.
       // the last release being processed will be the first in the list and so on.
-      const feedAt = release.feedAt
-        ? release.feedAt
-        : storedRelease?.feedAt
-        ? storedRelease.feedAt
-        : new Date(release.releasedAt).getTime() > Date.now()
-        ? new Date(release.releasedAt)
-        : new Date();
+      const feedAt =
+        release.feedAt ??
+        storedRelease?.feedAt ??
+        (new Date(release.releasedAt).getTime() > Date.now() ? new Date(release.releasedAt) : new Date());
 
       if (release.type === "collection") {
         // eslint-disable-next-line no-await-in-loop
