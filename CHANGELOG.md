@@ -1,3 +1,8 @@
+### v7.1.0 (2022-12-10)
+
+- [Update patches](https://github.com//M4RC3L05/music-follower/commit/c481d2241dc70dbade1d895ec84952b9287bc8c9)
+- [Update dependencies](https://github.com//M4RC3L05/music-follower/commit/a818eceb83b94d2a01eb668e75f57b04030c2bc8)
+
 ### v7.0.1 (2022-11-28)
 
 - [Fix lint error](https://github.com//M4RC3L05/music-follower/commit/f517f5a2ad2876fb6d30fa9614b9919fd7f39efb)
@@ -13,12 +18,12 @@
 
 ### v6.2.1 (2022-10-29)
 
-- [Use the already stored `feedAt` for the release](https://github.com//M4RC3L05/music-follower/commit/07fbac7321bd453fd0c0b100d70a5d6dd267ea80)
+- [Use the already stored \`feedAt\` for the release](https://github.com//M4RC3L05/music-follower/commit/07fbac7321bd453fd0c0b100d70a5d6dd267ea80)
 
 ### v6.2.0 (2022-10-29)
 
-- [Remove `--coverage` from test command](https://github.com//M4RC3L05/music-follower/commit/2df7683141aaf4343228cb8ce52d8d4cf78e7dde)
-- [Add `feedAt` to releases](https://github.com//M4RC3L05/music-follower/commit/e82621b187ba21f17b5cc3f99cf515f7038e01ca)
+- [Remove \`--coverage\` from test command](https://github.com//M4RC3L05/music-follower/commit/2df7683141aaf4343228cb8ce52d8d4cf78e7dde)
+- [Add \`feedAt\` to releases](https://github.com//M4RC3L05/music-follower/commit/e82621b187ba21f17b5cc3f99cf515f7038e01ca)
 - [Update dependencies](https://github.com//M4RC3L05/music-follower/commit/cea273c020b0f759e8cec5f41b51c55995c36d65)
 
 ### v6.1.2 (2022-10-25)
@@ -92,8 +97,8 @@
 - [Remove console log](https://github.com//M4RC3L05/music-follower/commit/3c9b43717b4decc0e1829f27047fa2c3505455d4)
 - [Improve release sync logic](https://github.com//M4RC3L05/music-follower/commit/0e46d09a0c11fd05f771b6309745e7838a51072c)
 - [Improve release sync logic](https://github.com//M4RC3L05/music-follower/commit/3a4988ec9478351bb27904614d6d03d16b853145)
-- [Add `dev:sync-releases-task` npm script](https://github.com//M4RC3L05/music-follower/commit/8ebb4f52bf0323d5d1da78ef3bcc299acc605f44)
-- [Ignore `local.json` config file](https://github.com//M4RC3L05/music-follower/commit/2094f700af94f6969325354a332f58db1c9d667a)
+- [Add \`dev:sync-releases-task\` npm script](https://github.com//M4RC3L05/music-follower/commit/8ebb4f52bf0323d5d1da78ef3bcc299acc605f44)
+- [Ignore \`local.json\` config file](https://github.com//M4RC3L05/music-follower/commit/2094f700af94f6969325354a332f58db1c9d667a)
 
 ### v4.0.0 (2022-08-15)
 
@@ -104,7 +109,7 @@
 - [Add user role to views](https://github.com//M4RC3L05/music-follower/commit/24788a7622eedc8a86225f9dbfb11f7ab06b1aed)
 - [Allow to manage releases by user and admin](https://github.com//M4RC3L05/music-follower/commit/2d550cbb11169aefe055af8a7d9b2475277d8b15)
 - [Allow to manage artists and follows by user and admin](https://github.com//M4RC3L05/music-follower/commit/de19abf7044e67a88e037d4b7797467a4680fc59)
-- [Add `artists\_users` and `releases\_users` to scope artists and releases per user](https://github.com//M4RC3L05/music-follower/commit/79b4c420c8c96088b403a79662c149446232c8b4)
+- [Add \`artists\_users\` and \`releases\_users\` to scope artists and releases per user](https://github.com//M4RC3L05/music-follower/commit/79b4c420c8c96088b403a79662c149446232c8b4)
 - [Add admin profile managment](https://github.com//M4RC3L05/music-follower/commit/9e4dd1cb8b1acf9f9da07144b245aeb5d937428d)
 - [Add authenticated variable to views](https://github.com//M4RC3L05/music-follower/commit/792028f677be2a865626afb9ef261e8d3eeee7d4)
 - [Add logout](https://github.com//M4RC3L05/music-follower/commit/4d8b61b10388d81ea1b49f6e684ffd1ae100202e)
@@ -112,12 +117,12 @@
 - [Add admin login routes](https://github.com//M4RC3L05/music-follower/commit/f16729b7d8120c931ca83d8ff9c256b032c97704)
 - [Use bcrypt on admin migration](https://github.com//M4RC3L05/music-follower/commit/a4c8d8c205929f05e1806b3c24d298fd3bf60c68)
 - [Add bcrypt](https://github.com//M4RC3L05/music-follower/commit/7639a8f671a9417dfef87c52a5d43c06e4a68f7c)
-- [Add missing `flashMessages` view variable](https://github.com//M4RC3L05/music-follower/commit/907ab9f9ac684ff130eeb6c001e0404d80917ff5)
+- [Add missing \`flashMessages\` view variable](https://github.com//M4RC3L05/music-follower/commit/907ab9f9ac684ff130eeb6c001e0404d80917ff5)
 - [Protect admin routes with authentication middleware](https://github.com//M4RC3L05/music-follower/commit/481e5560592bd258f04de58782debe17ad284cb2)
 - [Add permission middleware](https://github.com//M4RC3L05/music-follower/commit/614fb63452b3bd84a6b9af6a08dfd33ce5e9e5e4)
 - [Add authentication middleware](https://github.com//M4RC3L05/music-follower/commit/2e787e72a4faa8c7c4969acc9deda10a93bfa164)
 - [Add user entity](https://github.com//M4RC3L05/music-follower/commit/407a4cc8fc4369b9ca9965619f7fe22a452802d7)
-- [Add `flashMessages` variable to releases index view controller](https://github.com//M4RC3L05/music-follower/commit/56929897bdcfd12b67e4fa4ddf914d5d8bc57970)
+- [Add \`flashMessages\` variable to releases index view controller](https://github.com//M4RC3L05/music-follower/commit/56929897bdcfd12b67e4fa4ddf914d5d8bc57970)
 - [Add flash messages](https://github.com//M4RC3L05/music-follower/commit/ee137df9bd0e6772c2f66aff0ae368b7a5746209)
 - [Add csrf protection](https://github.com//M4RC3L05/music-follower/commit/6db930e4ec92096ae8ce9d19d015d950bdd01a9f)
 - [Add koa session](https://github.com//M4RC3L05/music-follower/commit/7cd18651f2ae14ba697f881346399914d70af725)
@@ -132,15 +137,15 @@
 
 ### v3.1.0 (2022-08-12)
 
-- [Add patch-package and patch `offline-github-changelog` to allow unlimited commits in changelog](https://github.com//M4RC3L05/music-follower/commit/96dc5a87abda82b36bf5d82dad70eb6162257178)
+- [Add patch-package and patch \`offline-github-changelog\` to allow unlimited commits in changelog](https://github.com//M4RC3L05/music-follower/commit/96dc5a87abda82b36bf5d82dad70eb6162257178)
 - [Update release sync to include release type and allow music relases from not released albums](https://github.com//M4RC3L05/music-follower/commit/a717720c6d3e9af9b8b9d015c5726299bb2e4750)
 - [Make artists columns not nullable](https://github.com//M4RC3L05/music-follower/commit/488aa887cc8ca381adc5962de8cb306f7db10353)
-- [Add migrations to add `type` column and create id+type unique index and make release columns not null](https://github.com//M4RC3L05/music-follower/commit/b9696d9358e4d2dd48094d341d932cfeac508412)
+- [Add migrations to add \`type\` column and create id+type unique index and make release columns not null](https://github.com//M4RC3L05/music-follower/commit/b9696d9358e4d2dd48094d341d932cfeac508412)
 - [Add album and song release endpoints](https://github.com//M4RC3L05/music-follower/commit/34b3d72c7f69d21305133df527e5dad682497093)
 - [Get host and port from config](https://github.com//M4RC3L05/music-follower/commit/a582bfce52fa1ff4ebc432c91bb2c7d5a07be809)
-- [Fix typo in `sync-releases-task` log](https://github.com//M4RC3L05/music-follower/commit/e5ce5ba5c1308bccda76dbb2063ebe80d555dd48)
-- [Log wen sending ready signal from `sync-releases-task`](https://github.com//M4RC3L05/music-follower/commit/f317c9a4d1b7de1b4dcd595e1e4cbd755004e9f9)
-- [Bind kenx to objection in main in `sync-release-task`](https://github.com//M4RC3L05/music-follower/commit/20114e6d19400059d679c6dfd0f6f04837d96101)
+- [Fix typo in \`sync-releases-task\` log](https://github.com//M4RC3L05/music-follower/commit/e5ce5ba5c1308bccda76dbb2063ebe80d555dd48)
+- [Log wen sending ready signal from \`sync-releases-task\`](https://github.com//M4RC3L05/music-follower/commit/f317c9a4d1b7de1b4dcd595e1e4cbd755004e9f9)
+- [Bind kenx to objection in main in \`sync-release-task\`](https://github.com//M4RC3L05/music-follower/commit/20114e6d19400059d679c6dfd0f6f04837d96101)
 - [Update lint command](https://github.com//M4RC3L05/music-follower/commit/6f2a2657a2a2ac4b9b41f850628bca77514d2cbd)
 - [Update dependencies version](https://github.com//M4RC3L05/music-follower/commit/1321aef028eb2905c1af574a2377d31eba31146e)
 
@@ -156,11 +161,11 @@
 
 ### v1.1.7 (2022-08-09)
 
-- [Use `offline-github-changelog` and rever scripts](https://github.com//M4RC3L05/music-follower/commit/47ed4d663c02e9828aa7cb9bfff9f2025c633f7a)
+- [Use \`offline-github-changelog\` and rever scripts](https://github.com//M4RC3L05/music-follower/commit/47ed4d663c02e9828aa7cb9bfff9f2025c633f7a)
 
 ### v1.1.6
 
-- [Add `mjs` extension to lint staged](https://github.com//M4RC3L05/music-follower/commit/0b0c6302146ed75fdfb202ce5c2b094b71dc96fc)
+- [Add \`mjs\` extension to lint staged](https://github.com//M4RC3L05/music-follower/commit/0b0c6302146ed75fdfb202ce5c2b094b71dc96fc)
 
 ### v1.1.5
 
@@ -190,18 +195,18 @@
 ### v1.0.0 (2022-08-09)
 
 - [Replace changelog generator package](https://github.com//M4RC3L05/music-follower/commit/e54596f843f5f4a9297ba029a8399f1f90560ed3)
-- [Fix `readme` typo and update deploy notes](https://github.com//M4RC3L05/music-follower/commit/8d363e3bef158206f090825a5b7eeea36b9c454b)
-- [Add `.log` directory and remove pm2 dependencies](https://github.com//M4RC3L05/music-follower/commit/0e86931d62cd7b7ca6e1f2ac6fe3331e5f42c7fc)
+- [Fix \`readme\` typo and update deploy notes](https://github.com//M4RC3L05/music-follower/commit/8d363e3bef158206f090825a5b7eeea36b9c454b)
+- [Add \`.log\` directory and remove pm2 dependencies](https://github.com//M4RC3L05/music-follower/commit/0e86931d62cd7b7ca6e1f2ac6fe3331e5f42c7fc)
 - [Use iso string for time in logger](https://github.com//M4RC3L05/music-follower/commit/98462cb5b024dff98e73a2d709b526bea577095f)
 
 ### v0.2.1 (2022-08-09)
 
-- [Fix import for `artist-repository`](https://github.com//M4RC3L05/music-follower/commit/b7b682c09f30ce695db50f53c2c4742ecdff199f)
+- [Fix import for \`artist-repository\`](https://github.com//M4RC3L05/music-follower/commit/b7b682c09f30ce695db50f53c2c4742ecdff199f)
 
 ### v0.2.0 (2022-08-09)
 
 - [Improve README.md](https://github.com//M4RC3L05/music-follower/commit/5c5da5fafbebf4af541a9a14a792855ed6652c67)
-- [Fix file typo and make `update-artists` use the `artists` repository](https://github.com//M4RC3L05/music-follower/commit/2dc03044c7caaff761a15c41d9366cf04a65c58d)
+- [Fix file typo and make \`update-artists\` use the \`artists\` repository](https://github.com//M4RC3L05/music-follower/commit/2dc03044c7caaff761a15c41d9366cf04a65c58d)
 
 ### v0.1.0 (2022-08-09)
 
