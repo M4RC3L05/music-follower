@@ -1,3 +1,7 @@
+### v7.2.0 (2022-12-17)
+
+- [Update dependencies](https://github.com//M4RC3L05/music-follower/commit/b3533cdfada4b50c3eea926fb4a182b6ec62d3eb)
+
 ### v7.1.0 (2022-12-10)
 
 - [Update patches](https://github.com//M4RC3L05/music-follower/commit/c481d2241dc70dbade1d895ec84952b9287bc8c9)
