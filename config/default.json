@@ -7,7 +7,10 @@
     },
     "admin": {
       "host": "0.0.0.0",
-      "keys": ["foo", "bar"],
+      "keys": [
+        "foo",
+        "bar"
+      ],
       "port": 4322,
       "session": {
         "maxAge": "session",
