@@ -8,30 +8,60 @@ import makeLogger from "#src/core/clients/logger.js";
 import artistRepository from "#src/data/artist/repositories/artist-repository.js";
 import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
 import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
+import type { ItunesResponseModel } from "#src/data/itunes/models/itunes-response-model.js";
 import itunesLookupRepository from "#src/data/itunes/repositories/itunes-lookup-repository.js";
 import type { ReleaseModel } from "#src/data/release/models/release-model.js";
 import releaseRepository from "#src/data/release/repositories/release-repository.js";
 
 const log = makeLogger(import.meta.url);
 
-function usableRelease(release: ItunesLookupAlbumModel | ItunesLookupSongModel) {
-  if (
-    typeof release.releaseDate === "string" &&
-    new Date(release.releaseDate).getUTCFullYear() < new Date().getUTCFullYear()
-  ) {
-    return false;
-  }
+const enum ErrorCodes {
+  SONG_AND_ALBUM_RELEASES_REQUEST_FAILED = "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",
+  NO_RELEASES_FOUND = "NO_RELEASES_FOUND",
+}
 
-  // Ignore compilations
-  if (
+function usableRelease(release: ItunesLookupAlbumModel | ItunesLookupSongModel) {
+  const isInThePastYears =
+    typeof release.releaseDate === "string" &&
+    new Date(release.releaseDate).getUTCFullYear() < new Date().getUTCFullYear();
+  const isCompilation =
     release.wrapperType === "track" &&
     typeof release.collectionArtistName === "string" &&
-    release.collectionArtistName?.toLowerCase().includes("Various Artists".toLowerCase())
-  ) {
-    return false;
+    release.collectionArtistName?.toLowerCase().includes("Various Artists".toLowerCase());
+
+  return !isInThePastYears && !isCompilation;
+}
+
+async function getRelases(artistId: number) {
+  let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
+
+  const [songsResult, albumsResult] = await itunesLookupRepository.getAllLatestReleasesFromArtist(artistId);
+
+  if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
+    throw new Error("Releases request failed", {
+      cause: {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        albumsCause: albumsResult.reason.cause,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        songsCause: songsResult.reason.cause,
+        code: ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED,
+      },
+    });
   }
 
-  return true;
+  if (albumsResult.status === "fulfilled") {
+    results = [...results, ...albumsResult.value.results.filter((release) => usableRelease(release))];
+  }
+
+  if (songsResult.status === "fulfilled") {
+    results = [...results, ...songsResult.value.results.filter((release) => usableRelease(release))];
+  }
+
+  if (!results || results.length <= 0) {
+    throw new Error("No releases", { cause: { code: ErrorCodes.NO_RELEASES_FOUND } });
+  }
+
+  return results;
 }
 
 export async function run() {
@@ -45,45 +75,36 @@ export async function run() {
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
     try {
-      const [songsResult, albumsResult] = await itunesLookupRepository.getAllLatestReleasesFromArtist(artist.id);
-
-      if (albumsResult.status === "rejected" && songsResult.status === "rejected") {
-        log.error(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          { albumsCause: albumsResult.reason.cause, songsCause: songsResult.reason.cause },
-          "Could not get albums and songs as the request has failed for both.",
-        );
+      results = await getRelases(artist.id);
+    } catch (error: unknown) {
+      if (!(error instanceof Error) || !(error?.cause as any).code) {
+        log.error(error, "Someting went wrong while fetching releases");
         log.info("Waiting 5 seconds before processing next artist");
 
         await timers.setTimeout(5000);
-        continue;
       }
 
-      if (albumsResult.status === "fulfilled") {
-        results = [...results, ...albumsResult.value.results.filter((release) => usableRelease(release))];
+      switch ((((error as Error).cause ?? {}) as { code?: ErrorCodes }).code) {
+        case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
+          const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
+
+          log.error({ albumsCause, songsCause }, "Could not get albums and songs as the request has failed for both.");
+          log.info("Waiting 5 seconds before processing next artist");
+
+          await timers.setTimeout(5000);
+          continue;
+        }
+
+        case ErrorCodes.NO_RELEASES_FOUND: {
+          log.info("No remote data found.");
+          log.info("Waiting 5 seconds before processing next artist");
+
+          await timers.setTimeout(5000);
+          continue;
+        }
+
+        default:
       }
-
-      if (songsResult.status === "fulfilled") {
-        results = [
-          ...results,
-          // Ignore compilations
-          ...songsResult.value.results.filter((release) => usableRelease(release)),
-        ];
-      }
-    } catch (error: unknown) {
-      log.error(error, "Something went wrong fetching releases");
-      log.info("Waiting 5 seconds before processing next artist");
-
-      await timers.setTimeout(5000);
-      continue;
-    }
-
-    if (!results || results.length <= 0) {
-      log.info("No remote data found.");
-      log.info("Waiting 5 seconds before processing next artist");
-
-      await timers.setTimeout(5000);
-      continue;
     }
 
     const releases = results.map((data) => ({
@@ -100,13 +121,6 @@ export async function run() {
         .join("/"),
       metadata: { ...data },
     }));
-
-    if (releases.length <= 0) {
-      log.info("Waiting 5 seconds before processing next artist");
-
-      await timers.setTimeout(5000);
-      continue;
-    }
 
     log.info({ releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) }, "Usable releases.");
 

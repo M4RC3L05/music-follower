@@ -9,11 +9,17 @@
     "baseUrl": ".",
     "moduleResolution": "NodeNext",
     "paths": {
-      "#src/*": ["./src/*"],
-      "#tests/*": ["./tests/*"]
+      "#src/*": [
+        "./src/*"
+      ],
+      "#tests/*": [
+        "./tests/*"
+      ]
     }
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "ts-node": {
     "transpileOnly": true,
     "swc": true,

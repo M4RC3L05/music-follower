@@ -29,14 +29,12 @@ describe("task", () => {
 
     fixtures.getLatestsArtistMusicReleases(500, "Internal Server Error");
     fixtures.getLatestsArtistMusicReleases(500, "Internal Server Error");
-    fixtures.getLatestsArtistMusicReleases(200, {
-      resultCount: 0,
-      results: [{}, songRelease],
-    } as ItunesResponseModel<Record<string, unknown>>);
-    fixtures.getLatestsArtistMusicReleases(200, {
-      resultCount: 0,
-      results: [{}, albumRelease],
-    } as ItunesResponseModel<Record<string, unknown>>);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, songRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, albumRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
 
     jest.spyOn(timers, "setTimeout").mockResolvedValue("");
     jest.spyOn(itunesLookupRepository, "getAllLatestReleasesFromArtist");
@@ -97,7 +95,6 @@ describe("task", () => {
     const artist = await fixtures.loadArtist({ id: 1, imageUrl: "foo", name: "bar" });
 
     const now = new Date();
-    const currentYear = now.getUTCFullYear();
     const songRelease = fixtures.loadItunesLookupSong({ releaseDate: now.toISOString() });
     const songRelease2 = fixtures.loadItunesLookupSong({
       releaseDate: now.toISOString(),
@@ -108,10 +105,9 @@ describe("task", () => {
       resultCount: 0,
       results: [{}, songRelease, songRelease2],
     } as ItunesResponseModel<Record<string, unknown>>);
-    fixtures.getLatestsArtistMusicReleases(200, {
-      resultCount: 0,
-      results: [{}],
-    } as ItunesResponseModel<Record<string, unknown>>);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
 
     jest.spyOn(timers, "setTimeout").mockResolvedValue("");
     jest.spyOn(itunesLookupRepository, "getAllLatestReleasesFromArtist");
@@ -140,14 +136,33 @@ describe("task", () => {
       collectionArtistName: "Various Artists",
     });
 
-    fixtures.getLatestsArtistMusicReleases(200, {
-      resultCount: 0,
-      results: [{}, songRelease],
-    } as ItunesResponseModel<Record<string, unknown>>);
-    fixtures.getLatestsArtistMusicReleases(200, {
-      resultCount: 0,
-      results: [{}, albumRelease],
-    } as ItunesResponseModel<Record<string, unknown>>);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, songRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, albumRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    jest.spyOn(timers, "setTimeout").mockResolvedValue("");
+    jest.spyOn(itunesLookupRepository, "getAllLatestReleasesFromArtist");
+    jest.spyOn(releaseRepository, "upsertReleases").mockResolvedValue();
+
+    await run();
+
+    expect(itunesLookupRepository.getAllLatestReleasesFromArtist).toHaveBeenCalledTimes(1);
+    expect(releaseRepository.upsertReleases).toHaveBeenCalledTimes(0);
+  });
+
+  test("it should skip if no release is found", async () => {
+    await fixtures.loadArtist({ id: 1, imageUrl: "foo", name: "bar" });
+
+    const now = new Date();
+
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
 
     jest.spyOn(timers, "setTimeout").mockResolvedValue("");
     jest.spyOn(itunesLookupRepository, "getAllLatestReleasesFromArtist");
@@ -157,5 +172,63 @@ describe("task", () => {
 
     expect(itunesLookupRepository.getAllLatestReleasesFromArtist).toHaveBeenCalledTimes(1);
     expect(releaseRepository.upsertReleases).toHaveBeenCalledTimes(0);
+  });
+
+  test("should sync releases", async () => {
+    await fixtures.loadArtist({ id: 1, imageUrl: "foo", name: "bar" });
+
+    const now = new Date();
+    const albumRelease = fixtures.loadItunesLookupAlbum({
+      releaseDate: now.toISOString(),
+    });
+    const songRelease = fixtures.loadItunesLookupSong({
+      releaseDate: now.toISOString(),
+    });
+
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, songRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    fixtures.getLatestsArtistMusicReleases(200, { resultCount: 0, results: [{}, albumRelease] } as ItunesResponseModel<
+      Record<string, unknown>
+    >);
+    jest.spyOn(timers, "setTimeout").mockResolvedValue("");
+    jest.spyOn(itunesLookupRepository, "getAllLatestReleasesFromArtist");
+    jest.spyOn(releaseRepository, "upsertReleases").mockResolvedValue();
+
+    await run();
+
+    expect(releaseRepository.upsertReleases).toHaveBeenCalledTimes(2);
+    expect(releaseRepository.upsertReleases).toHaveBeenNthCalledWith(1, 1, [
+      {
+        id: albumRelease.collectionId,
+        collectionId: albumRelease.collectionId,
+        isStreamable: false,
+        name: albumRelease.collectionName,
+        type: albumRelease.wrapperType,
+        artistName: albumRelease.artistName,
+        releasedAt: albumRelease.releaseDate ? new Date(albumRelease.releaseDate) : undefined,
+        coverUrl: albumRelease.artworkUrl100
+          .split("/")
+          .map((segment, index, array) => (index === array.length - 1 ? "512x512bb.jpg" : segment))
+          .join("/"),
+        metadata: { ...albumRelease },
+      },
+    ]);
+    expect(releaseRepository.upsertReleases).toHaveBeenNthCalledWith(2, 1, [
+      {
+        id: songRelease.trackId,
+        collectionId: songRelease.collectionId,
+        isStreamable: songRelease.isStreamable || false,
+        name: songRelease.trackName,
+        type: songRelease.wrapperType,
+        artistName: songRelease.artistName,
+        releasedAt: songRelease.releaseDate ? new Date(songRelease.releaseDate) : undefined,
+        coverUrl: songRelease.artworkUrl100
+          .split("/")
+          .map((segment, index, array) => (index === array.length - 1 ? "512x512bb.jpg" : segment))
+          .join("/"),
+        metadata: { ...songRelease },
+      },
+    ]);
   });
 });
