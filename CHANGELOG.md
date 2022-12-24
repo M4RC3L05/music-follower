@@ -1,3 +1,10 @@
+### v7.3.0 (2022-12-24)
+
+- [Add licence](https://github.com/M4RC3L05/music-follower/commit/b3bbade3011a7632306941e9fd169f41e0064b61)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/7cebe4ac845dc6560772c015e969ec04e6c752f3)
+- [Fix changelog urls](https://github.com/M4RC3L05/music-follower/commit/ac13b74e011960ecfeefaa4f8d295d1373bce815)
+- [Code improvements](https://github.com/M4RC3L05/music-follower/commit/83510e74032e54491cde61b4a2df3eb911c1071e)
+
 ### v7.2.0 (2022-12-17)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/b3533cdfada4b50c3eea926fb4a182b6ec62d3eb)
