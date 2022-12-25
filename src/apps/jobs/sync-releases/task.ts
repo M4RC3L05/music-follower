@@ -8,7 +8,6 @@ import makeLogger from "#src/core/clients/logger.js";
 import artistRepository from "#src/data/artist/repositories/artist-repository.js";
 import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
 import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
-import type { ItunesResponseModel } from "#src/data/itunes/models/itunes-response-model.js";
 import itunesLookupRepository from "#src/data/itunes/repositories/itunes-lookup-repository.js";
 import type { ReleaseModel } from "#src/data/release/models/release-model.js";
 import releaseRepository from "#src/data/release/repositories/release-repository.js";
