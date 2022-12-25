@@ -1,3 +1,8 @@
+### v7.3.1 (2022-12-25)
+
+- [Expose get releases failing reason to logs](https://github.com/M4RC3L05/music-follower/commit/33c034fbfcbfdb414fe14799c48613f0b3d7f5ba)
+- [Format default config file](https://github.com/M4RC3L05/music-follower/commit/ce483644d51f9be5b2e961ebfac954448bcccee7)
+
 ### v7.3.0 (2022-12-24)
 
 - [Add licence](https://github.com/M4RC3L05/music-follower/commit/b3bbade3011a7632306941e9fd169f41e0064b61)
