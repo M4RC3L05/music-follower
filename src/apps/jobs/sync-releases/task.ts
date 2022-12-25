@@ -41,9 +41,9 @@ async function getRelases(artistId: number) {
     throw new Error("Releases request failed", {
       cause: {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        albumsCause: albumsResult.reason.cause,
+        albumsCause: albumsResult.reason,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        songsCause: songsResult.reason.cause,
+        songsCause: songsResult.reason,
         code: ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED,
       },
     });
