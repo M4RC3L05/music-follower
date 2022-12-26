@@ -1,12 +1,12 @@
 {
   "name": "music-follower",
   "version": "7.3.1",
-  "description": "",
+  "description": "Simple self-host rss feed to get releases from artists",
   "main": "index.ts",
   "type": "module",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "m4rc3l05",
+  "license": "MIT",
   "imports": {
     "#src/*": "./src/*",
     "#tests/*": "./tests/*"
