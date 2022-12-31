@@ -1,3 +1,7 @@
+### v8.0.1 (2022-12-31)
+
+- [Fix wrong releasedAt value for track releases with invalid or non existente releasedAt](https://github.com/M4RC3L05/music-follower/commit/dad2a1e7a02e00271808ff99f535a87fadfb32d1)
+
 ### v8.0.0 (2022-12-31)
 
 - [Major refactor](https://github.com/M4RC3L05/music-follower/commit/9a93d376b7ab090a86e1b6417cc4bfa96b365345)
