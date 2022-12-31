@@ -1,40 +1,40 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-await-in-loop */
 
 import timers from "node:timers/promises";
 
-import type { ModelObject } from "objection";
+import { artistQueries } from "#src/database/tables/artists/index.js";
+import { type Release, releaseQueries } from "#src/database/tables/releases/index.js";
+import {
+  type ItunesLookupAlbumModel,
+  type ItunesLookupSongModel,
+  itunesRequests,
+} from "#src/remote/sources/itunes/index.js";
+import logger from "#src/utils/logger/logger.js";
 
-import makeLogger from "#src/core/clients/logger.js";
-import artistRepository from "#src/data/artist/repositories/artist-repository.js";
-import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
-import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
-import itunesLookupRepository from "#src/data/itunes/repositories/itunes-lookup-repository.js";
-import type { ReleaseModel } from "#src/data/release/models/release-model.js";
-import releaseRepository from "#src/data/release/repositories/release-repository.js";
-
-const log = makeLogger(import.meta.url);
+const log = logger("task");
 
 const enum ErrorCodes {
   SONG_AND_ALBUM_RELEASES_REQUEST_FAILED = "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",
   NO_RELEASES_FOUND = "NO_RELEASES_FOUND",
 }
 
-function usableRelease(release: ItunesLookupAlbumModel | ItunesLookupSongModel) {
-  const isInThePastYears =
-    typeof release.releaseDate === "string" &&
-    new Date(release.releaseDate).getUTCFullYear() < new Date().getUTCFullYear();
+const usableRelease = (release: ItunesLookupAlbumModel | ItunesLookupSongModel) => {
+  const isInThePastYears = new Date(release.releaseDate).getUTCFullYear() < new Date().getUTCFullYear();
   const isCompilation =
     release.wrapperType === "track" &&
-    typeof release.collectionArtistName === "string" &&
-    release.collectionArtistName?.toLowerCase().includes("Various Artists".toLowerCase());
+    release.collectionArtistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
 
   return !isInThePastYears && !isCompilation;
-}
+};
 
-async function getRelases(artistId: number) {
+const getRelases = async (artistId: number) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
-  const [songsResult, albumsResult] = await itunesLookupRepository.getAllLatestReleasesFromArtist(artistId);
+  const [songsResult, albumsResult] = await Promise.allSettled([
+    itunesRequests.getLatestsArtistMusicReleases(artistId),
+    itunesRequests.getLatestsArtistAlbumReleases(artistId),
+  ]);
 
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
     throw new Error("Releases request failed", {
@@ -61,14 +61,20 @@ async function getRelases(artistId: number) {
   }
 
   return results;
-}
+};
 
-export async function run() {
+export const run = async (abort: AbortSignal) => {
   log.info("Begin releases sync.");
 
-  const artists = await artistRepository.getArtists();
+  const artists = artistQueries.getAll();
 
   for (const [key, artist] of artists.entries()) {
+    /* c8 ignore start */
+    if (abort.aborted) {
+      break;
+    }
+    /* c8 ignore stop */
+
     log.info(`Processing releases from "${artist.name}" at ${key + 1} of ${artists.length}.`);
 
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
@@ -76,21 +82,14 @@ export async function run() {
     try {
       results = await getRelases(artist.id);
     } catch (error: unknown) {
-      if (!(error instanceof Error) || !(error?.cause as any).code) {
-        log.error(error, "Someting went wrong while fetching releases");
-        log.info("Waiting 5 seconds before processing next artist");
-
-        await timers.setTimeout(5000);
-      }
-
-      switch ((((error as Error).cause ?? {}) as { code?: ErrorCodes }).code) {
+      switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
           const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
 
-          log.error({ albumsCause, songsCause }, "Could not get albums and songs as the request has failed for both.");
+          log.error("Could not get albums and songs as the request has failed for both.", { albumsCause, songsCause });
           log.info("Waiting 5 seconds before processing next artist");
 
-          await timers.setTimeout(5000);
+          await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});
           continue;
         }
 
@@ -98,53 +97,69 @@ export async function run() {
           log.info("No remote data found.");
           log.info("Waiting 5 seconds before processing next artist");
 
-          await timers.setTimeout(5000);
+          await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});
           continue;
         }
 
+        /* c8 ignore start */
         default:
+        /* c8 ignore stop */
       }
     }
 
-    const releases = results.map((data) => ({
-      id: data.wrapperType === "collection" ? data.collectionId : data.trackId,
-      collectionId: data.collectionId,
-      isStreamable: (data as ItunesLookupSongModel).isStreamable || false,
-      name: data.wrapperType === "collection" ? data.collectionName : data.trackName,
-      type: data.wrapperType,
-      artistName: data.artistName,
-      releasedAt: data.releaseDate ? new Date(data.releaseDate) : undefined,
-      coverUrl: data.artworkUrl100
-        .split("/")
-        .map((segment, index, array) => (index === array.length - 1 ? "512x512bb.jpg" : segment))
-        .join("/"),
-      metadata: { ...data },
-    }));
+    /* c8 ignore start */
+    if (abort.aborted) {
+      break;
+    }
+    /* c8 ignore stop */
 
-    log.info({ releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) }, "Usable releases.");
+    const releases = results.map((data) => {
+      const entity: Omit<Release, "feedAt"> & { feedAt?: Date } = {
+        id: data.wrapperType === "collection" ? data.collectionId : data.trackId,
+        name: data.wrapperType === "collection" ? data.collectionName : data.trackName,
+        type: data.wrapperType,
+        artistName: data.artistName,
+        releasedAt: new Date(data.releaseDate),
+        coverUrl: data.artworkUrl100
+          .split("/")
+          .map((segment, index, array) => (index === array.length - 1 ? "512x512bb.jpg" : segment))
+          .join("/"),
+        metadata: { ...data },
+      };
+
+      return {
+        ...entity,
+        collectionId: data.collectionId,
+        isStreamable: (data as ItunesLookupSongModel).isStreamable || false,
+      };
+    });
+
+    log.info("Usable releases.", { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) });
 
     try {
+      log.info("Upserting releases for artist", { id: artist.id });
+
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      await releaseRepository.upsertReleases(
-        artist.id,
-        releases.filter(({ type }) => type === "collection") as Array<
-          ModelObject<ReleaseModel & { collectionId?: number; isStreamable?: boolean }>
-        >,
-      );
-      await releaseRepository.upsertReleases(
-        artist.id,
-        releases.filter(({ type }) => type === "track") as Array<
-          ModelObject<ReleaseModel & { collectionId?: number; isStreamable?: boolean }>
-        >,
-      );
+      releaseQueries.upsertMany(releases.filter(({ type }) => type === "collection"));
+      releaseQueries.upsertMany(releases.filter(({ type }) => type === "track"));
+
+      /* c8 ignore start */
     } catch (error: unknown) {
-      log.error(error, "Something wrong ocurred while upserting releases");
+      log.error("Something wrong ocurred while upserting releases", error);
     }
+    /* c8 ignore stop */
+
+    /* c8 ignore start */
+    if (abort.aborted) {
+      break;
+    }
+    /* c8 ignore stop */
 
     log.info("Waiting 5 seconds before processing next artist");
-    await timers.setTimeout(5000);
+
+    await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});
   }
 
   log.info("Releases sync ended.");
-}
+};

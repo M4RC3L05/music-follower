@@ -2,25 +2,15 @@ import config from "config";
 import { Feed } from "feed";
 import type { Context } from "koa";
 
-import makeLogger from "#src/core/clients/logger.js";
-import type { ItunesLookupAlbumModel } from "#src/data/itunes/models/itunes-lookup-album-model.js";
-import type { ItunesLookupSongModel } from "#src/data/itunes/models/itunes-lookup-song-model.js";
-import releaseRepository from "#src/data/release/repositories/release-repository.js";
+import { releaseQueries } from "#src/database/tables/releases/index.js";
+import logger from "#src/utils/logger/logger.js";
 
-const logger = makeLogger(import.meta.url);
+const log = logger("feed-middleware");
 
-export async function feedMiddleware(context: Context) {
-  const { format } = context.request.query;
+export const feedMiddleware = (context: Context) => {
+  log.info("Getting latest releases");
 
-  if (!format || typeof format !== "string" || !["rss", "atom", "json"].includes(format)) {
-    logger.error({ format }, "Invalid feed format provided");
-
-    context.throw(400, "Invalid feed format provided");
-  }
-
-  logger.info("Getting latest releases");
-
-  const releases = await releaseRepository.getLatestReleases(config.get<number>("apps.feed.maxReleases"));
+  const releases = releaseQueries.getLatests(config.get<number>("apps.feed.maxReleases"));
 
   const feed = new Feed({
     title: "Music releases",
@@ -44,40 +34,26 @@ export async function feedMiddleware(context: Context) {
       id: String(release.id),
       link:
         release.type === "collection"
-          ? (release.metadata as ItunesLookupAlbumModel).collectionViewUrl ?? release.coverUrl
+          ? (release.metadata.collectionViewUrl as string) ?? release.coverUrl
           : release.type === "track"
-          ? (release.metadata as ItunesLookupSongModel).trackViewUrl ??
-            (release.metadata as ItunesLookupSongModel).collectionViewUrl ??
+          ? (release.metadata.trackViewUrl as string) ??
+            (release.metadata.collectionViewUrl as string) ??
             release.coverUrl
           : release.coverUrl,
-      image: release.coverUrl,
     });
   }
 
-  switch (format) {
-    case "rss": {
-      context.type = "application/rss+xml";
-      context.body = feed.rss2();
-      return;
-    }
-
-    case "atom": {
-      context.type = "application/atom+xml";
-      context.body = feed.atom1();
-      return;
-    }
-
-    case "json": {
-      context.type = "application/json";
-      context.body = feed.json1();
-      return;
-    }
-
-    /* istanbul ignore next */
-    default: {
-      logger.warn({ format }, "Somehow an invalid feed format");
-
-      context.throw(400, "Invalid feed format provided");
-    }
+  if (context.request.accepts("application/rss+xml") || context.request.accepts("application/xml")) {
+    context.type = context.request.accepts("application/xml") ? "application/xml" : "application/rss+xml";
+    context.body = feed.rss2();
+  } else if (context.request.accepts("application/atom+xml")) {
+    context.type = "application/atom+xml";
+    context.body = feed.atom1();
+  } else if (context.request.accepts("application/json")) {
+    context.type = "application/json";
+    context.body = feed.json1();
+  } else {
+    context.type = "application/xml";
+    context.body = feed.rss2();
   }
-}
+};

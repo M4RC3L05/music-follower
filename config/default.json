@@ -26,19 +26,16 @@
     },
     "jobs": {
       "sync-releases": {
-        "cron": "41 * * * *"
+        "cron": "* * * * *"
       }
     }
   },
   "database": {
-    "client": "better-sqlite3",
-    "useNullAsDefault": true,
-    "connection": {
-      "filename": "./database/db.sqlite"
-    },
-    "migrations": {
-      "directory": "./database/migrations"
-    }
+    "path": "./data/db.sqlite"
+  },
+  "logger": {
+    "level": 0,
+    "color": false
   },
   "remote": {
     "itunes": {

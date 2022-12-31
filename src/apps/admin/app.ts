@@ -1,6 +1,5 @@
 import path from "node:path";
 import process from "node:process";
-import url from "node:url";
 
 // @ts-expect-error no typedefs
 import render from "@koa/ejs";
@@ -24,7 +23,7 @@ export const app = () => {
   qs(koa);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   render(koa, {
-    root: path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "views"),
+    root: path.resolve("./src/apps/admin/views"),
     layout: "main",
     viewExt: "ejs",
     cache: process.env.NODE_ENV === "production",
@@ -36,7 +35,7 @@ export const app = () => {
   koa.use(flash());
   koa.use(bodyParser());
   koa.use(new Csrf());
-  koa.use(koaStatic(path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../../../public")));
+  koa.use(koaStatic("./static"));
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
   koa.use(router.middleware());
   koa.use(router.allowedMethods());

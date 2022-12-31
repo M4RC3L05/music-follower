@@ -1,12 +1,12 @@
 import Koa from "koa";
-import qs from "koa-qs";
+import favicon from "koa-favicon";
 
 import { feedMiddleware } from "#src/apps/feed/middlewares/feed-middleware.js";
 
 export const app = () => {
   const koa = new Koa();
-  qs(koa);
 
+  koa.use(favicon("./static/favicon.ico"));
   koa.use(feedMiddleware);
 
   return koa;

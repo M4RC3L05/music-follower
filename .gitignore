@@ -1,9 +1,10 @@
 node_modules
 dist
-database/data/*
-!database/data/.gitkeep
-database/db.sqlite
+data/*
+!data/.gitkeep
+data/db.sqlite
 .pm2/*
 !.pm2/*.example
 config/local.json
+config/development.json
 coverage

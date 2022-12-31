@@ -1,7 +1,9 @@
 {
   "database": {
-    "connection": {
-      "filename": ":memory:"
-    }
+    "path": ":memory:"
+  },
+  "logger": {
+    "level": 4,
+    "color": true
   }
 }

@@ -1,9 +1,10 @@
 {
-  "name": "@music-follower/sync-release-job",
-  "cwd": "<project/root/path>",
-  "script": "dist/apps/jobs/main.ts",
-  "args": ["job", "sync-releases"]
+  "name": "@music-follower/sync-releases-job",
+  "cwd": "<path>",
+  "script": "src/apps/jobs/main.ts",
+  "args": ["job", "sync-releases"],
   "interpreter": "node_modules/.bin/ts-node",
+  "node_args": ["-P", "tsconfig.json"],
   "exec_mode": "fork",
   "watch": false,
   "instances": 1,
