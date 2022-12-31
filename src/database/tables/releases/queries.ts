@@ -80,6 +80,17 @@ export const upsertMany = (
       continue;
     }
 
+    const releaseRecord = table.get<Release>(sql`
+      select * from $${table.lit("table")}
+      where $${and(table.eq("id", release.id), table.eq("type", "track"))}
+    `);
+
+    // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)
+    // we set its as the current date or the one in the db if the release was already stored, since we can stream it.
+    if (Number.isNaN(release.releasedAt.getTime())) {
+      release.releasedAt = releaseRecord?.releasedAt ?? new Date();
+    }
+
     log.debug("Upserting release", { id: release.id, type: release.type });
 
     table.execute(sql`

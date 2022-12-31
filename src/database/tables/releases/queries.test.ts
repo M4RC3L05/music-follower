@@ -217,6 +217,63 @@ describe("queries", () => {
         assert.strict.equal(table.all(sql`select * from $${table.lit("table")}`).length, 2);
       });
 
+      it("should use current date as released at if the one provided is invalid", () => {
+        sinon.useFakeTimers(0);
+
+        const releaseTrack = makeReleaseObject(
+          { id: 1, type: "track", releasedAt: new Date(undefined!) },
+          { isStreamable: true, collectionId: 1 },
+        );
+
+        releaseFixtures.loadRelease({
+          id: 1,
+          type: "collection",
+          releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        });
+
+        upsertMany([releaseTrack]);
+
+        const release = getById(releaseTrack.id, "track");
+
+        assert.strict.deepEqual(
+          { id: release?.id, releasedAt: release?.releasedAt },
+          { id: releaseTrack.id, releasedAt: new Date() },
+        );
+        assert.strict.equal(table.all(sql`select * from $${table.lit("table")}`).length, 2);
+
+        sinon.restore();
+        sinon.reset();
+      });
+
+      it("should use the released at of the db record as released at if the one provided is invalid and a release record exists on the db", () => {
+        sinon.useFakeTimers(0);
+
+        const releaseTrack = makeReleaseObject(
+          { id: 1, type: "track", releasedAt: new Date(undefined!) },
+          { isStreamable: true, collectionId: 1 },
+        );
+
+        releaseFixtures.loadRelease({ id: 1, type: "track", releasedAt: new Date(10) });
+        releaseFixtures.loadRelease({
+          id: 1,
+          type: "collection",
+          releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        });
+
+        upsertMany([releaseTrack]);
+
+        const release = getById(releaseTrack.id, "track");
+
+        assert.strict.deepEqual(
+          { id: release?.id, releasedAt: release?.releasedAt },
+          { id: releaseTrack.id, releasedAt: new Date(10) },
+        );
+        assert.strict.equal(table.all(sql`select * from $${table.lit("table")}`).length, 2);
+
+        sinon.restore();
+        sinon.reset();
+      });
+
       it("should update a release if one already exist", () => {
         const releaseTrack = makeReleaseObject(
           { id: 1, type: "track", name: "bar", metadata: { foo: true } },
