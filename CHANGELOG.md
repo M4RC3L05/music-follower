@@ -1,3 +1,10 @@
+### v8.0.0 (2022-12-31)
+
+- [Major refactor](https://github.com/M4RC3L05/music-follower/commit/9a93d376b7ab090a86e1b6417cc4bfa96b365345)
+- [Add metadata to package.json](https://github.com/M4RC3L05/music-follower/commit/487e5d22bae4bc556690481d3424c6f2a054963b)
+- [Add unused imports eslint rule](https://github.com/M4RC3L05/music-follower/commit/07b4a1725e53085a3a65d631224847fd890e040a)
+- [Code cleanup](https://github.com/M4RC3L05/music-follower/commit/3e9ab3e52537d3d7bf9393e273a7e420159a4eb6)
+
 ### v7.3.1 (2022-12-25)
 
 - [Expose get releases failing reason to logs](https://github.com/M4RC3L05/music-follower/commit/33c034fbfcbfdb414fe14799c48613f0b3d7f5ba)
