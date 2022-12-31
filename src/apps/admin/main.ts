@@ -1,16 +1,12 @@
 import process from "node:process";
 
 import config from "config";
-import { Model } from "objection";
 
 import { app } from "#src/apps/admin/app.js";
-import { knex } from "#src/core/clients/knex.js";
-import makeLogger from "#src/core/clients/logger.js";
-import { onProcessSignals } from "#src/core/process/process.js";
+import logger from "#src/utils/logger/logger.js";
+import { onProcessSignals } from "#src/utils/process/process.js";
 
-Model.knex(knex);
-
-const logger = makeLogger(import.meta.url);
+const log = logger("main");
 const api = app();
 const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
 
@@ -18,16 +14,28 @@ const server = api.listen(port, host, () => {
   const addr = server.address();
 
   if (typeof addr === "string") {
-    logger.info(`Live at ${addr}`);
+    log.info(`Live at ${addr}`);
   } else {
-    logger.info(`Live at ${addr!.address}:${addr!.port}`);
+    log.info(`Live at ${addr!.address}:${addr!.port}`);
   }
 
   if (typeof process.send === "function") {
-    logger.info("Sending ready signal");
+    log.info("Sending ready signal");
 
     process.send("ready");
   }
+});
+
+process.addListener("uncaughtException", (error, origin) => {
+  log.error("Uncaught exception", { error, origin });
+
+  process.emit("SIGUSR2");
+});
+
+process.addListener("unhandledRejection", (reason, promise) => {
+  log.error("Unhandled rejection", { reason, promise });
+
+  process.emit("SIGUSR2");
 });
 
 onProcessSignals({
@@ -45,7 +53,7 @@ onProcessSignals({
       });
     });
 
-    logger.info("Server terminated");
+    log.info("Server terminated");
   },
   name: import.meta.url,
 });

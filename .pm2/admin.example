@@ -1,8 +1,9 @@
 {
   "name": "@music-follower/admin",
-  "cwd": "<project/root/path>",
+  "cwd": "<path>",
   "script": "src/apps/admin/main.ts",
   "interpreter": "node_modules/.bin/ts-node",
+  "node_args": ["-P", "tsconfig.json"],
   "exec_mode": "fork",
   "watch": false,
   "instances": 1,

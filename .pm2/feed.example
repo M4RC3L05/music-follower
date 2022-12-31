@@ -1,8 +1,9 @@
 {
   "name": "@music-follower/feed",
-  "cwd": "<project/root/path>",
+  "cwd": "<path>",
   "script": "src/apps/feed/main.ts",
   "interpreter": "node_modules/.bin/ts-node",
+  "node_args": ["-P", "tsconfig.json"],
   "exec_mode": "fork",
   "watch": false,
   "instances": 1,
