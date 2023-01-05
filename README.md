@@ -44,7 +44,7 @@ pm2 start/restart .pm2/<file.json> --update-env
 ## Release
 
 ```bash
-npm version [major | minor | patch] -m "Release v%s"
+pnpm version [major | minor | patch] -m "Release v%s"
 
 git push origin main --tags
 ```
