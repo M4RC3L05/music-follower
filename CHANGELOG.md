@@ -1,3 +1,9 @@
+### v8.1.0 (2023-01-05)
+
+- [Fix ejs formatting](https://github.com/M4RC3L05/music-follower/commit/4a68173f9844a13dbf1025ae9c1b68fcb97871be)
+- [Remove unused packages](https://github.com/M4RC3L05/music-follower/commit/e03c647c89120f91615119e6f641e18dea98c0a1)
+- [Switch to pnpm](https://github.com/M4RC3L05/music-follower/commit/6391a46c93c1dd8a4d2e7f472260489ad28f2242)
+
 ### v8.0.1 (2022-12-31)
 
 - [Fix wrong releasedAt value for track releases with invalid or non existente releasedAt](https://github.com/M4RC3L05/music-follower/commit/dad2a1e7a02e00271808ff99f535a87fadfb32d1)
