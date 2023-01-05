@@ -2,15 +2,15 @@
 <div class="container-xl mt-4">
   <div class="row">
     <div class="col">
-      <% const alertTypesMap = { "error": "alert-danger", "success": "alert-success" } %>
+      <% const alertTypesMap={ "error" : "alert-danger" , "success" : "alert-success" } %>
       <% for(const [type, messages] of Object.entries(flashMessages)) { %>
-        <% for(const message of messages) { %>
-          <% if (type in alertTypesMap) { %>
-            <div class="alert <%= alertTypesMap[type] %>" role="alert">
-              <%= message %>
-            </div>
-          <% } %>
-        <% } %>
+      <% for(const message of messages) { %>
+      <% if (type in alertTypesMap) { %>
+      <div class="alert <%= alertTypesMap[type] %>" role="alert">
+        <%= message %>
+      </div>
+      <% } %>
+      <% } %>
       <% } %>
     </div>
   </div>
