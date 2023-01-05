@@ -9,7 +9,6 @@ import basicAuth from "koa-basic-auth";
 // @ts-expect-error no typedefs
 import flash from "koa-better-flash";
 import bodyParser from "koa-bodyparser";
-import Csrf from "koa-csrf";
 import qs from "koa-qs";
 import session from "koa-session";
 import koaStatic from "koa-static";
@@ -34,7 +33,6 @@ export const app = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   koa.use(flash());
   koa.use(bodyParser());
-  koa.use(new Csrf());
   koa.use(koaStatic("./static"));
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
   koa.use(router.middleware());

@@ -45,7 +45,6 @@ export const index = async (context: RouterContext) => {
     query,
     remoteArtists,
     remoteArtistQuery,
-    _csrf: context.state._csrf,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     flashMessages: context.flash(),
   });

@@ -10,7 +10,6 @@ export const index = async (context: RouterContext) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await context.render("releases/index", {
-    _csrf: context.state._csrf,
     releases,
     limit,
     page,
@@ -25,5 +24,5 @@ export const show = async (context: RouterContext) => {
   const release = releaseQueries.getById(Number(context.params.id), context.query.type as any);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-  await context.render("releases/show", { _csrf: context.state._csrf, release, flashMessages: context.flash() });
+  await context.render("releases/show", { release, flashMessages: context.flash() });
 };
