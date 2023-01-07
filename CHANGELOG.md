@@ -1,3 +1,8 @@
+### v8.2.0 (2023-01-07)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/28de7d3929d24ba3508695eaecf10d274f45f25a)
+- [Add \`max-release-time\` to indicate the expiry of a given release](https://github.com/M4RC3L05/music-follower/commit/74e88414ce176b7e4e789e540ebbcd155d0dd6c6)
+
 ### v8.1.0 (2023-01-05)
 
 - [Fix ejs formatting](https://github.com/M4RC3L05/music-follower/commit/4a68173f9844a13dbf1025ae9c1b68fcb97871be)
