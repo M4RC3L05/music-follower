@@ -3,6 +3,9 @@
 
 import timers from "node:timers/promises";
 
+import config from "config";
+import ms from "ms";
+
 import { artistQueries } from "#src/database/tables/artists/index.js";
 import { type Release, releaseQueries } from "#src/database/tables/releases/index.js";
 import {
@@ -20,7 +23,9 @@ const enum ErrorCodes {
 }
 
 const usableRelease = (release: ItunesLookupAlbumModel | ItunesLookupSongModel) => {
-  const isInThePastYears = new Date(release.releaseDate).getUTCFullYear() < new Date().getUTCFullYear();
+  const isInThePastYears =
+    new Date(release.releaseDate) <
+    new Date(Date.now() - ms(config.get<string>("apps.jobs.sync-releases.max-release-time")));
   const isCompilation =
     release.wrapperType === "track" &&
     release.collectionArtistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
@@ -134,7 +139,7 @@ export const run = async (abort: AbortSignal) => {
       };
     });
 
-    log.info("Usable releases.", { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) });
+    log.info("Usable releases", { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) });
 
     try {
       log.info("Upserting releases for artist", { id: artist.id });

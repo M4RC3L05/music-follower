@@ -29,7 +29,6 @@ describe("task", () => {
     it("should do no work if getting the new releases fails", async () => {
       nockFixtures.getLatestsArtistAlbumReleases(500, {});
       nockFixtures.getLatestsArtistMusicReleases(500, {});
-
       artistFixtures.loadArtist();
 
       sinon.stub(timers, "setTimeout").resolves();
@@ -45,7 +44,6 @@ describe("task", () => {
     it("should do no work if no releases were fetched", async () => {
       nockFixtures.getLatestsArtistAlbumReleases(200, { results: [] });
       nockFixtures.getLatestsArtistMusicReleases(200, { results: [] });
-
       artistFixtures.loadArtist();
 
       sinon.stub(timers, "setTimeout").resolves();
@@ -58,15 +56,34 @@ describe("task", () => {
       sinon.reset();
     });
 
-    it("should ignore release if it in the past year or are part of a compilation", async () => {
+    it("should ignore releases based on the `max-release-time` config", async () => {
       nockFixtures.getLatestsArtistAlbumReleases(200, {
         results: [
           {},
           itunesFixtures.loadItunesLookupAlbum({
+            releaseDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 365).toISOString(),
+          }),
+          itunesFixtures.loadItunesLookupAlbum({
             releaseDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 366).toISOString(),
+          }),
+          itunesFixtures.loadItunesLookupAlbum({
+            releaseDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 364).toISOString(),
           }),
         ],
       });
+      artistFixtures.loadArtist();
+
+      sinon.stub(timers, "setTimeout").resolves();
+
+      await run(new AbortController().signal);
+
+      assert.strict.equal(releaseQueries.getLatests().length, 1);
+
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it("should ignore release if it is part of a compilation", async () => {
       nockFixtures.getLatestsArtistMusicReleases(200, {
         results: [
           {},
@@ -76,7 +93,6 @@ describe("task", () => {
           }),
         ],
       });
-
       artistFixtures.loadArtist();
 
       sinon.stub(timers, "setTimeout").resolves();
@@ -99,7 +115,6 @@ describe("task", () => {
           itunesFixtures.loadItunesLookupSong({ trackId: 1, collectionId: 3, releaseDate: new Date().toISOString() }),
         ],
       });
-
       artistFixtures.loadArtist();
 
       sinon.stub(timers, "setTimeout").resolves();

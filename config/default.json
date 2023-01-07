@@ -26,7 +26,8 @@
     },
     "jobs": {
       "sync-releases": {
-        "cron": "* * * * *"
+        "cron": "* * * * *",
+        "max-release-time": "1 year"
       }
     }
   },

@@ -1,9 +1,16 @@
 {
+  "apps": {
+    "jobs": {
+      "sync-releases": {
+        "max-release-time": "1 year"
+      }
+    }
+  },
   "database": {
     "path": ":memory:"
   },
   "logger": {
     "level": 4,
-    "color": true
+    "color": false
   }
 }
