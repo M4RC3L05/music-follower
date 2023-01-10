@@ -20,13 +20,13 @@ const { job, task } = (await import(`#src/apps/jobs/${program.name!}/job.ts`)) a
 };
 
 process.once("uncaughtException", (error, origin) => {
-  log.error("Uncaught exception", { error, origin });
+  log.error(error, "Uncaught exception");
 
   process.emit("SIGUSR2");
 });
 
 process.once("unhandledRejection", (reason, promise) => {
-  log.error("Unhandled rejection", { reason, promise });
+  log.error({ reason, promise }, "Unhandled rejection");
 
   process.emit("SIGUSR2");
 });
@@ -38,7 +38,7 @@ onProcessSignals({
 
     log.info(`Job "${program.name!}" stopped`);
   },
-  name: import.meta.url,
+  name: `${program.name!}-job`,
 });
 
 if (typeof process.send === "function") {
@@ -47,7 +47,7 @@ if (typeof process.send === "function") {
   process.send("ready");
 }
 
-log.info("Registered job", { nextDate: job.nextTime().toISOString(), job: program.name });
+log.info({ nextDate: job.nextTime().toISOString(), job: program.name }, "Registered job");
 
 for await (const s of job.start()!) {
   try {

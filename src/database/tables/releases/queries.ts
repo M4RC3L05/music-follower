@@ -38,7 +38,7 @@ export const upsertMany = (
       (new Date(release.releasedAt).getTime() > Date.now() ? new Date(release.releasedAt) : new Date());
 
     if (release.type === "collection") {
-      log.debug("Upserting release", { id: release.id, type: release.type });
+      log.debug({ id: release.id, type: release.type }, "Upserting release");
 
       table.execute(sql`
         insert or replace into $${table.lit("table")}
@@ -51,7 +51,7 @@ export const upsertMany = (
     }
 
     if (!isStreamable) {
-      log.debug("Release is not streamable, ignoring", { id: release.id });
+      log.debug({ id: release.id }, "Release is not streamable, ignoring");
 
       continue;
     }
@@ -66,16 +66,17 @@ export const upsertMany = (
 
     // If we do not have the album, we ignore it.
     if (!album) {
-      log.debug("No album for track release", { id: release.id });
+      log.debug({ id: release.id }, "No album for track release");
 
       continue;
     }
 
     // If we have an album and the album was already released we return
     if (album.releasedAt <= new Date()) {
-      log.debug("The album that contains the current track release, was already released, ignoring", {
-        id: release.id,
-      });
+      log.debug(
+        { id: release.id },
+        "The album that contains the current track release, was already released, ignoring",
+      );
 
       continue;
     }
@@ -91,7 +92,7 @@ export const upsertMany = (
       release.releasedAt = releaseRecord?.releasedAt ?? new Date();
     }
 
-    log.debug("Upserting release", { id: release.id, type: release.type });
+    log.debug({ id: release.id, type: release.type }, "Upserting release");
 
     table.execute(sql`
       insert or replace into $${table.lit("table")}

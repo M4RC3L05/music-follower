@@ -35,8 +35,7 @@
     "path": "./data/db.sqlite"
   },
   "logger": {
-    "level": 0,
-    "color": false
+    "level": "info"
   },
   "remote": {
     "itunes": {

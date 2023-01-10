@@ -18,20 +18,20 @@ const log = logger("process");
 
 const onSignal = ({ handler, signal, name }: OnSignal) => {
   return async () => {
-    log.info(`Running handlers for signal "${signal}"`, { name });
+    log.info({ name }, `Running handlers for signal "${signal}"`);
 
     try {
       await handler();
 
-      log.info(`Handler successfull for "${signal}"`, { name });
+      log.info({ name }, `Handler successfull for "${signal}"`);
     } catch (error: unknown) {
-      log.info(`Handler error for "${signal}"`, { error, name });
+      log.info({ error, name }, `Handler error for "${signal}"`);
     }
   };
 };
 
 export const onProcessSignals = ({ handler, signals, name }: ProcessSignals) => {
-  log.info("Register for signal", { signals, name });
+  log.info({ signals, name }, "Register for signal");
 
   for (const signal of signals) {
     process.once(signal, onSignal({ signal, handler, name }));

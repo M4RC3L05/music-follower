@@ -26,14 +26,14 @@ const server = api.listen(port, host, () => {
   }
 });
 
-process.addListener("uncaughtException", (error, origin) => {
-  log.error("Uncaught exception", { error, origin });
+process.addListener("uncaughtException", (error) => {
+  log.error(error, "Uncaught exception");
 
   process.emit("SIGUSR2");
 });
 
 process.addListener("unhandledRejection", (reason, promise) => {
-  log.error("Unhandled rejection", { reason, promise });
+  log.error({ reason, promise }, "Unhandled rejection");
 
   process.emit("SIGUSR2");
 });
@@ -55,5 +55,5 @@ onProcessSignals({
 
     log.info("Server terminated");
   },
-  name: import.meta.url,
+  name: "admin",
 });

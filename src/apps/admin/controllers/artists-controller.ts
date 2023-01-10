@@ -58,14 +58,14 @@ export const subscribe = async (context: RouterContext) => {
   };
 
   try {
-    log.info("Subscribing", { artistName, artistId, artistImage });
+    log.info({ artistName, artistId, artistImage }, "Subscribing");
 
     artistQueries.add({ id: Number(artistId), name: artistName, imageUrl: artistImage });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully subscribed to "${artistName}"`);
   } catch (error: unknown) {
-    log.error(`Could not subscribe to artists "${artistName}"`, error);
+    log.error(error, `Could not subscribe to artists "${artistName}"`);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("error", `Could not subscribe to artists "${artistName}"`);
@@ -78,14 +78,14 @@ export const unsubscribe = async (context: RouterContext) => {
   const { id } = context.request.body as { id: string };
 
   try {
-    log.info("Unsubscribing", { artistId: id });
+    log.info({ artistId: id }, "Unsubscribing");
 
     artistQueries.deleteById(Number(id));
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully unsubscribed`);
   } catch (error: unknown) {
-    log.error(`Could not unsubscribe from artists "${id}"`, error);
+    log.error(error, `Could not unsubscribe from artists "${id}"`);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("error", `Could not subscribe from artist`);

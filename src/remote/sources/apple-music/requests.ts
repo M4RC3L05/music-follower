@@ -6,12 +6,12 @@ import logger from "#src/utils/logger/logger.js";
 const log = logger("apple-music-source");
 
 export const getArtistImage = async (url: string) => {
-  log.info("Getting image for artist", { url });
+  log.info({ url }, "Getting image for artist");
 
   const response = await fetch(url);
 
   if (!response.ok) {
-    log.error("Could not fetch artists image", { status: response.status });
+    log.error({ status: response.status }, "Could not fetch artists image");
 
     throw new Error("An error ocurred while searching for artist image");
   }
@@ -29,7 +29,7 @@ export const getArtistImage = async (url: string) => {
   const result = /<meta\s+property="og:image"\s+content="([^"]*)"/gm.exec(html)?.at(1);
 
   if (!result || result.includes("apple-music-")) {
-    log.info("Image is not for a artist, using placeholder", { url, image: result });
+    log.info({ url, image: result }, "Image is not for a artist, using placeholder");
 
     return config.get("media.placeholderImage");
   }
@@ -38,7 +38,7 @@ export const getArtistImage = async (url: string) => {
   const imageFile = imageSplitted.at(-1)!.split(".");
   imageSplitted[imageSplitted.length - 1] = `256x256.${imageFile.at(1)!}`;
 
-  log.info("Retrieved image for artist", { url, image: imageSplitted.join("/") });
+  log.info({ url, image: imageSplitted.join("/") }, "Retrieved image for artist");
 
   return imageSplitted.join("/");
 };

@@ -8,9 +8,5 @@
   },
   "database": {
     "path": ":memory:"
-  },
-  "logger": {
-    "level": 4,
-    "color": false
   }
 }

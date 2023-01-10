@@ -91,7 +91,7 @@ export const run = async (abort: AbortSignal) => {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
           const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
 
-          log.error("Could not get albums and songs as the request has failed for both.", { albumsCause, songsCause });
+          log.error({ albumsCause, songsCause }, "Could not get albums and songs as the request has failed for both.");
           log.info("Waiting 5 seconds before processing next artist");
 
           await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});
@@ -139,10 +139,13 @@ export const run = async (abort: AbortSignal) => {
       };
     });
 
-    log.info("Usable releases", { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`) });
+    log.info(
+      { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`), id: artist.id },
+      "Usable releases",
+    );
 
     try {
-      log.info("Upserting releases for artist", { id: artist.id });
+      log.info({ id: artist.id }, "Upserting releases for artist");
 
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
@@ -151,7 +154,7 @@ export const run = async (abort: AbortSignal) => {
 
       /* c8 ignore start */
     } catch (error: unknown) {
-      log.error("Something wrong ocurred while upserting releases", error);
+      log.error(error, "Something wrong ocurred while upserting releases");
     }
     /* c8 ignore stop */
 

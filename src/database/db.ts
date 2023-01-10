@@ -9,7 +9,7 @@ const log = logger("database");
 export const db = new Database(config.get("database.path"), {
   verbose(message, ...args) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    log.debug("Running sql", { sql: message, args });
+    log.debug({ sql: message, args }, "Running sql");
   },
 });
 
@@ -24,6 +24,6 @@ onProcessSignals({
 
     log.info("Database connection closed");
   },
-  name: import.meta.url,
+  name: "database",
 });
 /* c8 ignore stop */

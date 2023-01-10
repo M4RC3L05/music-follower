@@ -11,7 +11,7 @@ const cacheFn = <F extends (...args: any[]) => unknown>(fn: F) => {
     const stringifyArgs = JSON.stringify(args);
 
     if (!cache.has(stringifyArgs)) {
-      log.info("Not in cache, requesting", { args });
+      log.info({ args }, "Not in cache, requesting");
 
       cache.set(stringifyArgs, fn(...args));
     }
