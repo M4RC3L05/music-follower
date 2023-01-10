@@ -1,3 +1,7 @@
+### v8.3.1 (2023-01-10)
+
+- [Update nodejs version in package.json](https://github.com/M4RC3L05/music-follower/commit/c4d1b0ba2c6ab51575b05494b0aa5d3066f9a954)
+
 ### v8.3.0 (2023-01-10)
 
 - [Update nodejs version](https://github.com/M4RC3L05/music-follower/commit/45e4dc1054e87d76b21e244564db56682333a8b9)
