@@ -108,7 +108,6 @@
     "node-fetch": "^3.3.0",
     "patch-package": "^6.5.1",
     "pino": "^8.8.0",
-    "pino-loki": "^2.0.3",
     "ts-node": "^10.9.1",
     "yargs": "^17.6.2"
   }
