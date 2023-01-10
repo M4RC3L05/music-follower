@@ -1,3 +1,8 @@
+### v8.3.0 (2023-01-10)
+
+- [Update nodejs version](https://github.com/M4RC3L05/music-follower/commit/45e4dc1054e87d76b21e244564db56682333a8b9)
+- [Use pino logger](https://github.com/M4RC3L05/music-follower/commit/14800d41520917738ea7f7a62d08399c5621ec2c)
+
 ### v8.2.0 (2023-01-07)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/28de7d3929d24ba3508695eaecf10d274f45f25a)
