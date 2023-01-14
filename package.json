@@ -13,13 +13,35 @@
   "xo": {
     "prettier": true,
     "plugins": [
-      "simple-import-sort",
       "unused-imports"
     ],
     "rules": {
-      "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error",
-      "unused-imports/no-unused-imports": "error"
+      "unused-imports/no-unused-imports": "error",
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            "builtin",
+            "external",
+            [
+              "internal",
+              "sibling",
+              "parent",
+              "index"
+            ],
+            "object",
+            "type"
+          ],
+          "distinctGroup": false,
+          "newlines-between": "always",
+          "pathGroups": [
+            {
+              "pattern": "#src/**",
+              "group": "internal"
+            }
+          ]
+        }
+      ]
     },
     "ignorePatterns": [
       "node_modules"
@@ -43,32 +65,31 @@
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "lint": "xo . --ext .ts && tsc -p tsconfig.json --noEmit --skipLibCheck",
     "lint-staged": "lint-staged",
-    "migrate": "node --loader ts-node/esm --no-warnings src/commands/migrations.ts | pino-pretty",
+    "migrate": "node --loader ts-node/esm --no-warnings bin/migrate.ts | pino-pretty",
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/feed/main.ts | pino-pretty",
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/admin/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts job sync-releases | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
     "postinstall": "patch-package",
-    "test": "NODE_ENV=test ALLOW_CONFIG_MUTATIONS=true node --loader ts-node/esm --no-warnings src/commands/test.ts | tap-mocha-reporter classic",
+    "test": "NODE_ENV=test ALLOW_CONFIG_MUTATIONS=true node --loader ts-node/esm --no-warnings bin/test.ts | tap-mocha-reporter classic",
     "test-coverage": "c8 --exclude \"src/utils/tests/**\" --exclude \"src/**/*.test.ts\" npm run test"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/config": "^3.3.0",
     "@types/koa": "^2.13.5",
+    "@types/koa__router": "^12.0.0",
     "@types/koa-basic-auth": "^2.0.4",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-favicon": "^2.0.21",
     "@types/koa-qs": "^2.0.0",
     "@types/koa-session": "^5.10.6",
     "@types/koa-static": "^4.0.2",
-    "@types/koa__router": "^12.0.0",
     "@types/ms": "^0.7.31",
     "@types/node": "^18.11.18",
     "@types/sinon": "^10.0.13",
     "@types/yargs": "^17.0.19",
     "c8": "^7.12.0",
-    "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "glob": "^8.0.3",
     "glob-promise": "^6.0.1",
