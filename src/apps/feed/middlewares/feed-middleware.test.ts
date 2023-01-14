@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import assert from "node:assert";
-import { afterEach, beforeEach, describe, it } from "node:test";
+import { afterEach, before, beforeEach, describe, it } from "node:test";
 
 import config from "config";
 import sinon from "sinon";
@@ -12,6 +12,10 @@ import { releaseFixtures } from "#src/utils/tests/fixtures/index.js";
 import { databaseHooks } from "#src/utils/tests/hooks/index.js";
 
 describe("feedMiddleware()", () => {
+  before(async () => {
+    await databaseHooks.migrate();
+  });
+
   beforeEach(() => {
     sinon.useFakeTimers(0);
   });

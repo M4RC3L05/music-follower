@@ -2,7 +2,7 @@ import {
   type ItunesArtistSearchModel,
   type ItunesLookupAlbumModel,
   type ItunesLookupSongModel,
-} from "#src/remote/sources/itunes/types.js";
+} from "#src/remote/itunes/types.js";
 
 export const loadItunesLookupSong = (data: Partial<ItunesLookupSongModel> = {}) => ({
   wrapperType: "track",

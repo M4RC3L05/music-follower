@@ -1,7 +1,8 @@
-import { type Release, releaseQueries } from "#src/database/tables/releases/index.js";
+import { releases } from "#src/database/index.js";
+import { type Release } from "#src/database/releases/index.js";
 
 export const loadRelease = (data: Partial<Release> = {}) =>
-  releaseQueries.add({
+  releases.queries.create({
     artistName: "foo",
     coverUrl: "http://foo.bix",
     feedAt: new Date(),

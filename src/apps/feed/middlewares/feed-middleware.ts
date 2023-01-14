@@ -1,16 +1,17 @@
 import config from "config";
 import { Feed } from "feed";
-import type { Context } from "koa";
 
-import { releaseQueries } from "#src/database/tables/releases/index.js";
+import { releases } from "#src/database/index.js";
 import logger from "#src/utils/logger/logger.js";
+
+import type { Context } from "koa";
 
 const log = logger("feed-middleware");
 
 export const feedMiddleware = (context: Context) => {
   log.info("Getting latest releases");
 
-  const releases = releaseQueries.getLatests(config.get<number>("apps.feed.maxReleases"));
+  const data = releases.queries.getLatests(config.get<number>("apps.feed.maxReleases"));
 
   const feed = new Feed({
     title: "Music releases",
@@ -22,7 +23,7 @@ export const feedMiddleware = (context: Context) => {
     generator: "Music Follower",
   });
 
-  for (const release of releases) {
+  for (const release of data) {
     feed.addItem({
       date: new Date(release.feedAt),
       description: `

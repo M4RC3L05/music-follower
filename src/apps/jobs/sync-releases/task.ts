@@ -6,14 +6,11 @@ import timers from "node:timers/promises";
 import config from "config";
 import ms from "ms";
 
-import { artistQueries } from "#src/database/tables/artists/index.js";
-import { type Release, releaseQueries } from "#src/database/tables/releases/index.js";
-import {
-  type ItunesLookupAlbumModel,
-  type ItunesLookupSongModel,
-  itunesRequests,
-} from "#src/remote/sources/itunes/index.js";
+import { type Release } from "#src/database/releases/index.js";
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/itunes/index.js";
 import logger from "#src/utils/logger/logger.js";
+import * as remote from "#src/remote/index.js";
+import * as database from "#src/database/index.js";
 
 const log = logger("task");
 
@@ -37,8 +34,8 @@ const getRelases = async (artistId: number) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
   const [songsResult, albumsResult] = await Promise.allSettled([
-    itunesRequests.getLatestsArtistMusicReleases(artistId),
-    itunesRequests.getLatestsArtistAlbumReleases(artistId),
+    remote.itunes.requests.getLatestReleasesByArtist(artistId, "song"),
+    remote.itunes.requests.getLatestReleasesByArtist(artistId, "album"),
   ]);
 
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
@@ -71,7 +68,7 @@ const getRelases = async (artistId: number) => {
 export const run = async (abort: AbortSignal) => {
   log.info("Begin releases sync.");
 
-  const artists = artistQueries.getAll();
+  const artists = database.artists.queries.getAll();
 
   for (const [key, artist] of artists.entries()) {
     /* c8 ignore start */
@@ -149,8 +146,8 @@ export const run = async (abort: AbortSignal) => {
 
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      releaseQueries.upsertMany(releases.filter(({ type }) => type === "collection"));
-      releaseQueries.upsertMany(releases.filter(({ type }) => type === "track"));
+      database.releases.queries.upsertMany(releases.filter(({ type }) => type === "collection"));
+      database.releases.queries.upsertMany(releases.filter(({ type }) => type === "track"));
 
       /* c8 ignore start */
     } catch (error: unknown) {

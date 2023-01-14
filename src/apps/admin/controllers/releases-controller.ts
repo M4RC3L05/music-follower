@@ -1,12 +1,12 @@
-import type { RouterContext } from "@koa/router";
+import * as database from "#src/database/index.js";
 
-import { releaseQueries } from "#src/database/tables/releases/index.js";
+import type { RouterContext } from "@koa/router";
 
 export const index = async (context: RouterContext) => {
   const page = context.request.query?.page ? Number(context.request.query?.page) : 0;
   const query = context.request.query?.q;
   const limit = 12;
-  const { data: releases, total } = releaseQueries.searchPaginated({ limit, page, q: query as string });
+  const { data: releases, total } = database.releases.queries.searchPaginated({ limit, page, q: query as string });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await context.render("releases/index", {
@@ -21,7 +21,7 @@ export const index = async (context: RouterContext) => {
 };
 
 export const show = async (context: RouterContext) => {
-  const release = releaseQueries.getById(Number(context.params.id), context.query.type as any);
+  const release = database.releases.queries.getById(Number(context.params.id), context.query.type as any);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   await context.render("releases/show", { release, flashMessages: context.flash() });

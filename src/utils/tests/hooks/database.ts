@@ -1,11 +1,11 @@
-/* eslint-disable import/no-unassigned-import */
-
-// To run the migrations on each memory db
-import "#src/commands/migrations.js";
-
 import sql from "@leafac/sqlite";
 
-import { db } from "#src/database/db.js";
+import { run } from "#src/commands/migrate.js";
+import { db } from "#src/database/index.js";
+
+export const migrate = async () => {
+  await run();
+};
 
 export const cleanup = () => {
   db.execute(sql`DELETE FROM artists;`);

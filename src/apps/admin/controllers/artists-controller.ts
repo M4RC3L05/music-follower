@@ -1,10 +1,11 @@
-import type { RouterContext } from "@koa/router";
 import config from "config";
 
-import { artistQueries } from "#src/database/tables/artists/index.js";
-import { appleMusicRequests } from "#src/remote/sources/apple-music/index.js";
-import { type ItunesArtistSearchModel, itunesRequests } from "#src/remote/sources/itunes/index.js";
+import * as database from "#src/database/index.js";
+import * as remote from "#src/remote/index.js";
+import { type ItunesArtistSearchModel } from "#src/remote/itunes/types.js";
 import logger from "#src/utils/logger/logger.js";
+
+import type { RouterContext } from "@koa/router";
 
 const log = logger("artists-controller");
 
@@ -13,15 +14,15 @@ export const index = async (context: RouterContext) => {
   const query = context.request.query?.q;
   const remoteArtistQuery = context.request.query?.remoteArtistQ as string;
   const limit = 12;
-  const { data: artists, total } = artistQueries.searchPaginated({ limit, page, q: query as string });
+  const { data: artists, total } = database.artists.queries.searchPaginated({ limit, page, q: query as string });
 
   let remoteArtists: Array<ItunesArtistSearchModel & { image: string; isSubscribed: boolean }> = [];
 
   if (remoteArtistQuery && remoteArtistQuery.trim().length > 0) {
-    const artistsSearch = await itunesRequests.searchArtists(remoteArtistQuery);
+    const artistsSearch = await remote.itunes.requests.searchArtists(remoteArtistQuery);
 
     const images = await Promise.allSettled(
-      artistsSearch.results.map(async ({ artistLinkUrl }) => appleMusicRequests.getArtistImage(artistLinkUrl)),
+      artistsSearch.results.map(async ({ artistLinkUrl }) => remote.appleMusic.requests.getArtistImage(artistLinkUrl)),
     );
 
     remoteArtists = await Promise.all(
@@ -31,7 +32,7 @@ export const index = async (context: RouterContext) => {
           images.at(index)?.status === "rejected"
             ? config.get<string>("media.placeholderImage")
             : (images.at(index) as PromiseFulfilledResult<string>).value,
-        isSubscribed: artistQueries.getById(artist.artistId) !== undefined,
+        isSubscribed: database.artists.queries.getById(artist.artistId) !== undefined,
       })),
     );
   }
@@ -60,7 +61,7 @@ export const subscribe = async (context: RouterContext) => {
   try {
     log.info({ artistName, artistId, artistImage }, "Subscribing");
 
-    artistQueries.add({ id: Number(artistId), name: artistName, imageUrl: artistImage });
+    database.artists.queries.create({ id: Number(artistId), name: artistName, imageUrl: artistImage });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully subscribed to "${artistName}"`);
@@ -80,7 +81,7 @@ export const unsubscribe = async (context: RouterContext) => {
   try {
     log.info({ artistId: id }, "Unsubscribing");
 
-    artistQueries.deleteById(Number(id));
+    database.artists.queries.deleteById(Number(id));
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     context.flash("success", `Successfully unsubscribed`);
