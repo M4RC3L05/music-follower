@@ -1,3 +1,15 @@
+### v8.4.0 (2023-01-15)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/20f641a2b2825159e954604be2350d5c6efa4393)
+- [More code enhancement](https://github.com/M4RC3L05/music-follower/commit/8af898716db420a0db77bafa8536533a6e4a855c)
+- [Improve logging](https://github.com/M4RC3L05/music-follower/commit/d3b6e291dc69880c2bf8415e273f671ad9e9e09b)
+- [Add tests to controllers](https://github.com/M4RC3L05/music-follower/commit/2c27e6f8fa8373257fcdc4be1fa54c53fdb4aaad)
+- [Restructure project](https://github.com/M4RC3L05/music-follower/commit/eaceec86baaa9a5986bcd306c7c3f1f0164b5469)
+- [Update project config files](https://github.com/M4RC3L05/music-follower/commit/788810b533d62f5d653d784884fc9ec382e6966f)
+- [Switch to npm and update dependencies](https://github.com/M4RC3L05/music-follower/commit/42c7fe01b1245528add223e6b103c7cc754a713c)
+- [Add tap reporter for test comand](https://github.com/M4RC3L05/music-follower/commit/6d8e527e4a3ae15d9e5e77711b2004c38a726266)
+- [Remove unused package](https://github.com/M4RC3L05/music-follower/commit/65f996153ccb941a7b69e9f4743711ac0f4d9ba6)
+
 ### v8.3.1 (2023-01-10)
 
 - [Update nodejs version in package.json](https://github.com/M4RC3L05/music-follower/commit/c4d1b0ba2c6ab51575b05494b0aa5d3066f9a954)
