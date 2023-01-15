@@ -1,17 +1,17 @@
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { artistFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { searchPaginated } from "./search-paginated.js";
 
 describe("searchPaginated()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should return no artists if there is no artists", () => {
@@ -19,9 +19,9 @@ describe("searchPaginated()", () => {
   });
 
   it("should return artists paginated", () => {
-    artistFixtures.loadArtist({ id: 1 });
-    artistFixtures.loadArtist({ id: 2 });
-    artistFixtures.loadArtist({ id: 3 });
+    fixtures.artists.load({ id: 1 });
+    fixtures.artists.load({ id: 2 });
+    fixtures.artists.load({ id: 3 });
 
     const { data, total } = searchPaginated({ page: 1, limit: 2 });
 
@@ -29,9 +29,9 @@ describe("searchPaginated()", () => {
   });
 
   it("should search for artists name", () => {
-    artistFixtures.loadArtist({ id: 1, name: "foo" });
-    artistFixtures.loadArtist({ id: 2, name: "bar" });
-    artistFixtures.loadArtist({ id: 3, name: "fox" });
+    fixtures.artists.load({ id: 1, name: "foo" });
+    fixtures.artists.load({ id: 2, name: "bar" });
+    fixtures.artists.load({ id: 3, name: "fox" });
 
     const { data, total } = searchPaginated({ q: "fo" });
 

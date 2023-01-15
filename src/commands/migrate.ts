@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import { db } from "#src/database/index.js";
+import { db } from "#src/database/mod.js";
 import logger from "#src/utils/logger/logger.js";
 
 const log = logger("migrations");

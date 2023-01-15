@@ -1,11 +1,11 @@
 /* eslint-disable import/no-named-as-default-member */
-import assert from "node:assert";
 import { afterEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import sinon from "sinon";
 import { type RouterContext } from "@koa/router";
+import sinon from "sinon";
 
-import { index } from "./pages-controller.js";
+import { index } from "./index.js";
 
 describe("Pages Controller", () => {
   describe("index()", () => {

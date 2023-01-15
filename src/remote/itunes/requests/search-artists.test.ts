@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-implicit-any-catch */
-import assert from "node:assert";
 import { afterEach, describe, it } from "node:test";
+import assert from "node:assert";
 
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { searchArtists } from "./search-artists.js";
-import { itunesFixtures, nockFixtures } from "#src/utils/tests/fixtures/index.js";
-import { nockHooks } from "#src/utils/tests/hooks/index.js";
 
 describe("searchArtists()", () => {
   afterEach(() => {
-    nockHooks.checkMocks();
+    hooks.nock.checkMocks();
   });
 
   it("should throw if request fails", async () => {
-    nockFixtures.searchArtists(500, {}, "foo");
+    fixtures.nock.searchArtists(500, {}, "foo");
 
     try {
       await searchArtists("foo");
@@ -25,10 +25,10 @@ describe("searchArtists()", () => {
   });
 
   it("should return the latest artist track releases", async () => {
-    nockFixtures.searchArtists(
+    fixtures.nock.searchArtists(
       200,
       {
-        results: [itunesFixtures.loadItunesSearchArtist({ artistId: 1 })],
+        results: [fixtures.itunes.loadSearchArtist({ artistId: 1 })],
       },
       "foo",
     );

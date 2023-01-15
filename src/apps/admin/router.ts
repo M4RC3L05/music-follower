@@ -1,16 +1,14 @@
 import Router from "@koa/router";
 
-import * as artistsController from "#src/apps/admin/controllers/artists-controller.js";
-import * as pagesController from "#src/apps/admin/controllers/pages-controller.js";
-import * as releasesController from "#src/apps/admin/controllers/releases-controller.js";
+import * as components from "#src/apps/admin/components/mod.js";
 
 const router = new Router();
 
-router.get("/", pagesController.index);
-router.get("/releases", releasesController.index);
-router.get("/releases/:id", releasesController.show);
-router.get("/artists", artistsController.index);
-router.post("/artists/subscribe", artistsController.subscribe);
-router.post("/artists/unsubscribe", artistsController.unsubscribe);
+router.get("/", components.pages.handlers.index);
+router.get("/releases", components.releases.handlers.index);
+router.get("/releases/:id", components.releases.handlers.show);
+router.get("/artists", components.artists.handlers.index);
+router.post("/artists/subscribe", components.artists.handlers.subscribe);
+router.post("/artists/unsubscribe", components.artists.handlers.unsubscribe);
 
 export default router;

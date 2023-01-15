@@ -1,17 +1,17 @@
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { releaseFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getById } from "./get-by-id.js";
 
 describe("getById()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should return undefined if no release was found", () => {
@@ -19,8 +19,8 @@ describe("getById()", () => {
   });
 
   it("should return the request release", () => {
-    releaseFixtures.loadRelease({ id: 1, type: "track" });
-    releaseFixtures.loadRelease({ id: 1, type: "collection" });
+    fixtures.releases.load({ id: 1, type: "track" });
+    fixtures.releases.load({ id: 1, type: "collection" });
 
     const release = getById(1, "collection");
     assert.strict.deepEqual({ id: release!.id, type: release!.type }, { id: 1, type: "collection" });

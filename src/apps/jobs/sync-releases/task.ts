@@ -6,11 +6,11 @@ import timers from "node:timers/promises";
 import config from "config";
 import ms from "ms";
 
-import { type Release } from "#src/database/releases/index.js";
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/itunes/index.js";
+import * as database from "#src/database/mod.js";
+import * as remote from "#src/remote/mod.js";
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/itunes/mod.js";
+import { type Release } from "#src/database/releases/mod.js";
 import logger from "#src/utils/logger/logger.js";
-import * as remote from "#src/remote/index.js";
-import * as database from "#src/database/index.js";
 
 const log = logger("task");
 

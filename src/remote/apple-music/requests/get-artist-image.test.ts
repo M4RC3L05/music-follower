@@ -1,22 +1,22 @@
-import assert from "node:assert";
 import { afterEach, describe, it } from "node:test";
+import assert from "node:assert";
 
 import config from "config";
 
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getArtistImage } from "./get-artist-image.js";
-import { appleMusicFixture, nockFixtures } from "#src/utils/tests/fixtures/index.js";
-import { nockHooks } from "#src/utils/tests/hooks/index.js";
 
 describe("getArtistImage()", () => {
   afterEach(() => {
-    nockHooks.checkMocks();
+    hooks.nock.checkMocks();
   });
 
   it("should throw if fetching profile page fails", async () => {
-    nockFixtures.getAppleMusicArtistPage(
+    fixtures.nock.getAppleMusicArtistPage(
       500,
       "https://foo.com",
-      appleMusicFixture.loadArtistPage("https://foo.com/foo.png"),
+      fixtures.appleMusic.loadArtistPage("https://foo.com/foo.png"),
     );
 
     try {
@@ -30,18 +30,22 @@ describe("getArtistImage()", () => {
   });
 
   it("should get artist image from apple music profile url", async () => {
-    nockFixtures.getAppleMusicArtistPage(
+    fixtures.nock.getAppleMusicArtistPage(
       200,
       "https://foo.com",
-      appleMusicFixture.loadArtistPage("https://foo.com/foo.png"),
+      fixtures.appleMusic.loadArtistPage("https://foo.com/foo.png"),
     );
 
     assert.strict.deepEqual(await getArtistImage("https://foo.com"), "https://foo.com/256x256.png");
   });
 
   it("should use placeholder if it cannot parse artist image url", async () => {
-    nockFixtures.getAppleMusicArtistPage(200, "https://foo.com", appleMusicFixture.loadArtistPage(""));
-    nockFixtures.getAppleMusicArtistPage(200, "https://foo.com", appleMusicFixture.loadArtistPage("apple-music-foo"));
+    fixtures.nock.getAppleMusicArtistPage(200, "https://foo.com", fixtures.appleMusic.loadArtistPage(""));
+    fixtures.nock.getAppleMusicArtistPage(
+      200,
+      "https://foo.com",
+      fixtures.appleMusic.loadArtistPage("apple-music-foo"),
+    );
 
     assert.strict.equal(await getArtistImage("https://foo.com"), config.get("media.placeholderImage"));
     assert.strict.equal(await getArtistImage("https://foo.com"), config.get("media.placeholderImage"));

@@ -1,7 +1,7 @@
 import config from "config";
 import fetch from "node-fetch";
 
-import { type ItunesResponseModel, type ItunesArtistSearchModel } from "#src/remote/itunes/types.js";
+import { type ItunesArtistSearchModel, type ItunesResponseModel } from "#src/remote/itunes/types.js";
 
 type ItunesSearchConfig = { url: string; searchArtists: { limit: number } };
 

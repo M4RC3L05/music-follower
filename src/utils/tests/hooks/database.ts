@@ -1,7 +1,7 @@
 import sql from "@leafac/sqlite";
 
+import { db } from "#src/database/mod.js";
 import { run } from "#src/commands/migrate.js";
-import { db } from "#src/database/index.js";
 
 export const migrate = async () => {
   await run();

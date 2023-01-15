@@ -1,17 +1,17 @@
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { artistFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getById } from "./get-by-id.js";
 
 describe("getById()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should return undefined if no artist was found", () => {
@@ -19,8 +19,8 @@ describe("getById()", () => {
   });
 
   it("should return the request artist", () => {
-    artistFixtures.loadArtist({ id: 1 });
-    artistFixtures.loadArtist({ id: 2 });
+    fixtures.artists.load({ id: 1 });
+    fixtures.artists.load({ id: 2 });
 
     assert.strict.equal(getById(1)!.id, 1);
   });

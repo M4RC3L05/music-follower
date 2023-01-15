@@ -2,9 +2,9 @@ import {
   type ItunesArtistSearchModel,
   type ItunesLookupAlbumModel,
   type ItunesLookupSongModel,
-} from "#src/remote/itunes/types.js";
+} from "#src/remote/mod.js";
 
-export const loadItunesLookupSong = (data: Partial<ItunesLookupSongModel> = {}) => ({
+export const loadLookupSong = (data: Partial<ItunesLookupSongModel> = {}) => ({
   wrapperType: "track",
   kind: "song",
   artistId: 567_072,
@@ -44,7 +44,7 @@ export const loadItunesLookupSong = (data: Partial<ItunesLookupSongModel> = {}) 
   ...data,
 });
 
-export const loadItunesLookupAlbum = (data: Partial<ItunesLookupAlbumModel> = {}) => ({
+export const loadLookupAlbum = (data: Partial<ItunesLookupAlbumModel> = {}) => ({
   wrapperType: "collection",
   collectionType: "Album",
   artistId: 567_072,
@@ -70,7 +70,7 @@ export const loadItunesLookupAlbum = (data: Partial<ItunesLookupAlbumModel> = {}
   ...data,
 });
 
-export const loadItunesSearchArtist = (data: Partial<ItunesArtistSearchModel> = {}) => ({
+export const loadSearchArtist = (data: Partial<ItunesArtistSearchModel> = {}) => ({
   wrapperType: "artist",
   artistType: "Artist",
   artistName: "Foo Fighters",

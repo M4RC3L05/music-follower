@@ -1,6 +1,6 @@
 import sql from "@leafac/sqlite";
 
-import { artists } from "#src/database/index.js";
+import { artists } from "#src/database/mod.js";
 
 export const deleteById = (id: number) =>
   artists.table.run(sql`

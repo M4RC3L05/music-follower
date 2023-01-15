@@ -2,9 +2,9 @@ import config from "config";
 import fetch from "node-fetch";
 
 import {
+  type ItunesLookupAlbumModel,
   type ItunesLookupSongModel,
   type ItunesResponseModel,
-  type ItunesLookupAlbumModel,
 } from "#src/remote/itunes/types.js";
 
 const itunesLookupConfig = config.get<ItunesLookupConfig>("remote.itunes.lookup");

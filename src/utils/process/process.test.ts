@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/no-named-as-default-member */
+import { describe, it } from "node:test";
 import assert from "node:assert";
 import process from "node:process";
-import { describe, it } from "node:test";
 
 import sinon from "sinon";
 

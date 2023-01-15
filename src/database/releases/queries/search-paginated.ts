@@ -1,7 +1,7 @@
 import sql from "@leafac/sqlite";
 
-import { releases } from "#src/database/index.js";
 import { or } from "#src/database/core/utils/sql.js";
+import { releases } from "#src/database/mod.js";
 
 export const searchPaginated = ({ limit = 10, page = 0, q }: { page?: number; limit?: number; q?: string } = {}) => {
   return releases.table.chunkWithTotal(

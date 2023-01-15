@@ -1,17 +1,15 @@
 import path from "node:path";
 import process from "node:process";
 
-// @ts-expect-error no typedefs
-import render from "@koa/ejs";
-import config from "config";
 import Koa from "koa";
 import basicAuth from "koa-basic-auth";
-// @ts-expect-error no typedefs
-import flash from "koa-better-flash";
 import bodyParser from "koa-bodyparser";
-import qs from "koa-qs";
-import session from "koa-session";
+import config from "config";
+import flash from "koa-better-flash";
 import koaStatic from "koa-static";
+import qs from "koa-qs";
+import render from "@koa/ejs";
+import session from "koa-session";
 
 import router from "#src/apps/admin/router.js";
 

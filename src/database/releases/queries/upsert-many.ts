@@ -1,7 +1,7 @@
 import sql from "@leafac/sqlite";
 
-import { releases as releasesDB } from "#src/database/index.js";
-import { type Release } from "#src/database/releases/index.js";
+import * as database from "#src/database/mod.js";
+import { type Release } from "#src/database/mod.js";
 import { and } from "#src/database/core/utils/sql.js";
 import logger from "#src/utils/logger/logger.js";
 
@@ -11,10 +11,10 @@ export const upsertMany = (
   releases: Array<Omit<Release, "feedAt"> & { collectionId?: number; isStreamable?: boolean; feedAt?: Date }>,
 ) => {
   for (const { collectionId, isStreamable, ...release } of releases) {
-    const storedRelease = releasesDB.table.get<Release>(sql`
+    const storedRelease = database.releases.table.get<Release>(sql`
       select *
-      from $${releasesDB.table.lit("table")}
-      where $${and(releasesDB.table.eq("id", release.id), releasesDB.table.eq("type", release.type))}
+      from $${database.releases.table.lit("table")}
+      where $${and(database.releases.table.eq("id", release.id), database.releases.table.eq("type", release.type))}
       limit 1;
     `);
 
@@ -31,11 +31,11 @@ export const upsertMany = (
     if (release.type === "collection") {
       log.debug({ id: release.id, type: release.type }, "Upserting release");
 
-      releasesDB.table.execute(sql`
-        insert or replace into $${releasesDB.table.lit("table")}
-        ($${releasesDB.table.joinLit(Object.keys(release) as Array<keyof Release>)})
+      database.releases.table.execute(sql`
+        insert or replace into $${database.releases.table.lit("table")}
+        ($${database.releases.table.joinLit(Object.keys(release) as Array<keyof Release>)})
         values
-        ($${releasesDB.table.joinValues(release)})
+        ($${database.releases.table.joinValues(release)})
       `);
 
       continue;
@@ -49,9 +49,12 @@ export const upsertMany = (
 
     // This is for music releases that are a part of an album that is
     // yet to be releases but some songs are already available.
-    const album = releasesDB.table.get<Release>(sql`
-      select * from $${releasesDB.table.lit("table")}
-      where $${and(releasesDB.table.eq("id", Number(collectionId)), releasesDB.table.eq("type", "collection"))}
+    const album = database.releases.table.get<Release>(sql`
+      select * from $${database.releases.table.lit("table")}
+      where $${and(
+        database.releases.table.eq("id", Number(collectionId)),
+        database.releases.table.eq("type", "collection"),
+      )}
       limit 1;
     `);
 
@@ -72,9 +75,9 @@ export const upsertMany = (
       continue;
     }
 
-    const releaseRecord = releasesDB.table.get<Release>(sql`
-      select * from $${releasesDB.table.lit("table")}
-      where $${and(releasesDB.table.eq("id", release.id), releasesDB.table.eq("type", "track"))}
+    const releaseRecord = database.releases.table.get<Release>(sql`
+      select * from $${database.releases.table.lit("table")}
+      where $${and(database.releases.table.eq("id", release.id), database.releases.table.eq("type", "track"))}
     `);
 
     // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)
@@ -85,11 +88,11 @@ export const upsertMany = (
 
     log.debug({ id: release.id, type: release.type }, "Upserting release");
 
-    releasesDB.table.execute(sql`
-      insert or replace into $${releasesDB.table.lit("table")}
-      ($${releasesDB.table.joinLit(Object.keys(release) as Array<keyof Release>)})
+    database.releases.table.execute(sql`
+      insert or replace into $${database.releases.table.lit("table")}
+      ($${database.releases.table.joinLit(Object.keys(release) as Array<keyof Release>)})
       values
-      ($${releasesDB.table.joinValues(release)})
+      ($${database.releases.table.joinValues(release)})
     `);
   }
 };

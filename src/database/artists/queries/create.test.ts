@@ -1,12 +1,12 @@
+import { before, describe, it } from "node:test";
 import assert from "node:assert";
-import { it, describe, before } from "node:test";
 
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { create } from "./create.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
 
 describe("create()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   it("should add an artist", () => {

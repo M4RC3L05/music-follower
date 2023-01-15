@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
 import sql from "@leafac/sqlite";
 
-import { db } from "#src/database/index.js";
 import { Table } from "./table.js";
+import { db } from "#src/database/mod.js";
 
 describe("table", () => {
   const t = new (class extends Table<{ foo: string; b: number }> {

@@ -1,7 +1,7 @@
 import sql, { type Query } from "@leafac/sqlite";
 
-import { db } from "#src/database/core/db.js";
 import { btw, eq, exts, gt, gte, iin, isQuery, join, lk, lt, lte, ne } from "#src/database/core/utils/sql.js";
+import { db } from "#src/database/core/db.js";
 
 export abstract class Table<T = any> {
   constructor(

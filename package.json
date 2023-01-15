@@ -16,6 +16,7 @@
       "unused-imports"
     ],
     "rules": {
+      "sort-imports": ["error", {"allowSeparatedGroups": true}],
       "unused-imports/no-unused-imports": "error",
       "import/order": [
         "error",

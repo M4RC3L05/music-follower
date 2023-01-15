@@ -1,7 +1,6 @@
 import sql from "@leafac/sqlite";
 
-import { artists } from "#src/database/index.js";
-import { type Artist } from "#src/database/artists/index.js";
+import { type Artist, artists } from "#src/database/mod.js";
 
 export const searchPaginated = ({ page = 0, limit = 12, q }: { page?: number; limit?: number; q?: string } = {}) => {
   return artists.table.chunkWithTotal<Artist>(

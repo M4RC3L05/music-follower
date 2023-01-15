@@ -1,8 +1,9 @@
-import { releases } from "#src/database/index.js";
-import { type Release } from "#src/database/releases/index.js";
+import sql from "@leafac/sqlite";
 
-export const loadRelease = (data: Partial<Release> = {}) =>
-  releases.queries.create({
+import { type Release, releases } from "#src/database/mod.js";
+
+export const load = (data: Partial<Release> = {}) => {
+  const result = releases.queries.create({
     artistName: "foo",
     coverUrl: "http://foo.bix",
     feedAt: new Date(),
@@ -13,3 +14,8 @@ export const loadRelease = (data: Partial<Release> = {}) =>
     type: "track",
     ...data,
   });
+
+  return releases.table.get(
+    sql`select * from $${releases.table.lit("table")} where "rowId" = ${result.lastInsertRowid}`,
+  );
+};

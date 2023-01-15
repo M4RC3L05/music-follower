@@ -1,7 +1,6 @@
 import sql from "@leafac/sqlite";
 
-import { releases } from "#src/database/index.js";
-import { type Release } from "#src/database/releases/index.js";
+import { type Release, releases } from "#src/database/mod.js";
 import { and } from "#src/database/core/utils/sql.js";
 
 export const getById = (id: number, type: "collection" | "track") =>

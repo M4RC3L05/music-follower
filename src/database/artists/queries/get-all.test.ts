@@ -1,17 +1,17 @@
+import { before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert";
-import { it, describe, before, beforeEach } from "node:test";
 
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getAll } from "./get-all.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
-import { artistFixtures } from "#src/utils/tests/fixtures/index.js";
 
 describe("getAll()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should return empty array if no artists", () => {
@@ -19,8 +19,8 @@ describe("getAll()", () => {
   });
 
   it("should return all artists", () => {
-    artistFixtures.loadArtist({ id: 1 });
-    artistFixtures.loadArtist({ id: 2 });
+    fixtures.artists.load({ id: 1 });
+    fixtures.artists.load({ id: 2 });
 
     assert.strict.deepEqual(
       getAll().map(({ id }) => ({ id })),

@@ -1,8 +1,8 @@
-import config from "config";
 import { Feed } from "feed";
+import config from "config";
 
-import { releases } from "#src/database/index.js";
 import logger from "#src/utils/logger/logger.js";
+import { releases } from "#src/database/mod.js";
 
 import type { Context } from "koa";
 

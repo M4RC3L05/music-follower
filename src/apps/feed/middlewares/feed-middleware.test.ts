@@ -1,19 +1,19 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import assert from "node:assert";
 import { afterEach, before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
 import config from "config";
 import sinon from "sinon";
 
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { feedMiddleware } from "#src/apps/feed/middlewares/feed-middleware.js";
-import { releaseFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
 
 describe("feedMiddleware()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
@@ -99,11 +99,11 @@ describe("feedMiddleware()", () => {
     it(`should send feed with elements for "${ct}"`, async () => {
       const ctx = { request: { accepts: (x: any) => x === ct } };
 
-      databaseHooks.cleanup();
-      releaseFixtures.loadRelease({ id: 1, feedAt: new Date(0) });
-      releaseFixtures.loadRelease({ id: 2, feedAt: new Date(500) });
-      releaseFixtures.loadRelease({ id: 3, feedAt: new Date(1000) });
-      releaseFixtures.loadRelease({ id: 4, feedAt: new Date(1500) });
+      hooks.database.cleanup();
+      fixtures.releases.load({ id: 1, feedAt: new Date(0) });
+      fixtures.releases.load({ id: 2, feedAt: new Date(500) });
+      fixtures.releases.load({ id: 3, feedAt: new Date(1000) });
+      fixtures.releases.load({ id: 4, feedAt: new Date(1500) });
 
       sinon.stub(config, "get").returns(3);
 
@@ -119,43 +119,43 @@ describe("feedMiddleware()", () => {
   it("should detect correctly the feed item link", async () => {
     const ctx = { request: { accepts: (x: any) => false } };
 
-    databaseHooks.cleanup();
-    releaseFixtures.loadRelease({
+    hooks.database.cleanup();
+    fixtures.releases.load({
       id: 1,
       type: "track",
       metadata: { trackViewUrl: "foo", collectionViewUrl: "bar" },
       feedAt: new Date(0),
       coverUrl: "bix",
     });
-    releaseFixtures.loadRelease({
+    fixtures.releases.load({
       id: 2,
       type: "track",
       metadata: { trackViewUrl: undefined, collectionViewUrl: "bar" },
       feedAt: new Date(1),
       coverUrl: "bix",
     });
-    releaseFixtures.loadRelease({
+    fixtures.releases.load({
       id: 3,
       type: "track",
       metadata: { trackViewUrl: undefined, collectionViewUrl: undefined },
       feedAt: new Date(2),
       coverUrl: "bix",
     });
-    releaseFixtures.loadRelease({
+    fixtures.releases.load({
       id: 2,
       type: "collection",
       metadata: { collectionViewUrl: "foo" },
       feedAt: new Date(3),
       coverUrl: "bux",
     });
-    releaseFixtures.loadRelease({
+    fixtures.releases.load({
       id: 3,
       type: "collection",
       metadata: { collectionViewUrl: undefined },
       feedAt: new Date(4),
       coverUrl: "bux",
     });
-    releaseFixtures.loadRelease({
+    fixtures.releases.load({
       id: 1,
       type: "bix",
       metadata: { collectionViewUrl: undefined },

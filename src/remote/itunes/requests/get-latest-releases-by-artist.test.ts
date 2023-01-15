@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-implicit-any-catch */
-import assert from "node:assert";
 import { afterEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { itunesFixtures, nockFixtures } from "#src/utils/tests/fixtures/index.js";
-import { nockHooks } from "#src/utils/tests/hooks/index.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getLatestReleasesByArtist } from "./get-latest-releases-by-artist.js";
 
 describe("getLatestReleasesByArtist()", () => {
   describe("song", () => {
     afterEach(() => {
-      nockHooks.checkMocks();
+      hooks.nock.checkMocks();
     });
 
     it("should throw if request fails", async () => {
-      nockFixtures.getLatestsArtistMusicReleases(500, {}, 1);
+      fixtures.nock.getLatestsArtistMusicReleases(500, {}, 1);
 
       try {
         await getLatestReleasesByArtist(1, "song");
@@ -26,10 +26,10 @@ describe("getLatestReleasesByArtist()", () => {
     });
 
     it("should return the latest artist track releases", async () => {
-      nockFixtures.getLatestsArtistMusicReleases(
+      fixtures.nock.getLatestsArtistMusicReleases(
         200,
         {
-          results: [{}, itunesFixtures.loadItunesLookupSong({ trackId: 1 })],
+          results: [{}, fixtures.itunes.loadLookupSong({ trackId: 1 })],
         },
         1,
       );
@@ -41,11 +41,11 @@ describe("getLatestReleasesByArtist()", () => {
 
   describe("album", () => {
     afterEach(() => {
-      nockHooks.checkMocks();
+      hooks.nock.checkMocks();
     });
 
     it("should throw if request fails", async () => {
-      nockFixtures.getLatestsArtistAlbumReleases(500, {}, 1);
+      fixtures.nock.getLatestsArtistAlbumReleases(500, {}, 1);
 
       try {
         await getLatestReleasesByArtist(1, "album");
@@ -58,10 +58,10 @@ describe("getLatestReleasesByArtist()", () => {
     });
 
     it("should return the latest artist track releases", async () => {
-      nockFixtures.getLatestsArtistAlbumReleases(
+      fixtures.nock.getLatestsArtistAlbumReleases(
         200,
         {
-          results: [{}, itunesFixtures.loadItunesLookupAlbum({ collectionId: 1 })],
+          results: [{}, fixtures.itunes.loadLookupAlbum({ collectionId: 1 })],
         },
         1,
       );

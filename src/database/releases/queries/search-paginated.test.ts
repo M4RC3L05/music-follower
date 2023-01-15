@@ -1,17 +1,17 @@
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { releaseFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { searchPaginated } from "./search-paginated.js";
 
 describe("searchPaginated()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should return no releases if there is no releases", () => {
@@ -19,9 +19,9 @@ describe("searchPaginated()", () => {
   });
 
   it("should return releases paginated", () => {
-    releaseFixtures.loadRelease({ id: 1, releasedAt: new Date(1000) });
-    releaseFixtures.loadRelease({ id: 2, releasedAt: new Date(500) });
-    releaseFixtures.loadRelease({ id: 3, releasedAt: new Date(0) });
+    fixtures.releases.load({ id: 1, releasedAt: new Date(1000) });
+    fixtures.releases.load({ id: 2, releasedAt: new Date(500) });
+    fixtures.releases.load({ id: 3, releasedAt: new Date(0) });
 
     const { data, total } = searchPaginated({ page: 1, limit: 2 });
 
@@ -29,10 +29,10 @@ describe("searchPaginated()", () => {
   });
 
   it("should search for releases name and artistName", () => {
-    releaseFixtures.loadRelease({ id: 1, releasedAt: new Date(1000), name: "foo", artistName: "x" });
-    releaseFixtures.loadRelease({ id: 2, releasedAt: new Date(500), name: "bar", artistName: "foobar" });
-    releaseFixtures.loadRelease({ id: 3, releasedAt: new Date(250), name: "fox", artistName: "bar" });
-    releaseFixtures.loadRelease({ id: 4, releasedAt: new Date(0), name: "qix", artistName: "qux" });
+    fixtures.releases.load({ id: 1, releasedAt: new Date(1000), name: "foo", artistName: "x" });
+    fixtures.releases.load({ id: 2, releasedAt: new Date(500), name: "bar", artistName: "foobar" });
+    fixtures.releases.load({ id: 3, releasedAt: new Date(250), name: "fox", artistName: "bar" });
+    fixtures.releases.load({ id: 4, releasedAt: new Date(0), name: "qix", artistName: "qux" });
 
     const { data, total } = searchPaginated({ q: "fo" });
 

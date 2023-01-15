@@ -1,17 +1,17 @@
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { create } from "./create.js";
 import { getById } from "./get-by-id.js";
 
 describe("add()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   it("should add a release", () => {

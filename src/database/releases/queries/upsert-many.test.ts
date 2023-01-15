@@ -1,16 +1,15 @@
 /* eslint-disable import/no-named-as-default-member */
-import assert from "node:assert";
 import { before, beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
 
-import sql from "@leafac/sqlite";
 import sinon from "sinon";
+import sql from "@leafac/sqlite";
 
-import { releases } from "#src/database/index.js";
-import { type Release } from "#src/database/releases/types.js";
-import { releaseFixtures } from "#src/utils/tests/fixtures/index.js";
-import { databaseHooks } from "#src/utils/tests/hooks/index.js";
-import { upsertMany } from "./upsert-many.js";
+import * as fixtures from "#src/utils/tests/fixtures/mod.js";
+import * as hooks from "#src/utils/tests/hooks/mod.js";
+import { type Release, releases } from "#src/database/mod.js";
 import { getById } from "./get-by-id.js";
+import { upsertMany } from "./upsert-many.js";
 
 const makeReleaseObject = (
   data: Partial<Release> = {},
@@ -30,16 +29,16 @@ const makeReleaseObject = (
 
 describe("upsertMany()", () => {
   before(async () => {
-    await databaseHooks.migrate();
+    await hooks.database.migrate();
   });
 
   beforeEach(() => {
-    databaseHooks.cleanup();
+    hooks.database.cleanup();
   });
 
   describe("feedAt", () => {
     beforeEach(() => {
-      databaseHooks.cleanup();
+      hooks.database.cleanup();
     });
 
     it("should use the feedAt of the provided release data", () => {
@@ -53,7 +52,7 @@ describe("upsertMany()", () => {
     it("should use the previously stored feedAt if none provided", () => {
       const feedAt = new Date(0);
 
-      releaseFixtures.loadRelease({ id: 1, type: "collection", feedAt });
+      fixtures.releases.load({ id: 1, type: "collection", feedAt });
 
       upsertMany([makeReleaseObject({ id: 1, type: "collection" }, { feedAt: undefined })]);
       assert.strict.equal(getById(1, "collection")?.feedAt?.toISOString(), feedAt.toISOString());
@@ -83,7 +82,7 @@ describe("upsertMany()", () => {
 
   describe("collection type", () => {
     beforeEach(() => {
-      databaseHooks.cleanup();
+      hooks.database.cleanup();
     });
 
     it("should create a release if non exists", () => {
@@ -102,7 +101,7 @@ describe("upsertMany()", () => {
     it("should update a release if one already exists", () => {
       const release = makeReleaseObject({ id: 1, type: "collection", name: "foo" });
 
-      releaseFixtures.loadRelease({ id: 1, type: "collection", name: "bar" });
+      fixtures.releases.load({ id: 1, type: "collection", name: "bar" });
 
       assert.strict.equal(getById(release.id, "collection")?.name, "bar");
       upsertMany([release]);
@@ -120,7 +119,7 @@ describe("upsertMany()", () => {
 
   describe("track type", () => {
     beforeEach(() => {
-      databaseHooks.cleanup();
+      hooks.database.cleanup();
     });
 
     it("should ignore release if it is not streamable", () => {
@@ -140,7 +139,7 @@ describe("upsertMany()", () => {
     it("should ignore release if the curresponding collection release was already released", () => {
       const releaseTrack = makeReleaseObject({ id: 1, type: "track" }, { isStreamable: true, collectionId: 1 });
 
-      releaseFixtures.loadRelease({
+      fixtures.releases.load({
         id: 1,
         type: "collection",
         releasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
@@ -156,7 +155,7 @@ describe("upsertMany()", () => {
         { isStreamable: true, collectionId: 1 },
       );
 
-      releaseFixtures.loadRelease({
+      fixtures.releases.load({
         id: 1,
         type: "collection",
         releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -181,7 +180,7 @@ describe("upsertMany()", () => {
         { isStreamable: true, collectionId: 1 },
       );
 
-      releaseFixtures.loadRelease({
+      fixtures.releases.load({
         id: 1,
         type: "collection",
         releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -209,8 +208,8 @@ describe("upsertMany()", () => {
         { isStreamable: true, collectionId: 1 },
       );
 
-      releaseFixtures.loadRelease({ id: 1, type: "track", releasedAt: new Date(10) });
-      releaseFixtures.loadRelease({
+      fixtures.releases.load({ id: 1, type: "track", releasedAt: new Date(10) });
+      fixtures.releases.load({
         id: 1,
         type: "collection",
         releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -236,12 +235,12 @@ describe("upsertMany()", () => {
         { isStreamable: true, collectionId: 1 },
       );
 
-      releaseFixtures.loadRelease({
+      fixtures.releases.load({
         id: 1,
         type: "collection",
         releasedAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
-      releaseFixtures.loadRelease({ id: 1, type: "track", name: "foo" });
+      fixtures.releases.load({ id: 1, type: "track", name: "foo" });
 
       assert.strict.equal(getById(releaseTrack.id, "track")?.name, "foo");
       upsertMany([releaseTrack]);
