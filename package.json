@@ -16,7 +16,12 @@
       "unused-imports"
     ],
     "rules": {
-      "sort-imports": ["error", {"allowSeparatedGroups": true}],
+      "sort-imports": [
+        "error",
+        {
+          "allowSeparatedGroups": true
+        }
+      ],
       "unused-imports/no-unused-imports": "error",
       "import/order": [
         "error",
@@ -92,7 +97,7 @@
     "@types/yargs": "^17.0.19",
     "c8": "^7.12.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "glob": "^8.0.3",
+    "glob": "^8.1.0",
     "glob-promise": "^6.0.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
