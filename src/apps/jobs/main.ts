@@ -19,7 +19,7 @@ const { job, task } = (await import(`#src/apps/jobs/${program.name!}/job.ts`)) a
   task: (as: AbortSignal) => Promise<void> | void;
 };
 
-process.once("uncaughtException", (error, origin) => {
+process.once("uncaughtException", (error) => {
   log.error(error, "Uncaught exception");
 
   process.emit("SIGUSR2");

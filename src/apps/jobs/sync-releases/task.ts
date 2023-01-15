@@ -87,8 +87,8 @@ export const run = async (abort: AbortSignal) => {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
           const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
-
-          log.error({ albumsCause, songsCause }, "Could not get albums and songs as the request has failed for both.");
+          log.error(songsCause, "Could not get song releases");
+          log.error(albumsCause, "Could not get album releases");
           log.info("Waiting 5 seconds before processing next artist");
 
           await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});

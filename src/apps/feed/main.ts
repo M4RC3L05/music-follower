@@ -26,8 +26,8 @@ const server = api.listen(port, host, () => {
   }
 });
 
-process.addListener("uncaughtException", (error, origin) => {
-  log.error({ error, origin }, "Uncaught exception");
+process.addListener("uncaughtException", (error) => {
+  log.error(error, "Uncaught exception");
 
   process.emit("SIGUSR2");
 });
