@@ -21,7 +21,18 @@ export const index = async (context: RouterContext) => {
 };
 
 export const show = async (context: RouterContext) => {
-  const release = database.releases.queries.getById(Number(context.params.id), context.query.type as any);
+  const release = database.releases.queries.getById(Number(context.params.id), context.request.query.type as any);
+
+  if (!release) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    context.flash(
+      "error",
+      `No release exist with id "${context.params.id}" of type "${context.request.query.type as string}"`,
+    );
+    context.redirect("back");
+
+    return;
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   await context.render("releases/show", { release, flashMessages: context.flash() });

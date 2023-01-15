@@ -89,7 +89,7 @@ export const unsubscribe = async (context: RouterContext) => {
     log.error(error, `Could not unsubscribe from artists "${id}"`);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    context.flash("error", `Could not subscribe from artist`);
+    context.flash("error", `Could not unsubscribe from artist`);
   }
 
   context.redirect("back");
