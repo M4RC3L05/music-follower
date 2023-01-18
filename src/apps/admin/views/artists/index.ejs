@@ -6,6 +6,9 @@
   <div class="row">
     <div class="col-xl-4">
       <form method="get" action="/artists">
+        <% if (page) { %>
+        <input type="hidden" name="page" value="<%= page %>">
+        <% } %>
         <div class="mb-3">
           <input type="search" class="form-control" name="remoteArtistQ" placeholder="Search artists to follow..."
             value="<%= remoteArtistQuery %>">
@@ -74,16 +77,16 @@
         <nav>
           <ul class="pagination justify-content-center">
             <li class="page-item <%= page <= 0 ? " disabled" : "" %>"><a class="page-link"
-                href="/artists?page=0<%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Start</a>
+                href="/artists?page=0<%= query ? `&q=${query}` : "" %>">Start</a>
             </li>
             <li class="page-item <%= page <= 0 ? " disabled" : "" %>"><a class="page-link"
-                href="/artists?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Previous</a>
+                href="/artists?page=<%= Math.max(page - 1, 0) %><%= query ? `&q=${query}` : "" %>">Previous</a>
             </li>
             <li class="page-item <%= (page + 1) * limit >= total ? " disabled" : "" %>"><a class="page-link"
-                href="/artists?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">Next</a>
+                href="/artists?page=<%= page + 1 %><%= query ? `&q=${query}` : "" %>">Next</a>
             </li>
             <li class="page-item <%= (page + 1) * limit >= total ? " disabled" : "" %>"><a class="page-link"
-                href="/artists?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %><%= remoteArtistQuery ? `&remoteArtistQ=${remoteArtistQuery}` : "" %>">End</a>
+                href="/artists?page=<%= Math.ceil(total / limit) - 1 %><%= query ? `&q=${query}` : "" %>">End</a>
             </li>
           </ul>
         </nav>
