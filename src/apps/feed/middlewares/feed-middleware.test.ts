@@ -1,6 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { afterEach, before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert";
 
@@ -31,11 +30,21 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/xml");
-
-    // @ts-expect-error
-    await assert.strict.snapshot(
+    assert.strict.equal(
       (ctx as any).body,
-      "feedMiddleware() - should fallback to rss if no accepts header is sent",
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<rss version="2.0">\n' +
+        "    <channel>\n" +
+        "        <title>Music releases</title>\n" +
+        "        <link>undefined</link>\n" +
+        "        <description>Get the latest music releases from artist you follow</description>\n" +
+        "        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>\n" +
+        "        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n" +
+        "        <generator>Music Follower</generator>\n" +
+        "        <language>en</language>\n" +
+        "        <copyright>Music Follower</copyright>\n" +
+        "    </channel>\n" +
+        "</rss>",
     );
   });
 
@@ -45,11 +54,21 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/xml");
-
-    // @ts-expect-error
-    await assert.strict.snapshot(
+    assert.strict.equal(
       (ctx as any).body,
-      "feedMiddleware() - should send rss feed if it accepts `application/xml`",
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<rss version="2.0">\n' +
+        "    <channel>\n" +
+        "        <title>Music releases</title>\n" +
+        "        <link>undefined</link>\n" +
+        "        <description>Get the latest music releases from artist you follow</description>\n" +
+        "        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>\n" +
+        "        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n" +
+        "        <generator>Music Follower</generator>\n" +
+        "        <language>en</language>\n" +
+        "        <copyright>Music Follower</copyright>\n" +
+        "    </channel>\n" +
+        "</rss>",
     );
   });
 
@@ -59,11 +78,21 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/rss+xml");
-
-    // @ts-expect-error
-    await assert.strict.snapshot(
+    assert.strict.equal(
       (ctx as any).body,
-      "feedMiddleware() - should send rss feed if it accepts `application/rss+xml`",
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<rss version="2.0">\n' +
+        "    <channel>\n" +
+        "        <title>Music releases</title>\n" +
+        "        <link>undefined</link>\n" +
+        "        <description>Get the latest music releases from artist you follow</description>\n" +
+        "        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>\n" +
+        "        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n" +
+        "        <generator>Music Follower</generator>\n" +
+        "        <language>en</language>\n" +
+        "        <copyright>Music Follower</copyright>\n" +
+        "    </channel>\n" +
+        "</rss>",
     );
   });
 
@@ -73,11 +102,17 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/atom+xml");
-
-    // @ts-expect-error
-    await assert.strict.snapshot(
+    assert.strict.equal(
       (ctx as any).body,
-      "feedMiddleware() - should send atom feed if it accepts `application/atom+xml`",
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<feed xmlns="http://www.w3.org/2005/Atom">\n' +
+        "    <id>music_follower</id>\n" +
+        "    <title>Music releases</title>\n" +
+        "    <updated>1970-01-01T00:00:00.000Z</updated>\n" +
+        "    <generator>Music Follower</generator>\n" +
+        "    <subtitle>Get the latest music releases from artist you follow</subtitle>\n" +
+        "    <rights>Music Follower</rights>\n" +
+        "</feed>",
     );
   });
 
@@ -87,11 +122,14 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/json");
-
-    // @ts-expect-error
-    await assert.strict.snapshot(
+    assert.strict.equal(
       (ctx as any).body,
-      "feedMiddleware() - should send json feed if it accepts `application/json`",
+      "{\n" +
+        '    "version": "https://jsonfeed.org/version/1",\n' +
+        '    "title": "Music releases",\n' +
+        '    "description": "Get the latest music releases from artist you follow",\n' +
+        '    "items": []\n' +
+        "}",
     );
   });
 
@@ -110,9 +148,115 @@ describe("feedMiddleware()", () => {
       feedMiddleware(ctx as any);
 
       assert.strict.equal((ctx as any).type, ct);
-
-      // @ts-expect-error
-      await assert.strict.snapshot((ctx as any).body, `feedMiddleware() - should send feed with elements for "${ct}"`);
+      assert.strict.equal(
+        (ctx as any).body,
+        ct === "application/rss+xml"
+          ? '<?xml version="1.0" encoding="utf-8"?>\n' +
+              '<rss version="2.0">\n' +
+              "    <channel>\n" +
+              "        <title>Music releases</title>\n" +
+              "        <link>undefined</link>\n" +
+              "        <description>Get the latest music releases from artist you follow</description>\n" +
+              "        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>\n" +
+              "        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n" +
+              "        <generator>Music Follower</generator>\n" +
+              "        <language>en</language>\n" +
+              "        <copyright>Music Follower</copyright>\n" +
+              "        <item>\n" +
+              "            <title><![CDATA[bar by foo]]></title>\n" +
+              "            <link>http://foo.bix</link>\n" +
+              "            <guid>4</guid>\n" +
+              "            <pubDate>Thu, 01 Jan 1970 00:00:01 GMT</pubDate>\n" +
+              '            <description><![CDATA[<img src="http://foo.bix" />\n' +
+              "      <h1>bar</h1><p>foo</p>\n" +
+              "      <p>1970</p>]]></description>\n" +
+              "        </item>\n" +
+              "        <item>\n" +
+              "            <title><![CDATA[bar by foo]]></title>\n" +
+              "            <link>http://foo.bix</link>\n" +
+              "            <guid>3</guid>\n" +
+              "            <pubDate>Thu, 01 Jan 1970 00:00:01 GMT</pubDate>\n" +
+              '            <description><![CDATA[<img src="http://foo.bix" />\n' +
+              "      <h1>bar</h1><p>foo</p>\n" +
+              "      <p>1970</p>]]></description>\n" +
+              "        </item>\n" +
+              "        <item>\n" +
+              "            <title><![CDATA[bar by foo]]></title>\n" +
+              "            <link>http://foo.bix</link>\n" +
+              "            <guid>2</guid>\n" +
+              "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+              '            <description><![CDATA[<img src="http://foo.bix" />\n' +
+              "      <h1>bar</h1><p>foo</p>\n" +
+              "      <p>1970</p>]]></description>\n" +
+              "        </item>\n" +
+              "    </channel>\n" +
+              "</rss>"
+          : ct === "application/atom+xml"
+          ? '<?xml version="1.0" encoding="utf-8"?>\n' +
+            '<feed xmlns="http://www.w3.org/2005/Atom">\n' +
+            "    <id>music_follower</id>\n" +
+            "    <title>Music releases</title>\n" +
+            "    <updated>1970-01-01T00:00:00.000Z</updated>\n" +
+            "    <generator>Music Follower</generator>\n" +
+            "    <subtitle>Get the latest music releases from artist you follow</subtitle>\n" +
+            "    <rights>Music Follower</rights>\n" +
+            "    <entry>\n" +
+            '        <title type="html"><![CDATA[bar by foo]]></title>\n' +
+            "        <id>4</id>\n" +
+            '        <link href="http://foo.bix"/>\n' +
+            "        <updated>1970-01-01T00:00:01.500Z</updated>\n" +
+            '        <summary type="html"><![CDATA[<img src="http://foo.bix" />\n' +
+            "      <h1>bar</h1><p>foo</p>\n" +
+            "      <p>1970</p>]]></summary>\n" +
+            "    </entry>\n" +
+            "    <entry>\n" +
+            '        <title type="html"><![CDATA[bar by foo]]></title>\n' +
+            "        <id>3</id>\n" +
+            '        <link href="http://foo.bix"/>\n' +
+            "        <updated>1970-01-01T00:00:01.000Z</updated>\n" +
+            '        <summary type="html"><![CDATA[<img src="http://foo.bix" />\n' +
+            "      <h1>bar</h1><p>foo</p>\n" +
+            "      <p>1970</p>]]></summary>\n" +
+            "    </entry>\n" +
+            "    <entry>\n" +
+            '        <title type="html"><![CDATA[bar by foo]]></title>\n' +
+            "        <id>2</id>\n" +
+            '        <link href="http://foo.bix"/>\n' +
+            "        <updated>1970-01-01T00:00:00.500Z</updated>\n" +
+            '        <summary type="html"><![CDATA[<img src="http://foo.bix" />\n' +
+            "      <h1>bar</h1><p>foo</p>\n" +
+            "      <p>1970</p>]]></summary>\n" +
+            "    </entry>\n" +
+            "</feed>"
+          : "{\n" +
+            '    "version": "https://jsonfeed.org/version/1",\n' +
+            '    "title": "Music releases",\n' +
+            '    "description": "Get the latest music releases from artist you follow",\n' +
+            '    "items": [\n' +
+            "        {\n" +
+            '            "id": "4",\n' +
+            '            "url": "http://foo.bix",\n' +
+            '            "title": "bar by foo",\n' +
+            '            "summary": "<img src=\\"http://foo.bix\\" />\\n      <h1>bar</h1><p>foo</p>\\n      <p>1970</p>",\n' +
+            '            "date_modified": "1970-01-01T00:00:01.500Z"\n' +
+            "        },\n" +
+            "        {\n" +
+            '            "id": "3",\n' +
+            '            "url": "http://foo.bix",\n' +
+            '            "title": "bar by foo",\n' +
+            '            "summary": "<img src=\\"http://foo.bix\\" />\\n      <h1>bar</h1><p>foo</p>\\n      <p>1970</p>",\n' +
+            '            "date_modified": "1970-01-01T00:00:01.000Z"\n' +
+            "        },\n" +
+            "        {\n" +
+            '            "id": "2",\n' +
+            '            "url": "http://foo.bix",\n' +
+            '            "title": "bar by foo",\n' +
+            '            "summary": "<img src=\\"http://foo.bix\\" />\\n      <h1>bar</h1><p>foo</p>\\n      <p>1970</p>",\n' +
+            '            "date_modified": "1970-01-01T00:00:00.500Z"\n' +
+            "        }\n" +
+            "    ]\n" +
+            "}",
+      );
     });
   }
 
@@ -168,8 +312,75 @@ describe("feedMiddleware()", () => {
     feedMiddleware(ctx as any);
 
     assert.strict.equal((ctx as any).type, "application/xml");
-
-    // @ts-expect-error
-    await assert.strict.snapshot((ctx as any).body, "feedMiddleware() - should detect correctly the feed item link");
+    assert.strict.equal(
+      (ctx as any).body,
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+        '<rss version="2.0">\n' +
+        "    <channel>\n" +
+        "        <title>Music releases</title>\n" +
+        "        <link>undefined</link>\n" +
+        "        <description>Get the latest music releases from artist you follow</description>\n" +
+        "        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>\n" +
+        "        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n" +
+        "        <generator>Music Follower</generator>\n" +
+        "        <language>en</language>\n" +
+        "        <copyright>Music Follower</copyright>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>bux</link>\n" +
+        "            <guid>1</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bux" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>bux</link>\n" +
+        "            <guid>3</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bux" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>foo</link>\n" +
+        "            <guid>2</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bux" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>bix</link>\n" +
+        "            <guid>3</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bix" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>bar</link>\n" +
+        "            <guid>2</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bix" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "        <item>\n" +
+        "            <title><![CDATA[bar by foo]]></title>\n" +
+        "            <link>foo</link>\n" +
+        "            <guid>1</guid>\n" +
+        "            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>\n" +
+        '            <description><![CDATA[<img src="bix" />\n' +
+        "      <h1>bar</h1><p>foo</p>\n" +
+        "      <p>1970</p>]]></description>\n" +
+        "        </item>\n" +
+        "    </channel>\n" +
+        "</rss>",
+    );
   });
 });
