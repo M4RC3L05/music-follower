@@ -1,3 +1,8 @@
+### v8.5.0 (2023-02-05)
+
+- [Update node version, packages and fix lint and tests](https://github.com/M4RC3L05/music-follower/commit/e73b68451c9108986465acb2da0065c2baa31114)
+- [Remove \`remoteArtistQ\` from pagination and add page on search remote artists](https://github.com/M4RC3L05/music-follower/commit/8398607e40a30c28442ffa42df800a5911ddc107)
+
 ### v8.4.0 (2023-01-15)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/20f641a2b2825159e954604be2350d5c6efa4393)
