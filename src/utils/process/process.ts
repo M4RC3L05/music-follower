@@ -2,38 +2,60 @@ import process from "node:process";
 
 import logger from "#src/utils/logger/logger.js";
 
-type ProcessSignals = {
-  signals: NodeJS.Signals[];
+type ProcessHook = {
   name: string;
   handler: () => Promise<void> | void;
-};
-
-type OnSignal = {
-  signal: NodeJS.Signals;
-  handler: () => Promise<void> | void;
-  name: string;
 };
 
 const log = logger("process");
+const processHooks: ProcessHook[] = [];
+const signalsToWatch = ["SIGTERM", "SIGINT", "SIGUSR2"];
+let shuttingDown = false;
 
-const onSignal = ({ handler, signal, name }: OnSignal) => {
-  return async () => {
-    log.info({ name }, `Running handlers for signal "${signal}"`);
+export const addHook = (hook: ProcessHook) => {
+  log.info(`Registered "${hook.name}" hook`);
+  processHooks.push(hook);
+};
+
+const processSignal = async (signal: NodeJS.Signals) => {
+  if (shuttingDown) {
+    log.warn("Ignoring process exit signal has the app is shutting down.");
+    return;
+  }
+
+  log.info({ signal }, "Processing exit signal");
+
+  shuttingDown = true;
+
+  for (const signal of signalsToWatch) process.removeListener(signal, processSignal);
+
+  for (const { name, handler } of processHooks) {
+    log.info(`Processing "${name}" hook`);
 
     try {
+      // eslint-disable-next-line no-await-in-loop
       await handler();
 
-      log.info({ name }, `Handler successfull for "${signal}"`);
+      log.info(`"${name}" hook successfull`);
     } catch (error: unknown) {
-      log.info({ error, name }, `Handler error for "${signal}"`);
+      log.error(error, `"${name}" hook unsuccessfully`);
     }
-  };
-};
-
-export const onProcessSignals = ({ handler, signals, name }: ProcessSignals) => {
-  log.info({ signals, name }, "Register for signal");
-
-  for (const signal of signals) {
-    process.once(signal, onSignal({ signal, handler, name }));
   }
+
+  log.info({ signal }, "Exit signal process completed");
 };
+
+const processErrors = (error: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  log.error(typeof error === "object" ? error : { error }, "Uncaught/Unhandled");
+
+  if (shuttingDown) log.info("Ignoring Uncaught/Unhandled has the app is shutting down.");
+  else process.emit("SIGUSR2");
+};
+
+process.on("uncaughtException", processErrors);
+process.on("unhandledRejection", processErrors);
+
+for (const signal of signalsToWatch) {
+  process.on(signal, processSignal);
+}

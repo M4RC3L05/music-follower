@@ -1,8 +1,8 @@
 import { Database } from "@leafac/sqlite";
 import config from "config";
 
+import { addHook } from "#src/utils/process/process.js";
 import logger from "#src/utils/logger/logger.js";
-import { onProcessSignals } from "#src/utils/process/process.js";
 
 const log = logger("database");
 
@@ -17,8 +17,7 @@ db.pragma("foreign_keys = ON");
 db.pragma("journal_mode = WAL");
 
 /* c8 ignore start */
-onProcessSignals({
-  signals: ["SIGINT", "SIGTERM", "SIGUSR2"],
+addHook({
   handler() {
     db.close();
 

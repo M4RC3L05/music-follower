@@ -2,9 +2,9 @@ import process from "node:process";
 
 import config from "config";
 
+import { addHook } from "#src/utils/process/process.js";
 import { app } from "#src/apps/feed/app.js";
 import logger from "#src/utils/logger/logger.js";
-import { onProcessSignals } from "#src/utils/process/process.js";
 
 const log = logger("main");
 const api = app();
@@ -26,20 +26,7 @@ const server = api.listen(port, host, () => {
   }
 });
 
-process.addListener("uncaughtException", (error) => {
-  log.error(error, "Uncaught exception");
-
-  process.emit("SIGUSR2");
-});
-
-process.addListener("unhandledRejection", (reason, promise) => {
-  log.error({ reason, promise }, "Unhandled rejection");
-
-  process.emit("SIGUSR2");
-});
-
-onProcessSignals({
-  signals: ["SIGINT", "SIGTERM", "SIGUSR2"],
+addHook({
   async handler() {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => {

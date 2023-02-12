@@ -5,8 +5,8 @@ import process from "node:process";
 import yargs from "yargs";
 
 import { type Cron } from "#src/utils/cron/cron.js";
+import { addHook } from "#src/utils/process/process.js";
 import logger from "#src/utils/logger/logger.js";
-import { onProcessSignals } from "#src/utils/process/process.js";
 
 const log = logger("main");
 
@@ -33,8 +33,7 @@ process.once("unhandledRejection", (reason, promise) => {
   process.emit("SIGUSR2");
 });
 
-onProcessSignals({
-  signals: ["SIGINT", "SIGTERM", "SIGUSR2"],
+addHook({
   async handler() {
     await job.stop();
 
@@ -60,5 +59,6 @@ for await (const s of job.start()!) {
     log.error(`Error running "${program.name!}" task`, { error });
   } finally {
     log.info(`"${program.name!}" task completed`);
+    log.info(`Next at ${job.nextTime()?.toISOString()}`);
   }
 }
