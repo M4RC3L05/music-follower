@@ -1,3 +1,8 @@
+### v8.6.0 (2023-02-12)
+
+- [Improve gracefull process handling](https://github.com/M4RC3L05/music-follower/commit/53531e9bad38d21692918fd6e07f5700bb5b5395)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/67cccadb21fe5b052905947857d80a8eaff82a7d)
+
 ### v8.5.0 (2023-02-05)
 
 - [Update node version, packages and fix lint and tests](https://github.com/M4RC3L05/music-follower/commit/e73b68451c9108986465acb2da0065c2baa31114)
