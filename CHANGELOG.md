@@ -1,3 +1,13 @@
+### v8.7.0 (2023-02-18)
+
+- [Enable auto dark\/light mode](https://github.com/M4RC3L05/music-follower/commit/18b2efdd76df9da1abe393507321f31d22a03acf)
+- [Serve node\_modules deps to front](https://github.com/M4RC3L05/music-follower/commit/e6ff2cfb7de1156aa6d237973226ad4f32affb18)
+- [Remove unused assets](https://github.com/M4RC3L05/music-follower/commit/84433cdd6cc5d8de7149f291c35483a32bb0c226)
+- [Update project config files](https://github.com/M4RC3L05/music-follower/commit/9931d7af0394c8a1365baa561b1f0004ac75ad12)
+- [Add bootstrap as dependency](https://github.com/M4RC3L05/music-follower/commit/7f8f1ef0ede95431ef4b73d96c63685e1aa0ca9d)
+- [Bump nodejs version](https://github.com/M4RC3L05/music-follower/commit/713c747c4736b3653891109fd7207bf16bafe2f7)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/510a12587feb2e4544580ba72e9065d7c78d20a5)
+
 ### v8.6.0 (2023-02-12)
 
 - [Improve gracefull process handling](https://github.com/M4RC3L05/music-follower/commit/53531e9bad38d21692918fd6e07f5700bb5b5395)
