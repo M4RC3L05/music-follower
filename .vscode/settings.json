@@ -9,5 +9,11 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "samverschueren.linter-xo"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
