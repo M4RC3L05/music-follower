@@ -27,7 +27,7 @@ export const gte = <T = any>(prop: Query, value: T[keyof T] | Query) => condExp<
 export const lte = <T = any>(prop: Query, value: T[keyof T] | Query) => condExp<T>(prop, "lte", value);
 export const btw = <T = any>(prop: Query, from: T[keyof T] | Query, to: T[keyof T] | Query) =>
   condExp<T>(prop, "btw", sql`$${isQuery(from) ? from : sql`${from}`} and $${isQuery(to) ? to : sql`${to}`}`);
-export const lk = <T = any>(prop: Query, value: Query) => condExp<T>(prop, "lk", value);
+export const lk = <T = any>(prop: Query, value: string | Query) => condExp<T>(prop, "lk", value as any);
 export const iin = <T = any>(prop: Query, ...value: Array<T[keyof T] | Query>) =>
   condExp<T>(prop, "in", sql`($${join(value)})`);
 export const exts = <T = any>(prop: Query, value: Query) => condExp<T>(prop, "exts", sql`($${value})`);
