@@ -32,7 +32,7 @@ export const app = () => {
   koa.use(flash());
   koa.use(bodyParser());
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
-  koa.use(koaStatic("./static"));
+  koa.use(koaStatic("./src/apps/admin/public"));
   koa.use(koaStatic("./node_modules"));
   koa.use(router.middleware());
   koa.use(router.allowedMethods());

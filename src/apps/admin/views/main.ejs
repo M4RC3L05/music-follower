@@ -7,6 +7,7 @@
     <title>Admin | Music follower</title>
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="/css/main.css" />
   </head>
 
   <body>
@@ -29,19 +30,19 @@
     <%- include("partials/alerts.ejs") %> <%- body %>
 
     <script>
-        const getPreferredTheme = () => {
-          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        }
+      const getPreferredTheme = () => {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      };
 
-        const setTheme = function (theme) {
-          document.documentElement.setAttribute('data-bs-theme', theme)
-        }
+      const setTheme = function (theme) {
+        document.documentElement.setAttribute("data-bs-theme", theme);
+      };
 
-        setTheme(getPreferredTheme())
+      setTheme(getPreferredTheme());
 
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-          setTheme(getPreferredTheme())
-        })
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        setTheme(getPreferredTheme());
+      });
     </script>
   </body>
 </html>
