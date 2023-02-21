@@ -6,5 +6,5 @@ export const getById = (id: number) =>
   artists.table.get<Artist>(sql`
     select *
     from $${artists.table.lit("table")}
-    where $${artists.table.eq("id", id)};
+    where $${artists.table.lit("id")} = ${id};
   `);

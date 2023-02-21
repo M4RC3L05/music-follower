@@ -5,6 +5,21 @@ import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getLatestReleasesByArtist } from "./get-latest-releases-by-artist.js";
 
 describe("getLatestReleasesByArtist()", () => {
+  it("should abort request", async () => {
+    try {
+      const abortController = new AbortController();
+      const promise = getLatestReleasesByArtist(1, "song", abortController.signal);
+      abortController.abort();
+
+      await promise;
+
+      expect.fail("not throw");
+    } catch (error: unknown) {
+      expect((error as any).message).toBe("The operation was aborted.");
+      expect((error as any).cause).toBe(undefined);
+    }
+  });
+
   describe("song", () => {
     afterEach(() => {
       hooks.nock.checkMocks();

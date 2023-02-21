@@ -2,7 +2,6 @@ import sql from "@leafac/sqlite";
 
 import * as database from "#src/database/mod.js";
 import { type Release } from "#src/database/mod.js";
-import { and } from "#src/database/core/utils/sql.js";
 import logger from "#src/utils/logger/logger.js";
 
 const log = logger("upsert-many-query");
@@ -14,7 +13,8 @@ export const upsertMany = (
     const storedRelease = database.releases.table.get<Release>(sql`
       select *
       from $${database.releases.table.lit("table")}
-      where $${and(database.releases.table.eq("id", release.id), database.releases.table.eq("type", release.type))}
+      where $${database.releases.table.lit("id")} = ${release.id} 
+      and   $${database.releases.table.lit("type")} = ${release.type}
       limit 1;
     `);
 
@@ -51,10 +51,8 @@ export const upsertMany = (
     // yet to be releases but some songs are already available.
     const album = database.releases.table.get<Release>(sql`
       select * from $${database.releases.table.lit("table")}
-      where $${and(
-        database.releases.table.eq("id", Number(collectionId)),
-        database.releases.table.eq("type", "collection"),
-      )}
+      where $${database.releases.table.lit("id")} = ${Number(collectionId)} 
+      and   $${database.releases.table.lit("type")} = 'collection'
       limit 1;
     `);
 
@@ -77,7 +75,8 @@ export const upsertMany = (
 
     const releaseRecord = database.releases.table.get<Release>(sql`
       select * from $${database.releases.table.lit("table")}
-      where $${and(database.releases.table.eq("id", release.id), database.releases.table.eq("type", "track"))}
+      where $${database.releases.table.lit("id")} = ${release.id}
+      and   $${database.releases.table.lit("type")} = 'track'
     `);
 
     // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)

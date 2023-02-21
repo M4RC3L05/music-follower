@@ -30,12 +30,12 @@ const usableRelease = (release: ItunesLookupAlbumModel | ItunesLookupSongModel) 
   return !isInThePastYears && !isCompilation;
 };
 
-const getRelases = async (artistId: number) => {
+const getRelases = async (artistId: number, signal?: AbortSignal) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
   const [songsResult, albumsResult] = await Promise.allSettled([
-    remote.itunes.requests.getLatestReleasesByArtist(artistId, "song"),
-    remote.itunes.requests.getLatestReleasesByArtist(artistId, "album"),
+    remote.itunes.requests.getLatestReleasesByArtist(artistId, "song", signal),
+    remote.itunes.requests.getLatestReleasesByArtist(artistId, "album", signal),
   ]);
 
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
@@ -66,6 +66,12 @@ const getRelases = async (artistId: number) => {
 };
 
 export const run = async (abort: AbortSignal) => {
+  /* c8 ignore start */
+  if (abort.aborted) {
+    return;
+  }
+  /* c8 ignore stop */
+
   log.info("Begin releases sync.");
 
   const artists = database.artists.queries.getAll();
@@ -82,7 +88,7 @@ export const run = async (abort: AbortSignal) => {
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
     try {
-      results = await getRelases(artist.id);
+      results = await getRelases(artist.id, abort);
     } catch (error: unknown) {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
@@ -96,7 +102,7 @@ export const run = async (abort: AbortSignal) => {
         }
 
         case ErrorCodes.NO_RELEASES_FOUND: {
-          log.info("No remote data found.");
+          log.error(error, "No remote data found.");
           log.info("Waiting 5 seconds before processing next artist");
 
           await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});
@@ -104,7 +110,9 @@ export const run = async (abort: AbortSignal) => {
         }
 
         /* c8 ignore start */
-        default:
+        default: {
+          log.error(error, "Something went wrong fetching releases");
+        }
         /* c8 ignore stop */
       }
     }

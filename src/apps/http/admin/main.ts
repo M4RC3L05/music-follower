@@ -3,21 +3,16 @@ import process from "node:process";
 import config from "config";
 
 import { addHook } from "#src/utils/process/process.js";
-import { app } from "#src/apps/feed/app.js";
+import { app } from "#src/apps/http/admin/app.js";
 import logger from "#src/utils/logger/logger.js";
 
 const log = logger("main");
 const api = app();
-const { host, port } = config.get<{ host: string; port: number }>("apps.feed");
+const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
 
 const server = api.listen(port, host, () => {
+  log.info(`Live at ${host}:${port}`);
   const addr = server.address();
-
-  if (typeof addr === "string") {
-    log.info(`Live at ${addr}`);
-  } else {
-    log.info(`Live at ${addr!.address}:${addr!.port}`);
-  }
 
   if (typeof process.send === "function") {
     log.info("Sending ready signal");
@@ -42,5 +37,5 @@ addHook({
 
     log.info("Server terminated");
   },
-  name: "feed",
+  name: "admin",
 });

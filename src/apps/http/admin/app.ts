@@ -11,7 +11,7 @@ import qs from "koa-qs";
 import render from "@koa/ejs";
 import session from "koa-session";
 
-import router from "#src/apps/admin/router.js";
+import router from "#src/apps/http/admin/router.js";
 
 export const app = () => {
   const koa = new Koa();
@@ -20,7 +20,7 @@ export const app = () => {
   qs(koa);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   render(koa, {
-    root: path.resolve("./src/apps/admin/views"),
+    root: path.resolve("./src/apps/http/admin/views"),
     layout: "main",
     viewExt: "ejs",
     cache: process.env.NODE_ENV === "production",
@@ -32,7 +32,7 @@ export const app = () => {
   koa.use(flash());
   koa.use(bodyParser());
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
-  koa.use(koaStatic("./src/apps/admin/public"));
+  koa.use(koaStatic("./src/apps/http/admin/public"));
   koa.use(koaStatic("./node_modules"));
   koa.use(router.middleware());
   koa.use(router.allowedMethods());

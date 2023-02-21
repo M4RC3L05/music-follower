@@ -3,7 +3,7 @@ import config from "config";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
-import { feedMiddleware } from "#src/apps/feed/middlewares/feed-middleware.js";
+import { feedMiddleware } from "#src/apps/http/feed/middlewares/feed-middleware.js";
 
 describe("feedMiddleware()", () => {
   beforeAll(async () => {

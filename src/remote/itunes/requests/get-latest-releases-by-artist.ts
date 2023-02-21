@@ -18,6 +18,7 @@ type ItunesLookupConfig = {
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   artistId: number,
   entity: E,
+  signal?: AbortSignal,
 ): Promise<
   ItunesResponseModel<E extends "song" ? ItunesLookupSongModel : E extends "album" ? ItunesLookupAlbumModel : never>
 > => {
@@ -35,7 +36,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await fetch(path.toString());
+  const response = await fetch(path.toString(), { signal });
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", { cause: response.status });

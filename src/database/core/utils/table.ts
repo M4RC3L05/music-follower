@@ -1,7 +1,7 @@
 import sql, { type Query } from "@leafac/sqlite";
 
-import { btw, eq, exts, gt, gte, iin, isQuery, join, lk, lt, lte, ne } from "#src/database/core/utils/sql.js";
 import { db } from "#src/database/core/db.js";
+import { join } from "#src/database/core/utils/sql.js";
 
 export abstract class Table<T = any> {
   constructor(
@@ -42,48 +42,11 @@ export abstract class Table<T = any> {
   }
 
   set(values: Partial<T>) {
-    return join(Object.entries(values).map(([key, value]) => this.eq(key as keyof T, value as T[keyof T])));
-  }
-
-  eq<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return eq<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  ne<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return ne<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  gt<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return gt<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  lt<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return lt<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  gte<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return gte<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  lte<K extends keyof T>(prop: K, value: T[K] | Query) {
-    return lte<T>(this.lit(prop), isQuery(value) ? value : this.#toDbValue(prop, value));
-  }
-
-  btw<K extends keyof T>(prop: K, ...limts: [T[K], T[K]]) {
-    return btw(this.lit(prop), this.#toDbValue(prop, limts[0]), this.#toDbValue(prop, limts[1]));
-  }
-
-  lk<K extends keyof T>(prop: K, value: Query) {
-    return lk(this.lit(prop), value);
-  }
-
-  in<K extends keyof T>(prop: K, ...value: Array<T[K] | Query>) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return iin(this.lit(prop), ...value.map((v) => (isQuery(v) ? v : this.#toDbValue(prop, v))));
-  }
-
-  exts<K extends keyof T>(prop: K, value: Query) {
-    return exts(this.lit(prop), value);
+    return join(
+      Object.entries(values).map(
+        ([key, value]) => sql`$${this.lit(key as keyof T)} = ${this.#toDbValue(key as keyof T, value)}`,
+      ),
+    );
   }
 
   get<R extends Partial<T>>(query: Query) {

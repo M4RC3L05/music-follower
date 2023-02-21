@@ -7,7 +7,7 @@ export const searchPaginated = ({ page = 0, limit = 12, q }: { page?: number; li
     sql`
       select *
       from $${artists.table.lit("table")}
-      $${q ? sql`where $${artists.table.lk("name", sql`${`%${q}%`}`)}` : sql``}
+      $${q ? sql`where $${artists.table.lit("name")} like ${`%${q}%`}` : sql``}
       order by $${artists.table.lit("name")} asc
     `,
     limit,
