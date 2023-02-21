@@ -1,6 +1,4 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-
+import { describe, expect, it } from "vitest";
 import sql from "@leafac/sqlite";
 
 import { and, btw, eq, exts, gt, gte, iin, isQuery, join, lk, lt, lte, ne, not, or } from "./sql.js";
@@ -8,24 +6,25 @@ import { and, btw, eq, exts, gt, gte, iin, isQuery, join, lk, lt, lte, ne, not, 
 describe("sql", () => {
   describe("isQuery()", () => {
     it("should detect if it is a query", () => {
-      assert.strict.equal(isQuery("foo"), false);
-      assert.strict.equal(isQuery(sql`1`), true);
+      expect(isQuery("foo")).toBe(false);
+      expect(isQuery({})).toBe(false);
+      expect(isQuery(sql`1`)).toBe(true);
     });
   });
 
   describe("join()", () => {
     it("should work if no values to join", () => {
-      assert.strict.deepEqual(join([]), { parameters: [], sourceParts: [""] });
+      expect(join([])).toEqual({ parameters: [], sourceParts: [""] });
     });
 
     it("should join values with a glue", () => {
-      assert.strict.deepEqual(join(["foo", sql`1`], sql` and `), { parameters: ["foo"], sourceParts: ["", " and 1"] });
+      expect(join(["foo", sql`1`], sql` and `)).toEqual({ parameters: ["foo"], sourceParts: ["", " and 1"] });
     });
   });
 
   describe("exts", () => {
     it("should create a exists", () => {
-      assert.strict.deepEqual(exts(sql`not`, sql`select * from "foo"`), {
+      expect(exts(sql`not`, sql`select * from "foo"`)).toEqual({
         parameters: [],
         sourceParts: ['not exists (select * from "foo")'],
       });
@@ -34,14 +33,14 @@ describe("sql", () => {
 
   describe("iin()", () => {
     it("should create a in", () => {
-      assert.strict.deepEqual(iin(sql`"foo"`, "foo", sql`1`), {
+      expect(iin(sql`"foo"`, "foo", sql`1`)).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" in (', ", 1)"],
       });
     });
 
     it("should handle no values", () => {
-      assert.strict.deepEqual(iin(sql`"foo"`), {
+      expect(iin(sql`"foo"`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" in ()'],
       });
@@ -50,12 +49,12 @@ describe("sql", () => {
 
   describe("lk()", () => {
     it("should create a like", () => {
-      assert.strict.deepEqual(lk(sql`"foo"`, sql`1`), {
+      expect(lk(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" like 1'],
       });
 
-      assert.strict.deepEqual(lk(sql`"foo"`, sql`${`%${"foo"}%`}`), {
+      expect(lk(sql`"foo"`, sql`${`%${"foo"}%`}`)).toEqual({
         parameters: ["%foo%"],
         sourceParts: ['"foo" like ', ""],
       });
@@ -64,12 +63,12 @@ describe("sql", () => {
 
   describe("btw()", () => {
     it("should create a between", () => {
-      assert.strict.deepEqual(btw(sql`"foo"`, "foo", sql`1`), {
+      expect(btw(sql`"foo"`, "foo", sql`1`)).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" between ', " and 1"],
       });
 
-      assert.strict.deepEqual(btw(sql`"foo"`, sql`1`, "foo"), {
+      expect(btw(sql`"foo"`, sql`1`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" between 1 and ', ""],
       });
@@ -78,12 +77,12 @@ describe("sql", () => {
 
   describe("lte()", () => {
     it("should create a less than or equal to", () => {
-      assert.strict.deepEqual(lte(sql`"foo"`, "foo"), {
+      expect(lte(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" <= ', ""],
       });
 
-      assert.strict.deepEqual(lte(sql`"foo"`, sql`1`), {
+      expect(lte(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" <= 1'],
       });
@@ -92,12 +91,12 @@ describe("sql", () => {
 
   describe("gte()", () => {
     it("should create a geater than or equal to", () => {
-      assert.strict.deepEqual(gte(sql`"foo"`, "foo"), {
+      expect(gte(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" >= ', ""],
       });
 
-      assert.strict.deepEqual(gte(sql`"foo"`, sql`1`), {
+      expect(gte(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" >= 1'],
       });
@@ -106,12 +105,12 @@ describe("sql", () => {
 
   describe("lt()", () => {
     it("should create a less than or equal to", () => {
-      assert.strict.deepEqual(lt(sql`"foo"`, "foo"), {
+      expect(lt(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" < ', ""],
       });
 
-      assert.strict.deepEqual(lt(sql`"foo"`, sql`1`), {
+      expect(lt(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" < 1'],
       });
@@ -120,12 +119,12 @@ describe("sql", () => {
 
   describe("gt()", () => {
     it("should create a geater than or equal to", () => {
-      assert.strict.deepEqual(gt(sql`"foo"`, "foo"), {
+      expect(gt(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" > ', ""],
       });
 
-      assert.strict.deepEqual(gt(sql`"foo"`, sql`1`), {
+      expect(gt(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" > 1'],
       });
@@ -134,12 +133,12 @@ describe("sql", () => {
 
   describe("ne()", () => {
     it("should create a not equal", () => {
-      assert.strict.deepEqual(ne(sql`"foo"`, "foo"), {
+      expect(ne(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" <> ', ""],
       });
 
-      assert.strict.deepEqual(ne(sql`"foo"`, sql`1`), {
+      expect(ne(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" <> 1'],
       });
@@ -148,12 +147,12 @@ describe("sql", () => {
 
   describe("eq()", () => {
     it("should create a not equal", () => {
-      assert.strict.deepEqual(eq(sql`"foo"`, "foo"), {
+      expect(eq(sql`"foo"`, "foo")).toEqual({
         parameters: ["foo"],
         sourceParts: ['"foo" = ', ""],
       });
 
-      assert.strict.deepEqual(eq(sql`"foo"`, sql`1`), {
+      expect(eq(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" = 1'],
       });
@@ -162,7 +161,7 @@ describe("sql", () => {
 
   describe("not()", () => {
     it("should create a not", () => {
-      assert.strict.deepEqual(not(sql`"foo"`), {
+      expect(not(sql`"foo"`)).toEqual({
         parameters: [],
         sourceParts: ['not "foo"'],
       });
@@ -171,21 +170,21 @@ describe("sql", () => {
 
   describe("or()", () => {
     it("should create a or", () => {
-      assert.strict.deepEqual(or(sql`"foo"`, sql`1`), {
+      expect(or(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" or 1'],
       });
     });
 
     it("should handle no values", () => {
-      assert.strict.deepEqual(or(), {
+      expect(or()).toEqual({
         parameters: [],
         sourceParts: [""],
       });
     });
 
     it("should handle one value", () => {
-      assert.strict.deepEqual(or(sql`1`), {
+      expect(or(sql`1`)).toEqual({
         parameters: [],
         sourceParts: ["1"],
       });
@@ -194,21 +193,21 @@ describe("sql", () => {
 
   describe("and()", () => {
     it("should create a and", () => {
-      assert.strict.deepEqual(and(sql`"foo"`, sql`1`), {
+      expect(and(sql`"foo"`, sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" and 1'],
       });
     });
 
     it("should handle no values", () => {
-      assert.strict.deepEqual(and(), {
+      expect(and()).toEqual({
         parameters: [],
         sourceParts: [""],
       });
     });
 
     it("should handle one value", () => {
-      assert.strict.deepEqual(and(sql`1`), {
+      expect(and(sql`1`)).toEqual({
         parameters: [],
         sourceParts: ["1"],
       });

@@ -1,12 +1,11 @@
-import { before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getById } from "./get-by-id.js";
 
 describe("getById()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -15,13 +14,13 @@ describe("getById()", () => {
   });
 
   it("should return undefined if no artist was found", () => {
-    assert.strict.equal(getById(1), undefined);
+    expect(getById(1)).toBeUndefined();
   });
 
   it("should return the request artist", () => {
     fixtures.artists.load({ id: 1 });
     fixtures.artists.load({ id: 2 });
 
-    assert.strict.equal(getById(1)!.id, 1);
+    expect(getById(1)!.id).toBe(1);
   });
 });

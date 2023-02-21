@@ -1,12 +1,11 @@
-import { before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { searchPaginated } from "./search-paginated.js";
 
 describe("searchPaginated()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -15,7 +14,7 @@ describe("searchPaginated()", () => {
   });
 
   it("should return no releases if there is no releases", () => {
-    assert.strict.deepEqual(searchPaginated(), { data: [], total: 0 });
+    expect(searchPaginated()).toEqual({ data: [], total: 0 });
   });
 
   it("should return releases paginated", () => {
@@ -25,7 +24,7 @@ describe("searchPaginated()", () => {
 
     const { data, total } = searchPaginated({ page: 1, limit: 2 });
 
-    assert.strict.deepEqual({ data: data.map(({ id }) => ({ id })), total }, { data: [{ id: 3 }], total: 3 });
+    expect({ data: data.map(({ id }) => ({ id })), total }).toEqual({ data: [{ id: 3 }], total: 3 });
   });
 
   it("should search for releases name and artistName", () => {
@@ -36,9 +35,9 @@ describe("searchPaginated()", () => {
 
     const { data, total } = searchPaginated({ q: "fo" });
 
-    assert.strict.deepEqual(
-      { data: data.map(({ id }) => ({ id })), total },
-      { data: [{ id: 1 }, { id: 2 }, { id: 3 }], total: 3 },
-    );
+    expect({ data: data.map(({ id }) => ({ id })), total }).toEqual({
+      data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+      total: 3,
+    });
   });
 });

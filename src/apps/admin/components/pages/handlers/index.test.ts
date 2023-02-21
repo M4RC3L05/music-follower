@@ -1,23 +1,12 @@
-/* eslint-disable import/no-named-as-default-member */
-import { afterEach, describe, it } from "node:test";
-import assert from "node:assert";
-
+import { describe, expect, it, vi } from "vitest";
 import { type RouterContext } from "@koa/router";
-import sinon from "sinon";
 
 import { index } from "./index.js";
 
 describe("Pages Controller", () => {
   describe("index()", () => {
-    afterEach(() => {
-      sinon.restore();
-      sinon.reset();
-    });
-
     it("should render index page", async () => {
-      const render = sinon.spy(() => {
-        /** */
-      });
+      const render = vi.fn();
 
       await index({
         render,
@@ -26,8 +15,8 @@ describe("Pages Controller", () => {
         }),
       } as any as RouterContext);
 
-      assert.strict.equal(render.callCount, 1);
-      assert.strict.deepEqual(render.getCalls()[0].args, ["pages/index", { flashMessages: {} }]);
+      expect(render).toHaveBeenCalledOnce();
+      expect(render).toHaveBeenCalledWith("pages/index", { flashMessages: {} });
     });
   });
 });

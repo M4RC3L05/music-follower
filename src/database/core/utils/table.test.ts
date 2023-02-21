@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
 
+import { beforeEach, describe, expect, it } from "vitest";
 import sql from "@leafac/sqlite";
 
 import { Table } from "./table.js";
@@ -20,19 +19,19 @@ describe("table", () => {
 
   describe("lit()", () => {
     it("should return a literal", () => {
-      assert.strict.deepEqual(t.lit("foo"), { parameters: [], sourceParts: ['"foo"'] });
+      expect(t.lit("foo")).toEqual({ parameters: [], sourceParts: ['"foo"'] });
     });
   });
 
   describe("joinLit()", () => {
     it("should join literals", () => {
-      assert.strict.deepEqual(t.joinLit(["foo", "table"], sql`;`), { parameters: [], sourceParts: ['"foo";"t"'] });
+      expect(t.joinLit(["foo", "table"], sql`;`)).toEqual({ parameters: [], sourceParts: ['"foo";"t"'] });
     });
   });
 
   describe("joinValues()", () => {
     it("should join values", () => {
-      assert.strict.deepEqual(t.joinValues({ foo: "a", b: 1 }), {
+      expect(t.joinValues({ foo: "a", b: 1 })).toEqual({
         parameters: ["a - todb", 1],
         sourceParts: ["", ", ", ""],
       });
@@ -41,7 +40,7 @@ describe("table", () => {
 
   describe("set()", () => {
     it("should create set", () => {
-      assert.strict.deepEqual(t.set({ foo: "foo", b: 2 }), {
+      expect(t.set({ foo: "foo", b: 2 })).toEqual({
         parameters: ["foo - todb", 2],
         sourceParts: ['"foo" = ', ', "b" = ', ""],
       });
@@ -50,17 +49,17 @@ describe("table", () => {
 
   describe("eq()", () => {
     it("should create a equal", () => {
-      assert.strict.deepEqual(t.eq("foo", "bar"), {
+      expect(t.eq("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" = ', ""],
       });
 
-      assert.strict.deepEqual(t.eq("b", 1), {
+      expect(t.eq("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" = ', ""],
       });
 
-      assert.strict.deepEqual(t.eq("foo", sql`1`), {
+      expect(t.eq("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" = 1'],
       });
@@ -69,17 +68,17 @@ describe("table", () => {
 
   describe("ne()", () => {
     it("should create a not equal", () => {
-      assert.strict.deepEqual(t.ne("foo", "bar"), {
+      expect(t.ne("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" <> ', ""],
       });
 
-      assert.strict.deepEqual(t.ne("b", 1), {
+      expect(t.ne("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" <> ', ""],
       });
 
-      assert.strict.deepEqual(t.ne("foo", sql`1`), {
+      expect(t.ne("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" <> 1'],
       });
@@ -88,17 +87,17 @@ describe("table", () => {
 
   describe("gt()", () => {
     it("should create a greater then", () => {
-      assert.strict.deepEqual(t.gt("foo", "bar"), {
+      expect(t.gt("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" > ', ""],
       });
 
-      assert.strict.deepEqual(t.gt("b", 1), {
+      expect(t.gt("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" > ', ""],
       });
 
-      assert.strict.deepEqual(t.gt("foo", sql`1`), {
+      expect(t.gt("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" > 1'],
       });
@@ -107,17 +106,17 @@ describe("table", () => {
 
   describe("lt()", () => {
     it("should create a less then", () => {
-      assert.strict.deepEqual(t.lt("foo", "bar"), {
+      expect(t.lt("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" < ', ""],
       });
 
-      assert.strict.deepEqual(t.lt("b", 1), {
+      expect(t.lt("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" < ', ""],
       });
 
-      assert.strict.deepEqual(t.lt("foo", sql`1`), {
+      expect(t.lt("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" < 1'],
       });
@@ -126,17 +125,17 @@ describe("table", () => {
 
   describe("gte()", () => {
     it("should create a greater then or equal to", () => {
-      assert.strict.deepEqual(t.gte("foo", "bar"), {
+      expect(t.gte("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" >= ', ""],
       });
 
-      assert.strict.deepEqual(t.gte("b", 1), {
+      expect(t.gte("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" >= ', ""],
       });
 
-      assert.strict.deepEqual(t.gte("foo", sql`1`), {
+      expect(t.gte("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" >= 1'],
       });
@@ -145,17 +144,17 @@ describe("table", () => {
 
   describe("lte()", () => {
     it("should create a less then or equal to", () => {
-      assert.strict.deepEqual(t.lte("foo", "bar"), {
+      expect(t.lte("foo", "bar")).toEqual({
         parameters: ["bar - todb"],
         sourceParts: ['"foo" <= ', ""],
       });
 
-      assert.strict.deepEqual(t.lte("b", 1), {
+      expect(t.lte("b", 1)).toEqual({
         parameters: [1],
         sourceParts: ['"b" <= ', ""],
       });
 
-      assert.strict.deepEqual(t.lte("foo", sql`1`), {
+      expect(t.lte("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" <= 1'],
       });
@@ -164,12 +163,12 @@ describe("table", () => {
 
   describe("btw()", () => {
     it("should create a between", () => {
-      assert.strict.deepEqual(t.btw("foo", "bar", "biz"), {
+      expect(t.btw("foo", "bar", "biz")).toEqual({
         parameters: ["bar - todb", "biz - todb"],
         sourceParts: ['"foo" between ', " and ", ""],
       });
 
-      assert.strict.deepEqual(t.btw("b", 1, 2), {
+      expect(t.btw("b", 1, 2)).toEqual({
         parameters: [1, 2],
         sourceParts: ['"b" between ', " and ", ""],
       });
@@ -178,7 +177,7 @@ describe("table", () => {
 
   describe("lk()", () => {
     it("should create a like", () => {
-      assert.strict.deepEqual(t.lk("foo", sql`1`), {
+      expect(t.lk("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" like 1'],
       });
@@ -187,12 +186,12 @@ describe("table", () => {
 
   describe("in()", () => {
     it("should create a in", () => {
-      assert.strict.deepEqual(t.in("foo", "s", sql`1`), {
+      expect(t.in("foo", "s", sql`1`)).toEqual({
         parameters: ["s - todb"],
         sourceParts: ['"foo" in (', ", 1)"],
       });
 
-      assert.strict.deepEqual(t.in("b", 1, sql`1`), {
+      expect(t.in("b", 1, sql`1`)).toEqual({
         parameters: [1],
         sourceParts: ['"b" in (', ", 1)"],
       });
@@ -201,7 +200,7 @@ describe("table", () => {
 
   describe("exts()", () => {
     it("should create a exists", () => {
-      assert.strict.deepEqual(t.exts("foo", sql`1`), {
+      expect(t.exts("foo", sql`1`)).toEqual({
         parameters: [],
         sourceParts: ['"foo" exists (1)'],
       });
@@ -215,7 +214,7 @@ describe("table", () => {
     });
 
     it("should return undefined if no item was found", () => {
-      assert.strict.equal(t.get(sql`select * from $${t.lit("table")}`), undefined);
+      expect(t.get(sql`select * from $${t.lit("table")}`)).toBeUndefined();
     });
 
     it("should return an item with values mapped", () => {
@@ -232,7 +231,7 @@ describe("table", () => {
         })})`,
       );
 
-      assert.deepEqual(t.get(sql`select * from $${t.lit("table")}`), { foo: "foo - todb - fromdb", b: 1 });
+      expect(t.get(sql`select * from $${t.lit("table")}`)).toEqual({ foo: "foo - todb - fromdb", b: 1 });
     });
   });
 
@@ -243,7 +242,7 @@ describe("table", () => {
     });
 
     it("should return empty array if no data", () => {
-      assert.strict.deepEqual(t.all(sql`select * from $${t.lit("table")}`), []);
+      expect(t.all(sql`select * from $${t.lit("table")}`)).toEqual([]);
     });
 
     it("should return items with values mapped", () => {
@@ -260,7 +259,7 @@ describe("table", () => {
         })})`,
       );
 
-      assert.deepEqual(t.all(sql`select * from $${t.lit("table")}`), [
+      expect(t.all(sql`select * from $${t.lit("table")}`)).toEqual([
         { foo: "foo - todb - fromdb", b: 1 },
         { foo: "bar - todb - fromdb", b: 2 },
       ]);
@@ -293,18 +292,18 @@ describe("table", () => {
         })})`,
       );
 
-      assert.strict.deepEqual(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 0), {
+      expect(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 0)).toEqual({
         data: [
           { foo: "foo - todb - fromdb", b: 1 },
           { foo: "bar - todb - fromdb", b: 2 },
         ],
         total: 3,
       });
-      assert.strict.deepEqual(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 2), {
+      expect(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 2)).toEqual({
         data: [{ foo: "bix - todb - fromdb", b: 3 }],
         total: 3,
       });
-      assert.strict.deepEqual(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 4), { data: [], total: 3 });
+      expect(t.chunkWithTotal(sql`select * from $${t.lit("table")}`, 2, 4)).toEqual({ data: [], total: 3 });
     });
   });
 });

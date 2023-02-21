@@ -1,6 +1,4 @@
-import { afterEach, describe, it } from "node:test";
-import assert from "node:assert";
-
+import { afterEach, describe, expect, it } from "vitest";
 import config from "config";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
@@ -22,10 +20,10 @@ describe("getArtistImage()", () => {
     try {
       await getArtistImage("https://foo.com");
 
-      assert.strict.fail("no throw");
+      expect.fail("no throw");
       // eslint-disable-next-line @typescript-eslint/no-implicit-any-catch
     } catch (error: any) {
-      assert.strict.equal(error.message, "An error ocurred while searching for artist image");
+      expect(error.message).toBe("An error ocurred while searching for artist image");
     }
   });
 
@@ -36,7 +34,7 @@ describe("getArtistImage()", () => {
       fixtures.appleMusic.loadArtistPage("https://foo.com/foo.png"),
     );
 
-    assert.strict.deepEqual(await getArtistImage("https://foo.com"), "https://foo.com/256x256.png");
+    expect(await getArtistImage("https://foo.com")).toBe("https://foo.com/256x256.png");
   });
 
   it("should use placeholder if it cannot parse artist image url", async () => {
@@ -47,7 +45,7 @@ describe("getArtistImage()", () => {
       fixtures.appleMusic.loadArtistPage("apple-music-foo"),
     );
 
-    assert.strict.equal(await getArtistImage("https://foo.com"), config.get("media.placeholderImage"));
-    assert.strict.equal(await getArtistImage("https://foo.com"), config.get("media.placeholderImage"));
+    expect(await getArtistImage("https://foo.com")).toBe(config.get("media.placeholderImage"));
+    expect(await getArtistImage("https://foo.com")).toBe(config.get("media.placeholderImage"));
   });
 });

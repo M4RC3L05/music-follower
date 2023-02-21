@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-implicit-any-catch */
-import { afterEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { afterEach, describe, expect, it } from "vitest";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
@@ -17,10 +15,10 @@ describe("searchArtists()", () => {
     try {
       await searchArtists("foo");
 
-      assert.strict.fail("not throw");
-    } catch (error: any) {
-      assert.strict.equal(error.message, "An error ocurred while searching for artists");
-      assert.strict.equal(error.cause, 500);
+      expect.fail("not throw");
+    } catch (error: unknown) {
+      expect((error as any).message).toBe("An error ocurred while searching for artists");
+      expect((error as any).cause).toBe(500);
     }
   });
 
@@ -34,6 +32,6 @@ describe("searchArtists()", () => {
     );
 
     const data = await searchArtists("foo");
-    assert.strict.equal(data.results.at(0)?.artistId, 1);
+    expect(data.results.at(0)?.artistId).toBe(1);
   });
 });

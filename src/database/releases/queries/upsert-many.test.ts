@@ -1,8 +1,4 @@
-/* eslint-disable import/no-named-as-default-member */
-import { before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
-
-import sinon from "sinon";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import sql from "@leafac/sqlite";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
@@ -28,7 +24,7 @@ const makeReleaseObject = (
 });
 
 describe("upsertMany()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -46,7 +42,7 @@ describe("upsertMany()", () => {
       const release = makeReleaseObject({}, { feedAt });
 
       upsertMany([release]);
-      assert.strict.equal(getById(release.id, "collection")?.feedAt?.toISOString(), feedAt.toISOString());
+      expect(getById(release.id, "collection")?.feedAt?.toISOString()).toBe(feedAt.toISOString());
     });
 
     it("should use the previously stored feedAt if none provided", () => {
@@ -55,7 +51,7 @@ describe("upsertMany()", () => {
       fixtures.releases.load({ id: 1, type: "collection", feedAt });
 
       upsertMany([makeReleaseObject({ id: 1, type: "collection" }, { feedAt: undefined })]);
-      assert.strict.equal(getById(1, "collection")?.feedAt?.toISOString(), feedAt.toISOString());
+      expect(getById(1, "collection")?.feedAt?.toISOString()).toBe(feedAt.toISOString());
     });
 
     it("should use the releasedAt as the feedAt if it is released in the future and no release exists", () => {
@@ -63,20 +59,17 @@ describe("upsertMany()", () => {
 
       upsertMany([makeReleaseObject({ releasedAt }, { feedAt: undefined })]);
 
-      assert.strict.equal(getById(1, "collection")?.feedAt?.toISOString(), releasedAt.toISOString());
+      expect(getById(1, "collection")?.feedAt?.toISOString()).toBe(releasedAt.toISOString());
     });
 
     it("should use the current date if it was already released and no release exists", () => {
-      sinon.useFakeTimers(0);
+      vi.useFakeTimers({ now: 0 });
 
       const releasedAt = new Date(Date.now() - 1000 * 60 * 60 * 24);
 
       upsertMany([makeReleaseObject({ releasedAt }, { feedAt: undefined })]);
 
-      assert.strict.equal(getById(1, "collection")?.feedAt?.toISOString(), new Date().toISOString());
-
-      sinon.reset();
-      sinon.restore();
+      expect(getById(1, "collection")?.feedAt?.toISOString()).toBe(new Date().toISOString());
     });
   });
 
@@ -92,10 +85,10 @@ describe("upsertMany()", () => {
 
       const releaseStored = getById(release.id, "collection");
 
-      assert.strict.deepEqual(
-        { id: releaseStored?.id, metadata: releaseStored?.metadata },
-        { id: release.id, metadata: release.metadata },
-      );
+      expect({ id: releaseStored?.id, metadata: releaseStored?.metadata }).toEqual({
+        id: release.id,
+        metadata: release.metadata,
+      });
     });
 
     it("should update a release if one already exists", () => {
@@ -103,17 +96,18 @@ describe("upsertMany()", () => {
 
       fixtures.releases.load({ id: 1, type: "collection", name: "bar" });
 
-      assert.strict.equal(getById(release.id, "collection")?.name, "bar");
+      expect(getById(release.id, "collection")?.name).toBe("bar");
       upsertMany([release]);
 
       const releaseStored = getById(release.id, "collection");
 
-      assert.strict.deepEqual(
-        { id: releaseStored?.id, metadata: releaseStored?.metadata, name: releaseStored?.name },
-        { id: release.id, metadata: release.metadata, name: "foo" },
-      );
+      expect({ id: releaseStored?.id, metadata: releaseStored?.metadata, name: releaseStored?.name }).toEqual({
+        id: release.id,
+        metadata: release.metadata,
+        name: "foo",
+      });
 
-      assert.strict.equal(releases.table.all(sql`select * from $${releases.table.lit("table")}`).length, 1);
+      expect(releases.table.all(sql`select * from $${releases.table.lit("table")}`)).toHaveLength(1);
     });
   });
 
@@ -126,14 +120,14 @@ describe("upsertMany()", () => {
       const release = makeReleaseObject({ id: 1, type: "track" }, { isStreamable: false });
 
       upsertMany([release]);
-      assert.strict.equal(getById(release.id, "track"), undefined);
+      expect(getById(release.id, "track")).toBeUndefined();
     });
 
     it("should ignore release if no collection release exists", () => {
       const release = makeReleaseObject({ id: 1, type: "track" }, { isStreamable: true, collectionId: 1 });
 
       upsertMany([release]);
-      assert.strict.equal(getById(release.id, "track"), undefined);
+      expect(getById(release.id, "track")).toBeUndefined();
     });
 
     it("should ignore release if the curresponding collection release was already released", () => {
@@ -146,7 +140,7 @@ describe("upsertMany()", () => {
       });
 
       upsertMany([releaseTrack]);
-      assert.strict.equal(getById(releaseTrack.id, "track"), undefined);
+      expect(getById(releaseTrack.id, "track")).toBeUndefined();
     });
 
     it("should create a release if one does not exist", () => {
@@ -165,15 +159,15 @@ describe("upsertMany()", () => {
 
       const release = getById(releaseTrack.id, "track");
 
-      assert.strict.deepEqual(
-        { id: release?.id, metadata: release?.metadata },
-        { id: releaseTrack.id, metadata: { foo: true } },
-      );
-      assert.strict.equal(releases.table.all(sql`select * from $${releases.table.lit("table")}`).length, 2);
+      expect({ id: release?.id, metadata: release?.metadata }).toEqual({
+        id: releaseTrack.id,
+        metadata: { foo: true },
+      });
+      expect(releases.table.all(sql`select * from $${releases.table.lit("table")}`)).toHaveLength(2);
     });
 
     it("should use current date as released at if the one provided is invalid", () => {
-      sinon.useFakeTimers(0);
+      vi.useFakeTimers({ now: 0 });
 
       const releaseTrack = makeReleaseObject(
         { id: 1, type: "track", releasedAt: new Date(undefined!) },
@@ -190,18 +184,15 @@ describe("upsertMany()", () => {
 
       const release = getById(releaseTrack.id, "track");
 
-      assert.strict.deepEqual(
-        { id: release?.id, releasedAt: release?.releasedAt },
-        { id: releaseTrack.id, releasedAt: new Date() },
-      );
-      assert.strict.equal(releases.table.all(sql`select * from $${releases.table.lit("table")}`).length, 2);
-
-      sinon.restore();
-      sinon.reset();
+      expect({ id: release?.id, releasedAt: release?.releasedAt }).toEqual({
+        id: releaseTrack.id,
+        releasedAt: new Date(),
+      });
+      expect(releases.table.all(sql`select * from $${releases.table.lit("table")}`)).toHaveLength(2);
     });
 
     it("should use the released at of the db record as released at if the one provided is invalid and a release record exists on the db", () => {
-      sinon.useFakeTimers(0);
+      vi.useFakeTimers({ now: 0 });
 
       const releaseTrack = makeReleaseObject(
         { id: 1, type: "track", releasedAt: new Date(undefined!) },
@@ -219,14 +210,11 @@ describe("upsertMany()", () => {
 
       const release = getById(releaseTrack.id, "track");
 
-      assert.strict.deepEqual(
-        { id: release?.id, releasedAt: release?.releasedAt },
-        { id: releaseTrack.id, releasedAt: new Date(10) },
-      );
-      assert.strict.equal(releases.table.all(sql`select * from $${releases.table.lit("table")}`).length, 2);
-
-      sinon.restore();
-      sinon.reset();
+      expect({ id: release?.id, releasedAt: release?.releasedAt }).toEqual({
+        id: releaseTrack.id,
+        releasedAt: new Date(10),
+      });
+      expect(releases.table.all(sql`select * from $${releases.table.lit("table")}`)).toHaveLength(2);
     });
 
     it("should update a release if one already exist", () => {
@@ -242,16 +230,17 @@ describe("upsertMany()", () => {
       });
       fixtures.releases.load({ id: 1, type: "track", name: "foo" });
 
-      assert.strict.equal(getById(releaseTrack.id, "track")?.name, "foo");
+      expect(getById(releaseTrack.id, "track")?.name).toBe("foo");
       upsertMany([releaseTrack]);
 
       const release = getById(releaseTrack.id, "track");
 
-      assert.strict.deepEqual(
-        { id: release?.id, metadata: release?.metadata, name: release?.name },
-        { id: releaseTrack.id, metadata: { foo: true }, name: "bar" },
-      );
-      assert.strict.equal(releases.table.all(sql`select * from $${releases.table.lit("table")}`).length, 2);
+      expect({ id: release?.id, metadata: release?.metadata, name: release?.name }).toEqual({
+        id: releaseTrack.id,
+        metadata: { foo: true },
+        name: "bar",
+      });
+      expect(releases.table.all(sql`select * from $${releases.table.lit("table")}`)).toHaveLength(2);
     });
   });
 });

@@ -1,12 +1,11 @@
-import { before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { create } from "./create.js";
 import { getById } from "./get-by-id.js";
 
 describe("add()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -15,7 +14,7 @@ describe("add()", () => {
   });
 
   it("should add a release", () => {
-    assert.strict.deepEqual(
+    expect(
       create({
         artistName: "foo",
         coverUrl: "bar",
@@ -26,8 +25,7 @@ describe("add()", () => {
         releasedAt: new Date(),
         type: "track",
       }),
-      { changes: 1, lastInsertRowid: 1 },
-    );
-    assert.strict.equal(getById(1, "track")?.id, 1);
+    ).toEqual({ changes: 1, lastInsertRowid: 1 });
+    expect(getById(1, "track")?.id).toBe(1);
   });
 });

@@ -1,15 +1,14 @@
-import { before, describe, it } from "node:test";
-import assert from "node:assert";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { create } from "./create.js";
 
 describe("create()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
   it("should add an artist", () => {
-    assert.strict.deepEqual(create({ id: 1, imageUrl: "foo", name: "bar" }), { changes: 1, lastInsertRowid: 1 });
+    expect(create({ id: 1, imageUrl: "foo", name: "bar" })).toEqual({ changes: 1, lastInsertRowid: 1 });
   });
 });

@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-implicit-any-catch */
-import { afterEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { afterEach, describe, expect, it } from "vitest";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
@@ -18,10 +16,10 @@ describe("getLatestReleasesByArtist()", () => {
       try {
         await getLatestReleasesByArtist(1, "song");
 
-        assert.strict.fail("not throw");
-      } catch (error: any) {
-        assert.strict.equal(error.message, "Error requesting lookup artists releases");
-        assert.strict.equal(error.cause, 500);
+        expect.fail("not throw");
+      } catch (error: unknown) {
+        expect((error as any).message).toBe("Error requesting lookup artists releases");
+        expect((error as any).cause).toBe(500);
       }
     });
 
@@ -35,7 +33,7 @@ describe("getLatestReleasesByArtist()", () => {
       );
 
       const data = await getLatestReleasesByArtist(1, "song");
-      assert.strict.equal(data.results.at(0)?.trackId, 1);
+      expect(data.results.at(0)?.trackId).toBe(1);
     });
   });
 
@@ -50,10 +48,10 @@ describe("getLatestReleasesByArtist()", () => {
       try {
         await getLatestReleasesByArtist(1, "album");
 
-        assert.strict.fail("not throw");
-      } catch (error: any) {
-        assert.strict.equal(error.message, "Error requesting lookup artists releases");
-        assert.strict.equal(error.cause, 500);
+        expect.fail("not throw");
+      } catch (error: unknown) {
+        expect((error as any).message).toBe("Error requesting lookup artists releases");
+        expect((error as any).cause).toBe(500);
       }
     });
 
@@ -67,7 +65,7 @@ describe("getLatestReleasesByArtist()", () => {
       );
 
       const data = await getLatestReleasesByArtist(1, "album");
-      assert.strict.equal(data.results.at(0)!.collectionId, 1);
+      expect(data.results.at(0)!.collectionId).toBe(1);
     });
   });
 });

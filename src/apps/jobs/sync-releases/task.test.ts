@@ -1,9 +1,6 @@
-/* eslint-disable import/no-named-as-default-member */
-import { afterEach, before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
 import timers from "node:timers/promises";
 
-import sinon from "sinon";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as database from "#src/database/mod.js";
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
@@ -11,7 +8,7 @@ import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { run } from "#src/apps/jobs/sync-releases/task.js";
 
 describe("task", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -27,7 +24,7 @@ describe("task", () => {
     it("should do no work if no artists exist", async () => {
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 0);
+      expect(database.releases.queries.getLatests()).toHaveLength(0);
     });
 
     it("should do no work if getting the new releases fails", async () => {
@@ -35,14 +32,11 @@ describe("task", () => {
       fixtures.nock.getLatestsArtistMusicReleases(500, {}, 1);
       fixtures.artists.load();
 
-      sinon.stub(timers, "setTimeout").resolves();
+      vi.spyOn(timers, "setTimeout").mockResolvedValue(undefined);
 
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 0);
-
-      sinon.restore();
-      sinon.reset();
+      expect(database.releases.queries.getLatests()).toHaveLength(0);
     });
 
     it("should do no work if no releases were fetched", async () => {
@@ -50,14 +44,11 @@ describe("task", () => {
       fixtures.nock.getLatestsArtistMusicReleases(200, { results: [] }, 1);
       fixtures.artists.load();
 
-      sinon.stub(timers, "setTimeout").resolves();
+      vi.spyOn(timers, "setTimeout").mockResolvedValue(undefined);
 
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 0);
-
-      sinon.restore();
-      sinon.reset();
+      expect(database.releases.queries.getLatests()).toHaveLength(0);
     });
 
     it("should ignore releases based on the `max-release-time` config", async () => {
@@ -81,14 +72,11 @@ describe("task", () => {
       );
       fixtures.artists.load();
 
-      sinon.stub(timers, "setTimeout").resolves();
+      vi.spyOn(timers, "setTimeout").mockResolvedValue(undefined);
 
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 1);
-
-      sinon.restore();
-      sinon.reset();
+      expect(database.releases.queries.getLatests()).toHaveLength(1);
     });
 
     it("should ignore release if it is part of a compilation", async () => {
@@ -107,14 +95,11 @@ describe("task", () => {
       );
       fixtures.artists.load();
 
-      sinon.stub(timers, "setTimeout").resolves();
+      vi.spyOn(timers, "setTimeout").mockResolvedValue(undefined);
 
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 0);
-
-      sinon.restore();
-      sinon.reset();
+      expect(database.releases.queries.getLatests()).toHaveLength(0);
     });
 
     it("should save releases", async () => {
@@ -141,14 +126,11 @@ describe("task", () => {
       );
       fixtures.artists.load();
 
-      sinon.stub(timers, "setTimeout").resolves();
+      vi.spyOn(timers, "setTimeout").mockResolvedValue(undefined);
 
       await run(new AbortController().signal);
 
-      assert.strict.equal(database.releases.queries.getLatests().length, 1);
-
-      sinon.restore();
-      sinon.reset();
+      expect(database.releases.queries.getLatests()).toHaveLength(1);
     });
   });
 });

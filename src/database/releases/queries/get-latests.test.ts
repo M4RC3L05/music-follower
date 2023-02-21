@@ -1,12 +1,11 @@
-import { before, beforeEach, describe, it } from "node:test";
-import assert from "node:assert";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import * as fixtures from "#src/utils/tests/fixtures/mod.js";
 import * as hooks from "#src/utils/tests/hooks/mod.js";
 import { getLatests } from "./get-latests.js";
 
 describe("getLatests()", () => {
-  before(async () => {
+  beforeAll(async () => {
     await hooks.database.migrate();
   });
 
@@ -15,7 +14,7 @@ describe("getLatests()", () => {
   });
 
   it("should return empty array if no releases", () => {
-    assert.strict.deepEqual(getLatests(), []);
+    expect(getLatests()).toEqual([]);
   });
 
   it("should not include releases after today", () => {
@@ -28,10 +27,7 @@ describe("getLatests()", () => {
       feedAt: new Date(0),
     });
 
-    assert.strict.deepEqual(
-      getLatests().map(({ id }) => ({ id })),
-      [{ id: 1 }, { id: 2 }, { id: 3 }],
-    );
+    expect(getLatests().map(({ id }) => ({ id }))).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
   });
 
   it("should return the latest releases in the correct order", () => {
@@ -39,10 +35,7 @@ describe("getLatests()", () => {
     fixtures.releases.load({ id: 2, feedAt: new Date(0) });
     fixtures.releases.load({ id: 3, feedAt: new Date(1000) });
 
-    assert.strict.deepEqual(
-      getLatests().map(({ id }) => ({ id })),
-      [{ id: 3 }, { id: 1 }, { id: 2 }],
-    );
+    expect(getLatests().map(({ id }) => ({ id }))).toEqual([{ id: 3 }, { id: 1 }, { id: 2 }]);
   });
 
   it("should allow to set the max number of releases to retrieve", () => {
@@ -50,9 +43,6 @@ describe("getLatests()", () => {
     fixtures.releases.load({ id: 2, feedAt: new Date(500) });
     fixtures.releases.load({ id: 3, feedAt: new Date(0) });
 
-    assert.strict.deepEqual(
-      getLatests(2).map(({ id }) => ({ id })),
-      [{ id: 1 }, { id: 2 }],
-    );
+    expect(getLatests(2).map(({ id }) => ({ id }))).toEqual([{ id: 1 }, { id: 2 }]);
   });
 });
