@@ -1,7 +1,7 @@
 {
   "name": "@music-follower/admin",
   "cwd": "<path>",
-  "script": "src/apps/admin/main.ts",
+  "script": "src/apps/http/admin/main.ts",
   "interpreter": "node_modules/.bin/ts-node",
   "node_args": ["-P", "tsconfig.json"],
   "exec_mode": "fork",
