@@ -1,3 +1,7 @@
+### v9.0.1 (2023-02-21)
+
+- [Update pm2 example files](https://github.com/M4RC3L05/music-follower/commit/ee0b22b27eda573916620c3e32856686dc524916)
+
 ### v9.0.0 (2023-02-21)
 
 - [Add sqlite version to tools](https://github.com/M4RC3L05/music-follower/commit/a1ed3190b871e1d8e470678a7c78881128ca2b81)
