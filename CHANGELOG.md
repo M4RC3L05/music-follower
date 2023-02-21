@@ -1,3 +1,13 @@
+### v9.0.0 (2023-02-21)
+
+- [Add sqlite version to tools](https://github.com/M4RC3L05/music-follower/commit/a1ed3190b871e1d8e470678a7c78881128ca2b81)
+- [Update pm2 example files](https://github.com/M4RC3L05/music-follower/commit/05b341ece9184e7c565159a34335af8865ce65a3)
+- [Restructure code and improvements](https://github.com/M4RC3L05/music-follower/commit/22a8bb3aacc9ddbf3f51e3fbfb528be92b828a80)
+- [Make bin executable](https://github.com/M4RC3L05/music-follower/commit/399354072d6e350ebc7271e4bb9b6627bdea2cfe)
+- [Cleanup dashboard code](https://github.com/M4RC3L05/music-follower/commit/2af606265a1dde4295ac5a8b3b0c82b67126dc20)
+- [Add vitest](https://github.com/M4RC3L05/music-follower/commit/10b60dff2d6ac509ecc79120479d75de1bd499f2)
+- [Fix type on sql helper function](https://github.com/M4RC3L05/music-follower/commit/dc11cbd17d935b6f720bdd4c7f532c024b91ace5)
+
 ### v8.7.0 (2023-02-18)
 
 - [Enable auto dark\/light mode](https://github.com/M4RC3L05/music-follower/commit/18b2efdd76df9da1abe393507321f31d22a03acf)
