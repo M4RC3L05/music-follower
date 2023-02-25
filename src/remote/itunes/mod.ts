@@ -1,2 +1,2 @@
-export * as requests from "./requests/mod.js";
+export * as itunesRequests from "./requests/mod.js";
 export * from "./types.js";

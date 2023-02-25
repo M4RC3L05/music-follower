@@ -1,1 +1,1 @@
-export * as requests from "./requests/mod.js";
+export * as appleMusicRequests from "./requests/mod.js";

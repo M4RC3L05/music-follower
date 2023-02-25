@@ -1,8 +1,9 @@
 import config from "config";
 
-import * as remote from "#src/remote/mod.js";
 import { type ItunesArtistSearchModel } from "#src/remote/itunes/types.js";
+import { appleMusicRequests } from "#src/remote/apple-music/mod.js";
 import { artistQueries } from "#src/domain/artists/mod.js";
+import { itunesRequests } from "#src/remote/itunes/mod.js";
 import logger from "#src/common/clients/logger.js";
 
 import type { RouterContext } from "@koa/router";
@@ -19,10 +20,10 @@ export const index = async (context: RouterContext) => {
   let remoteArtists: Array<ItunesArtistSearchModel & { image: string; isSubscribed: boolean }> = [];
 
   if (remoteArtistQuery && remoteArtistQuery.trim().length > 0) {
-    const artistsSearch = await remote.itunes.requests.searchArtists(remoteArtistQuery);
+    const artistsSearch = await itunesRequests.searchArtists(remoteArtistQuery);
 
     const images = await Promise.allSettled(
-      artistsSearch.results.map(async ({ artistLinkUrl }) => remote.appleMusic.requests.getArtistImage(artistLinkUrl)),
+      artistsSearch.results.map(async ({ artistLinkUrl }) => appleMusicRequests.getArtistImage(artistLinkUrl)),
     );
 
     remoteArtists = await Promise.all(

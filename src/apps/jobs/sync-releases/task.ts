@@ -6,8 +6,7 @@ import timers from "node:timers/promises";
 import config from "config";
 import ms from "ms";
 
-import * as remote from "#src/remote/mod.js";
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/itunes/mod.js";
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, itunesRequests } from "#src/remote/itunes/mod.js";
 import { type Release, releasesQueries } from "#src/domain/releases/mod.js";
 import { artistQueries } from "#src/domain/artists/mod.js";
 import logger from "#src/common/clients/logger.js";
@@ -34,8 +33,8 @@ const getRelases = async (artistId: number, signal?: AbortSignal) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
   const [songsResult, albumsResult] = await Promise.allSettled([
-    remote.itunes.requests.getLatestReleasesByArtist(artistId, "song", signal),
-    remote.itunes.requests.getLatestReleasesByArtist(artistId, "album", signal),
+    itunesRequests.getLatestReleasesByArtist(artistId, "song", signal),
+    itunesRequests.getLatestReleasesByArtist(artistId, "album", signal),
   ]);
 
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
