@@ -2,9 +2,9 @@ import timers from "node:timers/promises";
 
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as database from "#src/database/mod.js";
-import * as fixtures from "#src/utils/tests/fixtures/mod.js";
-import * as hooks from "#src/utils/tests/hooks/mod.js";
+import * as fixtures from "#src/common/utils/test-utils/fixtures/mod.js";
+import * as hooks from "#src/common/utils/test-utils/hooks/mod.js";
+import { releasesQueries } from "#src/domain/releases/mod.js";
 import { run } from "#src/apps/jobs/sync-releases/task.js";
 
 describe("task", () => {
@@ -24,7 +24,7 @@ describe("task", () => {
     it("should do no work if no artists exist", async () => {
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(0);
+      expect(releasesQueries.getLatests()).toHaveLength(0);
     });
 
     it("should do no work if getting the new releases fails", async () => {
@@ -36,7 +36,7 @@ describe("task", () => {
 
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(0);
+      expect(releasesQueries.getLatests()).toHaveLength(0);
     });
 
     it("should do no work if no releases were fetched", async () => {
@@ -48,7 +48,7 @@ describe("task", () => {
 
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(0);
+      expect(releasesQueries.getLatests()).toHaveLength(0);
     });
 
     it("should ignore releases based on the `max-release-time` config", async () => {
@@ -76,7 +76,7 @@ describe("task", () => {
 
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(1);
+      expect(releasesQueries.getLatests()).toHaveLength(1);
     });
 
     it("should ignore release if it is part of a compilation", async () => {
@@ -99,7 +99,7 @@ describe("task", () => {
 
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(0);
+      expect(releasesQueries.getLatests()).toHaveLength(0);
     });
 
     it("should save releases", async () => {
@@ -130,7 +130,7 @@ describe("task", () => {
 
       await run(new AbortController().signal);
 
-      expect(database.releases.queries.getLatests()).toHaveLength(1);
+      expect(releasesQueries.getLatests()).toHaveLength(1);
     });
   });
 });

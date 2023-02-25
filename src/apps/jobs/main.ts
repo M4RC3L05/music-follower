@@ -4,9 +4,9 @@ import process from "node:process";
 
 import yargs from "yargs";
 
-import { type Cron } from "#src/utils/cron/cron.js";
-import { addHook } from "#src/utils/process/process.js";
-import logger from "#src/utils/logger/logger.js";
+import { type Cron } from "#src/common/utils/cron-utils.js";
+import { addHook } from "#src/common/utils/process-utils.js";
+import logger from "#src/common/clients/logger.js";
 
 const log = logger("main");
 

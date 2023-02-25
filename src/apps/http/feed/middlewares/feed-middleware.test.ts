@@ -1,8 +1,8 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import config from "config";
 
-import * as fixtures from "#src/utils/tests/fixtures/mod.js";
-import * as hooks from "#src/utils/tests/hooks/mod.js";
+import * as fixtures from "#src/common/utils/test-utils/fixtures/mod.js";
+import * as hooks from "#src/common/utils/test-utils/hooks/mod.js";
 import { feedMiddleware } from "#src/apps/http/feed/middlewares/feed-middleware.js";
 
 describe("feedMiddleware()", () => {

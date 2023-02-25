@@ -71,7 +71,7 @@
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "lint": "xo . --ext .ts && tsc -p tsconfig.json --noEmit --skipLibCheck",
     "lint-staged": "lint-staged",
-    "migrate": "node --loader ts-node/esm --no-warnings bin/migrate.ts | pino-pretty",
+    "migrate": "node --loader ts-node/esm --no-warnings bin/run-command.ts migrate | pino-pretty",
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/http/feed/main.ts | pino-pretty",
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/http/admin/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts job sync-releases | pino-pretty",

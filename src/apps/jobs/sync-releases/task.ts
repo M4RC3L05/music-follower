@@ -6,11 +6,11 @@ import timers from "node:timers/promises";
 import config from "config";
 import ms from "ms";
 
-import * as database from "#src/database/mod.js";
 import * as remote from "#src/remote/mod.js";
 import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/itunes/mod.js";
-import { type Release } from "#src/database/releases/mod.js";
-import logger from "#src/utils/logger/logger.js";
+import { type Release, releasesQueries } from "#src/domain/releases/mod.js";
+import { artistQueries } from "#src/domain/artists/mod.js";
+import logger from "#src/common/clients/logger.js";
 
 const log = logger("task");
 
@@ -74,7 +74,7 @@ export const run = async (abort: AbortSignal) => {
 
   log.info("Begin releases sync.");
 
-  const artists = database.artists.queries.getAll();
+  const artists = artistQueries.getAll();
 
   for (const [key, artist] of artists.entries()) {
     /* c8 ignore start */
@@ -154,8 +154,8 @@ export const run = async (abort: AbortSignal) => {
 
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      database.releases.queries.upsertMany(releases.filter(({ type }) => type === "collection"));
-      database.releases.queries.upsertMany(releases.filter(({ type }) => type === "track"));
+      releasesQueries.upsertMany(releases.filter(({ type }) => type === "collection"));
+      releasesQueries.upsertMany(releases.filter(({ type }) => type === "track"));
 
       /* c8 ignore start */
     } catch (error: unknown) {

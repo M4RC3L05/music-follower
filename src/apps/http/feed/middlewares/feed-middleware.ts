@@ -1,8 +1,8 @@
 import { Feed } from "feed";
 import config from "config";
 
-import logger from "#src/utils/logger/logger.js";
-import { releases } from "#src/database/mod.js";
+import logger from "#src/common/clients/logger.js";
+import { releasesQueries } from "#src/domain/releases/mod.js";
 
 import type { Context } from "koa";
 
@@ -11,7 +11,7 @@ const log = logger("feed-middleware");
 export const feedMiddleware = (context: Context) => {
   log.info("Getting latest releases");
 
-  const data = releases.queries.getLatests(config.get<number>("apps.feed.maxReleases"));
+  const data = releasesQueries.getLatests(config.get<number>("apps.feed.maxReleases"));
 
   const feed = new Feed({
     title: "Music releases",

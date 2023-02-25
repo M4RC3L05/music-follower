@@ -2,9 +2,9 @@ import process from "node:process";
 
 import config from "config";
 
-import { addHook } from "#src/utils/process/process.js";
+import { addHook } from "#src/common/utils/process-utils.js";
 import { app } from "#src/apps/http/admin/app.js";
-import logger from "#src/utils/logger/logger.js";
+import logger from "#src/common/clients/logger.js";
 
 const log = logger("main");
 const api = app();

@@ -1,1 +1,1 @@
-export * as handlers from "./handlers/mod.js";
+export * from "./index.js";

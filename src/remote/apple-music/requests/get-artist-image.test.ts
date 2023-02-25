@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 import config from "config";
 
-import * as fixtures from "#src/utils/tests/fixtures/mod.js";
-import * as hooks from "#src/utils/tests/hooks/mod.js";
+import * as fixtures from "#src/common/utils/test-utils/fixtures/mod.js";
+import * as hooks from "#src/common/utils/test-utils/hooks/mod.js";
 import { getArtistImage } from "./get-artist-image.js";
 
 describe("getArtistImage()", () => {
