@@ -93,6 +93,7 @@ export const run = async (abort: AbortSignal) => {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
           const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
+          log.error(error, "Could not get releases");
           log.error(songsCause, "Could not get song releases");
           log.error(albumsCause, "Could not get album releases");
           log.info("Waiting 5 seconds before processing next artist");
@@ -102,7 +103,7 @@ export const run = async (abort: AbortSignal) => {
         }
 
         case ErrorCodes.NO_RELEASES_FOUND: {
-          log.error(error, "No remote data found.");
+          log.warn(error, "No remote data found.");
           log.info("Waiting 5 seconds before processing next artist");
 
           await timers.setTimeout(5000, undefined, { signal: abort }).catch(() => {});

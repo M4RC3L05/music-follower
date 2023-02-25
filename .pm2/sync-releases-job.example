@@ -2,7 +2,7 @@
   "name": "@music-follower/sync-releases-job",
   "cwd": "<path>",
   "script": "src/apps/jobs/main.ts",
-  "args": ["job", "sync-releases"],
+  "args": ["syncReleasesJob"],
   "interpreter": "node_modules/.bin/ts-node",
   "node_args": ["-P", "tsconfig.json"],
   "exec_mode": "fork",

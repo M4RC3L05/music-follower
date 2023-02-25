@@ -74,27 +74,23 @@
     "migrate": "node --loader ts-node/esm --no-warnings bin/run-command.ts migrate | pino-pretty",
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/http/feed/main.ts | pino-pretty",
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/http/admin/main.ts | pino-pretty",
-    "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts job sync-releases | pino-pretty",
+    "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts syncReleasesJob | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
     "postinstall": "patch-package",
     "test": "vitest",
     "test-coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
     "@types/config": "^3.3.0",
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^12.0.0",
     "@types/koa-basic-auth": "^2.0.4",
     "@types/koa-bodyparser": "^4.3.10",
-    "@types/koa-favicon": "^2.0.21",
     "@types/koa-qs": "^2.0.0",
     "@types/koa-session": "^5.10.6",
     "@types/koa-static": "^4.0.2",
     "@types/ms": "^0.7.31",
     "@types/node": "^18.14.1",
-    "@types/sinon": "^10.0.13",
-    "@types/yargs": "^17.0.22",
     "@vitest/coverage-c8": "^0.29.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.3",
@@ -134,7 +130,6 @@
     "node-fetch": "^3.3.0",
     "patch-package": "^6.5.1",
     "pino": "^8.11.0",
-    "ts-node": "^10.9.1",
-    "yargs": "^17.7.1"
+    "ts-node": "^10.9.1"
   }
 }
