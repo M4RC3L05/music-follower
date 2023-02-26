@@ -1,3 +1,12 @@
+### v9.1.0 (2023-02-26)
+
+- [Update remotes exports](https://github.com/M4RC3L05/music-follower/commit/e4ad722b5b5da33629b424116369370bb49669f9)
+- [Update jobs init and remove unused packages](https://github.com/M4RC3L05/music-follower/commit/f3e7c1a178d5204a0bf96b464d8a0a8eed541117)
+- [Update project tools versions](https://github.com/M4RC3L05/music-follower/commit/d6899deab2c70d43fd2c02fd1361b3d8f96b369a)
+- [Improve folder structure](https://github.com/M4RC3L05/music-follower/commit/62ef4a69349ee44aaf2ef76b36fef63109c7e2c4)
+- [Update snapshots](https://github.com/M4RC3L05/music-follower/commit/93d12ef3f04ad9c33c4394ce806f27787dc855c4)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/905f02c2bfa18b6fa33e451ec5e7fcd00608985b)
+
 ### v9.0.1 (2023-02-21)
 
 - [Update pm2 example files](https://github.com/M4RC3L05/music-follower/commit/ee0b22b27eda573916620c3e32856686dc524916)
