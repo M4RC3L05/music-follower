@@ -1,3 +1,8 @@
+### v9.2.0 (2023-03-11)
+
+- [Bump nodejs version](https://github.com/M4RC3L05/music-follower/commit/02de619be597347b7f6f2468fcd423bdbac6fd02)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/f7d135718bf26a168df3a56073b57dbdaab7b9eb)
+
 ### v9.1.0 (2023-02-26)
 
 - [Update remotes exports](https://github.com/M4RC3L05/music-follower/commit/e4ad722b5b5da33629b424116369370bb49669f9)
