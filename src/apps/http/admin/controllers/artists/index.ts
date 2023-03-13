@@ -4,11 +4,8 @@ import { type ItunesArtistSearchModel } from "#src/remote/itunes/types.js";
 import { appleMusicRequests } from "#src/remote/apple-music/mod.js";
 import { artistQueries } from "#src/domain/artists/mod.js";
 import { itunesRequests } from "#src/remote/itunes/mod.js";
-import logger from "#src/common/clients/logger.js";
 
 import type { RouterContext } from "@koa/router";
-
-const log = logger("index-artists-handler");
 
 export const index = async (context: RouterContext) => {
   const page = context.request.query?.page ? Number(context.request.query?.page) : 0;
