@@ -1,3 +1,10 @@
+### v9.3.0 (2023-03-26)
+
+- [Fix vulnerable dependency](https://github.com/M4RC3L05/music-follower/commit/eb704f73a7de8760c436137279a5be9558614588)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/3854fb564be08d3420509d875e71c9230680405e)
+- [Update readme](https://github.com/M4RC3L05/music-follower/commit/499d0e793fdc5549666c899de152944e2c0d7ecb)
+- [Remove unused log](https://github.com/M4RC3L05/music-follower/commit/df49505c79aadefa9d00ba9feecb7d32422a1e51)
+
 ### v9.2.0 (2023-03-11)
 
 - [Bump nodejs version](https://github.com/M4RC3L05/music-follower/commit/02de619be597347b7f6f2468fcd423bdbac6fd02)
