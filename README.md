@@ -4,7 +4,7 @@ A self host solution to watch for new artist releases.
 
 ## Setup
 
-> This project uses nodejs 18.13.x
+> This project uses nodejs 18.x.x
 
 Install dependencies
 
