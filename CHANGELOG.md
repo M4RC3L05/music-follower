@@ -1,3 +1,9 @@
+### v9.4.0 (2023-04-09)
+
+- [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/2012de569d4a3e7ff4f9a7e6b71921c22863a60a)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/771c1b8ad8baabbf78d5402867f727c4278765ad)
+- [Make cron job timezone aware](https://github.com/M4RC3L05/music-follower/commit/a21551bf332e553cdc8fbea058483af0e916792b)
+
 ### v9.3.0 (2023-03-26)
 
 - [Fix vulnerable dependency](https://github.com/M4RC3L05/music-follower/commit/eb704f73a7de8760c436137279a5be9558614588)
