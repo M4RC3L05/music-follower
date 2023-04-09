@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import config from "config";
 

@@ -21,7 +21,6 @@ describe("getArtistImage()", () => {
       await getArtistImage("https://foo.com");
 
       expect.fail("no throw");
-      // eslint-disable-next-line @typescript-eslint/no-implicit-any-catch
     } catch (error: any) {
       expect(error.message).toBe("An error ocurred while searching for artist image");
     }

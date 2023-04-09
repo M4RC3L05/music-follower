@@ -3,7 +3,10 @@ import { releasesQueries } from "#src/domain/releases/mod.js";
 import type { RouterContext } from "@koa/router";
 
 export const show = async (context: RouterContext) => {
-  const release = releasesQueries.getById(Number(context.params.id), context.request.query.type as any);
+  const release = releasesQueries.getById(
+    Number(context.params.id),
+    context.request.query.type as "track" | "collection",
+  );
 
   if (!release) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call

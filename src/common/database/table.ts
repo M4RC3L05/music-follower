@@ -10,21 +10,6 @@ export abstract class Table<T = any> {
     public fromDbMappers?: Partial<Record<keyof T, (value: any) => T[keyof T]>>,
   ) {}
 
-  #toDbValue<K extends keyof T>(key: K, value: unknown) {
-    if (!this.toDbMappers) return value;
-    if (!(key in this.toDbMappers)) return value;
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.toDbMappers[key]!(value);
-  }
-
-  #fromDbValue<K extends keyof T>(key: K, value: unknown) {
-    if (!this.fromDbMappers) return value;
-    if (!(key in this.fromDbMappers)) return value;
-
-    return this.fromDbMappers[key]!(value);
-  }
-
   lit<K extends keyof typeof this.literals>(key: K) {
     return this.literals[key];
   }
@@ -89,5 +74,20 @@ export abstract class Table<T = any> {
 
   run(query: Query) {
     return db.run(query);
+  }
+
+  #toDbValue<K extends keyof T>(key: K, value: unknown) {
+    if (!this.toDbMappers) return value;
+    if (!(key in this.toDbMappers)) return value;
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return this.toDbMappers[key]!(value);
+  }
+
+  #fromDbValue<K extends keyof T>(key: K, value: unknown) {
+    if (!this.fromDbMappers) return value;
+    if (!(key in this.fromDbMappers)) return value;
+
+    return this.fromDbMappers[key]!(value);
   }
 }

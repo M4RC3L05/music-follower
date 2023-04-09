@@ -28,7 +28,7 @@ export const app = () => {
   });
 
   koa.use(session({ ...config.get("apps.admin.session") }, koa));
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
   koa.use(flash());
   koa.use(bodyParser());
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));

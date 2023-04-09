@@ -19,14 +19,14 @@ class ReleasesTable extends Table<Release> {
         feedAt: sql`"feedAt"`,
       },
       {
-        releasedAt: (value) => new Date(value).toISOString(),
-        metadata: (value) => JSON.stringify(value),
-        feedAt: (value) => new Date(value).toISOString(),
+        releasedAt: (value: string) => new Date(value).toISOString(),
+        metadata: (value: string) => JSON.stringify(value),
+        feedAt: (value: string) => new Date(value).toISOString(),
       },
       {
-        releasedAt: (value) => new Date(value),
-        metadata: (value) => JSON.parse(value) as Record<string, any>,
-        feedAt: (value) => new Date(value),
+        releasedAt: (value: string | Date) => new Date(value),
+        metadata: (value: string) => JSON.parse(value) as Record<string, any>,
+        feedAt: (value: string | Date) => new Date(value),
       },
     );
   }

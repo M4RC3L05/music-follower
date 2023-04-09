@@ -20,6 +20,45 @@ export class Cron {
     this.#timezone = timezone;
   }
 
+  start() {
+    if (this.#working) return;
+
+    this.#working = true;
+    this.#worker = this.#work();
+
+    return this.#worker;
+  }
+
+  async stop() {
+    this.#abortController.abort();
+
+    await this.#worker.return();
+
+    this.#working = false;
+  }
+
+  nextTime() {
+    return this.#when instanceof Date
+      ? new Date(this.#when)
+      : new Date(
+          cronMatch
+            .getFutureMatches(this.#when, {
+              hasSeconds: true,
+              timezone: this.#timezone,
+              matchValidator: (x) => {
+                const now = new Date();
+                const xx = new Date(x);
+
+                now.setMilliseconds(0);
+                xx.setMilliseconds(0);
+
+                return (this.#lastProcessAt ?? now).getTime() !== xx.getTime();
+              },
+            })
+            .at(0)!,
+        );
+  }
+
   #checkTime() {
     if (this.#when instanceof Date) {
       return Math.round(Date.now() / 1000) === Math.round(this.#when.getTime() / 1000);
@@ -68,44 +107,5 @@ export class Cron {
         return;
       }
     }
-  }
-
-  start() {
-    if (this.#working) return;
-
-    this.#working = true;
-    this.#worker = this.#work();
-
-    return this.#worker;
-  }
-
-  async stop() {
-    this.#abortController.abort();
-
-    await this.#worker.return();
-
-    this.#working = false;
-  }
-
-  nextTime() {
-    return this.#when instanceof Date
-      ? new Date(this.#when)
-      : new Date(
-          cronMatch
-            .getFutureMatches(this.#when, {
-              hasSeconds: true,
-              timezone: this.#timezone,
-              matchValidator: (x) => {
-                const now = new Date();
-                const xx = new Date(x);
-
-                now.setMilliseconds(0);
-                xx.setMilliseconds(0);
-
-                return (this.#lastProcessAt ?? now).getTime() !== xx.getTime();
-              },
-            })
-            .at(0)!,
-        );
   }
 }

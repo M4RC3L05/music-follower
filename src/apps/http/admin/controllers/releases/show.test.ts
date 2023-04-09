@@ -38,6 +38,7 @@ describe("show()", () => {
     const flash = vi.fn();
     const redirect = vi.fn();
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     await show({ params: { id: 1 }, request: { query: { type: "track" } }, flash, render, redirect } as any);
 
     expect(render).not.toHaveBeenCalled();
