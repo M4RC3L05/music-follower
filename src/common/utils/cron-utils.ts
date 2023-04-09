@@ -10,12 +10,14 @@ export class Cron {
   #working: boolean;
   #worker!: AsyncGenerator<AbortSignal, void>;
   #lastProcessAt?: Date;
+  #timezone?: string;
 
-  constructor(when: Date | string) {
+  constructor(when: Date | string, timezone?: string) {
     this.#when = typeof when === "string" ? parse(when, { hasSeconds: true }) : when;
     this.#working = false;
 
     this.#abortController = new AbortController();
+    this.#timezone = timezone;
   }
 
   #checkTime() {
@@ -23,7 +25,7 @@ export class Cron {
       return Math.round(Date.now() / 1000) === Math.round(this.#when.getTime() / 1000);
     }
 
-    return cronMatch.isTimeMatches(this.#when, new Date().toISOString());
+    return cronMatch.isTimeMatches(this.#when, new Date().toISOString(), this.#timezone);
   }
 
   async *#ticker() {
@@ -92,6 +94,7 @@ export class Cron {
           cronMatch
             .getFutureMatches(this.#when, {
               hasSeconds: true,
+              timezone: this.#timezone,
               matchValidator: (x) => {
                 const now = new Date();
                 const xx = new Date(x);

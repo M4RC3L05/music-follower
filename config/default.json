@@ -25,6 +25,7 @@
       }
     },
     "jobs": {
+      "timezone": "Etc/GMT",
       "sync-releases": {
         "cron": "* * * * *",
         "max-release-time": "1 year"
