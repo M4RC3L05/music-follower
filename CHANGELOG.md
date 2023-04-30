@@ -1,3 +1,11 @@
+### v9.5.0 (2023-04-30)
+
+- [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/665ac7b3a126592607dbca468d61bc7b62ecdec5)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/dd4d660c12840a7a68734c3a87e5d03534172f37)
+- [Update node version on config files](https://github.com/M4RC3L05/music-follower/commit/bbf1d72b39f738ce1f50411c75ed4c634389293f)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/e59ec2aef3c8f8d50a1aabbf522d5da6c38bf156)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/1e4c2222144bffb32fda2ab553ae591a3114d012)
+
 ### v9.4.0 (2023-04-09)
 
 - [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/2012de569d4a3e7ff4f9a7e6b71921c22863a60a)
