@@ -27,7 +27,7 @@ export const app = () => {
     debug: false,
   });
 
-  koa.use(session({ ...config.get("apps.admin.session") }, koa));
+  koa.use(session({ ...config.get<Record<string, unknown>>("apps.admin.session") }, koa));
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
   koa.use(flash());
   koa.use(bodyParser());
