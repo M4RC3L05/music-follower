@@ -10,7 +10,7 @@ type ProcessHook = {
 const log = logger("process");
 const processHooks: ProcessHook[] = [];
 const signalsToWatch = ["SIGTERM", "SIGINT", "SIGUSR2"];
-let shuttingDown = false;
+let processing = false;
 
 export const addHook = (hook: ProcessHook) => {
   log.info(`Registered "${hook.name}" hook`);
@@ -18,16 +18,14 @@ export const addHook = (hook: ProcessHook) => {
 };
 
 const processSignal = async (signal: NodeJS.Signals) => {
-  if (shuttingDown) {
+  if (processing) {
     log.warn("Ignoring process exit signal has the app is shutting down.");
     return;
   }
 
   log.info({ signal }, "Processing exit signal");
 
-  shuttingDown = true;
-
-  for (const signal of signalsToWatch) process.removeListener(signal, processSignal);
+  processing = true;
 
   for (const { name, handler } of processHooks) {
     log.info(`Processing "${name}" hook`);
@@ -36,20 +34,24 @@ const processSignal = async (signal: NodeJS.Signals) => {
       // eslint-disable-next-line no-await-in-loop
       await handler();
 
-      log.info(`"${name}" hook successfull`);
+      log.info(`Successfull "${name}" hook`);
     } catch (error: unknown) {
-      log.error(error, `"${name}" hook unsuccessfully`);
+      log.error(error, `Unsuccessfull "${name}" hook`);
     }
   }
 
+  for (const signal of signalsToWatch) process.removeListener(signal, processSignal);
+
   log.info({ signal }, "Exit signal process completed");
+
+  processing = false;
 };
 
 const processErrors = (error: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   log.error(typeof error === "object" ? error : { error }, "Uncaught/Unhandled");
 
-  if (shuttingDown) log.info("Ignoring Uncaught/Unhandled has the app is shutting down.");
+  if (processing) log.info("Ignoring Uncaught/Unhandled has the app is shutting down.");
   else process.emit("SIGUSR2");
 };
 
