@@ -1,3 +1,8 @@
+### v10.0.0 (2023-05-26)
+
+- [Make tables strict without rowid](https://github.com/M4RC3L05/music-follower/commit/2111e4a1a012756c12e149856585ea025991f5b5)
+- [Update sqlite](https://github.com/M4RC3L05/music-follower/commit/7bceb2e5ef5352aeb7bf3b40b641ccaf23e2436e)
+
 ### v9.5.0 (2023-04-30)
 
 - [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/665ac7b3a126592607dbca468d61bc7b62ecdec5)
