@@ -22,7 +22,7 @@ describe("deleteById()", () => {
     fixtures.artists.load({ id: 1 });
     fixtures.artists.load({ id: 3 });
 
-    expect(deleteById(1)).toEqual({ changes: 1, lastInsertRowid: 2 });
+    expect(deleteById(1)).toEqual({ changes: 1, lastInsertRowid: 0 });
     expect(getById(3)!.id).toBe(3);
     expect(getById(1)).toBeUndefined();
   });

@@ -9,6 +9,6 @@ describe("create()", () => {
   });
 
   it("should add an artist", () => {
-    expect(create({ id: 1, imageUrl: "foo", name: "bar" })).toEqual({ changes: 1, lastInsertRowid: 1 });
+    expect(create({ id: 1, imageUrl: "foo", name: "bar" })).toEqual({ id: 1, imageUrl: "foo", name: "bar" });
   });
 });

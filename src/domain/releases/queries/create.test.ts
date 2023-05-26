@@ -14,18 +14,18 @@ describe("add()", () => {
   });
 
   it("should add a release", () => {
-    expect(
-      create({
-        artistName: "foo",
-        coverUrl: "bar",
-        feedAt: new Date(),
-        id: 1,
-        metadata: {},
-        name: "bax",
-        releasedAt: new Date(),
-        type: "track",
-      }),
-    ).toEqual({ changes: 1, lastInsertRowid: 1 });
+    const data = {
+      artistName: "foo",
+      coverUrl: "bar",
+      feedAt: new Date(),
+      id: 1,
+      metadata: {},
+      name: "bax",
+      releasedAt: new Date(),
+      type: "track",
+    };
+
+    expect(create(data)).toEqual(data);
     expect(getById(1, "track")?.id).toBe(1);
   });
 });
