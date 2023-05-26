@@ -7,10 +7,7 @@
     },
     "admin": {
       "host": "0.0.0.0",
-      "keys": [
-        "foo",
-        "bar"
-      ],
+      "keys": ["foo", "bar"],
       "port": 4322,
       "session": {
         "maxAge": "session",
@@ -25,9 +22,12 @@
       }
     },
     "jobs": {
-      "timezone": "Etc/GMT",
       "sync-releases": {
-        "cron": "* * * * *",
+        "cron": {
+          "pattern": "* * * * *",
+          "timezone": "Etc/GMT",
+          "tickerTimeout": 1000
+        },
         "max-release-time": "1 year"
       }
     }

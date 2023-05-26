@@ -5,23 +5,26 @@ import * as cronMatch from "@datasert/cronjs-matcher";
 import { type CronExprs, parse } from "@datasert/cronjs-parser";
 
 export class Cron {
-  #when: Date | CronExprs;
+  #when: CronExprs;
   #abortController: AbortController;
   #working: boolean;
   #worker!: AsyncGenerator<AbortSignal, void>;
-  #lastProcessAt?: Date;
+  #lastProcessAt?: number;
   #timezone?: string;
+  #dateContainer = new Date();
+  #tickerTimeout = 500;
 
-  constructor(when: Date | string, timezone?: string) {
-    this.#when = typeof when === "string" ? parse(when, { hasSeconds: true }) : when;
+  constructor(when: string, timezone?: string, tickerTimeout?: number) {
+    this.#when = parse(when, { hasSeconds: true });
     this.#working = false;
 
     this.#abortController = new AbortController();
     this.#timezone = timezone;
+    this.#tickerTimeout = tickerTimeout ?? this.#tickerTimeout;
   }
 
   start() {
-    if (this.#working) return;
+    if (this.#working) return this.#worker;
 
     this.#working = true;
     this.#worker = this.#work();
@@ -38,67 +41,41 @@ export class Cron {
   }
 
   nextTime() {
-    return this.#when instanceof Date
-      ? new Date(this.#when)
-      : new Date(
-          cronMatch
-            .getFutureMatches(this.#when, {
-              hasSeconds: true,
-              timezone: this.#timezone,
-              matchValidator: (x) => {
-                const now = new Date();
-                const xx = new Date(x);
-
-                now.setMilliseconds(0);
-                xx.setMilliseconds(0);
-
-                return (this.#lastProcessAt ?? now).getTime() !== xx.getTime();
-              },
-            })
-            .at(0)!,
-        );
+    return cronMatch
+      .getFutureMatches(this.#when, {
+        hasSeconds: true,
+        timezone: this.#timezone,
+        formatInTimezone: true,
+        maxLoopCount: 2,
+        matchValidator: (date) =>
+          (this.#lastProcessAt ?? Math.floor(Date.now() / 1000)) !== Math.floor(Date.parse(date) / 1000),
+      })
+      .at(0);
   }
 
-  #checkTime() {
-    if (this.#when instanceof Date) {
-      return Math.round(Date.now() / 1000) === Math.round(this.#when.getTime() / 1000);
-    }
-
-    return cronMatch.isTimeMatches(this.#when, new Date().toISOString(), this.#timezone);
+  #checkTime(at: number) {
+    this.#dateContainer.setTime(at);
+    return cronMatch.isTimeMatches(this.#when, this.#dateContainer.toISOString(), this.#timezone);
   }
 
   async *#ticker() {
-    let previous = new Date();
-
     while (true) {
-      const now = new Date();
-      const next = this.nextTime();
-      // Ignore miliseconds as we use seconds as max resolution.
-      now.setMilliseconds(0);
-      next.setMilliseconds(0);
+      try {
+        await setTimeout(this.#tickerTimeout, undefined, {
+          signal: this.#abortController.signal,
+        });
 
-      // How mutch time until the next execution time.
-      const delay = Math.max(next.getTime() - now.getTime(), 0);
-      // How mutch the code take
-      const drift = Math.max(now.getTime() - previous.getTime(), 0) % 2000;
-      const driftFinal = Math.max(0, drift > 1000 ? 1000 - (drift % 1000) : 0);
-      // From the delay we take the amount spent on code execution if any
-      previous = new Date();
-      const final = Math.max(delay - driftFinal - Math.max(previous.getTime() - now.getTime(), 0), 0);
-
-      await setTimeout(final === 0 ? 5 : final, undefined, { signal: this.#abortController.signal }).catch(() => {
-        // Prevent throwing if abort signal is called
-      });
-
-      yield final;
+        yield Math.floor(Date.now() / 1000);
+      } catch {
+        return;
+      }
     }
   }
 
   async *#work() {
-    for await (const _sleepTime of this.#ticker()) {
-      if (this.#checkTime()) {
-        this.#lastProcessAt = new Date();
-        this.#lastProcessAt.setMilliseconds(0);
+    for await (const at of this.#ticker()) {
+      if (this.#checkTime(at * 1000) && (!this.#lastProcessAt || at !== this.#lastProcessAt)) {
+        this.#lastProcessAt = at;
 
         yield this.#abortController.signal;
       }
