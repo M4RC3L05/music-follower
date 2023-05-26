@@ -1,3 +1,11 @@
+### v10.1.0 (2023-05-26)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/3b045390da025954b7b45be64003b222257dbf36)
+- [Improve cron utils](https://github.com/M4RC3L05/music-follower/commit/66a3b4c1f044af0e9304b287b690ad099baba4c5)
+- [Inline apple music html string](https://github.com/M4RC3L05/music-follower/commit/877d7e3d022e10cb02de7b263516f9630c9692d1)
+- [Improve process utils](https://github.com/M4RC3L05/music-follower/commit/2b351e5363e015b255cf13ad2fbd57332c970734)
+- [Use \`returning\` from sqlite](https://github.com/M4RC3L05/music-follower/commit/23e91315872ed2d954596fa4f84e309659545534)
+
 ### v10.0.0 (2023-05-26)
 
 - [Make tables strict without rowid](https://github.com/M4RC3L05/music-follower/commit/2111e4a1a012756c12e149856585ea025991f5b5)
