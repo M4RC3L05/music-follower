@@ -1,21 +1,21 @@
 {
   "apps": {
     "feed": {
-      "host": "0.0.0.0",
+      "host": "127.0.0.1",
       "port": 4321,
       "maxReleases": 50
     },
+    "api": {
+      "host": "127.0.0.1",
+      "port": 4323,
+      "basicAuth": {
+        "name": "foo",
+        "pass": "bar"
+      }
+    },
     "admin": {
-      "host": "0.0.0.0",
-      "keys": ["foo", "bar"],
+      "host": "127.0.0.1",
       "port": 4322,
-      "session": {
-        "maxAge": "session",
-        "httpOnly": true,
-        "secure": false,
-        "sameSite": "strict",
-        "renew": true
-      },
       "basicAuth": {
         "name": "foo",
         "pass": "bar"
