@@ -8,3 +8,4 @@ data/db.sqlite
 config/local.json
 config/development.json
 coverage
+**/public/config.json
