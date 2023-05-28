@@ -1,3 +1,12 @@
+### v11.0.0 (2023-05-28)
+
+- [Update packages based on app changes](https://github.com/M4RC3L05/music-follower/commit/469fdcda7bc0924daabefaf3e700d1e115d27c25)
+- [Add new middlewares and validation](https://github.com/M4RC3L05/music-follower/commit/a81866ef5ca8f28518bf8da887c67062f4be75fd)
+- [Improve main from feed app](https://github.com/M4RC3L05/music-follower/commit/493b636c6ba03bf1c813534ee8a2e27a9b792e88)
+- [Add new api app](https://github.com/M4RC3L05/music-follower/commit/867953051b3b238457cfb82d3454f0d1a5fc52ce)
+- [Update admin app to be a SPA](https://github.com/M4RC3L05/music-follower/commit/95acdb06c2afbb49cc423a6e43e63d275780a2d2)
+- [UPdate config to account app changes and new app](https://github.com/M4RC3L05/music-follower/commit/87ee9a3d00d510ae3f7871e3c147525eb5b9b42c)
+
 ### v10.1.0 (2023-05-26)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/3b045390da025954b7b45be64003b222257dbf36)
