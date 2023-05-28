@@ -1,4 +1,5 @@
 import process from "node:process";
+import { promisify } from "node:util";
 
 import config from "config";
 
@@ -20,19 +21,11 @@ const server = api.listen(port, host, () => {
   }
 });
 
+const pClose = promisify<void>(server.close).bind(server);
+
 addHook({
   async handler() {
-    await new Promise<void>((resolve, reject) => {
-      server.close((error) => {
-        if (error) {
-          reject(error);
-
-          return;
-        }
-
-        resolve();
-      });
-    });
+    await pClose();
 
     log.info("Server terminated");
   },
