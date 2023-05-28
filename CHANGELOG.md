@@ -1,3 +1,8 @@
+### v11.0.1 (2023-05-28)
+
+- [Update pm2 files](https://github.com/M4RC3L05/music-follower/commit/212e280ceb4a90a0fc27a97e33599b430ce578cb)
+- [Add api pm2 app file](https://github.com/M4RC3L05/music-follower/commit/1440f549f7c121b27e7dcbf82d08122121ad9338)
+
 ### v11.0.0 (2023-05-28)
 
 - [Update packages based on app changes](https://github.com/M4RC3L05/music-follower/commit/469fdcda7bc0924daabefaf3e700d1e115d27c25)
