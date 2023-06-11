@@ -5,7 +5,7 @@ import type logger from "#src/common/clients/logger.js";
 
 type ErrorMapperDeps = {
   loggerFactory: typeof logger;
-  mappers: Array<(error: unknown) => HttpError | void>;
+  mappers: Array<(error: unknown) => HttpError | undefined>;
   defaultMapper: (error: unknown) => HttpError;
 };
 
@@ -48,7 +48,7 @@ const errorMapper = (deps: ErrorMapperDeps) => {
         return;
       }
 
-      let mapped: HttpError | void;
+      let mapped: HttpError | undefined;
 
       for (const mapper of deps.mappers) {
         mapped = mapper(error);
