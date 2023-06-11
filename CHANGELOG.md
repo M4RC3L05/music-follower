@@ -1,3 +1,9 @@
+### v11.1.0 (2023-06-11)
+
+- [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/9162b40db02f3830883f1e5718cef55332343fb7)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/3f138ba611bfd21fab9127940c57f36eda5351df)
+- [Remove file](https://github.com/M4RC3L05/music-follower/commit/93fb468f3da95dc2f363630f1c34d47f61def077)
+
 ### v11.0.1 (2023-05-28)
 
 - [Update pm2 files](https://github.com/M4RC3L05/music-follower/commit/212e280ceb4a90a0fc27a97e33599b430ce578cb)
