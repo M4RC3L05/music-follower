@@ -1,3 +1,7 @@
+### v11.2.1 (2023-06-20)
+
+- [Scroll top on pagination change](https://github.com/M4RC3L05/music-follower/commit/87608847b753e77c0fa5d741bf9929bfbed7eb40)
+
 ### v11.2.0 (2023-06-20)
 
 - [Improve request lifecile middleware logs](https://github.com/M4RC3L05/music-follower/commit/f0d86cfbbc4ccdf2e517753ab13ebc922bfc37a6)

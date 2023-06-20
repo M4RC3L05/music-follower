@@ -1,6 +1,6 @@
 {
   "name": "music-follower",
-  "version": "11.2.0",
+  "version": "11.2.1",
   "description": "Simple self-host rss feed to get releases from artists",
   "main": "index.ts",
   "type": "module",
