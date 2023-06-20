@@ -1,3 +1,8 @@
+### v11.2.0 (2023-06-20)
+
+- [Improve request lifecile middleware logs](https://github.com/M4RC3L05/music-follower/commit/f0d86cfbbc4ccdf2e517753ab13ebc922bfc37a6)
+- [Add loading page](https://github.com/M4RC3L05/music-follower/commit/77b7536493f691e2f0ac874e81edc8a6b4c07902)
+
 ### v11.1.0 (2023-06-11)
 
 - [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/9162b40db02f3830883f1e5718cef55332343fb7)
