@@ -1,6 +1,7 @@
 import { Form as BSForm, Badge, Card, Col, Container, Pagination, Row } from "react-bootstrap";
-import { Form, Link, useLoaderData, useNavigate, useNavigation, useSearchParams } from "react-router-dom";
+import { Form, Link, useLoaderData, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "usehooks-ts";
+import { useLayoutEffect } from "react";
 
 import { ShowReleaseModal } from "../components/show-release-modal.js";
 import html from "../common/html.js";
@@ -30,6 +31,11 @@ export const Component = () => {
   const query = searchParameters.get("q");
   const selectedRelease = searchParameters.get("selectedRelease");
   const release = releases.find(({ id, type }) => `${id}@${type}` === selectedRelease);
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    globalThis.document.documentElement.scrollTo(0, 0);
+  }, [location.pathname, location.search]);
 
   return html`
     <${ShowReleaseModal}

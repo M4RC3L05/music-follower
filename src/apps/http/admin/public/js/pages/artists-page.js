@@ -1,6 +1,14 @@
 import { Alert, Form as BSForm, Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
-import { Form, Link, useActionData, useLoaderData, useNavigation, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useLocation,
+  useNavigation,
+  useSearchParams,
+} from "react-router-dom";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
 
 import { AddArtistModal } from "../components/add-artists-modal.js";
@@ -60,6 +68,11 @@ export const Component = () => {
   const query = searchParameters.get("q");
   const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    globalThis.document.documentElement.scrollTo(0, 0);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (!actionData) return;
