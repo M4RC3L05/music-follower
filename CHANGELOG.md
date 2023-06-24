@@ -1,3 +1,7 @@
+### v12.1.0 (2023-06-24)
+
+- [Add feed favicon](https://github.com/M4RC3L05/music-follower/commit/fb74d95e652fc81e89f9c962f9639ede6cd9f914)
+
 ### v12.0.0 (2023-06-24)
 
 - [Fix vulnerability](https://github.com/M4RC3L05/music-follower/commit/d89795745006678e33b8ccf819a11f6f6193cde3)
