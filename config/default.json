@@ -19,7 +19,8 @@
       "basicAuth": {
         "name": "foo",
         "pass": "bar"
-      }
+      },
+      "esmsh": "https://esm.sh/"
     },
     "jobs": {
       "sync-releases": {

@@ -1,5 +1,5 @@
-@import url(https://esm.local.dev/v122/bootstrap@5.3.0-alpha3/dist/css/bootstrap.css);
-@import url(https://esm.local.dev/v122/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css);
+@import url(/deps/v122/bootstrap@5.3.0-alpha3/dist/css/bootstrap.css);
+@import url(/deps/v122/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css);
 @import url(./_resets.css);
 
 #init-loading {
