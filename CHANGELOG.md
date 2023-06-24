@@ -1,3 +1,10 @@
+### v12.0.0 (2023-06-24)
+
+- [Fix vulnerability](https://github.com/M4RC3L05/music-follower/commit/d89795745006678e33b8ccf819a11f6f6193cde3)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/3c3c12e929e552ad2df43592f5709fc0fdaf0202)
+- [Update nodejs](https://github.com/M4RC3L05/music-follower/commit/b405a5001208507ca2461aa1a76a8ba784b38394)
+- [Make esmsh be proxied form the server and allow to customize esm sh endpoin](https://github.com/M4RC3L05/music-follower/commit/82df1789bc65a00e5341345b1a025cba5f08c3f7)
+
 ### v11.2.1 (2023-06-20)
 
 - [Scroll top on pagination change](https://github.com/M4RC3L05/music-follower/commit/87608847b753e77c0fa5d741bf9929bfbed7eb40)
