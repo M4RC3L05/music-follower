@@ -1,3 +1,7 @@
+### v12.2.1 (2023-07-29)
+
+- [Fix fontend deps proxy](https://github.com/M4RC3L05/music-follower/commit/40aede324e17844830a0bf58b24bd4891302dd65)
+
 ### v12.2.0 (2023-07-29)
 
 - [Fix lint](https://github.com/M4RC3L05/music-follower/commit/f498ed18b58f4f89c1f1dce3c1e8229511aab291)
