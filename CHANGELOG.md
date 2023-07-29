@@ -1,3 +1,8 @@
+### v12.2.0 (2023-07-29)
+
+- [Fix lint](https://github.com/M4RC3L05/music-follower/commit/f498ed18b58f4f89c1f1dce3c1e8229511aab291)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/955bc0d7205bca922e1dfbad7a7381a75a07f425)
+
 ### v12.1.0 (2023-06-24)
 
 - [Add feed favicon](https://github.com/M4RC3L05/music-follower/commit/fb74d95e652fc81e89f9c962f9639ede6cd9f914)
