@@ -10,9 +10,8 @@ export const app = () => {
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
   koa.use(koaStatic("./src/apps/http/admin/public"));
   koa.use(
-    proxy("/deps", {
+    proxy(/^\/(stable|v\d+)/, {
       target: config.get("apps.admin.esmsh"),
-      rewrite: (path) => path.replace("/deps", ""),
       changeOrigin: true,
     }),
   );
