@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
 import { beforeEach, describe, expect, it } from "vitest";
 import sql from "@leafac/sqlite";
 
