@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "target": "esnext",
+    "keepClassNames": true,
+    "externalHelpers": false,
+    "loose": false,
+    "parser": {
+      "syntax": "typescript",
+      "dynamicImport": true,
+      "importAssertions": true,
+      "tsx": false,
+      "decorators": false
+    }
+  }
+}

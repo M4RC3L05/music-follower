@@ -1,0 +1,7 @@
+config
+!config/default.json
+!config/custom-environment-variables.json
+data/*.db
+data/*.db-shm
+data/*.db-wal
+**/public/config.json
