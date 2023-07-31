@@ -29,7 +29,7 @@ if (typeof process.send === "function") {
   process.send("ready");
 }
 
-log.info({ nextDate: job.nextTime(), job: jobName }, "Registered job");
+log.info({ nextDate: job.nextAt(), job: jobName }, "Registered job");
 
 for await (const s of job.start()!) {
   try {
@@ -40,6 +40,6 @@ for await (const s of job.start()!) {
     log.error(`Error running "${jobName}" task`, { error });
   } finally {
     log.info(`"${jobName}" task completed`);
-    log.info(`Next at ${job.nextTime() ?? "unknown"}`);
+    log.info(`Next at ${job.nextAt() ?? "unknown"}`);
   }
 }

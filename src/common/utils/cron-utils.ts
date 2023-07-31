@@ -1,25 +1,22 @@
 /* eslint-disable no-await-in-loop */
 import { setTimeout } from "node:timers/promises";
 
-import * as cronMatch from "@datasert/cronjs-matcher";
-import { type CronExprs, parse } from "@datasert/cronjs-parser";
+import cronParser from "cron-parser";
 
 export class Cron {
-  #when: CronExprs;
+  #when: cronParser.CronExpression;
   #abortController: AbortController;
   #working: boolean;
   #worker!: AsyncGenerator<AbortSignal, void>;
   #lastProcessAt?: number;
-  #timezone?: string;
   #dateContainer = new Date();
   #tickerTimeout = 500;
 
   constructor(when: string, timezone?: string, tickerTimeout?: number) {
-    this.#when = parse(when, { hasSeconds: true });
+    this.#when = cronParser.parseExpression(when, { tz: timezone });
     this.#working = false;
 
     this.#abortController = new AbortController();
-    this.#timezone = timezone;
     this.#tickerTimeout = tickerTimeout ?? this.#tickerTimeout;
   }
 
@@ -40,25 +37,34 @@ export class Cron {
     this.#working = false;
   }
 
-  nextTime() {
-    return cronMatch
-      .getFutureMatches(this.#when, {
-        hasSeconds: true,
-        timezone: this.#timezone,
-        formatInTimezone: true,
-        maxLoopCount: 2,
-        matchValidator: (date) =>
-          (this.#lastProcessAt ?? Math.floor(Date.now() / 1000)) !== Math.floor(Date.parse(date) / 1000),
-      })
-      .at(0);
+  nextAt() {
+    this.#when.reset(Math.floor(Date.now() / 1000) * 1000);
+    return this.#when.next().toString();
   }
 
   #checkTime(at: number) {
     this.#dateContainer.setTime(at);
-    return cronMatch.isTimeMatches(this.#when, this.#dateContainer.toISOString(), this.#timezone);
+    this.#dateContainer.setMilliseconds(0);
+
+    return (
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.second.includes(this.#dateContainer.getSeconds()) &&
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.minute.includes(this.#dateContainer.getMinutes()) &&
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.hour.includes(this.#dateContainer.getHours()) &&
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.dayOfMonth.includes(this.#dateContainer.getDate()) &&
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.month.includes(this.#dateContainer.getMonth()) &&
+      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
+      this.#when.fields.dayOfWeek.includes(this.#dateContainer.getDay())
+    );
   }
 
   async *#ticker() {
+    yield Math.floor(Date.now() / 1000);
+
     while (true) {
       try {
         await setTimeout(this.#tickerTimeout, undefined, {
