@@ -1,3 +1,8 @@
+### v12.3.0 (2023-07-31)
+
+- [Prepare for dockerization](https://github.com/M4RC3L05/music-follower/commit/31fad9d8ca5e781504391270296213d9b843bbc0)
+- [Update cron utils](https://github.com/M4RC3L05/music-follower/commit/4f706c5fc4cb8a9ffacf87cee775e3ffb57ba493)
+
 ### v12.2.1 (2023-07-29)
 
 - [Fix fontend deps proxy](https://github.com/M4RC3L05/music-follower/commit/40aede324e17844830a0bf58b24bd4891302dd65)
