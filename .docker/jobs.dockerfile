@@ -32,5 +32,6 @@ RUN npm ci --omit=dev
 COPY --from=build --chown=node:node /home/node/app/dist ./src
 COPY --from=build --chown=node:node /home/node/app/bin ./bin
 COPY --chown=node:node ./config ./config
+RUN mkdir data
 
 VOLUME [ "/home/node/app/data" ]
