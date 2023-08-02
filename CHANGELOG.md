@@ -1,3 +1,7 @@
+### v12.3.1 (2023-08-02)
+
+- [Create volume dir inside docker image](https://github.com/M4RC3L05/music-follower/commit/244d8fc0e5df2c2b6e23f01569a97247423f1774)
+
 ### v12.3.0 (2023-07-31)
 
 - [Prepare for dockerization](https://github.com/M4RC3L05/music-follower/commit/31fad9d8ca5e781504391270296213d9b843bbc0)
