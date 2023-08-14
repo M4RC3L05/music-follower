@@ -1,3 +1,7 @@
+### v12.4.0 (2023-08-14)
+
+- [Add fetch releases timeout and retries](https://github.com/M4RC3L05/music-follower/commit/3ede11c51fb944dd243bdbf547b3008a3bab0045)
+
 ### v12.3.1 (2023-08-02)
 
 - [Create volume dir inside docker image](https://github.com/M4RC3L05/music-follower/commit/244d8fc0e5df2c2b6e23f01569a97247423f1774)
