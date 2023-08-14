@@ -1,11 +1,11 @@
 import config from "config";
-import fetch from "node-fetch";
 
 import {
   type ItunesLookupAlbumModel,
   type ItunesLookupSongModel,
   type ItunesResponseModel,
 } from "#src/remote/itunes/types.js";
+import { request } from "#src/common/utils/fetch-utils.js";
 
 const itunesLookupConfig = config.get<ItunesLookupConfig>("remote.itunes.lookup");
 
@@ -36,7 +36,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await fetch(path.toString(), { signal });
+  const response = await request(path.toString(), { signal }, { retryN: 1 });
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", { cause: response.status });
