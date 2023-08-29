@@ -78,9 +78,7 @@
     "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/http/api/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts syncReleasesJob | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
-    "postinstall": "patch-package",
-    "test": "vitest",
-    "test-coverage": "vitest run --coverage"
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
@@ -101,13 +99,10 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
-    "nock": "^13.3.2",
     "offline-github-changelog": "^3.0.1",
     "pino-pretty": "^10.2.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6",
-    "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.33.0",
     "xo": "^0.55.0"
   },
   "engines": {
