@@ -8,10 +8,7 @@ COPY --chown=node:node package.json ./
 COPY --chown=node:node package-lock.json ./
 RUN npm ci
 
-COPY --chown=node:node ./src/commands ./src/commands
-COPY --chown=node:node ./src/common ./src/common
-COPY --chown=node:node ./src/typedefs ./src/typedefs
-COPY --chown=node:node ./src/apps/http/admin ./src/apps/http/admin
+COPY --chown=node:node ./src ./src
 COPY --chown=node:node ./.swcrc ./.swcrc
 
 RUN npx swc --copy-files --include-dotfiles ./src -d dist
@@ -22,13 +19,14 @@ USER node
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node package.json ./
-COPY --chown=node:node package-lock.json ./
-RUN npm ci --omit=dev
+COPY --from=build --chown=node:node /home/node/app/package.json ./
+COPY --from=build --chown=node:node /home/node/app/package-lock.json ./
+RUN npm prune --omit=dev
 
 COPY --from=build --chown=node:node /home/node/app/dist ./src
 COPY --chown=node:node ./config ./config
+RUN mkdir data
 
-EXPOSE 4322
+VOLUME [ "/home/node/app/data" ]
 
-CMD ["node", "src/apps/http/admin/main.js"]
+EXPOSE 4321 4322 4323
