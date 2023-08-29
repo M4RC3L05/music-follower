@@ -1,5 +1,7 @@
+-- migrate:up
+
 create table "releases" (
-  "id" bigint not null,
+  "id" integer not null,
   "artistName" text not null,
   "name" text not null,
   "releasedAt" text default (strftime('%Y-%m-%dT%H:%M:%fZ' , 'now')),
@@ -9,4 +11,7 @@ create table "releases" (
   "feedAt" text not null default (strftime('%Y-%m-%dT%H:%M:%fZ' , 'now')),
 
   primary key ("id", "type")
-);
+)  strict, without rowid;
+
+-- migrate:down
+

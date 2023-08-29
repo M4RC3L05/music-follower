@@ -3,6 +3,7 @@ dist
 data/*
 !data/.gitkeep
 data/db.sqlite
+data/app.db
 .pm2/*
 !.pm2/*.example
 config/local.json

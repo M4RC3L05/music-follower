@@ -34,7 +34,7 @@
     }
   },
   "database": {
-    "path": "./data/db.sqlite"
+    "path": "./data/app.db"
   },
   "logger": {
     "level": "info"
