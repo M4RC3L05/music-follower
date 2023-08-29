@@ -11,9 +11,7 @@ export const request = async (
 ): Promise<Response> => {
   try {
     const result = await Promise.race([
-      setTimeout(8000, new Error(`Request timeout excedded for "${url as any as string}"`), {
-        signal: init?.signal as any as AbortSignal,
-      }),
+      setTimeout(8000, new Error(`Request timeout excedded for "${url as any as string}"`), { ref: false }),
       fetch(url, init),
     ]);
 
