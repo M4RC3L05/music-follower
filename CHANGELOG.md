@@ -1,3 +1,11 @@
+### v13.0.0 (2023-08-29)
+
+- [Restructure docker images](https://github.com/M4RC3L05/music-follower/commit/0beeccd819e23659392bc218cd5203694087d65f)
+- [Remove tests](https://github.com/M4RC3L05/music-follower/commit/5ae997d15aaff37c28aeeffc37b27a9cc791c4d9)
+- [Unref fetch timeout](https://github.com/M4RC3L05/music-follower/commit/8a13cba572de59496a3ee70c8de60dca75274f8b)
+- [Add dbmate for migrations](https://github.com/M4RC3L05/music-follower/commit/421cce93b41e991c14b2719664e13e074dc024ac)
+- [Display lavel labels](https://github.com/M4RC3L05/music-follower/commit/41c88ed3b3df71a283a38629d3faff754c009679)
+
 ### v12.4.0 (2023-08-14)
 
 - [Add fetch releases timeout and retries](https://github.com/M4RC3L05/music-follower/commit/3ede11c51fb944dd243bdbf547b3008a3bab0045)
