@@ -50,6 +50,15 @@
         }
       ]
     },
+    "overrides": [
+      {
+        "files": "**/public/**/*.ts",
+        "rules": {
+          "import/no-extraneous-dependencies": "off",
+          "@typescript-eslint/naming-convention": "off"
+        }
+      }
+    ],
     "ignorePatterns": [
       "node_modules"
     ]
@@ -94,15 +103,21 @@
     "@types/lodash-es": "^4.17.8",
     "@types/ms": "^0.7.31",
     "@types/node": "^20.4.5",
-    "@vitest/coverage-c8": "^0.33.0",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.7",
     "dbmate": "^2.6.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "htm": "^3.1.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "offline-github-changelog": "^3.0.1",
     "pino-pretty": "^10.2.0",
     "prettier": "^3.0.0",
+    "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
     "typescript": "^5.1.6",
+    "usehooks-ts": "^2.9.1",
     "xo": "^0.55.0"
   },
   "engines": {

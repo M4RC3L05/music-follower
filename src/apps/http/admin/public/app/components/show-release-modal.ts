@@ -1,9 +1,16 @@
 import { Badge, Image, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
+import { type Release } from "#src/domain/releases/types.js";
 import html from "../common/html.js";
 
-export const ShowReleaseModal = ({ release, show, onHide }) => {
+type ShowReleaseModalArgs = {
+  release: Release;
+  show: boolean;
+  onHide: () => unknown;
+};
+
+export const ShowReleaseModal = ({ release, show, onHide }: ShowReleaseModalArgs) => {
   const [releaseState, setReleaseState] = useState(release);
 
   useEffect(() => {

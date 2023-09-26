@@ -1,30 +1,33 @@
-import { Alert, Form as BSForm, Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
 import {
+  type ActionFunction,
   Form,
   Link,
+  type LoaderFunction,
   useActionData,
   useLoaderData,
   useLocation,
   useNavigation,
   useSearchParams,
 } from "react-router-dom";
+import { Alert, Form as BSForm, Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
 
+import { type ResponseBody, requests } from "../common/request.js";
 import { AddArtistModal } from "../components/add-artists-modal.js";
+import { type Artist } from "#src/domain/artists/types.js";
 import html from "../common/html.js";
-import { requests } from "../common/request.js";
 
-export const loader = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const query = url.searchParams.get("q");
-  const page = url.searchParams.get("page");
-  const limit = url.searchParams.get("limit");
+  const query = url.searchParams.get("q") ?? undefined;
+  const page = url.searchParams.get("page") ?? undefined;
+  const limit = url.searchParams.get("limit") ?? undefined;
 
   return requests.artists.getArtists({ query, page, limit });
 };
 
-export const action = async ({ request }) => {
+export const action: ActionFunction = async ({ request }) => {
   const data = await request.formData();
   const intent = data.get("intent");
 
@@ -32,19 +35,14 @@ export const action = async ({ request }) => {
     case "subscribe": {
       return {
         ...(await requests.artists.subscribeArtist({
-          body: { id: Number(data.get("id")), name: data.get("name"), image: data.get("image") },
+          body: { id: Number(data.get("id")!), name: data.get("name") as string, image: data.get("image") as string },
         })),
         intent,
       };
     }
 
     case "unsubscribe": {
-      return {
-        ...(await requests.artists.unsubscribeArtist({
-          id: data.get("id"),
-        })),
-        intent,
-      };
+      return { ...(await requests.artists.unsubscribeArtist({ id: Number(data.get("id")) })), intent };
     }
 
     default: {
@@ -59,8 +57,8 @@ export const Component = () => {
   const {
     data: artists,
     pagination: { total },
-  } = useLoaderData();
-  const actionData = useActionData();
+  } = useLoaderData() as ResponseBody<Artist[]> & { pagination: { total: number } };
+  const actionData = useActionData() as ResponseBody & { intent: "subscribe" | "unsubscribe" };
   const [searchParameters] = useSearchParams();
   const navigation = useNavigation();
   const page = searchParameters.has("page") ? Number(searchParameters.get("page")) : 0;
@@ -81,13 +79,24 @@ export const Component = () => {
   }, [actionData]);
 
   return html`
-    <${AddArtistModal} show=${showModal} onHide=${() => setShowModal(false)} />
+    <${AddArtistModal}
+      show=${showModal}
+      onHide=${() => {
+        setShowModal(false);
+      }}
+    />
     <${Container} fluid="xl">
       ${showAlert &&
       actionData &&
       actionData.intent === "unsubscribe" &&
       html`
-        <${Alert} variant=${actionData.error ? "danger" : "success"} onClose=${() => setShowAlert(false)} dismissible>
+        <${Alert}
+          variant=${actionData.error ? "danger" : "success"}
+          onClose=${() => {
+            setShowAlert(false);
+          }}
+          dismissible
+        >
           ${actionData.error ? "Unable to remove artist" : "Successfully removed artist"}
         <//>
       `}
@@ -106,7 +115,13 @@ export const Component = () => {
               disabled=${navigation.state !== "idle"}
             />
             <br />
-            <${Button} variant="primary" onClick=${() => setShowModal(true)}>Follow artist<//>
+            <${Button}
+              variant="primary"
+              onClick=${() => {
+                setShowModal(true);
+              }}
+              >Follow artist<//
+            >
           </div>
         <//>
       <//>

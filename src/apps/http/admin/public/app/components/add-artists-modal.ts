@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 
 import html from "../common/html.js";
 
-export const AddArtistModal = ({ show, onHide }) => {
-  const fetcher = useFetcher();
-  const actionData = useActionData();
+type AddArtistModalArgs = {
+  show: boolean;
+  onHide: () => unknown;
+};
+
+export const AddArtistModal = ({ show, onHide }: AddArtistModalArgs) => {
+  const fetcher = useFetcher<{ data: Array<Record<string, unknown>> }>();
+  const actionData = useActionData() as Record<string, unknown>;
 
   const [showAlert, setShowAlert] = useState(false);
 
@@ -37,7 +42,13 @@ export const AddArtistModal = ({ show, onHide }) => {
         actionData &&
         actionData.intent === "subscribe" &&
         html`
-          <${Alert} variant=${actionData.error ? "danger" : "success"} onClose=${() => setShowAlert(false)} dismissible>
+          <${Alert}
+            variant=${actionData.error ? "danger" : "success"}
+            onClose=${() => {
+              setShowAlert(false);
+            }}
+            dismissible
+          >
             ${actionData.error ? "Unable to follow artist" : "Successfully followed artist"}
           <//>
         `}
@@ -50,8 +61,7 @@ export const AddArtistModal = ({ show, onHide }) => {
 
         <hr />
 
-        ${fetcher.data &&
-        fetcher.data.data?.map?.(
+        ${fetcher.data?.data?.map?.(
           (remote) => html`
             <div class="card mb-3">
               <div class="row g-0">

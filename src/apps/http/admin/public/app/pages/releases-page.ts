@@ -1,17 +1,27 @@
 import { Form as BSForm, Badge, Card, Col, Container, Pagination, Row } from "react-bootstrap";
-import { Form, Link, useLoaderData, useLocation, useNavigate, useNavigation, useSearchParams } from "react-router-dom";
+import {
+  Form,
+  Link,
+  type LoaderFunction,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useNavigation,
+  useSearchParams,
+} from "react-router-dom";
 import { useDocumentTitle } from "usehooks-ts";
 import { useLayoutEffect } from "react";
 
+import { type ResponseBody, requests } from "../common/request.js";
+import { type Release } from "#src/domain/releases/types.js";
 import { ShowReleaseModal } from "../components/show-release-modal.js";
 import html from "../common/html.js";
-import { requests } from "../common/request.js";
 
-export const loader = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const query = url.searchParams.get("q");
-  const page = url.searchParams.get("page");
-  const limit = url.searchParams.get("limit");
+  const query = url.searchParams.get("q") ?? undefined;
+  const page = url.searchParams.get("page") ?? undefined;
+  const limit = url.searchParams.get("limit") ?? undefined;
 
   return requests.releases.getReleases({ query, page, limit });
 };
@@ -22,7 +32,7 @@ export const Component = () => {
   const {
     data: releases,
     pagination: { total },
-  } = useLoaderData();
+  } = useLoaderData() as ResponseBody<Release[]> & { pagination: { total: number } };
   const [searchParameters] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
