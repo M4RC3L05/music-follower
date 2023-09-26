@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -9,14 +9,10 @@
     "baseUrl": ".",
     "moduleResolution": "NodeNext",
     "paths": {
-      "#src/*": [
-        "./src/*"
-      ]
+      "#src/*": ["./src/*"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "ts-node": {
     "transpileOnly": true,
     "swc": true,
