@@ -1,4 +1,4 @@
-FROM docker.io/node:18.17-alpine as build
+FROM docker.io/node:18.18-alpine as build
 
 USER node
 
@@ -13,7 +13,7 @@ COPY --chown=node:node ./.swcrc ./.swcrc
 
 RUN npx swc --copy-files --include-dotfiles ./src -d dist
 
-FROM docker.io/node:18.17-alpine as final
+FROM docker.io/node:18.18-alpine as final
 
 USER node
 
