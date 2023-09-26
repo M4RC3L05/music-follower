@@ -8,7 +8,7 @@ import { app } from "#src/apps/http/admin/app.js";
 import logger from "#src/common/clients/logger.js";
 
 const log = logger("main");
-const api = app();
+const api = await app();
 const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
 
 const server = api.listen(port, host, () => {

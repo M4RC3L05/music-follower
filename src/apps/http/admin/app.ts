@@ -6,7 +6,7 @@ import config from "config";
 import koaStatic from "koa-static";
 import proxy from "koa-proxies";
 
-export const app = () => {
+export const app = async () => {
   const koa = new Koa();
 
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
@@ -19,18 +19,17 @@ export const app = () => {
   );
 
   if (process.env.NODE_ENV !== "production") {
-    void import("@swc/core").then((swc) => {
-      koa.use(async (ctx, next) => {
-        if (ctx.url.endsWith(".js")) {
-          const data = await swc.transformFile(`./src/apps/http/admin/public${ctx.url.replace(".js", ".ts")}`);
-          ctx.type = "application/javascript";
-          ctx.body = data.code;
+    const swc = await import("@swc/core");
+    koa.use(async (ctx, next) => {
+      if (ctx.url.endsWith(".js")) {
+        const data = await swc.transformFile(`./src/apps/http/admin/public${ctx.url.replace(".js", ".ts")}`);
+        ctx.type = "application/javascript";
+        ctx.body = data.code;
 
-          return;
-        }
+        return;
+      }
 
-        return next();
-      });
+      return next();
     });
   }
 
