@@ -1,3 +1,10 @@
+### v13.1.0 (2023-09-26)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/f1224472ce1c1a5714ea83b4ace365ac9487ea9b)
+- [Use ts on web app](https://github.com/M4RC3L05/music-follower/commit/b0558fda546c1b0531b6d88bc9149e374beafef5)
+- [Fix package vulnerability](https://github.com/M4RC3L05/music-follower/commit/b7e2f90691badbb9c8a40151978121ba0b13ebad)
+- [Update nodejs version](https://github.com/M4RC3L05/music-follower/commit/72df6d45936c6c02a9a26b8567b6200a9391863e)
+
 ### v13.0.0 (2023-08-29)
 
 - [Restructure docker images](https://github.com/M4RC3L05/music-follower/commit/0beeccd819e23659392bc218cd5203694087d65f)
