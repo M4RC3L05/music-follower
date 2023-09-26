@@ -1,3 +1,7 @@
+### v13.1.1 (2023-09-26)
+
+- [Async make app](https://github.com/M4RC3L05/music-follower/commit/67eaf33275bda5d8bc6fc27582892855ae2183f6)
+
 ### v13.1.0 (2023-09-26)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/f1224472ce1c1a5714ea83b4ace365ac9487ea9b)
