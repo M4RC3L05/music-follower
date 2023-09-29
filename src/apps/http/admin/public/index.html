@@ -1,52 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="./css/main.css">
-</head>
-
-<body>
-  <div id="app">
-    <div id="init-loading">
-      <img src="./loading.png" width="128" height="128" class="img-fluid mb-4" />
-      <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Loading...</span>
+  <body>
+    <div id="app">
+      <div id="init-loading">
+        <img src="./loading.png" width="128" height="128" class="img-fluid mb-4" />
+        <div class="spinner-grow" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     </div>
-  </div>
-  <script type="importmap">
-    {
-      "imports": {
-        "react": "/v130/react@18.2.0",
-        "react-dom": "/v130/react-dom@18.2.0",
-        "react-dom/client": "/v130/react-dom@18.2.0/client.js",
-        "htm": "/v130/htm@3.1.1",
-        "react-router-dom": "/v130/react-router-dom@6.16.0",
-        "usehooks-ts": "/v130/usehooks-ts@2.9.1",
-        "react-bootstrap": "/v130/react-bootstrap@2.8.0"
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "/v130/react@18.2.0",
+          "react/jsx-runtime": "/v130/react@18.2.0/jsx-runtime.js",
+          "react-dom": "/v130/react-dom@18.2.0",
+          "react-dom/client": "/v130/react-dom@18.2.0/client.js",
+          "react-router-dom": "/v130/react-router-dom@6.16.0",
+          "usehooks-ts": "/v130/usehooks-ts@2.9.1",
+          "react-bootstrap": "/v130/react-bootstrap@2.8.0"
+        }
       }
-    }
-  </script>
-  <script>
-    const getPreferredTheme = () => {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    }
+    </script>
+    <script>
+      const getPreferredTheme = () => {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      };
 
-    const setTheme = theme => {
-      document.documentElement.setAttribute('data-bs-theme', theme)
-    }
+      const setTheme = (theme) => {
+        document.documentElement.setAttribute("data-bs-theme", theme);
+      };
 
-    setTheme(getPreferredTheme())
+      setTheme(getPreferredTheme());
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      setTheme(getPreferredTheme())
-    })
-  </script>
-  <script type="module" src="./app/main.js"></script>
-</body>
-
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        setTheme(getPreferredTheme());
+      });
+    </script>
+    <script type="module" src="./app/main.js"></script>
+  </body>
 </html>

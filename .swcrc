@@ -11,6 +11,11 @@
       "importAssertions": true,
       "tsx": false,
       "decorators": false
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
     }
   }
 }

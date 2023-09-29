@@ -10,6 +10,9 @@
   "[typescript]": {
     "editor.defaultFormatter": "samverschueren.linter-xo"
   },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "samverschueren.linter-xo"
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -17,6 +20,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.suggest.insertMode": "replace",
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

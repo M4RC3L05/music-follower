@@ -1,4 +1,6 @@
+import path from "node:path";
 import process from "node:process";
+import { stat } from "node:fs/promises";
 
 import Koa from "koa";
 import basicAuth from "koa-basic-auth";
@@ -20,16 +22,38 @@ export const app = async () => {
 
   if (process.env.NODE_ENV !== "production") {
     const swc = await import("@swc/core");
-    koa.use(async (ctx, next) => {
-      if (ctx.url.endsWith(".js")) {
-        const data = await swc.transformFile(`./src/apps/http/admin/public${ctx.url.replace(".js", ".ts")}`);
-        ctx.type = "application/javascript";
-        ctx.body = data.code;
+    const pathExists = async (path: string) => {
+      try {
+        const result = await stat(path);
 
-        return;
+        return result.isFile();
+      } catch {
+        return false;
+      }
+    };
+
+    koa.use(async (ctx, next) => {
+      if (!ctx.url.endsWith(".js")) {
+        return next();
       }
 
-      return next();
+      const tsxPath = path.resolve(`./src/apps/http/admin/public${ctx.url.replace(".js", ".tsx")}`);
+      const tsPath = path.resolve(`./src/apps/http/admin/public${ctx.url.replace(".js", ".ts")}`);
+
+      let data: Awaited<ReturnType<typeof swc.transformFile>> | undefined;
+
+      if (await pathExists(tsxPath)) {
+        data = await swc.transformFile(tsxPath);
+      }
+
+      if (await pathExists(tsPath)) {
+        data = await swc.transformFile(tsPath);
+      }
+
+      if (!data) return next();
+
+      ctx.type = "application/javascript";
+      ctx.body = data?.code;
     });
   }
 
