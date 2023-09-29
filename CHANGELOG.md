@@ -1,3 +1,7 @@
+### v13.1.2 (2023-09-29)
+
+- [Use jsx on admin](https://github.com/M4RC3L05/music-follower/commit/088118210d1da8763a985407b1dd6e8a6dc59c8c)
+
 ### v13.1.1 (2023-09-26)
 
 - [Async make app](https://github.com/M4RC3L05/music-follower/commit/67eaf33275bda5d8bc6fc27582892855ae2183f6)
