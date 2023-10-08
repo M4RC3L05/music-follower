@@ -7,6 +7,7 @@ const log = logger("upsert-many-query");
 
 export const upsertMany = (
   releases: Array<Omit<Release, "feedAt"> & { collectionId?: number; isStreamable?: boolean; feedAt?: Date }>,
+  options?: { noHiddenOverride: boolean },
 ) => {
   for (const { collectionId, isStreamable, ...release } of releases) {
     const storedRelease = releasesTable.get<Release>(sql`
@@ -16,6 +17,11 @@ export const upsertMany = (
       and   $${releasesTable.lit("type")} = ${release.type}
       limit 1;
     `);
+
+    // Do not override currently setted hidden status
+    if (storedRelease && options?.noHiddenOverride) {
+      release.hidden = storedRelease.hidden;
+    }
 
     // Determine the feed position, defaults to using provided `feedAt`.
     // If the collection/track is a pre-release (the releasedAt is an upcomming date) we use the releasedAt,
@@ -72,16 +78,10 @@ export const upsertMany = (
       continue;
     }
 
-    const releaseRecord = releasesTable.get<Release>(sql`
-      select * from $${releasesTable.lit("table")}
-      where $${releasesTable.lit("id")} = ${release.id}
-      and   $${releasesTable.lit("type")} = 'track'
-    `);
-
     // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)
     // we set its as the current date or the one in the db if the release was already stored, since we can stream it.
     if (Number.isNaN(release.releasedAt.getTime())) {
-      release.releasedAt = releaseRecord?.releasedAt ?? new Date();
+      release.releasedAt = storedRelease?.releasedAt ?? new Date();
     }
 
     log.debug({ id: release.id, type: release.type }, "Upserting release");

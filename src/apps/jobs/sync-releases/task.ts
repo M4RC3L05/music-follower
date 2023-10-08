@@ -147,8 +147,14 @@ export const run = async (abort: AbortSignal) => {
 
       // We process albums first so that we can then check if we should include tracks,
       // that are already available but belong to a album that is yet to be released.
-      releasesQueries.upsertMany(releases.filter(({ type }) => type === "collection"));
-      releasesQueries.upsertMany(releases.filter(({ type }) => type === "track"));
+      releasesQueries.upsertMany(
+        releases.filter(({ type }) => type === "collection"),
+        { noHiddenOverride: true },
+      );
+      releasesQueries.upsertMany(
+        releases.filter(({ type }) => type === "track"),
+        { noHiddenOverride: true },
+      );
     } catch (error: unknown) {
       log.error(error, "Something wrong ocurred while upserting releases");
     }
