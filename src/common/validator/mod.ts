@@ -7,6 +7,7 @@ const validator = makeValidator([
   ...Object.values(artistsHandlers.subscribeArtist.schemas.request),
   ...Object.values(artistsHandlers.unsubscribeArtist.schemas.request),
   ...Object.values(releasesHandlers.getReleases.schemas.request),
+  ...Object.values(releasesHandlers.updateRelease.schemas.request),
 ]);
 
 export default validator;

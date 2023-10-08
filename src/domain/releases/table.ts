@@ -17,13 +17,16 @@ class ReleasesTable extends Table<Release> {
         type: sql`"type"`,
         metadata: sql`"metadata"`,
         feedAt: sql`"feedAt"`,
+        hidden: sql`"hidden"`,
       },
       {
+        hidden: (value: string) => JSON.stringify(value),
         releasedAt: (value: string) => new Date(value).toISOString(),
         metadata: (value: string) => JSON.stringify(value),
         feedAt: (value: string) => new Date(value).toISOString(),
       },
       {
+        hidden: (value: string) => JSON.parse(value) as string[],
         releasedAt: (value: string | Date) => new Date(value),
         metadata: (value: string) => JSON.parse(value) as Record<string, any>,
         feedAt: (value: string | Date) => new Date(value),

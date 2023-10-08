@@ -5,6 +5,7 @@ export type Release = {
   releasedAt: Date;
   coverUrl: string;
   type: string;
+  hidden: string[];
   metadata: Record<string, any>;
   feedAt: Date;
 };

@@ -33,4 +33,10 @@ router.get(
   handlers.releasesHandlers.getReleases.handler,
 );
 
+router.patch(
+  "/releases/:id",
+  requestValidator({ schemas: handlers.releasesHandlers.updateRelease.schemas, validator }),
+  handlers.releasesHandlers.updateRelease.handler,
+);
+
 export default router;

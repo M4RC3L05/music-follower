@@ -128,6 +128,7 @@ export const run = async (abort: AbortSignal) => {
         id: data.wrapperType === "collection" ? data.collectionId : data.trackId,
         name: data.wrapperType === "collection" ? data.collectionName : data.trackName,
         type: data.wrapperType,
+        hidden: [],
         artistName: data.artistName,
         releasedAt: new Date(data.releaseDate),
         coverUrl: data.artworkUrl100

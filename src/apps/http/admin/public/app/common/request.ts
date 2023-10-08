@@ -13,6 +13,7 @@ export const paths = {
   releases: {
     getReleases: `${config.api.url}/api/releases`,
     getRelease: `${config.api.url}/api/releases/:id`,
+    updateRelease: `${config.api.url}/api/releases/:id`,
   },
 };
 
@@ -68,6 +69,15 @@ type GetReleasesArgs = {
   query?: string;
   page?: string;
   limit?: string;
+  hidden?: string;
+};
+
+type UpdateReleaseArgs = {
+  cancel?: AbortSignal;
+  body: {
+    hidden: string[];
+  };
+  id: number;
 };
 
 type GetReleaseArgs = {
@@ -109,16 +119,27 @@ export const requests = {
       }),
   },
   releases: {
-    async getReleases({ cancel, query, page, limit }: GetReleasesArgs) {
+    async getReleases({ cancel, query, page, limit, hidden }: GetReleasesArgs) {
       const requestUrl = new URL(paths.releases.getReleases);
 
       if (query) requestUrl.searchParams.set("q", query);
       if (page) requestUrl.searchParams.set("page", page);
       if (limit) requestUrl.searchParams.set("limit", limit);
+      if (hidden) requestUrl.searchParams.set("hidden", hidden);
+
+      if (!hidden) requestUrl.searchParams.set("notHidden", "admin");
 
       return makeRequester<Release[]>(requestUrl.toString(), { signal: cancel });
     },
-    getRelease: async ({ cancel, id }: GetReleaseArgs) =>
-      makeRequester<Release | undefined>(paths.releases.getRelease.replace(":id", String(id)), { signal: cancel }),
+    async updateRelease({ cancel, body, id }: UpdateReleaseArgs) {
+      return makeRequester<undefined>(paths.releases.getRelease.replace(":id", String(id)), {
+        signal: cancel,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+    },
   },
 };
