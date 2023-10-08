@@ -65,22 +65,18 @@ const getRelases = async (artistId: number, signal?: AbortSignal) => {
 };
 
 export const run = async (abort: AbortSignal) => {
-  /* c8 ignore start */
   if (abort.aborted) {
     return;
   }
-  /* c8 ignore stop */
 
   log.info("Begin releases sync.");
 
   const artists = artistQueries.getAll();
 
   for (const [key, artist] of artists.entries()) {
-    /* c8 ignore start */
     if (abort.aborted) {
       break;
     }
-    /* c8 ignore stop */
 
     log.info(`Processing releases from "${artist.name}" at ${key + 1} of ${artists.length}.`);
 
@@ -109,19 +105,15 @@ export const run = async (abort: AbortSignal) => {
           continue;
         }
 
-        /* c8 ignore start */
         default: {
           log.error(error, "Something went wrong fetching releases");
         }
-        /* c8 ignore stop */
       }
     }
 
-    /* c8 ignore start */
     if (abort.aborted) {
       break;
     }
-    /* c8 ignore stop */
 
     const releases = results.map((data) => {
       const entity: Omit<Release, "feedAt"> & { feedAt?: Date } = {
@@ -157,18 +149,13 @@ export const run = async (abort: AbortSignal) => {
       // that are already available but belong to a album that is yet to be released.
       releasesQueries.upsertMany(releases.filter(({ type }) => type === "collection"));
       releasesQueries.upsertMany(releases.filter(({ type }) => type === "track"));
-
-      /* c8 ignore start */
     } catch (error: unknown) {
       log.error(error, "Something wrong ocurred while upserting releases");
     }
-    /* c8 ignore stop */
 
-    /* c8 ignore start */
     if (abort.aborted) {
       break;
     }
-    /* c8 ignore stop */
 
     log.info("Waiting 5 seconds before processing next artist");
 

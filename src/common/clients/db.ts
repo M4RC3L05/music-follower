@@ -16,7 +16,6 @@ const db = new Database(config.get("database.path"), {
   .execute(sql`pragma busy_timeout = 5000`)
   .execute(sql`pragma foreign_keys = ON`);
 
-/* c8 ignore start */
 addHook({
   handler() {
     db.close();
@@ -25,6 +24,5 @@ addHook({
   },
   name: "database",
 });
-/* c8 ignore stop */
 
 export default db;

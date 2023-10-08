@@ -62,7 +62,6 @@ export abstract class Table<T = any> {
     const data = this.all<R>(sql`select * from ($${query}) limit ${limit} offset ${offset}`);
 
     return {
-      /* c8 ignore next */
       total: total?.total ?? data.length,
       data,
     };
