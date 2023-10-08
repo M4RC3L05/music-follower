@@ -1,3 +1,9 @@
+### v13.2.0 (2023-10-08)
+
+- [Do not override hidden when getting new releases](https://github.com/M4RC3L05/music-follower/commit/8eb3600a6b8c0c045bf4c39c935773518c970f39)
+- [Remove c8 comments](https://github.com/M4RC3L05/music-follower/commit/5e1d895c74a21725724a6d64d3926d276f665440)
+- [Allow to hide releases from admin\/feed](https://github.com/M4RC3L05/music-follower/commit/5833ce05d15538dfe9e15ca0754a09924e71ab24)
+
 ### v13.1.2 (2023-09-29)
 
 - [Use jsx on admin](https://github.com/M4RC3L05/music-follower/commit/088118210d1da8763a985407b1dd6e8a6dc59c8c)
