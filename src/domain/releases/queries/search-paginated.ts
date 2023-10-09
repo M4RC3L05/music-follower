@@ -2,14 +2,8 @@ import sql from "@leafac/sqlite";
 
 import { releasesTable } from "#src/domain/releases/mod.js";
 
-export const searchPaginated = ({
-  limit = 10,
-  page = 0,
-  q,
-  hidden,
-  notHidden,
-}: { page?: number; limit?: number; q?: string; hidden?: string; notHidden?: string } = {}) => {
-  const where = [
+const whereSql = ({ hidden, notHidden, q }: { hidden?: string; notHidden?: string; q?: string }) => {
+  return [
     hidden
       ? sql`
         (
@@ -41,15 +35,23 @@ export const searchPaginated = ({
   ]
     .filter(Boolean)
     .flatMap((x) => [x, sql`and`])
-    .slice(0, -1)
-    // eslint-disable-next-line unicorn/no-array-reduce
-    .reduce((acc, curr) => sql`$${acc}$${curr}`, sql``);
+    .slice(0, -1);
+};
+
+export const searchPaginated = ({
+  limit = 10,
+  page = 0,
+  q,
+  hidden,
+  notHidden,
+}: { page?: number; limit?: number; q?: string; hidden?: string; notHidden?: string } = {}) => {
+  const where = whereSql({ hidden, notHidden, q });
 
   return releasesTable.chunkWithTotal(
     sql`
       select *
       from $${releasesTable.lit("table")}
-      $${where ? sql`where $${where}` : sql``}
+      $${where.length > 0 ? sql`where $${where.reduce((acc, curr) => sql`$${acc}$${curr}`, sql``)}` : sql``}
       order by $${releasesTable.lit("releasedAt")} desc
     `,
     limit,

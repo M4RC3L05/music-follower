@@ -17,6 +17,7 @@
     ],
     "rules": {
       "@typescript-eslint/member-ordering": "off",
+      "unicorn/no-array-reduce": "off",
       "sort-imports": [
         "error",
         {
