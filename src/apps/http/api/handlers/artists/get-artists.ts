@@ -24,7 +24,7 @@ export const handler = (context: RouterContext) => {
   const query = context.query as RequestQuery;
   const limit = query.limit ? Number(query.limit) : 12;
   const page = query.page ? Number(query.page) : 0;
-  const { data, total } = artistQueries.searchPaginated({ limit, page, q: query.q ?? "" });
+  const { data, total } = artistQueries.searchPaginated({ limit, page, q: query.q });
 
   context.body = { data, pagination: { total, page, limit } };
 };

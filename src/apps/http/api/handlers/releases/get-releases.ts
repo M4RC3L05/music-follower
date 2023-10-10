@@ -29,7 +29,7 @@ export const handler = (context: RouterContext) => {
   const { data, total } = releasesQueries.searchPaginated({
     limit,
     page,
-    q: query.q ?? "",
+    q: query.q,
     hidden: query.hidden,
     notHidden: query.notHidden,
   });
