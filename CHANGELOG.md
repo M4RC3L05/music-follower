@@ -1,3 +1,13 @@
+### v14.0.0 (2023-10-10)
+
+- [Improve project structure](https://github.com/M4RC3L05/music-follower/commit/17e14b47f8b051dea654760151636cc70b59eef9)
+- [Use shortest import path](https://github.com/M4RC3L05/music-follower/commit/c7de1c91a78885e2708f4b541f2722307df31448)
+- [Improve docker image](https://github.com/M4RC3L05/music-follower/commit/26515074946734098edc2b8a434c3c1c469c1062)
+- [Cleanup search paginated methods](https://github.com/M4RC3L05/music-follower/commit/6b63f78ac433034975a2c5737cdb96e083117227)
+- [Fix lint errors](https://github.com/M4RC3L05/music-follower/commit/a06755d5346c0cef1f1c2bd6fae9815cc5d06879)
+- [Re enable basic auth on api](https://github.com/M4RC3L05/music-follower/commit/c2aa8f0cae20f091f6d9b29f5567b642f503c2b5)
+- [Cleanup search releases method](https://github.com/M4RC3L05/music-follower/commit/b5d2501625a993161e088636a68de5cdd96add93)
+
 ### v13.2.0 (2023-10-08)
 
 - [Do not override hidden when getting new releases](https://github.com/M4RC3L05/music-follower/commit/8eb3600a6b8c0c045bf4c39c935773518c970f39)
