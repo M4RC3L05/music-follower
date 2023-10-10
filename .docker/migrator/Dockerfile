@@ -2,7 +2,7 @@ FROM amacneil/dbmate:2.6.0
 
 WORKDIR /app
 
-COPY ./src/common/database/migrations ./migrations
+COPY ./src/database/migrations ./migrations
 
 RUN mkdir /app/data
 

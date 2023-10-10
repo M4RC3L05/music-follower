@@ -1,10 +1,6 @@
 import config from "config";
 
-import {
-  type ItunesLookupAlbumModel,
-  type ItunesLookupSongModel,
-  type ItunesResponseModel,
-} from "#src/remote/itunes/types.js";
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, type ItunesResponseModel } from "../types.js";
 import { request } from "#src/common/utils/fetch-utils.js";
 
 const itunesLookupConfig = config.get<ItunesLookupConfig>("remote.itunes.lookup");

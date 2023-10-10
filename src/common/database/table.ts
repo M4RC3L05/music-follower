@@ -1,6 +1,6 @@
 import sql, { type Query } from "@leafac/sqlite";
 
-import db from "#src/common/clients/db.js";
+import db from "./db.js";
 import { join } from "#src/common/utils/sql-utils.js";
 
 export abstract class Table<T = any> {

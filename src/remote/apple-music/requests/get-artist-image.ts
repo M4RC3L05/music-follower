@@ -1,7 +1,7 @@
 import config from "config";
 import fetch from "node-fetch";
 
-import logger from "#src/common/clients/logger.js";
+import { logger } from "#src/common/logger/mod.js";
 
 const log = logger("apple-music-source");
 

@@ -6,10 +6,10 @@ import timers from "node:timers/promises";
 import config from "config";
 import ms from "ms";
 
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, itunesRequests } from "#src/remote/itunes/mod.js";
-import { type Release, releasesQueries } from "#src/domain/releases/mod.js";
-import { artistQueries } from "#src/domain/artists/mod.js";
-import logger from "#src/common/clients/logger.js";
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, itunesRequests } from "#src/remote/mod.js";
+import { type Release, artistsQueries, releasesQueries } from "#src/database/mod.js";
+import { db } from "#src/common/database/mod.js";
+import { logger } from "#src/common/logger/mod.js";
 
 const log = logger("task");
 
@@ -71,7 +71,7 @@ export const run = async (abort: AbortSignal) => {
 
   log.info("Begin releases sync.");
 
-  const artists = artistQueries.getAll();
+  const artists = artistsQueries.getAll();
 
   for (const [key, artist] of artists.entries()) {
     if (abort.aborted) {
@@ -145,16 +145,18 @@ export const run = async (abort: AbortSignal) => {
     try {
       log.info({ id: artist.id }, "Upserting releases for artist");
 
-      // We process albums first so that we can then check if we should include tracks,
-      // that are already available but belong to a album that is yet to be released.
-      releasesQueries.upsertMany(
-        releases.filter(({ type }) => type === "collection"),
-        { noHiddenOverride: true },
-      );
-      releasesQueries.upsertMany(
-        releases.filter(({ type }) => type === "track"),
-        { noHiddenOverride: true },
-      );
+      db.executeTransaction(() => {
+        // We process albums first so that we can then check if we should include tracks,
+        // that are already available but belong to a album that is yet to be released.
+        releasesQueries.upsertMany(
+          releases.filter(({ type }) => type === "collection"),
+          { noHiddenOverride: true },
+        );
+        releasesQueries.upsertMany(
+          releases.filter(({ type }) => type === "track"),
+          { noHiddenOverride: true },
+        );
+      });
     } catch (error: unknown) {
       log.error(error, "Something wrong ocurred while upserting releases");
     }

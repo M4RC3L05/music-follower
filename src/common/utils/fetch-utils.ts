@@ -1,6 +1,6 @@
 import { setTimeout } from "node:timers/promises";
 
-import logger from "#src/common/clients/logger.js";
+import { logger } from "#src/common/logger/mod.js";
 
 const log = logger("fetch-utils");
 

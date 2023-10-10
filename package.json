@@ -83,9 +83,9 @@
     "lint": "xo . --ext .ts && tsc -p tsconfig.json --noEmit --skipLibCheck",
     "lint-staged": "lint-staged",
     "db:migrate": "dbmate -u 'sqlite:./data/app.db' -d ./src/common/database/migrations --no-dump-schema migrate",
-    "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/http/feed/main.ts | pino-pretty",
-    "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/http/admin/main.ts | pino-pretty",
-    "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/http/api/main.ts | pino-pretty",
+    "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/feed/main.ts | pino-pretty",
+    "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/admin/main.ts | pino-pretty",
+    "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/api/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts syncReleasesJob | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
     "postinstall": "patch-package"

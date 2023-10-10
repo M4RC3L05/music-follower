@@ -2,7 +2,7 @@ import process from "node:process";
 
 import * as jobs from "./mod.js";
 import { addHook } from "#src/common/utils/process-utils.js";
-import logger from "#src/common/clients/logger.js";
+import { logger } from "#src/common/logger/mod.js";
 
 const log = logger("main");
 
