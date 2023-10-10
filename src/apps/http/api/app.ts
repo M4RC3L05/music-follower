@@ -1,5 +1,7 @@
 import Koa from "koa";
+import basicAuth from "koa-basic-auth";
 import bodyParser from "koa-bodyparser";
+import config from "config";
 import cors from "@koa/cors";
 
 import * as errorMappers from "#src/common/errors/mappers/mod.js";
@@ -19,7 +21,7 @@ export const app = () => {
     }),
   );
   app.use(cors());
-  // App.use(basicAuth({ ...config.get("apps.api.basicAuth") }));
+  app.use(basicAuth({ ...config.get("apps.api.basicAuth") }));
   app.use(bodyParser());
   app.use(router.routes());
   app.use(router.allowedMethods());
