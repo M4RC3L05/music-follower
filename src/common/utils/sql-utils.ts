@@ -1,7 +1,6 @@
 import sql, { type Query } from "@leafac/sqlite";
 
 export const join = (values: unknown[], glue = sql`, `) =>
-  // eslint-disable-next-line unicorn/no-array-reduce
   values.reduce(
     (acc, curr, index, array) =>
       sql`$${acc}$${index === 0 || index === array.length ? sql`` : glue}$${
