@@ -2,8 +2,8 @@
   "xo.enable": true,
   "xo.format.enable": true,
   "editor.formatOnSave": true,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "shortest",
+  "javascript.preferences.importModuleSpecifier": "shortest",
   "[javascript]": {
     "editor.defaultFormatter": "samverschueren.linter-xo"
   },
