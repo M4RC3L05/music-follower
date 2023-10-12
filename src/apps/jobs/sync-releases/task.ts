@@ -9,9 +9,9 @@ import ms from "ms";
 import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, itunesRequests } from "#src/remote/mod.js";
 import { type Release, artistsQueries, releasesQueries } from "#src/database/mod.js";
 import { db } from "#src/common/database/mod.js";
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
-const log = logger("task");
+const log = makeLogger("task");
 
 const enum ErrorCodes {
   SONG_AND_ALBUM_RELEASES_REQUEST_FAILED = "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",

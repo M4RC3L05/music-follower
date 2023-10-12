@@ -8,7 +8,7 @@ import config from "config";
 import koaStatic from "koa-static";
 import proxy from "koa-proxies";
 
-export const app = async () => {
+export const makeApp = async () => {
   const koa = new Koa();
 
   koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));

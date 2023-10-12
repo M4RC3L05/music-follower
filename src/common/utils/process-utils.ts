@@ -1,13 +1,13 @@
 import process from "node:process";
 
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
 type ProcessHook = {
   name: string;
   handler: () => Promise<void> | void;
 };
 
-const log = logger("process");
+const log = makeLogger("process");
 const processHooks: ProcessHook[] = [];
 const signalsToWatch = ["SIGTERM", "SIGINT", "SIGUSR2"];
 let processing = false;

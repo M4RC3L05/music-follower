@@ -2,6 +2,7 @@ import { type Next } from "koa";
 import { type RouterContext } from "@koa/router";
 
 import { RequestValidationError } from "#src/errors/mod.js";
+import { validator } from "#src/validator/mod.js";
 
 import type Ajv from "ajv";
 
@@ -13,7 +14,6 @@ type ErrorMapperDeps = {
       body?: { $id: string };
     };
   };
-  validator: Ajv.default;
 };
 
 type DataToValidate = {
@@ -38,23 +38,9 @@ type DataToValidate = {
 };
 
 const getData = (key: string, ctx: RouterContext) => {
-  switch (key) {
-    case "query": {
-      return ctx.query;
-    }
-
-    case "params": {
-      return ctx.params;
-    }
-
-    case "body": {
-      return ctx.request.body;
-    }
-
-    default: {
-      return undefined;
-    }
-  }
+  if (key === "query") return ctx.query;
+  if (key === "params") return ctx.params;
+  if (key === "body") return ctx.request.body;
 };
 
 const requestValidator = (deps: ErrorMapperDeps) => {
@@ -72,7 +58,7 @@ const requestValidator = (deps: ErrorMapperDeps) => {
     }
 
     for (const [key, toValidate] of Object.entries(dataToValidate.request)) {
-      const validate = deps.validator.getSchema(toValidate.schema.$id);
+      const validate = validator.getSchema(toValidate.schema.$id);
 
       if (!validate) throw new Error(`No schema found for "${toValidate.schema.$id}"`);
 

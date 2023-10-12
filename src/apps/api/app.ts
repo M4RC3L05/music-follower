@@ -6,16 +6,14 @@ import cors from "@koa/cors";
 
 import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { errorMappers } from "#src/errors/mod.js";
-import { logger } from "#src/common/logger/mod.js";
 import router from "./router.js";
 
-export const app = () => {
+export const makeApp = () => {
   const app = new Koa();
 
-  app.use(requestLifeCycle({ loggerFactory: logger }));
+  app.use(requestLifeCycle);
   app.use(
     errorMapper({
-      loggerFactory: logger,
       defaultMapper: errorMappers.defaultErrorMapper,
       mappers: [errorMappers.validationErrorMapper],
     }),

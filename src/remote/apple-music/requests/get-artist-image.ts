@@ -1,9 +1,9 @@
 import config from "config";
 import fetch from "node-fetch";
 
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
-const log = logger("apple-music-source");
+const log = makeLogger("apple-music-source");
 
 export const getArtistImage = async (url: string) => {
   log.info({ url }, "Getting image for artist");

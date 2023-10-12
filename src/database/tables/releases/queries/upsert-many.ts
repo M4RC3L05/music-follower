@@ -1,10 +1,10 @@
 import sql from "@leafac/sqlite";
 
 import { type Release } from "../types.js";
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 import releasesTable from "../table.js";
 
-const log = logger("upsert-many-query");
+const log = makeLogger("upsert-many-query");
 
 export const upsertMany = (
   releases: Array<Omit<Release, "feedAt"> & { collectionId?: number; isStreamable?: boolean; feedAt?: Date }>,

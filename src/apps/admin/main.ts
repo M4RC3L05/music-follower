@@ -4,11 +4,11 @@ import { promisify } from "node:util";
 import config from "config";
 
 import { addHook } from "#src/common/utils/process-utils.js";
-import { app } from "./app.js";
-import { logger } from "#src/common/logger/mod.js";
+import { makeApp } from "./app.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
-const log = logger("main");
-const api = await app();
+const log = makeLogger("main");
+const api = await makeApp();
 const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
 
 const server = api.listen(port, host, () => {
@@ -26,9 +26,10 @@ const pClose = promisify<void>(server.close).bind(server);
 
 addHook({
   async handler() {
-    await pClose();
-
-    log.info("Server terminated");
+    await pClose().catch((error) => {
+      log.error(error, "Could not close server");
+    });
+    log.info("Server closed");
   },
   name: "admin",
 });

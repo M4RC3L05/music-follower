@@ -1,12 +1,12 @@
 import { Feed } from "feed";
 import config from "config";
 
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 import { releasesQueries } from "#src/database/mod.js";
 
 import type { Context } from "koa";
 
-const log = logger("feed-middleware");
+const log = makeLogger("feed-middleware");
 
 export const feedMiddleware = (context: Context) => {
   log.info("Getting latest releases");

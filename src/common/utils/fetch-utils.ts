@@ -1,8 +1,8 @@
 import { setTimeout } from "node:timers/promises";
 
-import { logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
-const log = logger("fetch-utils");
+const log = makeLogger("fetch-utils");
 
 export const request = async (
   url: Parameters<typeof fetch>[0],

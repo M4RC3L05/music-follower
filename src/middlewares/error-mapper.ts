@@ -1,13 +1,14 @@
 import { type BaseContext, type Next } from "koa";
 import createHttpError, { type HttpError, isHttpError } from "http-errors";
 
-import { type logger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
 type ErrorMapperDeps = {
-  loggerFactory: typeof logger;
   mappers: Array<(error: unknown) => HttpError | undefined>;
   defaultMapper: (error: unknown) => HttpError;
 };
+
+const log = makeLogger("error-mapper-middleware");
 
 const respond = (error: HttpError, ctx: BaseContext) => {
   ctx.status = error.status;
@@ -30,8 +31,6 @@ const respond = (error: HttpError, ctx: BaseContext) => {
 };
 
 const errorMapper = (deps: ErrorMapperDeps) => {
-  const log = deps.loggerFactory("error-mapper-middleware");
-
   return async (ctx: BaseContext, next: Next) => {
     try {
       await next();
