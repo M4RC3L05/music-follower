@@ -1,4 +1,9 @@
-### v14.0.0 (2023-10-10)
+### v14.0.1 (2023-10-14)
+
+- [Use node-fetch](https://github.com/M4RC3L05/music-follower/commit/2767987b741de8960784f9c1a93b0dd77363c3b6)
+- [More project structure improvements](https://github.com/M4RC3L05/music-follower/commit/03c894184e8e3ef6ff54e41de984713b4028962b)
+
+### v14.0.0 (2023-10-11)
 
 - [Improve project structure](https://github.com/M4RC3L05/music-follower/commit/17e14b47f8b051dea654760151636cc70b59eef9)
 - [Use shortest import path](https://github.com/M4RC3L05/music-follower/commit/c7de1c91a78885e2708f4b541f2722307df31448)
