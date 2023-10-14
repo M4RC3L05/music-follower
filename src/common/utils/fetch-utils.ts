@@ -1,5 +1,7 @@
 import { setTimeout } from "node:timers/promises";
 
+import fetch, { type Response } from "node-fetch";
+
 import { makeLogger } from "#src/common/logger/mod.js";
 
 const log = makeLogger("fetch-utils");
@@ -36,6 +38,6 @@ export const request = async (
       return request(url, init, { ...options, retryN: options.retryN + 1 });
     }
 
-    throw new Error("Retrys exausted");
+    throw new Error("Retrys exausted", { cause: error });
   }
 };
