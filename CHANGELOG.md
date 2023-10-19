@@ -1,3 +1,7 @@
+### v14.1.0 (2023-10-19)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/753c557ef4684049407c88fe340e752843238396)
+
 ### v14.0.1 (2023-10-14)
 
 - [Use node-fetch](https://github.com/M4RC3L05/music-follower/commit/2767987b741de8960784f9c1a93b0dd77363c3b6)
