@@ -1,3 +1,9 @@
+### v14.2.0 (2023-10-22)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/509e64a0a99383be108921979fb50ed1ae0b7a18)
+- [Improve imports to not import deps when not needed](https://github.com/M4RC3L05/music-follower/commit/7aec12626146df7723741608c67aedded2935f17)
+- [Improve xo config](https://github.com/M4RC3L05/music-follower/commit/61fede8f35b82c10285ef462e1ee9197069ff47c)
+
 ### v14.1.0 (2023-10-19)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/753c557ef4684049407c88fe340e752843238396)
