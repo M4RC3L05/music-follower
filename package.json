@@ -53,8 +53,9 @@
     },
     "overrides": [
       {
-        "files": "**/public/**/*.ts",
+        "files": "**/public/**/*.{tsx,ts}",
         "rules": {
+          "n/file-extension-in-import": "off",
           "import/no-extraneous-dependencies": "off",
           "@typescript-eslint/naming-convention": "off"
         }
@@ -80,7 +81,7 @@
   },
   "scripts": {
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
-    "lint": "xo . --ext .ts && tsc -p tsconfig.json --noEmit --skipLibCheck",
+    "lint": "xo && tsc -p tsconfig.json --noEmit --skipLibCheck",
     "lint-staged": "lint-staged",
     "db:migrate": "dbmate -u 'sqlite:./data/app.db' -d ./src/common/database/migrations --no-dump-schema migrate",
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/feed/main.ts | pino-pretty",
@@ -123,7 +124,7 @@
     "xo": "^0.56.0"
   },
   "engines": {
-    "node": "18.*.*"
+    "node": ">=18.*.*"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",
