@@ -89,7 +89,7 @@
     "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/api/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts syncReleasesJob | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package || :"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
@@ -112,6 +112,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "offline-github-changelog": "^3.0.1",
+    "patch-package": "^8.0.0",
     "pino-pretty": "^10.2.3",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
@@ -147,7 +148,6 @@
     "lodash-es": "^4.17.21",
     "ms": "^2.1.3",
     "node-fetch": "^3.3.2",
-    "patch-package": "^8.0.0",
     "pino": "^8.16.0"
   }
 }
