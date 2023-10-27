@@ -84,7 +84,7 @@
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "lint": "xo && tsc -p tsconfig.json --noEmit --skipLibCheck",
     "lint-staged": "lint-staged",
-    "db:migrate": "dbmate -u 'sqlite:./data/app.db' -d ./src/common/database/migrations --no-dump-schema migrate",
+    "db:migrate": "dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema migrate",
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/feed/main.ts | pino-pretty",
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/admin/main.ts | pino-pretty",
     "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/api/main.ts | pino-pretty",
@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.94",
+    "@swc/core": "^1.3.95",
     "@types/basic-auth": "^1.1.5",
     "@types/body-parser": "^1.19.4",
     "@types/config": "^3.3.2",
@@ -102,10 +102,10 @@
     "@types/http-proxy": "^1.17.13",
     "@types/lodash-es": "^4.17.10",
     "@types/ms": "^0.7.33",
-    "@types/node": "^20.8.7",
-    "@types/react": "^18.2.31",
+    "@types/node": "^20.8.9",
+    "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
-    "dbmate": "^2.6.0",
+    "dbmate": "^2.7.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
@@ -142,7 +142,7 @@
     "lodash-es": "^4.17.21",
     "ms": "^2.1.3",
     "node-fetch": "^3.3.2",
-    "pino": "^8.16.0",
+    "pino": "^8.16.1",
     "sirv": "^2.0.3"
   }
 }
