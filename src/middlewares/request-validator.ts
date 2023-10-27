@@ -1,8 +1,6 @@
-import { type Next } from "koa";
-import { type RouterContext } from "@koa/router";
+import { type Middleware, type RouteIncomingMessage } from "@m4rc3l05/sss";
 
-import { RequestValidationError } from "#src/errors/mod.js";
-import { type validator } from "#src/validator/mod.js";
+import { type validator } from "../validator/mod.js";
 
 import type Ajv from "ajv";
 
@@ -38,14 +36,14 @@ type DataToValidate = {
   };
 };
 
-const getData = (key: string, ctx: RouterContext) => {
-  if (key === "query") return ctx.query;
-  if (key === "params") return ctx.params;
-  if (key === "body") return ctx.request.body;
+const getData = (key: string, request: RouteIncomingMessage) => {
+  if (key === "query") return request.searchParams;
+  if (key === "params") return request.params;
+  if (key === "body") return (request as any as { body: unknown }).body;
 };
 
-const requestValidator = (deps: ErrorMapperDeps) => {
-  return async (ctx: RouterContext, next: Next) => {
+const requestValidator = (deps: ErrorMapperDeps): Middleware => {
+  return async (request, response, next) => {
     const dataToValidate: DataToValidate = {
       hasErrors: false,
       request: {},
@@ -53,7 +51,7 @@ const requestValidator = (deps: ErrorMapperDeps) => {
 
     for (const [key, schema] of Object.entries(deps.schemas.request)) {
       dataToValidate.request[key as keyof typeof dataToValidate.request] = {
-        data: getData(key, ctx),
+        data: getData(key, request as RouteIncomingMessage),
         schema,
       };
     }
@@ -70,15 +68,23 @@ const requestValidator = (deps: ErrorMapperDeps) => {
     }
 
     if (dataToValidate.hasErrors) {
-      const options = { request: {} };
+      const payload = {};
 
       for (const [key, { errors }] of Object.entries(dataToValidate.request)) {
         if (!errors) continue;
 
-        Object.assign(options.request, { [key]: errors });
+        Object.assign(payload, { [key]: errors });
       }
 
-      throw new RequestValidationError(options as ConstructorParameters<typeof RequestValidationError>[0]);
+      response.statusCode = 422;
+
+      response.setHeader("content-type", "application/json");
+      response.end(
+        JSON.stringify({
+          error: { code: "validation_failed", errors: payload, message: "Validation failed" },
+        }),
+      );
+      return;
     }
 
     return next();

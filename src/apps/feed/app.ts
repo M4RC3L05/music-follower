@@ -1,15 +1,13 @@
-import Koa from "koa";
-import favicon from "koa-favicon";
+import { App } from "@m4rc3l05/sss";
 
 import { feedMiddleware } from "./middlewares/feed-middleware.js";
 import requestLifeCycle from "#src/middlewares/request-lifecycle.js";
 
 export const makeApp = () => {
-  const koa = new Koa();
+  const app = new App();
 
-  koa.use(requestLifeCycle);
-  koa.use(favicon("./src/apps/feed/favicon.ico"));
-  koa.use(feedMiddleware);
+  app.use(requestLifeCycle);
+  app.use(feedMiddleware);
 
-  return koa;
+  return app;
 };

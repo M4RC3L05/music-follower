@@ -1,3 +1,5 @@
+import { type AddressInfo } from "node:net";
+import http from "node:http";
 import process from "node:process";
 import { promisify } from "node:util";
 
@@ -9,11 +11,15 @@ import { makeApp } from "./app.js";
 import { makeLogger } from "#src/common/logger/mod.js";
 
 const log = makeLogger("main");
-const api = makeApp();
+const app = makeApp();
 const { host, port } = config.get<{ host: string; port: number }>("apps.feed");
 
-const server = api.listen(port, host, () => {
-  log.info(`Live at ${host}:${port}`);
+const server = http.createServer(app.handle());
+const pClose = promisify<void>(server.close).bind(server);
+
+server.listen(port, host, () => {
+  const addr = server.address() as AddressInfo;
+  log.info(`Listening on ${addr.address}:${addr.port}`);
 
   if (typeof process.send === "function") {
     log.info("Sending ready signal");
@@ -21,8 +27,6 @@ const server = api.listen(port, host, () => {
     process.send("ready");
   }
 });
-
-const pClose = promisify<void>(server.close).bind(server);
 
 addHook({
   async handler() {

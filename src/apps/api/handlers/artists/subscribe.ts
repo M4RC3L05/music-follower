@@ -1,5 +1,5 @@
 import { type FromSchema } from "json-schema-to-ts";
-import { type RouterContext } from "@koa/router";
+import { type Middleware } from "@m4rc3l05/sss";
 
 import { artistsQueries } from "#src/database/mod.js";
 
@@ -21,10 +21,12 @@ export const schemas = {
 
 type RequestBody = FromSchema<(typeof schemas)["request"]["body"]>;
 
-export const handler = (context: RouterContext) => {
-  const { name, id, image } = context.request.body as RequestBody;
+export const handler: Middleware = (request, response) => {
+  const { name, id, image } = (request as any as { body: RequestBody }).body;
 
   artistsQueries.create({ id: Number(id), name, imageUrl: image });
 
-  context.status = 204;
+  response.statusCode = 204;
+
+  response.end();
 };

@@ -1,28 +1,30 @@
-import Koa from "koa";
-import basicAuth from "koa-basic-auth";
-import bodyParser from "koa-bodyparser";
+import { App } from "@m4rc3l05/sss";
 import config from "config";
-import cors from "@koa/cors";
 
-import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
+import { basicAuth, cors, errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { errorMappers } from "#src/errors/mod.js";
 import router from "./router.js";
 
 export const makeApp = () => {
-  const app = new Koa();
+  const app = new App();
 
-  app.use(requestLifeCycle);
-  app.use(
+  app.onError(
     errorMapper({
       defaultMapper: errorMappers.defaultErrorMapper,
       mappers: [errorMappers.validationErrorMapper],
     }),
   );
-  app.use(cors());
-  app.use(basicAuth({ ...config.get("apps.api.basicAuth") }));
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.allowedMethods());
+
+  app.use(requestLifeCycle);
+  app.use(cors);
+  app.use(basicAuth({ user: config.get("apps.api.basicAuth") }));
+  app.use(router.middleware());
+  app.use((_, response) => {
+    response.statusCode = 404;
+
+    response.setHeader("content-type", "application/json");
+    response.end(JSON.stringify({ error: { code: "not_found", msg: "Not found" } }));
+  });
 
   return app;
 };

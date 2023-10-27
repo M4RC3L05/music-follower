@@ -1,5 +1,5 @@
 import { type FromSchema } from "json-schema-to-ts";
-import { type RouterContext } from "@koa/router";
+import { type RouteMiddleware } from "@m4rc3l05/sss";
 
 import { releasesQueries } from "#src/database/mod.js";
 
@@ -22,8 +22,8 @@ export const schemas = {
 
 type RequestQuery = FromSchema<(typeof schemas)["request"]["query"]>;
 
-export const handler = (context: RouterContext) => {
-  const query = context.query as RequestQuery;
+export const handler: RouteMiddleware = (request, response) => {
+  const query = request.searchParams as RequestQuery;
   const limit = query.limit ? Number(query.limit) : 12;
   const page = query.page ? Number(query.page) : 0;
   const { data, total } = releasesQueries.searchPaginated({
@@ -34,5 +34,8 @@ export const handler = (context: RouterContext) => {
     notHidden: query.notHidden,
   });
 
-  context.body = { data, pagination: { total, page, limit } };
+  response.statusCode = 200;
+
+  response.setHeader("content-type", "application/json");
+  response.end(JSON.stringify({ data, pagination: { total, page, limit } }));
 };

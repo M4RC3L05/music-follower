@@ -1,14 +1,13 @@
 import { Feed } from "feed";
+import { type Middleware } from "@m4rc3l05/sss";
 import config from "config";
 
 import { makeLogger } from "#src/common/logger/mod.js";
 import { releasesQueries } from "#src/database/mod.js";
 
-import type { Context } from "koa";
-
 const log = makeLogger("feed-middleware");
 
-export const feedMiddleware = (context: Context) => {
+export const feedMiddleware: Middleware = (request, response) => {
   log.info("Getting latest releases");
 
   const data = releasesQueries.getLatests(config.get<number>("apps.feed.maxReleases"));
@@ -44,17 +43,24 @@ export const feedMiddleware = (context: Context) => {
     });
   }
 
-  if (context.request.accepts("application/rss+xml") || context.request.accepts("application/xml")) {
-    context.type = context.request.accepts("application/xml") ? "application/xml" : "application/rss+xml";
-    context.body = feed.rss2();
-  } else if (context.request.accepts("application/atom+xml")) {
-    context.type = "application/atom+xml";
-    context.body = feed.atom1();
-  } else if (context.request.accepts("application/json")) {
-    context.type = "application/json";
-    context.body = feed.json1();
+  const accepts = request.headers.accept;
+
+  response.statusCode = 200;
+
+  if (accepts?.includes("application/rss+xml") ?? accepts?.includes("application/xml")) {
+    response.setHeader(
+      "content-type",
+      accepts?.includes("application/xml") ? "application/xml" : "application/rss+xml",
+    );
+    response.end(feed.rss2());
+  } else if (accepts?.includes("application/atom+xml")) {
+    response.setHeader("content-type", "application/atom+xml");
+    response.end(feed.atom1());
+  } else if (accepts?.includes("application/json")) {
+    response.setHeader("content-type", "application/json");
+    response.end(feed.json1());
   } else {
-    context.type = "application/xml";
-    context.body = feed.rss2();
+    response.setHeader("content-type", "application/xml");
+    response.end(feed.rss2());
   }
 };

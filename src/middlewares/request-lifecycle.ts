@@ -1,24 +1,17 @@
-import { type Context, type Next } from "koa";
-import { pick } from "lodash-es";
+import { type Middleware } from "@m4rc3l05/sss";
+import { stdSerializers } from "pino";
 
-import { makeLogger } from "#src/common/logger/mod.js";
+import { makeLogger } from "../common/logger/mod.js";
 
 const log = makeLogger("request-lifecycle-middleware");
 
-const requestLifeCycle = async (ctx: Context, next: Next) => {
+const requestLifeCycle: Middleware = async (request, response, next) => {
   try {
     await next();
   } finally {
     log.info(
-      {
-        request: {
-          ...pick(ctx.request, ["method", "url", "header"]),
-          query: ctx.query,
-          params: (ctx as any)?.params as unknown,
-        },
-        response: pick(ctx.response, ["status", "message", "header"]),
-      },
-      `Request ${ctx.req.method!} ${ctx.req.url!}`,
+      { request: stdSerializers.req(request), response: stdSerializers.res(response) },
+      `Request ${request.method!} ${request.url!}`,
     );
   }
 };

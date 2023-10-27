@@ -2,23 +2,57 @@ import path from "node:path";
 import process from "node:process";
 import { stat } from "node:fs/promises";
 
-import Koa from "koa";
-import basicAuth from "koa-basic-auth";
+import { App } from "@m4rc3l05/sss";
 import config from "config";
-import koaStatic from "koa-static";
-import proxy from "koa-proxies";
+import httpProxy from "http-proxy";
+import { isHttpError } from "http-errors";
+import sirv from "sirv";
+
+import { basicAuth, requestLifeCycle } from "#src/middlewares/mod.js";
 
 export const makeApp = async () => {
-  const koa = new Koa();
+  const app = new App();
+  const proxy = httpProxy.createProxy({
+    changeOrigin: true,
+    target: config.get<string>("apps.admin.esmsh"),
+  });
 
-  koa.use(basicAuth({ ...config.get("apps.admin.basicAuth") }));
+  app.onError((error, _, response) => {
+    response.setHeader("content-type", "text/html");
 
-  koa.use(
-    proxy(/^\/(stable|v\d+)/, {
-      target: config.get("apps.admin.esmsh"),
-      changeOrigin: true,
-    }),
-  );
+    if (isHttpError(error)) {
+      response.statusCode = error.statusCode;
+
+      if (error.headers) {
+        for (const [key, value] of Object.entries(error.headers)) {
+          response.setHeader(key, value);
+        }
+      }
+
+      response.end(error.message);
+
+      return;
+    }
+
+    response.statusCode = 500;
+
+    response.end("Internal server error");
+  });
+
+  app.use(requestLifeCycle);
+  app.use(basicAuth({ user: config.get("apps.admin.basicAuth") }));
+
+  app.use((request, response, next) => {
+    if (!/^\/(stable|v\d+)/.test(request.url ?? "")) return next();
+
+    return new Promise<void>((resolve, reject) => {
+      proxy.web(request, response, undefined, (error) => {
+        if (error) reject(error);
+
+        resolve();
+      });
+    });
+  });
 
   if (process.env.NODE_ENV !== "production") {
     const swc = await import("@swc/core");
@@ -32,13 +66,13 @@ export const makeApp = async () => {
       }
     };
 
-    koa.use(async (ctx, next) => {
-      if (!ctx.url.endsWith(".js")) {
+    app.use(async (request, response, next) => {
+      if (!request.url!.endsWith(".js")) {
         return next();
       }
 
-      const tsxPath = path.resolve(`./src/apps/admin/public${ctx.url.replace(".js", ".tsx")}`);
-      const tsPath = path.resolve(`./src/apps/admin/public${ctx.url.replace(".js", ".ts")}`);
+      const tsxPath = path.resolve(`./src/apps/admin/public${request.url!.replace(".js", ".tsx")}`);
+      const tsPath = path.resolve(`./src/apps/admin/public${request.url!.replace(".js", ".ts")}`);
 
       let data: Awaited<ReturnType<typeof swc.transformFile>> | undefined;
 
@@ -52,12 +86,21 @@ export const makeApp = async () => {
 
       if (!data) return next();
 
-      ctx.type = "application/javascript";
-      ctx.body = data?.code;
+      response.statusCode = 200;
+
+      response.setHeader("content-type", "application/javascript");
+      response.end(data?.code);
     });
   }
 
-  koa.use(koaStatic("./src/apps/admin/public"));
+  app.use(sirv("./src/apps/admin/public"));
 
-  return koa;
+  app.use((_, response) => {
+    response.statusCode = 404;
+
+    response.setHeader("content-type", "text/html");
+    response.end("Not found");
+  });
+
+  return app;
 };

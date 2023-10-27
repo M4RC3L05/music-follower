@@ -1,7 +1,10 @@
-import { type BaseContext, type Next } from "koa";
-import createHttpError, { type HttpError, isHttpError } from "http-errors";
+import { type IncomingMessage, type ServerResponse } from "node:http";
 
-import { makeLogger } from "#src/common/logger/mod.js";
+import { type HttpError, isHttpError } from "http-errors";
+import { type ErrorHandler } from "@m4rc3l05/sss";
+import { snakeCase } from "lodash-es";
+
+import { makeLogger } from "../common/logger/mod.js";
 
 type ErrorMapperDeps = {
   mappers: Array<(error: unknown) => HttpError | undefined>;
@@ -10,57 +13,48 @@ type ErrorMapperDeps = {
 
 const log = makeLogger("error-mapper-middleware");
 
-const respond = (error: HttpError, ctx: BaseContext) => {
-  ctx.status = error.status;
+const respond = (error: HttpError, _: IncomingMessage, response: ServerResponse) => {
+  response.statusCode = error.statusCode;
 
   if (error.headers) {
-    ctx.set(error.headers);
+    for (const [key, value] of Object.entries(error.headers)) {
+      response.setHeader(key, value);
+    }
   }
 
-  ctx.body = {
-    error: {
-      code: error.name,
-      message: error.expose ? error.message : "Something went wrong",
-    },
-  };
-
-  if ((error as any)?.validationErrors) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    (ctx.body as any).error.validationErrors = (error as any)?.validationErrors;
-  }
+  response.end(
+    JSON.stringify({
+      error: {
+        code: snakeCase(error.name),
+        message: error.message,
+      },
+    }),
+  );
 };
 
-const errorMapper = (deps: ErrorMapperDeps) => {
-  return async (ctx: BaseContext, next: Next) => {
-    try {
-      await next();
+const errorMapper = (deps: ErrorMapperDeps): ErrorHandler => {
+  return (error, request, response) => {
+    log.error(!(error instanceof Error) && !(typeof error === "object") ? { error } : error, "Caught request error");
 
-      if (ctx.status === 404 && !ctx.body) {
-        throw createHttpError(404, "Route not found");
-      }
-    } catch (error) {
-      log.error(!(error instanceof Error) && !(typeof error === "object") ? { error } : error, "Caught request error");
+    if (isHttpError(error)) {
+      respond(error, request, response);
 
-      if (isHttpError(error)) {
-        respond(error, ctx);
-
-        return;
-      }
-
-      let mapped: HttpError | undefined;
-
-      for (const mapper of deps.mappers) {
-        mapped = mapper(error);
-
-        if (mapped) break;
-      }
-
-      if (!mapped) {
-        mapped = deps.defaultMapper(error);
-      }
-
-      respond(mapped, ctx);
+      return;
     }
+
+    let mapped: HttpError | undefined;
+
+    for (const mapper of deps.mappers) {
+      mapped = mapper(error);
+
+      if (mapped) break;
+    }
+
+    if (!mapped) {
+      mapped = deps.defaultMapper(error);
+    }
+
+    respond(mapped, request, response);
   };
 };
 

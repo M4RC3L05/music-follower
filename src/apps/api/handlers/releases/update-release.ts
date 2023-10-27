@@ -1,5 +1,5 @@
 import { type FromSchema } from "json-schema-to-ts";
-import { type RouterContext } from "@koa/router";
+import { type RouteMiddleware } from "@m4rc3l05/sss";
 
 import { releasesQueries } from "#src/database/mod.js";
 
@@ -28,11 +28,13 @@ export const schemas = {
 type RequestParameters = FromSchema<(typeof schemas)["request"]["params"]>;
 type RequestBody = FromSchema<(typeof schemas)["request"]["body"]>;
 
-export const handler = (context: RouterContext) => {
-  const parameters = context.params as RequestParameters;
-  const body = context.request.body as RequestBody;
+export const handler: RouteMiddleware = (request, response) => {
+  const parameters = request.params as RequestParameters;
+  const { body } = request as any as { body: RequestBody };
 
   releasesQueries.update(body, parameters.id);
 
-  context.status = 204;
+  response.statusCode = 204;
+
+  response.end();
 };
