@@ -1,3 +1,10 @@
+### v14.3.0 (2023-10-27)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/e19f24c8a9d54150a0dfed4e3e2584dfafabd31b)
+- [Swap to in house http lib](https://github.com/M4RC3L05/music-follower/commit/15e97fdda93e61ac16559c5d2217d61f41893ad0)
+- [Move \`patch-package\` to dev dependency](https://github.com/M4RC3L05/music-follower/commit/d1c48badc3ec49811d3c961abc19fa9a6f160f6d)
+- [Update to node 20.X.X LTS](https://github.com/M4RC3L05/music-follower/commit/4bedb7386aac4668128c0d3100cb7ac3463eb1eb)
+
 ### v14.2.0 (2023-10-22)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/509e64a0a99383be108921979fb50ed1ae0b7a18)
