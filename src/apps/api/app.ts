@@ -3,9 +3,9 @@ import config from "config";
 
 import { basicAuth, cors, errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { errorMappers } from "#src/errors/mod.js";
-import router from "./router.js";
+import { makeRouter } from "./router.js";
 
-export const makeApp = () => {
+export const makeApp = async () => {
   const app = new App();
 
   app.onError(
@@ -14,6 +14,8 @@ export const makeApp = () => {
       mappers: [errorMappers.validationErrorMapper],
     }),
   );
+
+  const router = await makeRouter(app);
 
   app.use(requestLifeCycle);
   app.use(cors);

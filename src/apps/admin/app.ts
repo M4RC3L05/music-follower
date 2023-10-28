@@ -45,13 +45,7 @@ export const makeApp = async () => {
   app.use((request, response, next) => {
     if (!/^\/(stable|v\d+)/.test(request.url ?? "")) return next();
 
-    return new Promise<void>((resolve, reject) => {
-      proxy.web(request, response, undefined, (error) => {
-        if (error) reject(error);
-
-        resolve();
-      });
-    });
+    proxy.web(request, response, undefined, next);
   });
 
   if (process.env.NODE_ENV !== "production") {

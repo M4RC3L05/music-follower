@@ -11,7 +11,7 @@ import { makeApp } from "./app.js";
 import { makeLogger } from "#src/common/logger/mod.js";
 
 const log = makeLogger("main");
-const app = makeApp();
+const app = await makeApp();
 const { host, port } = config.get<{ host: string; port: number }>("apps.api");
 
 const server = http.createServer(app.handle());
