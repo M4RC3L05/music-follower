@@ -1,3 +1,7 @@
+### v14.4.0 (2023-10-28)
+
+- [Update @m4rc3l05\/sss](https://github.com/M4RC3L05/music-follower/commit/519e9508cf8c0f2f121cad71bd4732b7d6e789ef)
+
 ### v14.3.0 (2023-10-27)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/e19f24c8a9d54150a0dfed4e3e2584dfafabd31b)
