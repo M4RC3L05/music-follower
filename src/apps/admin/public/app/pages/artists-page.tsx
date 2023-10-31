@@ -13,9 +13,10 @@ import { Alert, Form as BSForm, Button, Card, Col, Container, Pagination, Row } 
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
 
-import { type ResponseBody, requests } from "../common/request.js";
+import { type ResponseBody, paths, requests } from "../common/request.js";
 import { AddArtistModal } from "../components/add-artists-modal.js";
 import { type Artist } from "#src/database/mod.js";
+import { ImportArtistModal } from "../components/import-artists-modal.js";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -31,6 +32,13 @@ export const action: ActionFunction = async ({ request }) => {
   const intent = data.get("intent");
 
   switch (intent) {
+    case "import": {
+      const fd = new FormData();
+      fd.set("artists", data.get("artists")!);
+
+      return { ...(await requests.artists.import({ body: fd })), intent };
+    }
+
     case "subscribe": {
       return {
         ...(await requests.artists.subscribeArtist({
@@ -65,6 +73,7 @@ export const Component = () => {
   const query = searchParameters.get("q");
   const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const location = useLocation();
 
   useLayoutEffect(() => {
@@ -83,6 +92,12 @@ export const Component = () => {
         show={showModal}
         onHide={() => {
           setShowModal(false);
+        }}
+      />
+      <ImportArtistModal
+        show={showImportModal}
+        onHide={() => {
+          setShowImportModal(false);
         }}
       />
       <Container fluid="xl">
@@ -112,14 +127,31 @@ export const Component = () => {
                 defaultValue={query ?? ""}
                 disabled={navigation.state !== "idle"}
               />
+
               <br />
+
               <Button
                 variant="primary"
+                className="me-2"
                 onClick={() => {
                   setShowModal(true);
                 }}
               >
                 Follow artist
+              </Button>
+
+              <Button
+                variant="primary"
+                className="me-2"
+                onClick={() => {
+                  setShowImportModal(true);
+                }}
+              >
+                Import artists
+              </Button>
+
+              <Button href={paths.artists.export} target="_blank">
+                Export artists
               </Button>
             </div>
           </Form>

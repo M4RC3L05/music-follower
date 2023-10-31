@@ -126,6 +126,7 @@
     "node": ">=20.*.*"
   },
   "dependencies": {
+    "@fastify/busboy": "^2.0.0",
     "@leafac/sqlite": "^4.0.0",
     "@m4rc3l05/sss": "github:M4RC3L05/sss#v2.0.1",
     "ajv": "^8.12.0",

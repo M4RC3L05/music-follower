@@ -19,12 +19,14 @@ export const makeRouter = async (app: App) => {
     requestValidator({ validator, schemas: artistsHandlers.getRemoteArtists.schemas }),
     artistsHandlers.getRemoteArtists.handler,
   );
+  router.get("/api/artists/export", artistsHandlers.exportArtists.handler);
   router.post(
     "/api/artists",
     jsonBodyParser,
     requestValidator({ validator, schemas: artistsHandlers.subscribeArtist.schemas }),
     artistsHandlers.subscribeArtist.handler,
   );
+  router.put("/api/artists/import", artistsHandlers.importArtists.handler);
   router.delete(
     "/api/artists/:id",
     requestValidator({ validator, schemas: artistsHandlers.unsubscribeArtist.schemas }),

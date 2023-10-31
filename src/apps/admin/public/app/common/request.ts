@@ -4,6 +4,8 @@ import config from "./config.js";
 
 export const paths = {
   artists: {
+    import: `${config.api.url}/api/artists/import`,
+    export: `${config.api.url}/api/artists/export`,
     getArtists: `${config.api.url}/api/artists`,
     getRemoteArtists: `${config.api.url}/api/artists/remote`,
     subscribeArtist: `${config.api.url}/api/artists`,
@@ -79,13 +81,15 @@ type UpdateReleaseArgs = {
   id: number;
 };
 
-type GetReleaseArgs = {
-  cancel?: AbortSignal;
-  id: number;
-};
-
 export const requests = {
   artists: {
+    async import({ cancel, body }: { cancel?: AbortSignal; body: FormData }) {
+      return makeRequester<void>(paths.artists.import, {
+        signal: cancel,
+        method: "PUT",
+        body,
+      });
+    },
     async getArtists({ cancel, query, page, limit }: GetArtistsArgs) {
       const requestUrl = new URL(paths.artists.getArtists);
 
