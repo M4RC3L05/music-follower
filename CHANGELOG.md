@@ -1,3 +1,7 @@
+### v14.5.0 (2023-10-31)
+
+- [Add import\/export of artists](https://github.com/M4RC3L05/music-follower/commit/d0ea842dd86fd9adc76470508e9f7b139e54f2f6)
+
 ### v14.4.0 (2023-10-28)
 
 - [Update @m4rc3l05\/sss](https://github.com/M4RC3L05/music-follower/commit/519e9508cf8c0f2f121cad71bd4732b7d6e789ef)
