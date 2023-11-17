@@ -23,9 +23,7 @@ const respondUnAuth = (isJson: boolean) => (_: IncomingMessage, response: Server
 
 const basicAuth = (args: BasicAuthArgs): Middleware => {
   const nameBuff = Buffer.from(args.user.name);
-  const incomingNameBuff = Buffer.alloc(nameBuff.byteLength);
   const passBuff = Buffer.from(args.user.pass);
-  const incomingPassBuff = Buffer.alloc(passBuff.byteLength);
   const bindedRespondeUnAuth = respondUnAuth(args.jsonResponse ?? false);
 
   return (request, response, next) => {
@@ -37,10 +35,23 @@ const basicAuth = (args: BasicAuthArgs): Middleware => {
       return;
     }
 
-    incomingNameBuff.write(authInfo.name);
-    incomingPassBuff.write(authInfo.pass);
+    // Lengths comparisons are ok
+    // https://github.com/nodejs/node/issues/17178#issuecomment-348784606
+    const userSameLength = authInfo.name.length === args.user.name.length;
+    const passSameLength = authInfo.pass.length === args.user.pass.length;
+    const sameLength = userSameLength && passSameLength;
 
-    if (!timingSafeEqual(nameBuff, incomingNameBuff) || !timingSafeEqual(passBuff, incomingPassBuff)) {
+    if (!sameLength) {
+      bindedRespondeUnAuth(request, response);
+
+      return;
+    }
+
+    const userSafeEqual = timingSafeEqual(nameBuff, Buffer.from(authInfo.name));
+    const passSafeEqual = timingSafeEqual(passBuff, Buffer.from(authInfo.pass));
+    const safeEqual = userSafeEqual && passSafeEqual;
+
+    if (!safeEqual) {
       bindedRespondeUnAuth(request, response);
 
       return;
