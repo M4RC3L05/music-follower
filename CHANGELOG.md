@@ -1,3 +1,8 @@
+### v14.5.1 (2023-11-17)
+
+- [Allow to set content type on error mapper middleware](https://github.com/M4RC3L05/music-follower/commit/14ebf7ec822b7b19c86eac59cfca8c6ffa025fe6)
+- [Fix vulnerable basic auth middleware](https://github.com/M4RC3L05/music-follower/commit/5e07b3962243a2a63f9814b3985ed8bb2166f3f4)
+
 ### v14.5.0 (2023-10-31)
 
 - [Add import\/export of artists](https://github.com/M4RC3L05/music-follower/commit/d0ea842dd86fd9adc76470508e9f7b139e54f2f6)
