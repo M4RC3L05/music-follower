@@ -9,11 +9,12 @@ import { makeLogger } from "../common/logger/mod.js";
 type ErrorMapperDeps = {
   mappers: Array<(error: unknown) => HttpError | undefined>;
   defaultMapper: (error: unknown) => HttpError;
+  jsonResponse?: boolean;
 };
 
 const log = makeLogger("error-mapper-middleware");
 
-const respond = (error: HttpError, _: IncomingMessage, response: ServerResponse) => {
+const respond = (isJson?: boolean) => (error: HttpError, _: IncomingMessage, response: ServerResponse) => {
   response.statusCode = error.statusCode;
 
   if (error.headers) {
@@ -21,6 +22,8 @@ const respond = (error: HttpError, _: IncomingMessage, response: ServerResponse)
       response.setHeader(key, value);
     }
   }
+
+  response.setHeader("content-type", isJson ? "application/json" : "text/html");
 
   response.end(
     JSON.stringify({
@@ -33,11 +36,13 @@ const respond = (error: HttpError, _: IncomingMessage, response: ServerResponse)
 };
 
 const errorMapper = (deps: ErrorMapperDeps): ErrorHandler => {
+  const respondBinded = respond(deps.jsonResponse);
+
   return (error, request, response) => {
     log.error(!(error instanceof Error) && !(typeof error === "object") ? { error } : error, "Caught request error");
 
     if (isHttpError(error)) {
-      respond(error, request, response);
+      respondBinded(error, request, response);
 
       return;
     }
@@ -54,7 +59,7 @@ const errorMapper = (deps: ErrorMapperDeps): ErrorHandler => {
       mapped = deps.defaultMapper(error);
     }
 
-    respond(mapped, request, response);
+    respondBinded(mapped, request, response);
   };
 };
 
