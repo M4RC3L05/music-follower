@@ -1,3 +1,7 @@
+### v14.6.0 (2023-11-18)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/ee159eed5504ba9d84616ff42253a35354481ea5)
+
 ### v14.5.1 (2023-11-17)
 
 - [Allow to set content type on error mapper middleware](https://github.com/M4RC3L05/music-follower/commit/14ebf7ec822b7b19c86eac59cfca8c6ffa025fe6)
