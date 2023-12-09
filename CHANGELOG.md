@@ -1,3 +1,9 @@
+### v14.7.0 (2023-12-09)
+
+- [Update node version on dockerfile](https://github.com/M4RC3L05/music-follower/commit/d0be6edd3bb1ab8f33e2212c1d2b56d13da1dbd3)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/593407580658ecbe712d7c33014b20d8065f8db1)
+- [Pin deps versions](https://github.com/M4RC3L05/music-follower/commit/c9b864dc751b52810c63374ba16aaa2f8a2cde91)
+
 ### v14.6.0 (2023-11-18)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/ee159eed5504ba9d84616ff42253a35354481ea5)
