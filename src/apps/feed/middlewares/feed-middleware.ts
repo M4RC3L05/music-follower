@@ -36,10 +36,10 @@ export const feedMiddleware: Middleware = (request, response) => {
         release.type === "collection"
           ? (release.metadata.collectionViewUrl as string) ?? release.coverUrl
           : release.type === "track"
-          ? (release.metadata.trackViewUrl as string) ??
-            (release.metadata.collectionViewUrl as string) ??
-            release.coverUrl
-          : release.coverUrl,
+            ? (release.metadata.trackViewUrl as string) ??
+              (release.metadata.collectionViewUrl as string) ??
+              release.coverUrl
+            : release.coverUrl,
     });
   }
 
