@@ -11,10 +11,18 @@ type ShowReleaseModalArgs = {
 };
 
 export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHide }) => {
-  const [releaseState, setReleaseState] = useState(release);
+  const [releaseState, setReleaseState] = useState({
+    ...release,
+    hidden: JSON.parse(release?.hidden ?? "[]") as string[],
+  });
 
   useEffect(() => {
-    if (release) setReleaseState(release);
+    if (release) {
+      setReleaseState({
+        ...release,
+        hidden: JSON.parse(release?.hidden ?? "[]") as string[],
+      });
+    }
   }, [release]);
 
   if (!releaseState) return;
@@ -33,10 +41,10 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
     void requests.releases
       .updateRelease({
         body: { hidden: [...new Set(final)] },
-        id: releaseState.id,
+        id: String(releaseState.id),
       })
       .then(() => {
-        setReleaseState((previous) => ({ ...previous!, hidden: final }));
+        setReleaseState((previous) => ({ ...previous, hidden: final }));
       });
   };
 
@@ -56,7 +64,7 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
           {releaseState.name} by {releaseState.artistName}
         </h3>
 
-        {new Date(releaseState.releasedAt).getTime() > Date.now() ? (
+        {new Date(releaseState?.releasedAt ?? "").getTime() > Date.now() ? (
           <Badge bg="info" className="me-2">
             To be released
           </Badge>
@@ -66,10 +74,14 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
         <br />
         <br />
 
-        <p>Release date {new Date(releaseState.releasedAt).toLocaleString()}</p>
+        <p>Release date {new Date(releaseState?.releasedAt ?? "").toLocaleString()}</p>
 
-        {typeof releaseState.metadata?.previewUrl === "string" ? (
-          <audio src={releaseState.metadata.previewUrl} controls className="w-100"></audio>
+        {typeof (JSON.parse(releaseState?.metadata ?? "{}") as Record<string, unknown>)?.previewUrl === "string" ? (
+          <audio
+            src={(JSON.parse(releaseState?.metadata ?? "{}") as Record<string, unknown>).previewUrl as string}
+            controls
+            className="w-100"
+          ></audio>
         ) : null}
 
         <div className="text-start">
@@ -91,7 +103,7 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
           />
 
           <p>Metadata:</p>
-          <pre style={{ textAlign: "start" }}>{JSON.stringify(releaseState.metadata, null, 2)}</pre>
+          <pre style={{ textAlign: "start" }}>{JSON.stringify(JSON.parse(releaseState.metadata ?? "{}"), null, 2)}</pre>
         </div>
       </Modal.Body>
     </Modal>

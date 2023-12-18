@@ -42,14 +42,14 @@ export const action: ActionFunction = async ({ request }) => {
     case "subscribe": {
       return {
         ...(await requests.artists.subscribeArtist({
-          body: { id: Number(data.get("id")!), name: data.get("name") as string, image: data.get("image") as string },
+          body: { id: data.get("id") as string, name: data.get("name") as string, image: data.get("image") as string },
         })),
         intent,
       };
     }
 
     case "unsubscribe": {
-      return { ...(await requests.artists.unsubscribeArtist({ id: Number(data.get("id")) })), intent };
+      return { ...(await requests.artists.unsubscribeArtist({ id: data.get("id") as string })), intent };
     }
 
     default: {

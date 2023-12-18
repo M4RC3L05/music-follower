@@ -54,7 +54,7 @@ type GetRemoteArtistsArgs = {
 type SubscribeArtistArgs = {
   cancel?: AbortSignal;
   body: {
-    id: number;
+    id: string;
     name: string;
     image: string;
   };
@@ -62,7 +62,7 @@ type SubscribeArtistArgs = {
 
 type UnsubscribeArtistArg = {
   cancel?: AbortSignal;
-  id: number;
+  id: string;
 };
 
 type GetReleasesArgs = {
@@ -78,7 +78,7 @@ type UpdateReleaseArgs = {
   body: {
     hidden: string[];
   };
-  id: number;
+  id: string;
 };
 
 export const requests = {
@@ -86,7 +86,7 @@ export const requests = {
     async import({ cancel, body }: { cancel?: AbortSignal; body: FormData }) {
       return makeRequester<void>(paths.artists.import, {
         signal: cancel,
-        method: "PUT",
+        method: "POST",
         body,
       });
     },

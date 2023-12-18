@@ -1,53 +1,36 @@
-import { type IncomingMessage, type ServerResponse } from "node:http";
-
-import { type HttpError, isHttpError } from "http-errors";
-import { type ErrorHandler } from "@m4rc3l05/sss";
+import { type Context } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { snakeCase } from "lodash-es";
 
-import { makeLogger } from "../common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.js";
 
 type ErrorMapperDeps = {
-  mappers: Array<(error: unknown) => HttpError | undefined>;
-  defaultMapper: (error: unknown) => HttpError;
-  jsonResponse?: boolean;
+  isJsonResponse?: boolean;
+  mappers: Array<(error: unknown) => HTTPException | undefined>;
+  defaultMapper: (error: unknown) => HTTPException;
 };
 
 const log = makeLogger("error-mapper-middleware");
 
-const respond = (isJson?: boolean) => (error: HttpError, _: IncomingMessage, response: ServerResponse) => {
-  response.statusCode = error.statusCode;
+const respond = (error: HTTPException, c: Context) => {
+  const payload = { error: { code: snakeCase(error.name), message: error.message } };
 
-  if (error.headers) {
-    for (const [key, value] of Object.entries(error.headers)) {
-      response.setHeader(key, value);
-    }
+  if ("validationErrors" in error) {
+    (payload.error as any).errors = error.validationErrors;
   }
 
-  response.setHeader("content-type", isJson ? "application/json" : "text/html");
-
-  response.end(
-    JSON.stringify({
-      error: {
-        code: snakeCase(error.name),
-        message: error.message,
-      },
-    }),
-  );
+  return c.json(payload, { status: error.status, headers: error.getResponse().headers });
 };
 
-const errorMapper = (deps: ErrorMapperDeps): ErrorHandler => {
-  const respondBinded = respond(deps.jsonResponse);
-
-  return (error, request, response) => {
+const errorMapper = (deps: ErrorMapperDeps) => {
+  return (error: unknown, c: Context) => {
     log.error(!(error instanceof Error) && !(typeof error === "object") ? { error } : error, "Caught request error");
 
-    if (isHttpError(error)) {
-      respondBinded(error, request, response);
-
-      return;
+    if (error instanceof HTTPException) {
+      return respond(error, c);
     }
 
-    let mapped: HttpError | undefined;
+    let mapped: HTTPException | undefined;
 
     for (const mapper of deps.mappers) {
       mapped = mapper(error);
@@ -59,7 +42,7 @@ const errorMapper = (deps: ErrorMapperDeps): ErrorHandler => {
       mapped = deps.defaultMapper(error);
     }
 
-    respondBinded(mapped, request, response);
+    return respond(mapped, c);
   };
 };
 

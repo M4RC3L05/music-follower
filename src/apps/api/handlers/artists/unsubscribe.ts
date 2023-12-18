@@ -1,38 +1,32 @@
-import { type FromSchema } from "json-schema-to-ts";
-import { type RouteMiddleware } from "@m4rc3l05/sss";
+import { HTTPException } from "hono/http-exception";
+import { type Hono } from "hono";
+import sql from "@leafac/sqlite";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
 
-import { artistsQueries } from "#src/database/mod.js";
+import { RequestValidationError } from "#src/errors/mod.js";
 
-export const schemas = {
-  request: {
-    params: {
-      $id: "unsubscribe-artist-request-params",
-      type: "object",
-      properties: {
-        id: { type: "string", pattern: "^\\d+$" },
-      },
-      required: ["id"],
-      additionalProperties: false,
+const requestParametersSchema = z.object({ id: z.string().regex(/^\d+$/) }).strict();
+
+export const handler = (router: Hono) => {
+  router.delete(
+    "/api/artists/:id",
+    zValidator("param", requestParametersSchema, (result) => {
+      if (!result.success) throw new RequestValidationError({ request: { body: result.error } });
+    }),
+    (c) => {
+      const { id } = c.req.valid("param");
+
+      const result = c.get("database").run(sql`
+        delete from artists
+        where id = ${Number(id)}
+      `);
+
+      if (result.changes <= 0) {
+        throw new HTTPException(404, { message: "Artists not found" });
+      }
+
+      return c.body(null, 204);
     },
-  },
-} as const;
-
-type RequestParameters = FromSchema<(typeof schemas)["request"]["params"]>;
-
-export const handler: RouteMiddleware = (request, response) => {
-  const { id } = request.params as RequestParameters;
-
-  const result = artistsQueries.deleteById(Number(id));
-
-  if (result.changes <= 0) {
-    response.statusCode = 404;
-
-    response.setHeader("content-type", "application/json");
-    response.end(JSON.stringify({ error: { code: "not_found", message: "No artist found to unsubscribe" } }));
-
-    return;
-  }
-
-  response.statusCode = 204;
-  response.end();
+  );
 };

@@ -1,32 +1,32 @@
-import { type FromSchema } from "json-schema-to-ts";
-import { type Middleware } from "@m4rc3l05/sss";
+import { type Hono } from "hono";
+import sql from "@leafac/sqlite";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
 
-import { artistsQueries } from "#src/database/mod.js";
+import { RequestValidationError } from "#src/errors/mod.js";
 
-export const schemas = {
-  request: {
-    body: {
-      $id: "subscribe-artist-request-body",
-      type: "object",
-      properties: {
-        id: { type: "number" },
-        name: { type: "string" },
-        image: { type: "string", format: "uri" },
-      },
-      required: ["id", "name", "image"],
-      additionalProperties: false,
+const requestBodySchema = z
+  .object({ id: z.string().regex(/^\d+$/), name: z.string(), image: z.string().url() })
+  .strict();
+
+export const handler = (router: Hono) => {
+  router.post(
+    "/api/artists",
+    zValidator("json", requestBodySchema, (result) => {
+      if (!result.success) throw new RequestValidationError({ request: { body: result.error } });
+    }),
+    (c) => {
+      const { name, id, image } = c.req.valid("json");
+
+      const inserted = c.get("database").get(sql`
+        insert into artists
+          (id, name, "imageUrl")
+        values
+          (${Number(id)}, ${name}, ${image})
+        returning *;
+      `);
+
+      return c.json({ data: inserted }, 201);
     },
-  },
-} as const;
-
-type RequestBody = FromSchema<(typeof schemas)["request"]["body"]>;
-
-export const handler: Middleware = (request, response) => {
-  const { name, id, image } = (request as any as { body: RequestBody }).body;
-
-  artistsQueries.create({ id: Number(id), name, imageUrl: image });
-
-  response.statusCode = 204;
-
-  response.end();
+  );
 };

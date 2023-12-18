@@ -1,100 +1,93 @@
 import path from "node:path";
 import process from "node:process";
-import { stat } from "node:fs/promises";
+import { statSync } from "node:fs";
 
-import { App } from "@m4rc3l05/sss";
+import { Hono } from "hono";
+import { basicAuth } from "hono/basic-auth";
 import config from "config";
-import httpProxy from "http-proxy";
-import { isHttpError } from "http-errors";
-import sirv from "sirv";
+import fetch from "node-fetch";
+import { serveStatic } from "@hono/node-server/serve-static";
 
-import { basicAuth, requestLifeCycle } from "#src/middlewares/mod.js";
+import { requestLifeCycle } from "#src/middlewares/mod.js";
 
-export const makeApp = async () => {
-  const app = new App();
-  const proxy = httpProxy.createProxy({
-    changeOrigin: true,
-    target: config.get<string>("apps.admin.esmsh"),
-  });
+export const makeApp = () => {
+  const app = new Hono();
 
-  app.onError((error, _, response) => {
-    response.setHeader("content-type", "text/html");
+  app.use("*", requestLifeCycle);
+  app.use(
+    "*",
+    basicAuth({
+      username: config.get<{ name: string; pass: string }>("apps.admin.basicAuth").name,
+      password: config.get<{ name: string; pass: string }>("apps.admin.basicAuth").pass,
+    }),
+  );
+  app.use("*", async (c, next) => {
+    if (!/^\/(stable|v\d+)/.test(c.req.path ?? "")) return next();
 
-    if (isHttpError(error)) {
-      response.statusCode = error.statusCode;
+    const target = new URL(c.req.path, config.get<string>("apps.admin.esmsh"));
+    const targetHeaders = {
+      ...Object.fromEntries(c.req.raw.headers.entries()),
+      host: target.host,
+    };
 
-      if (error.headers) {
-        for (const [key, value] of Object.entries(error.headers)) {
-          response.setHeader(key, value);
+    const response = await fetch(target, {
+      headers: targetHeaders,
+      signal: c.req.raw.signal,
+    });
+
+    response.headers.delete("content-encoding");
+    response.headers.delete("content-length");
+
+    return c.stream(
+      async (stream) => {
+        for await (const chunk of response.body!) {
+          await stream.write(chunk);
         }
-      }
-
-      response.end(error.message);
-
-      return;
-    }
-
-    response.statusCode = 500;
-
-    response.end("Internal server error");
-  });
-
-  app.use(requestLifeCycle);
-  app.use(basicAuth({ user: config.get("apps.admin.basicAuth") }));
-
-  app.use((request, response, next) => {
-    if (!/^\/(stable|v\d+)/.test(request.url ?? "")) return next();
-
-    proxy.web(request, response, undefined, next);
+      },
+      {
+        headers: Object.fromEntries(response.headers.entries()),
+        status: response.status,
+      },
+    );
   });
 
   if (process.env.NODE_ENV !== "production") {
-    const swc = await import("@swc/core");
-    const pathExists = async (path: string) => {
-      try {
-        const result = await stat(path);
-
-        return result.isFile();
-      } catch {
-        return false;
-      }
-    };
-
-    app.use(async (request, response, next) => {
-      if (!request.url!.endsWith(".js")) {
+    app.use("*", async (c, next) => {
+      if (!c.req.path.endsWith(".js")) {
         return next();
       }
 
-      const tsxPath = path.resolve(`./src/apps/admin/public${request.url!.replace(".js", ".tsx")}`);
-      const tsPath = path.resolve(`./src/apps/admin/public${request.url!.replace(".js", ".ts")}`);
+      const swc = await import("@swc/core");
+      const pathExists = (path: string) => {
+        try {
+          const result = statSync(path);
+
+          return result.isFile();
+        } catch {
+          return false;
+        }
+      };
+
+      const tsxPath = path.resolve(`./src/apps/admin/public${c.req.path.replace(".js", ".tsx")}`);
+      const tsPath = path.resolve(`./src/apps/admin/public${c.req.path.replace(".js", ".ts")}`);
 
       let data: Awaited<ReturnType<typeof swc.transformFile>> | undefined;
 
-      if (await pathExists(tsxPath)) {
-        data = await swc.transformFile(tsxPath);
+      if (pathExists(tsxPath)) {
+        data = swc.transformFileSync(tsxPath);
       }
 
-      if (await pathExists(tsPath)) {
-        data = await swc.transformFile(tsPath);
+      if (pathExists(tsPath)) {
+        data = swc.transformFileSync(tsPath);
       }
 
       if (!data) return next();
 
-      response.statusCode = 200;
-
-      response.setHeader("content-type", "application/javascript");
-      response.end(data?.code);
+      return c.text(data?.code, 200, { "content-type": "application/javascript" });
     });
   }
 
-  app.use(sirv("./src/apps/admin/public"));
-
-  app.use((_, response) => {
-    response.statusCode = 404;
-
-    response.setHeader("content-type", "text/html");
-    response.end("Not found");
-  });
+  app.use("*", serveStatic({ root: "./src/apps/admin/public" }));
 
   return app;
 };

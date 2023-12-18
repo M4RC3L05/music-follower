@@ -1,30 +1,26 @@
 import process from "node:process";
 
-import * as jobs from "./mod.js";
+import { type Job } from "./common/mod.js";
 import { addHook } from "#src/common/utils/process-utils.js";
-import { db } from "#src/common/database/mod.js";
 import { makeLogger } from "#src/common/logger/mod.js";
 
 const log = makeLogger("main");
 
 const [jobName] = process.argv.slice(2);
 
-if (!(jobName in jobs)) {
+if (!jobName) {
+  throw new Error("No job name provided");
+}
+
+const { job } = (await import(`./${jobName}/job.js`)) as { job: Job };
+
+if (!job) {
   throw new Error(`No job "${jobName}" found.`);
 }
 
-const { job, task } = jobs[jobName as keyof typeof jobs];
-
 addHook({
   async handler() {
-    await job.stop().catch((error) => {
-      log.error(error, "Could not close job");
-    });
-
-    log.info(`Job "${jobName}" stopped`);
-
-    db.close();
-    log.info("DB Closed");
+    await job.terminate();
   },
   name: `${jobName}-job`,
 });
@@ -35,17 +31,17 @@ if (typeof process.send === "function") {
   process.send("ready");
 }
 
-log.info({ nextDate: job.nextAt(), job: jobName }, "Registered job");
+log.info({ nextDate: job.cron.nextAt(), job: jobName }, "Starting job");
 
-for await (const s of job.start()!) {
+for await (const s of job.cron.start()!) {
   try {
     log.info(`Running "${jobName}" task`);
 
-    await task(s);
+    await job.task.run(s);
   } catch (error: unknown) {
     log.error(`Error running "${jobName}" task`, { error });
   } finally {
     log.info(`"${jobName}" task completed`);
-    log.info(`Next at ${job.nextAt() ?? "unknown"}`);
+    log.info(`Next at ${job.cron.nextAt() ?? "unknown"}`);
   }
 }

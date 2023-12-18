@@ -1,40 +1,34 @@
-import { type FromSchema } from "json-schema-to-ts";
-import { type RouteMiddleware } from "@m4rc3l05/sss";
+import { type Hono } from "hono";
+import sql from "@leafac/sqlite";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
 
-import { releasesQueries } from "#src/database/mod.js";
+import { RequestValidationError } from "#src/errors/mod.js";
 
-export const schemas = {
-  request: {
-    params: {
-      $id: "update-release-params",
-      type: "object",
-      properties: {
-        id: { type: "string" },
-      },
-      required: ["id"],
-      additionalProperties: false,
+const requestParametersSchema = z.object({ id: z.string().regex(/^\d+$/) }).strict();
+const requestBodySchema = z.object({ hidden: z.array(z.enum(["feed", "admin"])) }).strict();
+
+export const handler = (router: Hono) => {
+  router.patch(
+    "/api/releases/:id",
+    zValidator("param", requestParametersSchema, (result) => {
+      if (!result.success) throw new RequestValidationError({ request: { params: result.error } });
+    }),
+    zValidator("json", requestBodySchema, (result) => {
+      if (!result.success) throw new RequestValidationError({ request: { body: result.error } });
+    }),
+    (c) => {
+      const { id } = c.req.valid("param");
+      const { hidden } = c.req.valid("json");
+
+      c.get("database").execute(sql`
+        update releases
+        set hidden = ${JSON.stringify(hidden)}
+        where id = ${Number(id)}
+        returning *
+      `);
+
+      return c.body(null, 204);
     },
-    body: {
-      $id: "update-release-body",
-      type: "object",
-      properties: {
-        hidden: { type: "array", items: { type: "string", enum: ["feed", "admin"] } },
-      },
-      additionalProperties: false,
-    },
-  },
-} as const;
-
-type RequestParameters = FromSchema<(typeof schemas)["request"]["params"]>;
-type RequestBody = FromSchema<(typeof schemas)["request"]["body"]>;
-
-export const handler: RouteMiddleware = (request, response) => {
-  const parameters = request.params as RequestParameters;
-  const { body } = request as any as { body: RequestBody };
-
-  releasesQueries.update(body, parameters.id);
-
-  response.statusCode = 204;
-
-  response.end();
+  );
 };

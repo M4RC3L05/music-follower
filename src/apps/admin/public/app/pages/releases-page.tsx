@@ -33,7 +33,7 @@ export const Component = () => {
 
   const { data: releases, pagination } = useLoaderData() as ResponseBody<Release[]> & { pagination: { total: number } };
   const [finalReleases, setFinalReleases] = useState(releases);
-  const [finalPaginatio, setFinalPagination] = useState(pagination);
+  const [finalPagination, setFinalPagination] = useState(pagination);
   const [searchParameters] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -174,16 +174,16 @@ export const Component = () => {
               </Link>
               <Pagination.Ellipsis disabled />
               <Link
-                className={`page-link${(page + 1) * limit >= finalPaginatio.total ? " disabled" : ""}`}
-                to={`?page=${Math.min(page + 1, Math.ceil(finalPaginatio.total / limit) - 1)}${
+                className={`page-link${(page + 1) * limit >= finalPagination.total ? " disabled" : ""}`}
+                to={`?page=${Math.min(page + 1, Math.ceil(finalPagination.total / limit) - 1)}${
                   query ? `&q=${query}` : ""
                 }${hidden ? `&hidden=${hidden}` : ""}`}
               >
                 Next
               </Link>
               <Link
-                className={`page-link${(page + 1) * limit >= finalPaginatio.total ? " disabled" : ""}`}
-                to={`?page=${Math.ceil(finalPaginatio.total / limit) - 1}${query ? `&q=${query}` : ""}${
+                className={`page-link${(page + 1) * limit >= finalPagination.total ? " disabled" : ""}`}
+                to={`?page=${Math.ceil(finalPagination.total / limit) - 1}${query ? `&q=${query}` : ""}${
                   hidden ? `&hidden=${hidden}` : ""
                 }`}
               >

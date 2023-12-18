@@ -1,16 +1,28 @@
+import { type Context } from "hono";
 import { Feed } from "feed";
-import { type Middleware } from "@m4rc3l05/sss";
 import config from "config";
+import sql from "@leafac/sqlite";
 
+import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/mod.js";
+import { type Release } from "#src/database/mod.js";
 import { makeLogger } from "#src/common/logger/mod.js";
-import { releasesQueries } from "#src/database/mod.js";
 
 const log = makeLogger("feed-middleware");
 
-export const feedMiddleware: Middleware = (request, response) => {
+export const feedMiddleware = async (c: Context) => {
   log.info("Getting latest releases");
 
-  const data = releasesQueries.getLatests(config.get<number>("apps.feed.maxReleases"));
+  const data = c.get("database").all<Release>(sql`
+    select *
+    from releases
+    where date("releasedAt", 'utc') <= date('now', 'utc')
+      and not exists(
+        select true from json_each(hidden)
+        where json_each.value = 'feed'
+      )
+    order by "feedAt" desc
+    limit ${config.get<number>("apps.feed.maxReleases")};
+  `);
 
   const feed = new Feed({
     title: "Music releases",
@@ -23,6 +35,8 @@ export const feedMiddleware: Middleware = (request, response) => {
   });
 
   for (const release of data) {
+    const parsedMetadata = JSON.parse(release.metadata) as ItunesLookupAlbumModel | ItunesLookupSongModel;
+
     feed.addItem({
       date: new Date(release.feedAt),
       description: `
@@ -34,33 +48,30 @@ export const feedMiddleware: Middleware = (request, response) => {
       id: String(release.id),
       link:
         release.type === "collection"
-          ? (release.metadata.collectionViewUrl as string) ?? release.coverUrl
+          ? parsedMetadata.collectionViewUrl ?? release.coverUrl
           : release.type === "track"
-            ? (release.metadata.trackViewUrl as string) ??
-              (release.metadata.collectionViewUrl as string) ??
+            ? (parsedMetadata as ItunesLookupSongModel).trackViewUrl ??
+              parsedMetadata.collectionViewUrl ??
               release.coverUrl
             : release.coverUrl,
     });
   }
 
-  const accepts = request.headers.accept;
-
-  response.statusCode = 200;
+  const accepts = c.req.header("accept");
 
   if (accepts?.includes("application/rss+xml") ?? accepts?.includes("application/xml")) {
-    response.setHeader(
-      "content-type",
-      accepts?.includes("application/xml") ? "application/xml" : "application/rss+xml",
-    );
-    response.end(feed.rss2());
-  } else if (accepts?.includes("application/atom+xml")) {
-    response.setHeader("content-type", "application/atom+xml");
-    response.end(feed.atom1());
-  } else if (accepts?.includes("application/json")) {
-    response.setHeader("content-type", "application/json");
-    response.end(feed.json1());
-  } else {
-    response.setHeader("content-type", "application/xml");
-    response.end(feed.rss2());
+    return c.body(feed.rss2(), 200, {
+      "content-type": accepts?.includes("application/xml") ? "application/xml" : "application/rss+xml",
+    });
   }
+
+  if (accepts?.includes("application/atom+xml")) {
+    return c.body(feed.atom1(), 200, { "content-type": "application/atom+xml" });
+  }
+
+  if (accepts?.includes("application/json")) {
+    return c.body(feed.json1(), 200, { "content-type": "application/json" });
+  }
+
+  return c.body(feed.rss2(), 200, { "content-type": "application/xml" });
 };

@@ -1,32 +1,39 @@
-import { App } from "@m4rc3l05/sss";
+import { type Database } from "@leafac/sqlite";
+import { Hono } from "hono";
+import { basicAuth } from "hono/basic-auth";
 import config from "config";
+import { cors } from "hono/cors";
 
-import { basicAuth, cors, errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
+import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { errorMappers } from "#src/errors/mod.js";
-import { makeRouter } from "./router.js";
+import { router } from "./router.js";
 
-export const makeApp = async () => {
-  const app = new App();
+export const makeApp = ({ database }: { database: Database }) => {
+  const app = new Hono();
 
-  app.onError(
-    errorMapper({
-      defaultMapper: errorMappers.defaultErrorMapper,
-      mappers: [errorMappers.validationErrorMapper],
+  app.use("*", (c, next) => {
+    c.set("database", database);
+
+    return next();
+  });
+  app.use("*", requestLifeCycle);
+  app.use("*", cors());
+  app.use(
+    "*",
+    basicAuth({
+      username: config.get<{ name: string; pass: string }>("apps.api.basicAuth").name,
+      password: config.get<{ name: string; pass: string }>("apps.api.basicAuth").pass,
     }),
   );
 
-  const router = await makeRouter(app);
+  app.onError(
+    errorMapper({
+      mappers: [errorMappers.validationErrorMapper],
+      defaultMapper: errorMappers.defaultErrorMapper,
+    }),
+  );
 
-  app.use(requestLifeCycle);
-  app.use(cors);
-  app.use(basicAuth({ user: config.get("apps.api.basicAuth") }));
-  app.use(router.middleware());
-  app.use((_, response) => {
-    response.statusCode = 404;
-
-    response.setHeader("content-type", "application/json");
-    response.end(JSON.stringify({ error: { code: "not_found", msg: "Not found" } }));
-  });
+  router(app);
 
   return app;
 };

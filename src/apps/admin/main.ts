@@ -1,38 +1,46 @@
-import { type AddressInfo } from "node:net";
-import http from "node:http";
 import process from "node:process";
-import { promisify } from "node:util";
 
 import config from "config";
+import { createAdaptorServer } from "@hono/node-server";
 
 import { addHook } from "#src/common/utils/process-utils.js";
 import { makeApp } from "./app.js";
 import { makeLogger } from "#src/common/logger/mod.js";
 
-const log = makeLogger("main");
-const app = await makeApp();
-const { host, port } = config.get<{ host: string; port: number }>("apps.admin");
+addHook({
+  name: "admin",
+  async handler() {
+    if (server) {
+      try {
+        await new Promise<void>((resolve, reject) => {
+          server.close((error) => {
+            if (error) reject(error);
+            else resolve();
+          });
+        });
 
-const server = http.createServer(app.handle());
-const pClose = promisify<void>(server.close).bind(server);
+        log.info("Server closed");
+      } catch (error) {
+        log.error(error, "Error while closing server");
+      }
+    }
+  },
+});
 
-server.listen(port, host, () => {
-  const addr = server.address() as AddressInfo;
-  log.info(`Listening on ${addr.address}:${addr.port}`);
+const { port, host } = config.get<{ port: number; host: string }>("apps.admin");
+const log = makeLogger("admin");
 
+const app = makeApp();
+const server = createAdaptorServer(app);
+
+server.listen({ port, hostname: host }, () => {
+  log.info(`Listening on ${host}:${port}`);
+});
+
+server.once("listening", () => {
   if (typeof process.send === "function") {
     log.info("Sending ready signal");
 
     process.send("ready");
   }
-});
-
-addHook({
-  async handler() {
-    await pClose().catch((error) => {
-      log.error(error, "Could not close server");
-    });
-    log.info("Server closed");
-  },
-  name: "admin",
 });

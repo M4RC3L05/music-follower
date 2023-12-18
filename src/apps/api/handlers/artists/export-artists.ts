@@ -1,13 +1,13 @@
-import { type RouteMiddleware } from "@m4rc3l05/sss";
+import { type Hono } from "hono";
+import sql from "@leafac/sqlite";
 
-import { artistsQueries } from "#src/database/mod.js";
+export const handler = (router: Hono) => {
+  router.get("/api/artists/export", (c) => {
+    const artists = c.get("database").all(sql`select * from artists;`);
 
-export const handler: RouteMiddleware = (request, response) => {
-  const artists = artistsQueries.getAll();
-
-  response.statusCode = 200;
-
-  response.setHeader("content-disposition", 'attachment; filename="artists.json"');
-  response.setHeader("content-type", "application/json");
-  response.end(JSON.stringify({ data: artists }));
+    return c.body(JSON.stringify({ data: artists }), 200, {
+      "content-type": "application/json",
+      "content-disposition": 'attachment; filename="artists.json"',
+    });
+  });
 };
