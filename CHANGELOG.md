@@ -1,3 +1,8 @@
+### v14.8.0 (2023-12-18)
+
+- [Switch to hono](https://github.com/M4RC3L05/music-follower/commit/75c0f26cf2e6096a453f7e12efa9fe09e61de7e0)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/31098e3545ad50d0d5c340796a3071b76fdded89)
+
 ### v14.7.0 (2023-12-09)
 
 - [Update node version on dockerfile](https://github.com/M4RC3L05/music-follower/commit/d0be6edd3bb1ab8f33e2212c1d2b56d13da1dbd3)
