@@ -18,23 +18,30 @@ const enum ErrorCodes {
   NO_RELEASES_FOUND = "NO_RELEASES_FOUND",
 }
 
-const usableRelease = (release: ItunesLookupAlbumModel | ItunesLookupSongModel) => {
+const usableRelease = (artist: Artist, release: ItunesLookupAlbumModel | ItunesLookupSongModel) => {
   const isInThePastYears =
     new Date(release.releaseDate) <
     new Date(Date.now() - ms(config.get<string>("apps.jobs.sync-releases.max-release-time")));
-  const isCompilation =
-    release.wrapperType === "track" &&
-    release.collectionArtistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
+  let isCompilation = release.artistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
 
-  return !isInThePastYears && !isCompilation;
+  if (release.wrapperType === "track" && release.collectionArtistName) {
+    isCompilation =
+      isCompilation && release.collectionArtistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
+  }
+
+  const isDjMix =
+    release.collectionName?.toLowerCase?.()?.includes?.("(DJ Mix)".toLowerCase()) ||
+    release.collectionCensoredName?.toLowerCase?.()?.includes?.("(DJ Mix)".toLowerCase());
+
+  return !isInThePastYears && !isCompilation && !isDjMix;
 };
 
-const getRelases = async (artistId: number, signal?: AbortSignal) => {
+const getRelases = async (artist: Artist, signal?: AbortSignal) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
   const [songsResult, albumsResult] = await Promise.allSettled([
-    itunesRequests.getLatestReleasesByArtist(artistId, "song", signal),
-    itunesRequests.getLatestReleasesByArtist(artistId, "album", signal),
+    itunesRequests.getLatestReleasesByArtist(artist.id, "song", signal),
+    itunesRequests.getLatestReleasesByArtist(artist.id, "album", signal),
   ]);
 
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
@@ -50,11 +57,11 @@ const getRelases = async (artistId: number, signal?: AbortSignal) => {
   }
 
   if (albumsResult.status === "fulfilled") {
-    results = [...results, ...albumsResult.value.results.filter((release) => usableRelease(release))];
+    results = [...results, ...albumsResult.value.results.filter((release) => usableRelease(artist, release))];
   }
 
   if (songsResult.status === "fulfilled") {
-    results = [...results, ...songsResult.value.results.filter((release) => usableRelease(release))];
+    results = [...results, ...songsResult.value.results.filter((release) => usableRelease(artist, release))];
   }
 
   if (!results || results.length <= 0) {
@@ -128,17 +135,10 @@ export const syncReleases =
         limit 1;
       `);
 
+      // Ignore tracks that we do not have an album to.
+      // Must likely a track belonging in a mix or compilation.
+      // At least we have the collection (album) that represents the single.
       if (!album) {
-        log.warn({ id: release.id }, "No album for track release");
-        log.debug({ id: release.id, type: release.type }, "Upserting release");
-
-        db.execute(sql`
-          insert or replace into releases
-            (id, "artistName", name, "releasedAt", "coverUrl", type, hidden, metadata, "feedAt")
-          values
-            (${release.id}, ${release.artistName}, ${release.name}, ${release.releasedAt}, ${release.coverUrl}, ${release.type}, ${release.hidden}, ${release.metadata}, ${release.feedAt})
-        `);
-
         continue;
       }
 
@@ -184,7 +184,7 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
     try {
-      results = await getRelases(artist.id, abort);
+      results = await getRelases(artist, abort);
     } catch (error: unknown) {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
