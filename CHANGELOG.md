@@ -1,3 +1,7 @@
+### v14.8.1 (2023-12-19)
+
+- [Ignore releases that do not have a album already stored](https://github.com/M4RC3L05/music-follower/commit/c05e425b1768b566c5d6ee2944fc766e13c1d531)
+
 ### v14.8.0 (2023-12-18)
 
 - [Switch to hono](https://github.com/M4RC3L05/music-follower/commit/75c0f26cf2e6096a453f7e12efa9fe09e61de7e0)
