@@ -1,14 +1,16 @@
 import config from "config";
 
-import { Cron } from "#src/common/utils/cron-utils.js";
-import { type Job } from "../common/mod.js";
-import { makeDatabase } from "#src/database/mod.js";
 import { makeLogger } from "#src/common/logger/mod.js";
+import { Cron } from "#src/common/utils/cron-utils.js";
+import { makeDatabase } from "#src/database/mod.js";
+import { type Job } from "../common/mod.js";
 import { run } from "./task.js";
 
-const { pattern, timezone, tickerTimeout } = config.get<{ pattern: string; tickerTimeout?: number; timezone: string }>(
-  "apps.jobs.sync-releases.cron",
-);
+const { pattern, timezone, tickerTimeout } = config.get<{
+  pattern: string;
+  tickerTimeout?: number;
+  timezone: string;
+}>("apps.jobs.sync-releases.cron");
 
 const log = makeLogger("sync-releases-job");
 const database = makeDatabase();

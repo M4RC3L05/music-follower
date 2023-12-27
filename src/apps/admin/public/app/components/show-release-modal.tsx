@@ -1,5 +1,5 @@
-import { Badge, Form, Image, Modal } from "react-bootstrap";
 import { type FC, useEffect, useState } from "react";
+import { Badge, Form, Image, Modal } from "react-bootstrap";
 
 import { type Release } from "#src/database/mod.js";
 import { requests } from "../common/request.js";
@@ -10,7 +10,11 @@ type ShowReleaseModalArgs = {
   onHide: () => unknown;
 };
 
-export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHide }) => {
+export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({
+  release,
+  show,
+  onHide,
+}) => {
   const [releaseState, setReleaseState] = useState({
     ...release,
     hidden: JSON.parse(release?.hidden ?? "[]") as string[],
@@ -74,14 +78,27 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
         <br />
         <br />
 
-        <p>Release date {new Date(releaseState?.releasedAt ?? "").toLocaleString()}</p>
+        <p>
+          Release date{" "}
+          {new Date(releaseState?.releasedAt ?? "").toLocaleString()}
+        </p>
 
-        {typeof (JSON.parse(releaseState?.metadata ?? "{}") as Record<string, unknown>)?.previewUrl === "string" ? (
+        {typeof (
+          JSON.parse(releaseState?.metadata ?? "{}") as Record<string, unknown>
+        )?.previewUrl === "string" ? (
+          // biome-ignore lint/a11y/useMediaCaption: This is ok
           <audio
-            src={(JSON.parse(releaseState?.metadata ?? "{}") as Record<string, unknown>).previewUrl as string}
+            src={
+              (
+                JSON.parse(releaseState?.metadata ?? "{}") as Record<
+                  string,
+                  unknown
+                >
+              ).previewUrl as string
+            }
             controls
             className="w-100"
-          ></audio>
+          />
         ) : null}
 
         <div className="text-start">
@@ -103,7 +120,9 @@ export const ShowReleaseModal: FC<ShowReleaseModalArgs> = ({ release, show, onHi
           />
 
           <p>Metadata:</p>
-          <pre style={{ textAlign: "start" }}>{JSON.stringify(JSON.parse(releaseState.metadata ?? "{}"), null, 2)}</pre>
+          <pre style={{ textAlign: "start" }}>
+            {JSON.stringify(JSON.parse(releaseState.metadata ?? "{}"), null, 2)}
+          </pre>
         </div>
       </Modal.Body>
     </Modal>

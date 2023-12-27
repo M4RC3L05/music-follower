@@ -1,11 +1,14 @@
-import { type Context } from "hono";
-import { Feed } from "feed";
-import config from "config";
 import sql from "@leafac/sqlite";
+import config from "config";
+import { Feed } from "feed";
+import { type Context } from "hono";
 
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel } from "#src/remote/mod.js";
-import { type Release } from "#src/database/mod.js";
 import { makeLogger } from "#src/common/logger/mod.js";
+import { type Release } from "#src/database/mod.js";
+import {
+  type ItunesLookupAlbumModel,
+  type ItunesLookupSongModel,
+} from "#src/remote/mod.js";
 
 const log = makeLogger("feed-middleware");
 
@@ -35,7 +38,9 @@ export const feedMiddleware = async (c: Context) => {
   });
 
   for (const release of data) {
-    const parsedMetadata = JSON.parse(release.metadata) as ItunesLookupAlbumModel | ItunesLookupSongModel;
+    const parsedMetadata = JSON.parse(release.metadata) as
+      | ItunesLookupAlbumModel
+      | ItunesLookupSongModel;
 
     feed.addItem({
       date: new Date(release.feedAt),
@@ -59,14 +64,21 @@ export const feedMiddleware = async (c: Context) => {
 
   const accepts = c.req.header("accept");
 
-  if (accepts?.includes("application/rss+xml") ?? accepts?.includes("application/xml")) {
+  if (
+    accepts?.includes("application/rss+xml") ??
+    accepts?.includes("application/xml")
+  ) {
     return c.body(feed.rss2(), 200, {
-      "content-type": accepts?.includes("application/xml") ? "application/xml" : "application/rss+xml",
+      "content-type": accepts?.includes("application/xml")
+        ? "application/xml"
+        : "application/rss+xml",
     });
   }
 
   if (accepts?.includes("application/atom+xml")) {
-    return c.body(feed.atom1(), 200, { "content-type": "application/atom+xml" });
+    return c.body(feed.atom1(), 200, {
+      "content-type": "application/atom+xml",
+    });
   }
 
   if (accepts?.includes("application/json")) {

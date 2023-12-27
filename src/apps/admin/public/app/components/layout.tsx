@@ -1,6 +1,6 @@
+import { type FC } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink, Outlet } from "react-router-dom";
-import { type FC } from "react";
 import { useDarkMode } from "usehooks-ts";
 
 const Layout: FC = () => {

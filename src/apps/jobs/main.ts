@@ -1,8 +1,8 @@
 import process from "node:process";
 
-import { type Job } from "./common/mod.js";
-import { addHook } from "#src/common/utils/process-utils.js";
 import { makeLogger } from "#src/common/logger/mod.js";
+import { addHook } from "#src/common/utils/process-utils.js";
+import { type Job } from "./common/mod.js";
 
 const log = makeLogger("main");
 
@@ -33,7 +33,7 @@ if (typeof process.send === "function") {
 
 log.info({ nextDate: job.cron.nextAt(), job: jobName }, "Starting job");
 
-for await (const s of job.cron.start()!) {
+for await (const s of job.cron.start()) {
   try {
     log.info(`Running "${jobName}" task`);
 

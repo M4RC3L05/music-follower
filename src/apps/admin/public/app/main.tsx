@@ -1,11 +1,17 @@
-import { RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 
 import router from "./pages/mod.js";
 
-createRoot(globalThis.document.querySelector("#app")!).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-);
+const appEl = globalThis.document.querySelector("#app");
+
+if (appEl) {
+  createRoot(appEl).render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>,
+  );
+} else {
+  throw new Error("No element with id `app` exists.");
+}

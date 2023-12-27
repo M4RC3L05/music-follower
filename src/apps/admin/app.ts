@@ -1,12 +1,12 @@
+import { statSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { statSync } from "node:fs";
 
+import { serveStatic } from "@hono/node-server/serve-static";
+import config from "config";
 import { Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
-import config from "config";
 import fetch from "node-fetch";
-import { serveStatic } from "@hono/node-server/serve-static";
 
 import { requestLifeCycle } from "#src/middlewares/mod.js";
 
@@ -17,8 +17,12 @@ export const makeApp = () => {
   app.use(
     "*",
     basicAuth({
-      username: config.get<{ name: string; pass: string }>("apps.admin.basicAuth").name,
-      password: config.get<{ name: string; pass: string }>("apps.admin.basicAuth").pass,
+      username: config.get<{ name: string; pass: string }>(
+        "apps.admin.basicAuth",
+      ).name,
+      password: config.get<{ name: string; pass: string }>(
+        "apps.admin.basicAuth",
+      ).pass,
     }),
   );
   app.use("*", async (c, next) => {
@@ -40,7 +44,11 @@ export const makeApp = () => {
 
     return c.stream(
       async (stream) => {
-        for await (const chunk of response.body!) {
+        if (!response.body) {
+          throw new Error("No response body");
+        }
+
+        for await (const chunk of response.body) {
           await stream.write(chunk);
         }
       },
@@ -68,8 +76,12 @@ export const makeApp = () => {
         }
       };
 
-      const tsxPath = path.resolve(`./src/apps/admin/public${c.req.path.replace(".js", ".tsx")}`);
-      const tsPath = path.resolve(`./src/apps/admin/public${c.req.path.replace(".js", ".ts")}`);
+      const tsxPath = path.resolve(
+        `./src/apps/admin/public${c.req.path.replace(".js", ".tsx")}`,
+      );
+      const tsPath = path.resolve(
+        `./src/apps/admin/public${c.req.path.replace(".js", ".ts")}`,
+      );
 
       let data: Awaited<ReturnType<typeof swc.transformFile>> | undefined;
 
@@ -83,7 +95,9 @@ export const makeApp = () => {
 
       if (!data) return next();
 
-      return c.text(data?.code, 200, { "content-type": "application/javascript" });
+      return c.text(data?.code, 200, {
+        "content-type": "application/javascript",
+      });
     });
   }
 

@@ -1,3 +1,14 @@
+import { useEffect, useLayoutEffect, useState } from "react";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form as BSForm,
+  Pagination,
+  Row,
+} from "react-bootstrap";
 import {
   type ActionFunction,
   Form,
@@ -9,13 +20,11 @@ import {
   useNavigation,
   useSearchParams,
 } from "react-router-dom";
-import { Alert, Form as BSForm, Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
-import { useEffect, useLayoutEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
 
+import { type Artist } from "#src/database/mod.js";
 import { type ResponseBody, paths, requests } from "../common/request.js";
 import { AddArtistModal } from "../components/add-artists-modal.js";
-import { type Artist } from "#src/database/mod.js";
 import { ImportArtistModal } from "../components/import-artists-modal.js";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -34,7 +43,13 @@ export const action: ActionFunction = async ({ request }) => {
   switch (intent) {
     case "import": {
       const fd = new FormData();
-      fd.set("artists", data.get("artists")!);
+      const artists = data.get("artists");
+
+      if (!artists) {
+        throw new Error("No artists file provided");
+      }
+
+      fd.set("artists", artists);
 
       return { ...(await requests.artists.import({ body: fd })), intent };
     }
@@ -42,14 +57,23 @@ export const action: ActionFunction = async ({ request }) => {
     case "subscribe": {
       return {
         ...(await requests.artists.subscribeArtist({
-          body: { id: data.get("id") as string, name: data.get("name") as string, image: data.get("image") as string },
+          body: {
+            id: data.get("id") as string,
+            name: data.get("name") as string,
+            image: data.get("image") as string,
+          },
         })),
         intent,
       };
     }
 
     case "unsubscribe": {
-      return { ...(await requests.artists.unsubscribeArtist({ id: data.get("id") as string })), intent };
+      return {
+        ...(await requests.artists.unsubscribeArtist({
+          id: data.get("id") as string,
+        })),
+        intent,
+      };
     }
 
     default: {
@@ -64,18 +88,27 @@ export const Component = () => {
   const {
     data: artists,
     pagination: { total },
-  } = useLoaderData() as ResponseBody<Artist[]> & { pagination: { total: number } };
-  const actionData = useActionData() as ResponseBody & { intent: "subscribe" | "unsubscribe" };
+  } = useLoaderData() as ResponseBody<Artist[]> & {
+    pagination: { total: number };
+  };
+  const actionData = useActionData() as ResponseBody & {
+    intent: "subscribe" | "unsubscribe";
+  };
   const [searchParameters] = useSearchParams();
   const navigation = useNavigation();
-  const page = searchParameters.has("page") ? Number(searchParameters.get("page")) : 0;
-  const limit = searchParameters.has("limit") ? Number(searchParameters.get("limit")) : 12;
+  const page = searchParameters.has("page")
+    ? Number(searchParameters.get("page"))
+    : 0;
+  const limit = searchParameters.has("limit")
+    ? Number(searchParameters.get("limit"))
+    : 12;
   const query = searchParameters.get("q");
   const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const location = useLocation();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this is ok
   useLayoutEffect(() => {
     globalThis.document.documentElement.scrollTo(0, 0);
   }, [location.pathname, location.search]);
@@ -109,7 +142,9 @@ export const Component = () => {
             }}
             dismissible
           >
-            {actionData.error ? "Unable to remove artist" : "Successfully removed artist"}
+            {actionData.error
+              ? "Unable to remove artist"
+              : "Successfully removed artist"}
           </Alert>
         )}
 
@@ -161,22 +196,38 @@ export const Component = () => {
           {artists.map((artist) => (
             <Col key={artist.id}>
               <Card className="text-bg-dark">
-                <Form method="delete" style={{ position: "absolute", top: "8px", right: "8px", zIndex: 1 }}>
+                <Form
+                  method="delete"
+                  style={{
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    zIndex: 1,
+                  }}
+                >
                   <BSForm.Control type="hidden" name="id" value={artist.id} />
-                  <BSForm.Control type="hidden" name="intent" value="unsubscribe" />
+                  <BSForm.Control
+                    type="hidden"
+                    name="intent"
+                    value="unsubscribe"
+                  />
                   <Button type="submit" variant="danger" style={{ zIndex: 2 }}>
-                    <i className="bi bi-person-dash-fill"></i>
+                    <i className="bi bi-person-dash-fill" />
                   </Button>
                 </Form>
 
-                <Card.Img src={artist.imageUrl} style={{ aspectRatio: "1 / 1" }} />
+                <Card.Img
+                  src={artist.imageUrl}
+                  style={{ aspectRatio: "1 / 1" }}
+                />
 
                 <Card.ImgOverlay
                   style={{
                     display: "flex",
                     justifyContent: "end",
                     flexDirection: "column",
-                    background: "linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)",
+                    background:
+                      "linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)",
                   }}
                 >
                   <Card.Title>
@@ -191,25 +242,38 @@ export const Component = () => {
         <Row>
           <Col>
             <Pagination className="justify-content-center">
-              <Link className={`page-link${page <= 0 ? " disabled" : ""}`} to={`?page=0${query ? `&q=${query}` : ""}`}>
+              <Link
+                className={`page-link${page <= 0 ? " disabled" : ""}`}
+                to={`?page=0${query ? `&q=${query}` : ""}`}
+              >
                 Start
               </Link>
               <Link
                 className={`page-link${page <= 0 ? " disabled" : ""}`}
-                to={`?page=${Math.max(page - 1, 0)}${query ? `&q=${query}` : ""}`}
+                to={`?page=${Math.max(page - 1, 0)}${
+                  query ? `&q=${query}` : ""
+                }`}
               >
                 Previous
               </Link>
               <Pagination.Ellipsis disabled />
               <Link
-                className={`page-link${(page + 1) * limit >= total ? " disabled" : ""}`}
-                to={`?page=${Math.min(page + 1, Math.ceil(total / limit) - 1)}${query ? `&q=${query}` : ""}`}
+                className={`page-link${
+                  (page + 1) * limit >= total ? " disabled" : ""
+                }`}
+                to={`?page=${Math.min(page + 1, Math.ceil(total / limit) - 1)}${
+                  query ? `&q=${query}` : ""
+                }`}
               >
                 Next
               </Link>
               <Link
-                className={`page-link${(page + 1) * limit >= total ? " disabled" : ""}`}
-                to={`?page=${Math.ceil(total / limit) - 1}${query ? `&q=${query}` : ""}`}
+                className={`page-link${
+                  (page + 1) * limit >= total ? " disabled" : ""
+                }`}
+                to={`?page=${Math.ceil(total / limit) - 1}${
+                  query ? `&q=${query}` : ""
+                }`}
               >
                 End
               </Link>

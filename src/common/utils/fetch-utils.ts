@@ -13,7 +13,9 @@ export const request = async (
 ): Promise<Response> => {
   try {
     const result = await Promise.race([
-      setTimeout(8000, new Error(`Request timeout excedded for "${url as any as string}"`), { ref: false }),
+      setTimeout(8000, new Error(`Request timeout excedded for "${url}"`), {
+        ref: false,
+      }),
       fetch(url, init),
     ]);
 
@@ -32,7 +34,7 @@ export const request = async (
       log.info(`Retry Nº ${options.retryN}, retrying in 2 seconds`);
 
       await setTimeout(2000, undefined, {
-        signal: init?.signal as any as AbortSignal,
+        signal: init?.signal as AbortSignal,
       });
 
       return request(url, init, { ...options, retryN: options.retryN + 1 });

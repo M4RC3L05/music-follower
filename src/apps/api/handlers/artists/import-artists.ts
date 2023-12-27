@@ -1,6 +1,6 @@
-import { HTTPException } from "hono/http-exception";
-import { type Hono } from "hono";
 import sql from "@leafac/sqlite";
+import { type Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 
 import { type Artist } from "#src/database/mod.js";
 

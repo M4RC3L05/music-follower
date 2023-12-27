@@ -1,5 +1,5 @@
-import { Alert, Form as BSForm, Button, Modal } from "react-bootstrap";
 import { type FC, useEffect, useState } from "react";
+import { Alert, Button, Form as BSForm, Modal } from "react-bootstrap";
 import { Form, useActionData, useFetcher } from "react-router-dom";
 
 type ImportArtistModalArgs = {
@@ -7,7 +7,10 @@ type ImportArtistModalArgs = {
   onHide: () => unknown;
 };
 
-export const ImportArtistModal: FC<ImportArtistModalArgs> = ({ show, onHide }) => {
+export const ImportArtistModal: FC<ImportArtistModalArgs> = ({
+  show,
+  onHide,
+}) => {
   const fetcher = useFetcher<{ data: undefined }>();
   const actionData = useActionData() as Record<string, unknown>;
 
@@ -45,13 +48,19 @@ export const ImportArtistModal: FC<ImportArtistModalArgs> = ({ show, onHide }) =
               }}
               dismissible
             >
-              {actionData.error ? "Unable to import artists" : "Successfully followed artist"}
+              {actionData.error
+                ? "Unable to import artists"
+                : "Successfully followed artist"}
             </Alert>
           )}
           <Form action="/artists" method="post" encType="multipart/form-data">
             <BSForm.Control type="hidden" name="intent" value="import" />
             <BSForm.Control type="file" name="artists" className="mb-2" />
-            <Button type="submit" variant="primary" disabled={fetcher.state !== "idle"}>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={fetcher.state !== "idle"}
+            >
               Import
             </Button>
           </Form>

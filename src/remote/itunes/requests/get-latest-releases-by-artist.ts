@@ -1,9 +1,15 @@
 import config from "config";
 
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, type ItunesResponseModel } from "../types.js";
 import { request } from "#src/common/utils/fetch-utils.js";
+import {
+  type ItunesLookupAlbumModel,
+  type ItunesLookupSongModel,
+  type ItunesResponseModel,
+} from "../types.js";
 
-const itunesLookupConfig = config.get<ItunesLookupConfig>("remote.itunes.lookup");
+const itunesLookupConfig = config.get<ItunesLookupConfig>(
+  "remote.itunes.lookup",
+);
 
 type ItunesLookupConfig = {
   url: string;
@@ -16,7 +22,13 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   entity: E,
   signal?: AbortSignal,
 ): Promise<
-  ItunesResponseModel<E extends "song" ? ItunesLookupSongModel : E extends "album" ? ItunesLookupAlbumModel : never>
+  ItunesResponseModel<
+    E extends "song"
+      ? ItunesLookupSongModel
+      : E extends "album"
+        ? ItunesLookupAlbumModel
+        : never
+  >
 > => {
   const path = new URL(itunesLookupConfig.url);
   path.searchParams.set("id", String(artistId));
@@ -35,11 +47,17 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   const response = await request(path.toString(), { signal }, { retryN: 1 });
 
   if (!response.ok) {
-    throw new Error("Error requesting lookup artists releases", { cause: response.status });
+    throw new Error("Error requesting lookup artists releases", {
+      cause: response.status,
+    });
   }
 
   const data = (await response.json()) as ItunesResponseModel<
-    E extends "song" ? ItunesLookupSongModel : E extends "album" ? ItunesLookupAlbumModel : never
+    E extends "song"
+      ? ItunesLookupSongModel
+      : E extends "album"
+        ? ItunesLookupAlbumModel
+        : never
   >;
 
   // Remove artists info from results

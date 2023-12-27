@@ -1,8 +1,8 @@
 import { type Database } from "@leafac/sqlite";
 import { Hono } from "hono";
 
-import { feedMiddleware } from "./middlewares/feed-middleware.js";
 import requestLifeCycle from "#src/middlewares/request-lifecycle.js";
+import { feedMiddleware } from "./middlewares/feed-middleware.js";
 
 export const makeApp = ({ database }: { database: Database }) => {
   const app = new Hono();

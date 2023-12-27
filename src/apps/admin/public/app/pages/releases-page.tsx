@@ -1,4 +1,14 @@
-import { Form as BSForm, Badge, Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
+import { useEffect, useLayoutEffect, useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form as BSForm,
+  Pagination,
+  Row,
+} from "react-bootstrap";
 import {
   Form,
   Link,
@@ -10,11 +20,10 @@ import {
   useNavigation,
   useSearchParams,
 } from "react-router-dom";
-import { useEffect, useLayoutEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
 
-import { type ResponseBody, requests } from "../common/request.js";
 import { type Release } from "#src/database/mod.js";
+import { type ResponseBody, requests } from "../common/request.js";
 import { ShowReleaseModal } from "../components/show-release-modal.js";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -31,18 +40,26 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const Component = () => {
   useDocumentTitle("Music follower | Releases");
 
-  const { data: releases, pagination } = useLoaderData() as ResponseBody<Release[]> & { pagination: { total: number } };
+  const { data: releases, pagination } = useLoaderData() as ResponseBody<
+    Release[]
+  > & { pagination: { total: number } };
   const [finalReleases, setFinalReleases] = useState(releases);
   const [finalPagination, setFinalPagination] = useState(pagination);
   const [searchParameters] = useSearchParams();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const page = searchParameters.has("page") ? Number(searchParameters.get("page")) : 0;
-  const limit = searchParameters.has("limit") ? Number(searchParameters.get("limit")) : 12;
+  const page = searchParameters.has("page")
+    ? Number(searchParameters.get("page"))
+    : 0;
+  const limit = searchParameters.has("limit")
+    ? Number(searchParameters.get("limit"))
+    : 12;
   const query = searchParameters.get("q");
   const hidden = searchParameters.get("hidden");
   const selectedRelease = searchParameters.get("selectedRelease");
-  const release = finalReleases.find(({ id, type }) => `${id}::${type}` === selectedRelease);
+  const release = finalReleases.find(
+    ({ id, type }) => `${id}::${type}` === selectedRelease,
+  );
   const location = useLocation();
   const fetcher = useFetcher();
 
@@ -60,6 +77,7 @@ export const Component = () => {
     setFinalPagination(pagination);
   }, [releases, pagination]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This is ok
   useLayoutEffect(() => {
     globalThis.document.documentElement.scrollTo(0, 0);
   }, [location.pathname, location.search]);
@@ -120,18 +138,24 @@ export const Component = () => {
           {finalReleases.map((release) => (
             <Col key={`${release.id}@${release.type}`}>
               <Link
-                to={`?selectedRelease=${`${release.id}::${release.type}`}${page ? `&page=${page}` : ""}${
-                  query ? `&q=${query}` : ""
-                }${hidden ? `&hidden=${hidden}` : ""}`}
+                to={`?selectedRelease=${`${release.id}::${release.type}`}${
+                  page ? `&page=${page}` : ""
+                }${query ? `&q=${query}` : ""}${
+                  hidden ? `&hidden=${hidden}` : ""
+                }`}
               >
                 <Card className="text-bg-dark">
-                  <Card.Img src={release.coverUrl} style={{ aspectRatio: "1 / 1" }} />
+                  <Card.Img
+                    src={release.coverUrl}
+                    style={{ aspectRatio: "1 / 1" }}
+                  />
                   <Card.ImgOverlay
                     style={{
                       display: "flex",
                       justifyContent: "end",
                       flexDirection: "column",
-                      background: "linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)",
+                      background:
+                        "linear-gradient(-180deg,transparent 20%,rgba(0,0,0,.7) 100%)",
                     }}
                   >
                     <div className="mb-2">
@@ -148,7 +172,8 @@ export const Component = () => {
                       </strong>
                     </Card.Title>
                     <Card.Text className="card-text">
-                      Released at {new Date(release.releasedAt).toLocaleString()}
+                      Released at{" "}
+                      {new Date(release.releasedAt).toLocaleString()}
                     </Card.Text>
                   </Card.ImgOverlay>
                 </Card>
@@ -162,30 +187,41 @@ export const Component = () => {
             <Pagination className="justify-content-center">
               <Link
                 className={`page-link${page <= 0 ? " disabled" : ""}`}
-                to={`?page=0${query ? `&q=${query}` : ""}${hidden ? `&hidden=${hidden}` : ""}`}
+                to={`?page=0${query ? `&q=${query}` : ""}${
+                  hidden ? `&hidden=${hidden}` : ""
+                }`}
               >
                 Start
               </Link>
               <Link
                 className={`page-link${page <= 0 ? " disabled" : ""}`}
-                to={`?page=${Math.max(page - 1, 0)}${query ? `&q=${query}` : ""}${hidden ? `&hidden=${hidden}` : ""}`}
+                to={`?page=${Math.max(page - 1, 0)}${
+                  query ? `&q=${query}` : ""
+                }${hidden ? `&hidden=${hidden}` : ""}`}
               >
                 Previous
               </Link>
               <Pagination.Ellipsis disabled />
               <Link
-                className={`page-link${(page + 1) * limit >= finalPagination.total ? " disabled" : ""}`}
-                to={`?page=${Math.min(page + 1, Math.ceil(finalPagination.total / limit) - 1)}${
-                  query ? `&q=${query}` : ""
-                }${hidden ? `&hidden=${hidden}` : ""}`}
+                className={`page-link${
+                  (page + 1) * limit >= finalPagination.total ? " disabled" : ""
+                }`}
+                to={`?page=${Math.min(
+                  page + 1,
+                  Math.ceil(finalPagination.total / limit) - 1,
+                )}${query ? `&q=${query}` : ""}${
+                  hidden ? `&hidden=${hidden}` : ""
+                }`}
               >
                 Next
               </Link>
               <Link
-                className={`page-link${(page + 1) * limit >= finalPagination.total ? " disabled" : ""}`}
-                to={`?page=${Math.ceil(finalPagination.total / limit) - 1}${query ? `&q=${query}` : ""}${
-                  hidden ? `&hidden=${hidden}` : ""
+                className={`page-link${
+                  (page + 1) * limit >= finalPagination.total ? " disabled" : ""
                 }`}
+                to={`?page=${Math.ceil(finalPagination.total / limit) - 1}${
+                  query ? `&q=${query}` : ""
+                }${hidden ? `&hidden=${hidden}` : ""}`}
               >
                 End
               </Link>

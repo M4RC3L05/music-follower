@@ -8,6 +8,8 @@ export type Config = {
   };
 };
 
-const config = (await fetch("/config.json").then(async (response) => response.json())) as Config;
+const config = (await fetch("/config.json").then(async (response) =>
+  response.json(),
+)) as Config;
 
 export default config;

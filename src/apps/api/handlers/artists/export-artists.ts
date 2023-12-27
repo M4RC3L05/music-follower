@@ -1,5 +1,5 @@
-import { type Hono } from "hono";
 import sql from "@leafac/sqlite";
+import { type Hono } from "hono";
 
 export const handler = (router: Hono) => {
   router.get("/api/artists/export", (c) => {

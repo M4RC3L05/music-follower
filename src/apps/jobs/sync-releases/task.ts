@@ -7,31 +7,50 @@ import sql, { type Database } from "@leafac/sqlite";
 import config from "config";
 import ms from "ms";
 
-import { type Artist, type Release } from "#src/database/mod.js";
-import { type ItunesLookupAlbumModel, type ItunesLookupSongModel, itunesRequests } from "#src/remote/mod.js";
 import { makeLogger } from "#src/common/logger/mod.js";
+import { type Artist, type Release } from "#src/database/mod.js";
+import {
+  type ItunesLookupAlbumModel,
+  type ItunesLookupSongModel,
+  itunesRequests,
+} from "#src/remote/mod.js";
 
 const log = makeLogger("task");
 
-const enum ErrorCodes {
+enum ErrorCodes {
   SONG_AND_ALBUM_RELEASES_REQUEST_FAILED = "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",
   NO_RELEASES_FOUND = "NO_RELEASES_FOUND",
 }
 
-const usableRelease = (artist: Artist, release: ItunesLookupAlbumModel | ItunesLookupSongModel) => {
+const usableRelease = (
+  artist: Artist,
+  release: ItunesLookupAlbumModel | ItunesLookupSongModel,
+) => {
   const isInThePastYears =
     new Date(release.releaseDate) <
-    new Date(Date.now() - ms(config.get<string>("apps.jobs.sync-releases.max-release-time")));
-  let isCompilation = release.artistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
+    new Date(
+      Date.now() -
+        ms(config.get<string>("apps.jobs.sync-releases.max-release-time")),
+    );
+  let isCompilation = release.artistName
+    ?.toLowerCase?.()
+    ?.includes?.("Various Artists".toLowerCase());
 
   if (release.wrapperType === "track" && release.collectionArtistName) {
     isCompilation =
-      isCompilation && release.collectionArtistName?.toLowerCase?.()?.includes?.("Various Artists".toLowerCase());
+      isCompilation &&
+      release.collectionArtistName
+        ?.toLowerCase?.()
+        ?.includes?.("Various Artists".toLowerCase());
   }
 
   const isDjMix =
-    release.collectionName?.toLowerCase?.()?.includes?.("(DJ Mix)".toLowerCase()) ||
-    release.collectionCensoredName?.toLowerCase?.()?.includes?.("(DJ Mix)".toLowerCase());
+    release.collectionName
+      ?.toLowerCase?.()
+      ?.includes?.("(DJ Mix)".toLowerCase()) ||
+    release.collectionCensoredName
+      ?.toLowerCase?.()
+      ?.includes?.("(DJ Mix)".toLowerCase());
 
   return !isInThePastYears && !isCompilation && !isDjMix;
 };
@@ -57,15 +76,27 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
   }
 
   if (albumsResult.status === "fulfilled") {
-    results = [...results, ...albumsResult.value.results.filter((release) => usableRelease(artist, release))];
+    results = [
+      ...results,
+      ...albumsResult.value.results.filter((release) =>
+        usableRelease(artist, release),
+      ),
+    ];
   }
 
   if (songsResult.status === "fulfilled") {
-    results = [...results, ...songsResult.value.results.filter((release) => usableRelease(artist, release))];
+    results = [
+      ...results,
+      ...songsResult.value.results.filter((release) =>
+        usableRelease(artist, release),
+      ),
+    ];
   }
 
   if (!results || results.length <= 0) {
-    throw new Error("No releases", { cause: { code: ErrorCodes.NO_RELEASES_FOUND } });
+    throw new Error("No releases", {
+      cause: { code: ErrorCodes.NO_RELEASES_FOUND },
+    });
   }
 
   return results;
@@ -74,7 +105,13 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
 export const syncReleases =
   (db: Database) =>
   (
-    releases: Array<Omit<Release, "feedAt"> & { collectionId?: number; isStreamable?: boolean; feedAt?: string }>,
+    releases: Array<
+      Omit<Release, "feedAt"> & {
+        collectionId?: number;
+        isStreamable?: boolean;
+        feedAt?: string;
+      }
+    >,
     options?: { noHiddenOverride: boolean },
   ) => {
     for (const { collectionId, isStreamable, ...release } of releases) {
@@ -99,12 +136,16 @@ export const syncReleases =
       release.feedAt =
         release.feedAt ??
         storedRelease?.feedAt ??
-        (new Date(release.releasedAt).getTime() > Date.now() ? new Date(release.releasedAt) : new Date()).toISOString();
+        (new Date(release.releasedAt).getTime() > Date.now()
+          ? new Date(release.releasedAt)
+          : new Date()
+        ).toISOString();
 
       // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)
       // we set its as the current date or the one in the db if the release was already stored, since we can stream it.
       if (Number.isNaN(new Date(release.releasedAt).getTime())) {
-        release.releasedAt = storedRelease?.releasedAt ?? new Date().toISOString();
+        release.releasedAt =
+          storedRelease?.releasedAt ?? new Date().toISOString();
       }
 
       if (release.type === "collection") {
@@ -172,14 +213,24 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
 
   const mappedSyncReleases = syncReleases(db);
   const artists = db.all<Artist>(sql`select * from artists;`);
-  const total = Number(db.get<{ total: string }>(sql`select count(id) as total from artists`)!.total);
+  const size = db.get<{ total: string }>(
+    sql`select count(id) as total from artists`,
+  );
+
+  if (!size) {
+    throw new Error("Could not get size of artists");
+  }
+
+  const total = Number(size.total);
 
   for (const [key, artist] of artists.entries()) {
     if (abort.aborted) {
       break;
     }
 
-    log.info(`Processing releases from "${artist.name}" at ${key + 1} of ${total}.`);
+    log.info(
+      `Processing releases from "${artist.name}" at ${key + 1} of ${total}.`,
+    );
 
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
@@ -188,7 +239,10 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
     } catch (error: unknown) {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
-          const { albumsCause, songsCause } = (error as Error).cause as { albumsCause: unknown; songsCause: unknown };
+          const { albumsCause, songsCause } = (error as Error).cause as {
+            albumsCause: unknown;
+            songsCause: unknown;
+          };
           log.error(error, "Could not get releases");
           log.error(songsCause, "Could not get song releases");
           log.error(albumsCause, "Could not get album releases");
@@ -218,15 +272,21 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
 
     const releases = results.map((data) => {
       const entity: Omit<Release, "feedAt"> & { feedAt?: string } = {
-        id: data.wrapperType === "collection" ? data.collectionId : data.trackId,
-        name: data.wrapperType === "collection" ? data.collectionName : data.trackName,
+        id:
+          data.wrapperType === "collection" ? data.collectionId : data.trackId,
+        name:
+          data.wrapperType === "collection"
+            ? data.collectionName
+            : data.trackName,
         type: data.wrapperType,
         hidden: JSON.stringify([]),
         artistName: data.artistName,
         releasedAt: data.releaseDate,
         coverUrl: data.artworkUrl100
           .split("/")
-          .map((segment, index, array) => (index === array.length - 1 ? "512x512bb.jpg" : segment))
+          .map((segment, index, array) =>
+            index === array.length - 1 ? "512x512bb.jpg" : segment,
+          )
           .join("/"),
         metadata: JSON.stringify({ ...data }),
       };
@@ -239,7 +299,12 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
     });
 
     log.info(
-      { releases: releases.map(({ name, artistName }) => `${name} by ${artistName}`), id: artist.id },
+      {
+        releases: releases.map(
+          ({ name, artistName }) => `${name} by ${artistName}`,
+        ),
+        id: artist.id,
+      },
       "Usable releases",
     );
 

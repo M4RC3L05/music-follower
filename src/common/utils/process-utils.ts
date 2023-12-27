@@ -34,7 +34,10 @@ const processSignal = async (signal: NodeJS.Signals) => {
 
     try {
       // eslint-disable-next-line no-await-in-loop
-      const response = await Promise.race([handler(), setTimeout(8000, "force-quit", { ref: false })]);
+      const response = await Promise.race([
+        handler(),
+        setTimeout(8000, "force-quit", { ref: false }),
+      ]);
 
       if (response === "force-quit") {
         forceQuit = true;
@@ -46,10 +49,13 @@ const processSignal = async (signal: NodeJS.Signals) => {
     }
   }
 
-  for (const signal of signalsToWatch) process.removeListener(signal, processSignal);
+  for (const signal of signalsToWatch)
+    process.removeListener(signal, processSignal);
 
   if (forceQuit) {
-    log.warn("Looks like some handlers where not hable to be processed gracefully, forcing nodejs process shutdown");
+    log.warn(
+      "Looks like some handlers where not hable to be processed gracefully, forcing nodejs process shutdown",
+    );
     // eslint-disable-next-line unicorn/no-process-exit
     process.exit(1);
   } else {
@@ -59,11 +65,14 @@ const processSignal = async (signal: NodeJS.Signals) => {
   }
 };
 
-const processErrors = (error: any) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  log.error(typeof error === "object" ? error : { error }, "Uncaught/Unhandled");
+const processErrors = (error: unknown) => {
+  log.error(
+    typeof error === "object" ? error : { error },
+    "Uncaught/Unhandled",
+  );
 
-  if (processing) log.info("Ignoring Uncaught/Unhandled has the app is shutting down.");
+  if (processing)
+    log.info("Ignoring Uncaught/Unhandled has the app is shutting down.");
   else process.emit("SIGUSR2");
 };
 

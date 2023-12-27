@@ -1,7 +1,7 @@
-import { type Hono } from "hono";
-import sql from "@leafac/sqlite";
-import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
+import sql from "@leafac/sqlite";
+import { type Hono } from "hono";
+import { z } from "zod";
 
 import { type Release } from "#src/database/mod.js";
 import { RequestValidationError } from "#src/errors/mod.js";
@@ -20,7 +20,8 @@ export const handler = (router: Hono) => {
   router.get(
     "/api/releases",
     zValidator("query", requestQuerySchema, (result) => {
-      if (!result.success) throw new RequestValidationError({ request: { query: result.error } });
+      if (!result.success)
+        throw new RequestValidationError({ request: { query: result.error } });
     }),
     (c) => {
       const query = c.req.valid("query");
@@ -55,10 +56,22 @@ export const handler = (router: Hono) => {
         order by "releasedAt" desc
       `;
 
-      const { total } = c.get("database").get<{ total: number }>(sql`select count(id) as total from ($${sqlQuery})`)!;
-      const data = c.get("database").all<Release>(sql`$${sqlQuery} limit ${limit} offset ${page * limit}`);
+      const size = c
+        .get("database")
+        .get<{ total: number }>(
+          sql`select count(id) as total from ($${sqlQuery})`,
+        );
 
-      return c.json({ data, pagination: { total, page, limit } }, 200);
+      if (!size) throw new Error("Could not get total number of releases");
+
+      const data = c
+        .get("database")
+        .all<Release>(sql`$${sqlQuery} limit ${limit} offset ${page * limit}`);
+
+      return c.json(
+        { data, pagination: { total: size.total, page, limit } },
+        200,
+      );
     },
   );
 };

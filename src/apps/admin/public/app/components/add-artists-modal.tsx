@@ -1,5 +1,14 @@
-import { Alert, Form as BSForm, Button, Card, Col, Image, Modal, Row } from "react-bootstrap";
 import { type FC, useEffect, useState } from "react";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form as BSForm,
+  Image,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { Form, useActionData, useFetcher } from "react-router-dom";
 
 import { type ItunesArtistSearchModel } from "#src/remote/mod.js";
@@ -10,7 +19,11 @@ type AddArtistModalArgs = {
 };
 
 export const AddArtistModal: FC<AddArtistModalArgs> = ({ show, onHide }) => {
-  const fetcher = useFetcher<{ data: Array<ItunesArtistSearchModel & { image: string; isSubscribed: boolean }> }>();
+  const fetcher = useFetcher<{
+    data: Array<
+      ItunesArtistSearchModel & { image: string; isSubscribed: boolean }
+    >;
+  }>();
   const actionData = useActionData() as Record<string, unknown>;
 
   const [showAlert, setShowAlert] = useState(false);
@@ -47,12 +60,18 @@ export const AddArtistModal: FC<AddArtistModalArgs> = ({ show, onHide }) => {
               }}
               dismissible
             >
-              {actionData.error ? "Unable to follow artist" : "Successfully followed artist"}
+              {actionData.error
+                ? "Unable to follow artist"
+                : "Successfully followed artist"}
             </Alert>
           )}
           <fetcher.Form method="get" action="/artists/remote">
             <div className="mb-3">
-              <BSForm.Control type="search" name="q" placeholder="Search artists to follow..." />
+              <BSForm.Control
+                type="search"
+                name="q"
+                placeholder="Search artists to follow..."
+              />
             </div>
           </fetcher.Form>
           <hr />
@@ -68,14 +87,33 @@ export const AddArtistModal: FC<AddArtistModalArgs> = ({ show, onHide }) => {
                   </Card.Body>
                   <Card.Footer className="text-muted">
                     <Form action="/artists" method="post">
-                      <BSForm.Control type="hidden" name="intent" value="subscribe" />
-                      <BSForm.Control type="hidden" name="name" value={remote.artistName} />
-                      <BSForm.Control type="hidden" name="id" value={remote.artistId} />
-                      <BSForm.Control type="hidden" name="image" value={remote.image} />
+                      <BSForm.Control
+                        type="hidden"
+                        name="intent"
+                        value="subscribe"
+                      />
+                      <BSForm.Control
+                        type="hidden"
+                        name="name"
+                        value={remote.artistName}
+                      />
+                      <BSForm.Control
+                        type="hidden"
+                        name="id"
+                        value={remote.artistId}
+                      />
+                      <BSForm.Control
+                        type="hidden"
+                        name="image"
+                        value={remote.image}
+                      />
                       <Button
                         type="submit"
                         variant="primary"
-                        disabled={Boolean(remote.isSubscribed) || fetcher.state !== "idle"}
+                        disabled={
+                          Boolean(remote.isSubscribed) ||
+                          fetcher.state !== "idle"
+                        }
                       >
                         Subscribe
                       </Button>

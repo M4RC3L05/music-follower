@@ -13,18 +13,28 @@ type ErrorMapperDeps = {
 const log = makeLogger("error-mapper-middleware");
 
 const respond = (error: HTTPException, c: Context) => {
-  const payload = { error: { code: snakeCase(error.name), message: error.message } };
+  const payload = {
+    error: { code: snakeCase(error.name), message: error.message },
+  };
 
   if ("validationErrors" in error) {
-    (payload.error as any).errors = error.validationErrors;
+    (payload.error as Record<string, unknown>).errors = error.validationErrors;
   }
 
-  return c.json(payload, { status: error.status, headers: error.getResponse().headers });
+  return c.json(payload, {
+    status: error.status,
+    headers: error.getResponse().headers,
+  });
 };
 
 const errorMapper = (deps: ErrorMapperDeps) => {
   return (error: unknown, c: Context) => {
-    log.error(!(error instanceof Error) && !(typeof error === "object") ? { error } : error, "Caught request error");
+    log.error(
+      !(error instanceof Error) && !(typeof error === "object")
+        ? { error }
+        : error,
+      "Caught request error",
+    );
 
     if (error instanceof HTTPException) {
       return respond(error, c);

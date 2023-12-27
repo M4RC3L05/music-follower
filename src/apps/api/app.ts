@@ -1,11 +1,11 @@
 import { type Database } from "@leafac/sqlite";
+import config from "config";
 import { Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
-import config from "config";
 import { cors } from "hono/cors";
 
-import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { errorMappers } from "#src/errors/mod.js";
+import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { router } from "./router.js";
 
 export const makeApp = ({ database }: { database: Database }) => {
@@ -21,8 +21,10 @@ export const makeApp = ({ database }: { database: Database }) => {
   app.use(
     "*",
     basicAuth({
-      username: config.get<{ name: string; pass: string }>("apps.api.basicAuth").name,
-      password: config.get<{ name: string; pass: string }>("apps.api.basicAuth").pass,
+      username: config.get<{ name: string; pass: string }>("apps.api.basicAuth")
+        .name,
+      password: config.get<{ name: string; pass: string }>("apps.api.basicAuth")
+        .pass,
     }),
   );
 

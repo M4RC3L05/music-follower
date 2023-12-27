@@ -9,6 +9,10 @@ export const join = (values: unknown[], glue = sql`, `) =>
     sql``,
   );
 
-export const isQuery = (value: any): value is Query => {
-  return typeof value === "object" && Array.isArray(value?.sourceParts) && Array.isArray(value?.parameters);
+export const isQuery = (value: unknown): value is Query => {
+  return (
+    typeof value === "object" &&
+    Array.isArray((value as Record<string, unknown>).sourceParts) &&
+    Array.isArray((value as Record<string, unknown>).parameters)
+  );
 };
