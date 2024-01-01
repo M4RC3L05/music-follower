@@ -1,6 +1,4 @@
-/* eslint-disable no-await-in-loop */
 import { setTimeout } from "node:timers/promises";
-
 import cronParser from "cron-parser";
 
 export class Cron {
@@ -47,18 +45,19 @@ export class Cron {
     this.#dateContainer.setMilliseconds(0);
 
     return (
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.second.includes(this.#dateContainer.getSeconds()) &&
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.minute.includes(this.#dateContainer.getMinutes()) &&
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.hour.includes(this.#dateContainer.getHours()) &&
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.dayOfMonth.includes(this.#dateContainer.getDate()) &&
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.month.includes(this.#dateContainer.getMonth()) &&
-      // @ts-expect-error, eslint-disable-line @typescript-eslint/ban-ts-comment
-      this.#when.fields.dayOfWeek.includes(this.#dateContainer.getDay())
+      // @ts-ignore
+      this.#when.fields.second.includes(this.#dateContainer.getUTCSeconds()) &&
+      // @ts-ignore
+      this.#when.fields.minute.includes(this.#dateContainer.getUTCMinutes()) &&
+      // @ts-ignore
+      this.#when.fields.hour.includes(this.#dateContainer.getUTCHours()) &&
+      // @ts-ignore
+      this.#when.fields.dayOfMonth.includes(this.#dateContainer.getUTCDate()) &&
+      // @ts-ignore
+      // We must add 1 to the month value as it starts from 0 and the cron starts from 1.
+      this.#when.fields.month.includes(this.#dateContainer.getUTCMonth() + 1) &&
+      // @ts-ignore
+      this.#when.fields.dayOfWeek.includes(this.#dateContainer.getUTCDay())
     );
   }
 
