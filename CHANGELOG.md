@@ -1,3 +1,8 @@
+### v14.8.3 (2024-01-01)
+
+- [Fix cron wrong month](https://github.com/M4RC3L05/music-follower/commit/03e94d858498111db6013441d1780e71b3f8f42e)
+- [Biome organize imports](https://github.com/M4RC3L05/music-follower/commit/f2457013aef2a58682f26203ecbfad478e0978da)
+
 ### v14.8.2 (2023-12-27)
 
 - [Changelog generator stuff](https://github.com/M4RC3L05/music-follower/commit/1b5cd6f7f362c415ee769656adbc91f551810858)
