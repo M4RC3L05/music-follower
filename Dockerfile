@@ -1,4 +1,4 @@
-FROM docker.io/node:20.10-alpine as build
+FROM docker.io/node:20.11-alpine as build
 
 USER node
 
@@ -13,7 +13,7 @@ COPY --chown=node:node ./.swcrc ./.swcrc
 
 RUN npx swc --copy-files --include-dotfiles ./src -d dist
 
-FROM docker.io/node:20.10-alpine as prepare
+FROM docker.io/node:20.11-alpine as prepare
 
 USER node
 
@@ -24,7 +24,7 @@ COPY --from=build --chown=node:node /home/node/app/package-lock.json ./
 COPY --from=build --chown=node:node /home/node/app/node_modules ./node_modules
 RUN npm prune --omit=dev
 
-FROM docker.io/node:20.10-alpine as final
+FROM docker.io/node:20.11-alpine as final
 
 USER node
 
