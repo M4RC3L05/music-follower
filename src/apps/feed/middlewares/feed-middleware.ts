@@ -2,7 +2,6 @@ import sql from "@leafac/sqlite";
 import config from "config";
 import { Feed } from "feed";
 import { type Context } from "hono";
-
 import { makeLogger } from "#src/common/logger/mod.js";
 import { type Release } from "#src/database/mod.js";
 import {
@@ -18,7 +17,7 @@ export const feedMiddleware = async (c: Context) => {
   const data = c.get("database").all<Release>(sql`
     select *
     from releases
-    where date("releasedAt", 'utc') <= date('now', 'utc')
+    where "releasedAt" <= strftime('%Y-%m-%dT%H:%M:%fZ' , 'now')
       and not exists(
         select true from json_each(hidden)
         where json_each.value = 'feed'
