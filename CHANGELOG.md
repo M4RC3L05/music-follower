@@ -1,3 +1,7 @@
+### v14.10.0 (2024-01-26)
+
+- [Send feed items when they actually are released](https://github.com/M4RC3L05/music-follower/commit/e35bb66c396aa585a3968ef94eb62291e4d121d8)
+
 ### v14.9.0 (2024-01-19)
 
 - [Update deps](https://github.com/M4RC3L05/music-follower/commit/77694afddf86d8858d352783a1ca9a8ae16d4946)
