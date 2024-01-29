@@ -22,8 +22,7 @@
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/admin/main.ts | pino-pretty",
     "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/api/main.ts | pino-pretty",
     "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts sync-releases | pino-pretty",
-    "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md",
-    "postinstall": "patch-package || :"
+    "version": "offline-github-changelog --next=${npm_new_version} | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
@@ -40,7 +39,6 @@
     "husky": "9.0.7",
     "lint-staged": "15.2.0",
     "offline-github-changelog": "3.1.0",
-    "patch-package": "8.0.0",
     "pino-pretty": "10.3.1",
     "react": "18.2.0",
     "react-bootstrap": "2.10.0",
