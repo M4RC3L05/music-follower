@@ -1,3 +1,10 @@
+### v14.11.0 (2024-01-29)
+
+- [Set max commits to changelog generator](https://github.com/M4RC3L05/music-follower/commit/d6a19ca245951f76862690d475c5f6d5d95b60f9)
+- [Fix docker image](https://github.com/M4RC3L05/music-follower/commit/9c174bf9f9befc943142a56ecb95e8e124e3f590)
+- [Remove patch-package](https://github.com/M4RC3L05/music-follower/commit/e30f2d4d63b975b5888eb16f8b7a794e01e4c4ab)
+- [Update deps](https://github.com/M4RC3L05/music-follower/commit/04bcd80afbeb5cf0a6385cbc79d08f700a1a3631)
+
 ### v14.10.0 (2024-01-26)
 
 - [Send feed items when they actually are released](https://github.com/M4RC3L05/music-follower/commit/e35bb66c396aa585a3968ef94eb62291e4d121d8)
