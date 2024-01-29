@@ -33,7 +33,7 @@ WORKDIR /home/node/app
 COPY --from=prepare --chown=node:node /home/node/app/package.json ./
 COPY --from=prepare --chown=node:node /home/node/app/package-lock.json ./
 COPY --from=prepare --chown=node:node /home/node/app/node_modules ./node_modules
-COPY --from=build --chown=node:node /home/node/app/dist ./src
+COPY --from=build --chown=node:node /home/node/app/dist/src ./src
 COPY --chown=node:node ./config ./config
 
 RUN mkdir data
