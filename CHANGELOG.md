@@ -1,3 +1,7 @@
+### v14.12.0 (2024-02-03)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/e893c848860c8aec8cc0e73c2a332241bf274348)
+
 ### v14.11.0 (2024-01-29)
 
 - [Set max commits to changelog generator](https://github.com/M4RC3L05/music-follower/commit/d6a19ca245951f76862690d475c5f6d5d95b60f9)
