@@ -23,7 +23,6 @@ enum ErrorCodes {
 }
 
 const usableRelease = (
-  artist: Artist,
   release: ItunesLookupAlbumModel | ItunesLookupSongModel,
 ) => {
   const isInThePastYears =
@@ -78,18 +77,14 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
   if (albumsResult.status === "fulfilled") {
     results = [
       ...results,
-      ...albumsResult.value.results.filter((release) =>
-        usableRelease(artist, release),
-      ),
+      ...albumsResult.value.results.filter((release) => usableRelease(release)),
     ];
   }
 
   if (songsResult.status === "fulfilled") {
     results = [
       ...results,
-      ...songsResult.value.results.filter((release) =>
-        usableRelease(artist, release),
-      ),
+      ...songsResult.value.results.filter((release) => usableRelease(release)),
     ];
   }
 
@@ -204,7 +199,7 @@ export const syncReleases =
     }
   };
 
-export const run = (db: Database) => async (abort: AbortSignal) => {
+const runner = async ({ db, abort }: { db: Database; abort: AbortSignal }) => {
   if (abort.aborted) {
     return;
   }
@@ -338,3 +333,5 @@ export const run = (db: Database) => async (abort: AbortSignal) => {
 
   log.info("Releases sync ended.");
 };
+
+export default runner;

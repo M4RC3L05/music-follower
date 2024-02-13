@@ -21,7 +21,7 @@
     "dev:feed": "node --loader ts-node/esm --watch --no-warnings src/apps/feed/main.ts | pino-pretty",
     "dev:admin": "node --loader ts-node/esm --watch --no-warnings src/apps/admin/main.ts | pino-pretty",
     "dev:api": "node --loader ts-node/esm --watch --no-warnings src/apps/api/main.ts | pino-pretty",
-    "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/main.ts sync-releases | pino-pretty",
+    "dev:jobs:sync-releases": "node --loader ts-node/esm --watch --no-warnings src/apps/jobs/sync-releases/main.ts | pino-pretty",
     "version": "offline-github-changelog --next=${npm_new_version} --max-commits 100 | sed -e '/Release v.*/d;s/ (\\[.*\\]\\(.*\\))//gm' > CHANGELOG.md && git add CHANGELOG.md"
   },
   "devDependencies": {
