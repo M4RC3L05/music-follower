@@ -1,9 +1,9 @@
-import { type Hono } from "hono";
+import { Hono } from "hono";
+import * as artistsRouter from "./artists/mod.js";
+import * as releasesRouter from "./releases/mod.js";
 
-import * as artistsHandlers from "./artists/mod.js";
-import * as releasesHandlers from "./releases/mod.js";
-
-export const handler = (router: Hono) => {
-  artistsHandlers.handler(router);
-  releasesHandlers.handler(router);
+export const handlersRouter = () => {
+  return new Hono()
+    .route("/artists", artistsRouter.router())
+    .route("/releases", releasesRouter.router());
 };

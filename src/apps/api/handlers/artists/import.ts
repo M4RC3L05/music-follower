@@ -4,8 +4,8 @@ import { HTTPException } from "hono/http-exception";
 
 import { type Artist } from "#src/database/mod.js";
 
-export const handler = (router: Hono) => {
-  router.post("/api/artists/import", async (c) => {
+const handler = (router: Hono) => {
+  return router.post("/import", async (c) => {
     const { artists: file } = await c.req.parseBody();
 
     if (!file || !(file instanceof File)) {
@@ -41,3 +41,5 @@ export const handler = (router: Hono) => {
     return c.body(null, 204);
   });
 };
+
+export default handler;

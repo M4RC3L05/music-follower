@@ -2,7 +2,6 @@ import { zValidator } from "@hono/zod-validator";
 import sql from "@leafac/sqlite";
 import { type Hono } from "hono";
 import { z } from "zod";
-
 import { type Release } from "#src/database/mod.js";
 import { RequestValidationError } from "#src/errors/mod.js";
 
@@ -16,9 +15,9 @@ const requestQuerySchema = z
   })
   .strict();
 
-export const handler = (router: Hono) => {
-  router.get(
-    "/api/releases",
+const handler = (router: Hono) => {
+  return router.get(
+    "/",
     zValidator("query", requestQuerySchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { query: result.error } });
@@ -75,3 +74,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;

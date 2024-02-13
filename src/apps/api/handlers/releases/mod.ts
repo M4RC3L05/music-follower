@@ -1,9 +1,18 @@
-import { type Hono } from "hono";
+import { Env, Hono } from "hono";
+import { SchemaType } from "#src/common/utils/types.js";
+import { default as getReleases } from "./get-releases.js";
+import { default as updateRelease } from "./update-release.js";
 
-import * as getReleases from "./get-releases.js";
-import * as updateRelease from "./update-release.js";
+export const router = () => {
+  let router = new Hono();
 
-export const handler = (router: Hono) => {
-  getReleases.handler(router);
-  updateRelease.handler(router);
+  router = getReleases(router);
+  router = updateRelease(router);
+
+  return router as Hono<
+    Env,
+    SchemaType<ReturnType<typeof getReleases>> &
+      SchemaType<ReturnType<typeof updateRelease>>,
+    "/"
+  >;
 };

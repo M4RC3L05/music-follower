@@ -3,10 +3,11 @@ import config from "config";
 import { Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
 import { cors } from "hono/cors";
-
 import { errorMappers } from "#src/errors/mod.js";
 import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
 import { router } from "./router.js";
+
+export type Api = ReturnType<typeof makeApp>;
 
 export const makeApp = ({ database }: { database: Database }) => {
   const app = new Hono();
@@ -35,7 +36,5 @@ export const makeApp = ({ database }: { database: Database }) => {
     }),
   );
 
-  router(app);
-
-  return app;
+  return app.route("/api", router());
 };

@@ -1,7 +1,5 @@
-import { type Hono } from "hono";
+import { handlersRouter } from "./handlers/mod.js";
 
-import { handler } from "./handlers/mod.js";
-
-export const router = (app: Hono) => {
-  handler(app);
+export const router = () => {
+  return handlersRouter();
 };

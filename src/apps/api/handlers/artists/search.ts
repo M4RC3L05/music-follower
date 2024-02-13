@@ -14,9 +14,9 @@ const requestQuerySchema = z
   })
   .strict();
 
-export const handler = (router: Hono) => {
-  router.get(
-    "/api/artists",
+const handler = (router: Hono) => {
+  return router.get(
+    "/",
     zValidator("query", requestQuerySchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { query: result.error } });
@@ -53,3 +53,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;

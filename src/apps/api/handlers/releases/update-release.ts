@@ -12,9 +12,9 @@ const requestBodySchema = z
   .object({ hidden: z.array(z.enum(["feed", "admin"])) })
   .strict();
 
-export const handler = (router: Hono) => {
-  router.patch(
-    "/api/releases/:id",
+const handler = (router: Hono) => {
+  return router.patch(
+    "/:id",
     zValidator("param", requestParametersSchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { params: result.error } });
@@ -38,3 +38,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;

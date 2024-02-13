@@ -13,9 +13,9 @@ import {
 
 const requestQuerySchema = z.object({ q: z.string().optional() }).strict();
 
-export const handler = (router: Hono) => {
-  router.get(
-    "/api/artists/remote",
+const handler = (router: Hono) => {
+  return router.get(
+    "/remote",
     zValidator("query", requestQuerySchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { query: result.error } });
@@ -57,3 +57,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;

@@ -1,8 +1,8 @@
 import sql from "@leafac/sqlite";
 import { type Hono } from "hono";
 
-export const handler = (router: Hono) => {
-  router.get("/api/artists/export", (c) => {
+const handler = (router: Hono) => {
+  return router.get("/export", (c) => {
     const artists = c.get("database").all(sql`select * from artists;`);
 
     return c.body(JSON.stringify({ data: artists }), 200, {
@@ -11,3 +11,5 @@ export const handler = (router: Hono) => {
     });
   });
 };
+
+export default handler;

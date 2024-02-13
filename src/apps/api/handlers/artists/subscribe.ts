@@ -13,9 +13,9 @@ const requestBodySchema = z
   })
   .strict();
 
-export const handler = (router: Hono) => {
-  router.post(
-    "/api/artists",
+const handler = (router: Hono) => {
+  return router.post(
+    "/",
     zValidator("json", requestBodySchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { body: result.error } });
@@ -35,3 +35,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;

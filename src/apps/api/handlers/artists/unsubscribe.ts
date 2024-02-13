@@ -10,9 +10,9 @@ const requestParametersSchema = z
   .object({ id: z.string().regex(/^\d+$/) })
   .strict();
 
-export const handler = (router: Hono) => {
-  router.delete(
-    "/api/artists/:id",
+const handler = (router: Hono) => {
+  return router.delete(
+    "/:id",
     zValidator("param", requestParametersSchema, (result) => {
       if (!result.success)
         throw new RequestValidationError({ request: { body: result.error } });
@@ -33,3 +33,5 @@ export const handler = (router: Hono) => {
     },
   );
 };
+
+export default handler;
