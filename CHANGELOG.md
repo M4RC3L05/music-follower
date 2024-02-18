@@ -1,3 +1,13 @@
+### v15.0.0 (2024-02-18)
+
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/d145612db9428871f297e609e14005c7cbb45c7d)
+- [Use @m4rc3l05\/sqlite-tags package](https://github.com/M4RC3L05/music-follower/commit/5dbfab2e822dac987890157503bd83516ce51960)
+- [Use @m4rc3l05\/shutdown-manager package](https://github.com/M4RC3L05/music-follower/commit/ab6d15ce5bfc277f465df3bba4a8ab0b95ed4ef4)
+- [Make web app be more static](https://github.com/M4RC3L05/music-follower/commit/ab1d4a3fa52e169ce05a0c00a3bfd9c207555f67)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/5d99e012f16d6c52b3d955a6642bc2b84d4f54e2)
+- [Use new shutdown manager](https://github.com/M4RC3L05/music-follower/commit/d6f65a97b980faac1cdfeb416d5152765a51ccc1)
+- [Prepare api app for hono client](https://github.com/M4RC3L05/music-follower/commit/5847a52647717dae76680a41775679bc3a2ac825)
+
 ### v14.12.0 (2024-02-03)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/e893c848860c8aec8cc0e73c2a332241bf274348)
