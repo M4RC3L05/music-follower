@@ -1,16 +1,16 @@
+import { ShutdownManager } from "@m4rc3l05/shutdown-manager";
 import config from "config";
 import { makeLogger } from "#src/common/logger/mod.js";
 import { Cron } from "#src/common/utils/cron-utils.js";
 import { makeDatabase } from "#src/database/mod.js";
-import { ShutdownManager } from "#src/managers/mod.js";
 import runner from "./app.js";
 
-const shutdownManager = new ShutdownManager();
 const { cron } = config.get<{
   cron: { pattern: string; tickerTimeout?: number; timezone: string };
 }>("apps.jobs.sync-releases");
 const log = makeLogger("sync-releases");
 
+const shutdownManager = new ShutdownManager({ log });
 const db = makeDatabase();
 
 shutdownManager.addHook("database", () => {

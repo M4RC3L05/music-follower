@@ -53,6 +53,7 @@
     "@hono/node-server": "1.7.0",
     "@hono/zod-validator": "0.1.11",
     "@leafac/sqlite": "4.0.0",
+    "@m4rc3l05/shutdown-manager": "github:M4RC3L05/shutdown-manager#v0.0.1",
     "better-sqlite3": "9.4.1",
     "config": "3.3.11",
     "cron-parser": "4.9.0",
