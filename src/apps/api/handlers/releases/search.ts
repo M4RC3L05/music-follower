@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import { type Hono } from "hono";
 import { z } from "zod";
 import { type Release } from "#src/database/mod.js";
@@ -28,27 +28,30 @@ const handler = (router: Hono) => {
         select *
         from releases
         where (
-          (
-            ${query.q} is null or
-            "artistName" like ${`%${query.q}%`} or
-            name like ${`%${query.q}%`}
-          )
-          and
-          (
-            ${query.hidden} is null or
-            exists (
-              select true from json_each(hidden)
-              where json_each.value is ${query.hidden}
-            )
-          )
-          and
-          (
-            ${query.notHidden} is null or
-            not exists (
-              select true from json_each(hidden)
-              where json_each.value is ${query.notHidden}
-            )
-          )
+          ${sql.join(
+            [
+              sql.if(
+                () => !!query.q && query.q.length > 0,
+                () =>
+                  sql`("artistName" like ${`%${query.q}%`} or name like ${`%${query.q}%`})`,
+              ),
+              sql.if(
+                () => !!query.hidden && query.hidden.length > 0,
+                () => sql`(exists (
+                  select true from json_each(hidden)
+                  where json_each.value is ${query.hidden}
+                ))`,
+              ),
+              sql.if(
+                () => !!query.notHidden && query.notHidden.length > 0,
+                () => sql`(not exists (
+                  select true from json_each(hidden)
+                  where json_each.value is ${query.notHidden}
+                ))`,
+              ),
+            ],
+            sql` and `,
+          )}
         )
         order by "releasedAt" desc
       `;
@@ -57,11 +60,11 @@ const handler = (router: Hono) => {
       const { total } = c
         .get("database")
         .get<{ total: number }>(
-          sql`select count(id) as total from ($${sqlQuery})`,
+          sql`select count(id) as total from (${sqlQuery})`,
         )!;
 
       const data = c.get("database").all<Release>(
-        sql`$${sqlQuery}
+        sql`${sqlQuery}
           limit ${Number(query.limit)}
           offset ${Number(query.page) * Number(query.limit)}`,
       );

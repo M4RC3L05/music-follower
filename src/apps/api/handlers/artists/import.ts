@@ -1,7 +1,6 @@
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import { type Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-
 import { type Artist } from "#src/database/mod.js";
 
 const handler = (router: Hono) => {
@@ -24,7 +23,7 @@ const handler = (router: Hono) => {
       return c.body(null, 204);
     }
 
-    c.get("database").executeTransaction(() => {
+    c.get("database").transaction(() => {
       for (const artist of parsed.data) {
         c.get("database").run(sql`
           insert into artists (id, "imageUrl", name)
@@ -36,7 +35,7 @@ const handler = (router: Hono) => {
             name = ${artist.name}
         `);
       }
-    });
+    })();
 
     return c.body(null, 204);
   });

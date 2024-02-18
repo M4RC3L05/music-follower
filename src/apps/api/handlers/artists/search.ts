@@ -1,8 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import { type Hono } from "hono";
 import { z } from "zod";
-
 import { type Artist } from "#src/database/mod.js";
 import { RequestValidationError } from "#src/errors/mod.js";
 
@@ -28,9 +27,10 @@ const handler = (router: Hono) => {
       const sqlQuery = sql`
         select *
         from artists
-        where
-          ${query.q} is null or
-          name like ${`%${query.q}%`}
+        ${sql.if(
+          () => !!query.q && query.q.length > 0,
+          () => sql`where name like '%' || ${query.q} || '%'`,
+        )}
         order by name asc
       `;
 
@@ -38,12 +38,12 @@ const handler = (router: Hono) => {
       const { total } = c
         .get("database")
         .get<{ total: number }>(
-          sql`select count(id) as total from ($${sqlQuery})`,
+          sql`select count(id) as total from (${sqlQuery})`,
         )!;
 
       const data = c
         .get("database")
-        .all<Artist>(sql`$${sqlQuery} limit ${limit} offset ${page * limit}`);
+        .all<Artist>(sql`${sqlQuery} limit ${limit} offset ${page * limit}`);
 
       return c.json(
         {

@@ -1,4 +1,4 @@
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
 import { Feed } from "feed";
 import { type Context } from "hono";

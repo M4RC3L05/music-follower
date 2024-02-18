@@ -1,9 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
 import { type Hono } from "hono";
 import { z } from "zod";
-
 import { RequestValidationError } from "#src/errors/mod.js";
 import {
   type ItunesArtistSearchModel,

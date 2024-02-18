@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import { type Hono } from "hono";
 import { z } from "zod";
 
@@ -26,6 +26,8 @@ const handler = (router: Hono) => {
     (c) => {
       const { id, type } = c.req.valid("param");
       const { hidden } = c.req.valid("json");
+
+      console.log("hidden", hidden);
 
       c.get("database").execute(sql`
         update releases

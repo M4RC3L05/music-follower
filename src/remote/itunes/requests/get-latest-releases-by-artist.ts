@@ -44,7 +44,11 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await request(path.toString(), { signal }, { retryN: 1 });
+  const response = await request(
+    path.toString(),
+    { signal },
+    { maxRetries: 3 },
+  );
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", {

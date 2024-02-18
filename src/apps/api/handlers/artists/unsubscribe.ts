@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import sql from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import { type Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";

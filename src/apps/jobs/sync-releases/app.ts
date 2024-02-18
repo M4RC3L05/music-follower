@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable no-await-in-loop */
-
 import { setTimeout } from "node:timers/promises";
-
-import sql, { type Database } from "@leafac/sqlite";
+import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
+import { pick } from "lodash-es";
 import ms from "ms";
-
 import { makeLogger } from "#src/common/logger/mod.js";
-import { type Artist, type Release } from "#src/database/mod.js";
+import {
+  type Artist,
+  CustomDatabase,
+  type Release,
+} from "#src/database/mod.js";
 import {
   type ItunesLookupAlbumModel,
   type ItunesLookupSongModel,
@@ -98,7 +98,7 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
 };
 
 export const syncReleases =
-  (db: Database) =>
+  (db: CustomDatabase) =>
   (
     releases: Array<
       Omit<Release, "feedAt"> & {
@@ -124,7 +124,7 @@ export const syncReleases =
       }
 
       // Determine the feed position, defaults to using provided `feedAt`.
-      // If the collection/track is a pre-release (the releasedAt is an upcomming date) we use the releasedAt,
+      // If the collection/track is a pre-release (the releasedAt is an upcoming date) we use the releasedAt,
       // this way we maintain the order of the release in the feed.
       // If it was released, we set the current date, this way, it will appear in the feed in the reverse order as the releases were processed,
       // the last release being processed will be the first in the list and so on.
@@ -147,11 +147,19 @@ export const syncReleases =
         log.debug({ id: release.id, type: release.type }, "Upserting release");
 
         db.execute(sql`
-          insert or replace into releases
-            (id, "artistName", name, "releasedAt", "coverUrl", type, hidden, metadata, "feedAt")
-          values
-            (${release.id}, ${release.artistName}, ${release.name}, ${release.releasedAt}, ${release.coverUrl}, ${release.type}, ${release.hidden}, ${release.metadata}, ${release.feedAt})
-        `);
+          insert or replace into releases ${sql.insert(
+            pick(release, [
+              "id",
+              "artistName",
+              "name",
+              "releasedAt",
+              "coverUrl",
+              "type",
+              "hidden",
+              "metadata",
+              "feedAt",
+            ]),
+          )}`);
 
         continue;
       }
@@ -190,16 +198,28 @@ export const syncReleases =
 
       log.debug({ id: release.id, type: release.type }, "Upserting release");
 
-      db.execute(sql`
-        insert or replace into releases
-          (id, "artistName", name, "releasedAt", "coverUrl", type, hidden, metadata, "feedAt")
-        values
-          (${release.id}, ${release.artistName}, ${release.name}, ${release.releasedAt}, ${release.coverUrl}, ${release.type}, ${release.hidden}, ${release.metadata}, ${release.feedAt})
-      `);
+      db.execute(
+        sql`insert or replace into releases ${sql.insert(
+          pick(release, [
+            "id",
+            "artistName",
+            "name",
+            "releasedAt",
+            "coverUrl",
+            "type",
+            "hidden",
+            "metadata",
+            "feedAt",
+          ]),
+        )}`,
+      );
     }
   };
 
-const runner = async ({ db, abort }: { db: Database; abort: AbortSignal }) => {
+const runner = async ({
+  db,
+  abort,
+}: { db: CustomDatabase; abort: AbortSignal }) => {
   if (abort.aborted) {
     return;
   }
@@ -306,7 +326,7 @@ const runner = async ({ db, abort }: { db: Database; abort: AbortSignal }) => {
     try {
       log.info({ id: artist.id }, "Upserting releases for artist");
 
-      db.executeTransaction(() => {
+      db.transaction(() => {
         // We process albums first so that we can then check if we should include tracks,
         // that are already available but belong to a album that is yet to be released.
         mappedSyncReleases(
@@ -317,7 +337,7 @@ const runner = async ({ db, abort }: { db: Database; abort: AbortSignal }) => {
           releases.filter(({ type }) => type === "track"),
           { noHiddenOverride: true },
         );
-      });
+      })();
     } catch (error: unknown) {
       log.error(error, "Something wrong ocurred while upserting releases");
     }
