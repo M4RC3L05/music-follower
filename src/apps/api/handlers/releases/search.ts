@@ -2,13 +2,14 @@ import { zValidator } from "@hono/zod-validator";
 import sql from "@leafac/sqlite";
 import { type Hono } from "hono";
 import { z } from "zod";
-
-import { type Artist } from "#src/database/mod.js";
+import { type Release } from "#src/database/mod.js";
 import { RequestValidationError } from "#src/errors/mod.js";
 
 const requestQuerySchema = z
   .object({
     q: z.string().optional(),
+    hidden: z.enum(["feed", "admin"]).optional(),
+    notHidden: z.enum(["feed", "admin"]).optional(),
     page: z.string().regex(/^\d+$/).optional().default("0"),
     limit: z.string().regex(/^\d+$/).optional().default("10"),
   })
@@ -23,15 +24,33 @@ const handler = (router: Hono) => {
     }),
     (c) => {
       const query = c.req.valid("query");
-      const limit = Number(query.limit ?? 12);
-      const page = Number(query.page ?? 0);
       const sqlQuery = sql`
         select *
-        from artists
-        where
-          ${query.q} is null or
-          name like ${`%${query.q}%`}
-        order by name asc
+        from releases
+        where (
+          (
+            ${query.q} is null or
+            "artistName" like ${`%${query.q}%`} or
+            name like ${`%${query.q}%`}
+          )
+          and
+          (
+            ${query.hidden} is null or
+            exists (
+              select true from json_each(hidden)
+              where json_each.value is ${query.hidden}
+            )
+          )
+          and
+          (
+            ${query.notHidden} is null or
+            not exists (
+              select true from json_each(hidden)
+              where json_each.value is ${query.notHidden}
+            )
+          )
+        )
+        order by "releasedAt" desc
       `;
 
       // biome-ignore lint/style/noNonNullAssertion: <explanation>
@@ -41,9 +60,11 @@ const handler = (router: Hono) => {
           sql`select count(id) as total from ($${sqlQuery})`,
         )!;
 
-      const data = c
-        .get("database")
-        .all<Artist>(sql`$${sqlQuery} limit ${limit} offset ${page * limit}`);
+      const data = c.get("database").all<Release>(
+        sql`$${sqlQuery}
+          limit ${Number(query.limit)}
+          offset ${Number(query.page) * Number(query.limit)}`,
+      );
 
       return c.json(
         {

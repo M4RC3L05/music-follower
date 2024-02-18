@@ -6,7 +6,7 @@ import { type Artist } from "#src/database/mod.js";
 
 const handler = (router: Hono) => {
   return router.post("/import", async (c) => {
-    const { artists: file } = await c.req.parseBody();
+    const { file } = await c.req.parseBody();
 
     if (!file || !(file instanceof File)) {
       throw new HTTPException(422, { message: "Must provided a artists file" });

@@ -32,7 +32,15 @@
         "name": "APPS_ADMIN_BASIC_AUTH_NAME",
         "pass": "APPS_ADMIN_BASIC_AUTH_PASS"
       },
-      "esmsh": "APPS_ADMIN_ESMSH"
+      "services": {
+        "api": {
+          "url": "APPS_ADMIN_SERVICES_API_URL",
+          "basicAuth": {
+            "name": "APPS_ADMIN_SERVICES_API_BASIC_AUTH_NAME",
+            "pass": "APPS_ADMIN_SERVICES_API_BASIC_AUTH_PASS"
+          }
+        }
+      }
     },
     "jobs": {
       "sync-releases": {

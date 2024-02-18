@@ -4,13 +4,21 @@ import config from "config";
 import { makeLogger } from "#src/common/logger/mod.js";
 import { ShutdownManager } from "#src/managers/mod.js";
 import { makeApp } from "./app.js";
+import { ArtistsService, ReleasesService } from "./services/api/mod.js";
 
 const shutdownManager = new ShutdownManager();
 
 const { port, host } = config.get<{ port: number; host: string }>("apps.admin");
 const log = makeLogger("admin");
 
-const app = makeApp();
+const app = makeApp({
+  services: {
+    api: {
+      artistsService: new ArtistsService(),
+      releasesService: new ReleasesService(),
+    },
+  },
+});
 const server = createAdaptorServer(app);
 
 server.listen({ port, hostname: host }, () => {

@@ -20,7 +20,15 @@
         "name": "foo",
         "pass": "bar"
       },
-      "esmsh": "https://esm.sh/"
+      "services": {
+        "api": {
+          "url": "http://127.0.0.1:4323",
+          "basicAuth": {
+            "name": "foo",
+            "pass": "bar"
+          }
+        }
+      }
     },
     "jobs": {
       "sync-releases": {
