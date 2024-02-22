@@ -1,7 +1,7 @@
+import { Cron } from "@m4rc3l05/cron";
 import { ShutdownManager } from "@m4rc3l05/shutdown-manager";
 import config from "config";
 import { makeLogger } from "#src/common/logger/mod.js";
-import { Cron } from "#src/common/utils/cron-utils.js";
 import { makeDatabase } from "#src/database/mod.js";
 import runner from "./app.js";
 
