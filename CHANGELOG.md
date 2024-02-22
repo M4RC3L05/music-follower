@@ -1,3 +1,8 @@
+### v15.1.0 (2024-02-22)
+
+- [Use @m4rc3l05\/cron package](https://github.com/M4RC3L05/music-follower/commit/2afd480c6797ad0726ae53843170918e369e506f)
+- [Update nodejs version](https://github.com/M4RC3L05/music-follower/commit/30663e35868519fc1d6d8cd821a4083e6055e0f0)
+
 ### v15.0.0 (2024-02-18)
 
 - [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/d145612db9428871f297e609e14005c7cbb45c7d)
