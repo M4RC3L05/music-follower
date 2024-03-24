@@ -1,3 +1,9 @@
+### v15.2.0 (2024-03-24)
+
+- [Fix license file name](https://github.com/M4RC3L05/music-follower/commit/a40812622fe0938926f6f1c719229377501efa27)
+- [Update dependencies](https://github.com/M4RC3L05/music-follower/commit/30a81a41d3f698b5d2f1f50d97556b043b52b464)
+- [Update \`@m4rc3l05\/cron\` and \`@m4rc3l05\/sqlite-tag\`](https://github.com/M4RC3L05/music-follower/commit/4968645fb5d7b869f6760f8eb6dc35bf9adf57c9)
+
 ### v15.1.0 (2024-02-22)
 
 - [Use @m4rc3l05\/cron package](https://github.com/M4RC3L05/music-follower/commit/2afd480c6797ad0726ae53843170918e369e506f)
