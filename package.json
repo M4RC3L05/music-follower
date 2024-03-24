@@ -45,9 +45,9 @@
   "dependencies": {
     "@hono/node-server": "1.8.0",
     "@hono/zod-validator": "0.1.11",
-    "@m4rc3l05/cron": "github:M4RC3L05/cron#v0.1.0",
+    "@m4rc3l05/cron": "npm:@jsr/m4rc3l05__cron@0.1.3",
     "@m4rc3l05/shutdown-manager": "github:M4RC3L05/shutdown-manager#v0.0.1",
-    "@m4rc3l05/sqlite-tag": "github:M4RC3L05/sqlite-tag#v0.0.1",
+    "@m4rc3l05/sqlite-tag": "npm:@jsr/m4rc3l05__sqlite-tag@0.1.7",
     "better-sqlite3": "9.4.1",
     "config": "3.3.11",
     "feed": "4.2.2",
