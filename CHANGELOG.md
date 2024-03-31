@@ -1,3 +1,7 @@
+### v15.2.1 (2024-03-31)
+
+- [Update \`@m4rc3l05\/cron\`](https://github.com/M4RC3L05/music-follower/commit/3bf79aa1a42d87a4346e15ae59c5761a21a2bd92)
+
 ### v15.2.0 (2024-03-24)
 
 - [Fix license file name](https://github.com/M4RC3L05/music-follower/commit/a40812622fe0938926f6f1c719229377501efa27)
