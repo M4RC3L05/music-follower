@@ -1,10 +1,9 @@
 import config from "config";
-import fetch from "node-fetch";
 
-import {
-  type ItunesArtistSearchModel,
-  type ItunesResponseModel,
-} from "../types.js";
+import type {
+  ItunesArtistSearchModel,
+  ItunesResponseModel,
+} from "#src/remote/itunes/types.ts";
 
 type ItunesSearchConfig = { url: string; searchArtists: { limit: number } };
 
@@ -26,5 +25,7 @@ export const searchArtists = async (query: string) => {
     });
   }
 
-  return (await response.json()) as ItunesResponseModel<ItunesArtistSearchModel>;
+  return (await response.json()) as ItunesResponseModel<
+    ItunesArtistSearchModel
+  >;
 };

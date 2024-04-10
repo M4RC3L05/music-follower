@@ -1,7 +1,7 @@
 import { html } from "hono/html";
-import { Artist } from "#src/database/mod.js";
-import { layouts } from "../../common/mod.js";
-import { Navbar } from "../../common/partials/mod.js";
+import type { Artist } from "#src/database/types/mod.ts";
+import { layouts } from "#src/apps/admin/views/common/mod.ts";
+import { Navbar } from "#src/apps/admin/views/common/partials/mod.ts";
 
 type ReleasesIndexPage = {
   artists: Artist[];
@@ -14,38 +14,39 @@ type ReleasesIndexPage = {
   };
 };
 
-const ArtistsIndexPage = ({ artists, pagination }: ReleasesIndexPage) => html`
+const ArtistsIndexPage = ({ artists, pagination }: ReleasesIndexPage) =>
+  html`
   <header>
     ${Navbar()}
 
     <h1>Artists</h1>
   </header>
 
-  <header style="position: sticky; top: 0; padding: 8px 0px; z-index: 2">
+  <header id="header-actions" style="position: sticky; top: 0; padding: 8px 0px; z-index: 2">
     <form
       id="header-actions"
       action=${new URL(pagination.currentUrl).pathname}
       method="get"
     >
       ${
-        new URL(pagination.currentUrl).searchParams.has("page")
-          ? html`<input type="hidden" name="page" value=${new URL(
-              pagination.currentUrl,
-            ).searchParams.get("page")} />`
-          : html``
-      }
+    new URL(pagination.currentUrl).searchParams.has("page")
+      ? html`<input type="hidden" name="page" value="${new URL(
+        pagination.currentUrl,
+      ).searchParams.get("page")!}" />`
+      : html``
+  }
       ${
-        new URL(pagination.currentUrl).searchParams.has("limit")
-          ? html`<input type="hidden" name="limit" value=${new URL(
-              pagination.currentUrl,
-            ).searchParams.get("limit")} />`
-          : html``
-      }
+    new URL(pagination.currentUrl).searchParams.has("limit")
+      ? html`<input type="hidden" name="limit" value="${new URL(
+        pagination.currentUrl,
+      ).searchParams.get("limit")!}" />`
+      : html``
+  }
       <input type="text" name="q" placeholder="Search subscribed artists" value="${
-        new URL(pagination.currentUrl).searchParams.has("q")
-          ? new URL(pagination.currentUrl).searchParams.get("q")
-          : ""
-      }" />
+    new URL(pagination.currentUrl).searchParams.has("q")
+      ? new URL(pagination.currentUrl).searchParams.get("q")!
+      : ""
+  }" />
 
       <button type="submit">
         Search
@@ -66,8 +67,10 @@ const ArtistsIndexPage = ({ artists, pagination }: ReleasesIndexPage) => html`
   </header>
 
   <main>
-    ${artists.map(
-      (artist) => html`
+    ${
+    artists.map(
+      (artist) =>
+        html`
         <section style="overflow: auto;">
           <aside>
             <img src=${artist.imageUrl} style="width: 100%; height: auto; aspect-ratio: 1 / 1" />
@@ -75,27 +78,47 @@ const ArtistsIndexPage = ({ artists, pagination }: ReleasesIndexPage) => html`
 
           <h3 style="margin-top: 0">${artist.name}</h3>
 
-          <form
-            hx-post="/artists/unsubscribe"
-            hx-swap="none"
-            hx-on::after-on-load="window.location.reload()"
-          >
-            <input type="hidden" name="id" value="${artist.id}" />
-            <button>
-              Unsubscribe
+          <div class="artist-actions">
+            <dialog id="dialog-${artist.id}">
+              <p>Are you sure you want to unsubscribe from "${artist.name}"?</p>
+
+              <form
+                style="display: inline; margin-right: 8px"
+                action="/artists/${artist.id}/unsubscribe"
+                method="post"
+              >
+                <button>
+                  Yes
+                </button>
+              </form>
+
+              <form method="dialog" style="display: inline; margin-right: 8px">
+                <button>No</button>
+              </form>
+            </dialog>
+
+            <button
+              style="display: inline; margin-right: 8px"
+              onclick="getElementById('dialog-${artist.id}').show()"
+            >
+              Unsubscribe ⨯?
             </button>
-          </form>
+          </div>
         </section>
       `,
-    )}
+    )
+  }
   </main>
 `;
 
 export default layouts.MainLayout({
   Csss: [
-    () => html`
+    () =>
+      html`
       <style>
-        #header-actions button,.button, input, select {
+        #header-actions button, #header-actions .button, #header-actions input, #header-actions select,
+        .artist-actions .button,
+        .artist-actions button {
           font-size: .8rem;
           font-weight: bold;
           padding: .5rem .7rem;
@@ -104,24 +127,4 @@ export default layouts.MainLayout({
     `,
   ],
   Body: ArtistsIndexPage,
-  Scripts: [
-    () =>
-      html`<script type="module">window.scrollTo({ top: 0, left: 0, behavior: "instant" })</script>`,
-    () => html`
-      <script type="module">
-        document.getElementById("header-actions").addEventListener("submit", event => {
-          event.preventDefault();
-          const params = new URLSearchParams(new FormData(event.target));
-          const url = new URL(window.location);
-
-          for (const [key, value] of params.entries()) {
-            url.searchParams.set(key, value);
-          }
-
-          replaceAndReload(url.toString())
-        })
-      </script>
-    `,
-    () => html`<script src="/deps/htmx.org/dist/htmx.min.js"></script>`,
-  ],
 });

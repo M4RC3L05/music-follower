@@ -1,1 +1,1 @@
-export * as pages from "./pages/mod.js";
+export * as pages from "./pages/mod.ts";

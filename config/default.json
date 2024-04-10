@@ -9,23 +9,23 @@
       "host": "127.0.0.1",
       "port": 4323,
       "basicAuth": {
-        "name": "foo",
-        "pass": "bar"
+        "username": "foo",
+        "password": "bar"
       }
     },
     "admin": {
       "host": "127.0.0.1",
       "port": 4322,
       "basicAuth": {
-        "name": "foo",
-        "pass": "bar"
+        "username": "foo",
+        "password": "bar"
       },
       "services": {
         "api": {
           "url": "http://127.0.0.1:4323",
           "basicAuth": {
-            "name": "foo",
-            "pass": "bar"
+            "username": "foo",
+            "password": "bar"
           }
         }
       }
@@ -43,9 +43,6 @@
   },
   "database": {
     "path": "./data/app.db"
-  },
-  "logger": {
-    "level": "info"
   },
   "remote": {
     "itunes": {
@@ -67,6 +64,6 @@
     }
   },
   "media": {
-    "placeholderImage": "https://via.placeholder.com/512"
+    "placeholderImage": "https://placehold.co/512"
   }
 }

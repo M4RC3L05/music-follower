@@ -1,13 +1,14 @@
 import { html } from "hono/html";
-import { Release } from "#src/database/mod.js";
-import { layouts } from "../../common/mod.js";
-import { Navbar } from "../../common/partials/mod.js";
+import { Release } from "#src/database/mod.ts";
+import { layouts } from "../../common/mod.ts";
+import { Navbar } from "../../common/partials/mod.ts";
 
 type ReleasesShowPage = {
   release: Release;
 };
 
-const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
+const ReleasesShowPage = ({ release }: ReleasesShowPage) =>
+  html`
   <header>
     ${Navbar()}
 
@@ -25,8 +26,8 @@ const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
       <input type="hidden" name="type" value=${release.type} />
       <input type="hidden" name="option" value="admin" />
       <input type="hidden" name="state" value=${
-        release.hidden.includes("admin") ? "hide" : "show"
-      } />
+    release.hidden.includes("admin") ? "hide" : "show"
+  } />
       <button type="submit">
         Hidden Admin ${release.hidden.includes("admin") ? "☑" : "☐"}
       </button>
@@ -42,8 +43,8 @@ const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
       <input type="hidden" name="type" value=${release.type} />
       <input type="hidden" name="option" value="feed" />
       <input type="hidden" name="state" value=${
-        release.hidden.includes("feed") ? "hide" : "show"
-      } />
+    release.hidden.includes("feed") ? "hide" : "show"
+  } />
       <button type="submit">
         Hidden Feed ${release.hidden.includes("feed") ? "☑" : "☐"}
       </button>
@@ -58,10 +59,10 @@ const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
     <h3>${release.name} by ${release.artistName}</h3>
 
     ${
-      new Date(release.releasedAt).getTime() > Date.now()
-        ? html`<mark>To be released</mark>`
-        : html``
-    }
+    new Date(release.releasedAt).getTime() > Date.now()
+      ? html`<mark>To be released</mark>`
+      : html``
+  }
     <mark>${release.type}</mark>
 
     <p>
@@ -69,20 +70,21 @@ const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
     </p>
 
     ${
-      typeof (JSON.parse(release?.metadata ?? "{}") as Record<string, unknown>)
+    typeof (JSON.parse(release?.metadata ?? "{}") as Record<string, unknown>)
         ?.previewUrl === "string"
-        ? html`
+      ? html`
           <audio
             style="width: 100%"
-            src=${
-              (JSON.parse(release?.metadata ?? "{}") as Record<string, unknown>)
-                .previewUrl as string
-            }
+            src=${(JSON.parse(release?.metadata ?? "{}") as Record<
+        string,
+        unknown
+      >)
+        .previewUrl as string}
             controls
           ></audio>
         `
-        : html``
-    }
+      : html``
+  }
 
     <p>Metadata:</p>
     <pre>
@@ -93,7 +95,8 @@ const ReleasesShowPage = ({ release }: ReleasesShowPage) => html`
 
 export default layouts.MainLayout({
   Csss: [
-    () => html`
+    () =>
+      html`
       <style>
         #header-actions button,.button {
           font-size: .8rem;
@@ -104,7 +107,8 @@ export default layouts.MainLayout({
     `,
   ],
   Scripts: [
-    () => html`
+    () =>
+      html`
       <script type="module">
         const onHideAdminStatePatch = (form) => {
           const state = form.querySelector("input[name='state']").value;
@@ -122,7 +126,7 @@ export default layouts.MainLayout({
         window.onHideFeedStatePatch = onHideFeedStatePatch;
       </script>
     `,
-    () => html`<script src="/deps/htmx.org/dist/htmx.min.js"></script>`,
+    () => html`<script src="/deps/htmx.org/dist/htmx.min.ts"></script>`,
   ],
   Body: ReleasesShowPage,
 });

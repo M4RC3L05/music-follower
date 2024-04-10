@@ -2,36 +2,38 @@ import config from "config";
 import { Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
 import { cors } from "hono/cors";
-import { CustomDatabase } from "#src/database/mod.js";
-import { errorMappers } from "#src/errors/mod.js";
-import { errorMapper, requestLifeCycle } from "#src/middlewares/mod.js";
-import { router } from "./router.js";
+import { errorMappers } from "#src/errors/mod.ts";
+import { errorMapper } from "#src/middlewares/mod.ts";
+import type { CustomDatabase } from "#src/database/mod.ts";
+import type { ContextVariableMap } from "hono";
+import { router } from "#src/apps/api/routes/mod.ts";
 
-export type Api = ReturnType<typeof makeApp>;
+declare module "hono" {
+  interface ContextVariableMap {
+    database: CustomDatabase;
+    shutdown: AbortSignal;
+  }
+}
 
-export const makeApp = ({ database }: { database: CustomDatabase }) => {
+export const makeApp = (deps: Partial<ContextVariableMap>) => {
   const app = new Hono();
 
   app.use("*", (c, next) => {
-    c.set("database", database);
+    if (deps.database) c.set("database", deps.database);
+    if (deps.shutdown) c.set("shutdown", deps.shutdown);
 
     return next();
   });
-  app.use("*", requestLifeCycle);
   app.use("*", cors());
   app.use(
     "*",
     basicAuth({
-      username: config.get<{ name: string; pass: string }>("apps.api.basicAuth")
-        .name,
-      password: config.get<{ name: string; pass: string }>("apps.api.basicAuth")
-        .pass,
+      ...config.get<{ name: string; pass: string }>("apps.api.basicAuth"),
     }),
   );
 
   app.onError(
     errorMapper({
-      mappers: [errorMappers.validationErrorMapper],
       defaultMapper: errorMappers.defaultErrorMapper,
     }),
   );

@@ -1,17 +1,17 @@
 import config from "config";
-import fetch from "node-fetch";
 
-import { makeLogger } from "#src/common/logger/mod.js";
+import { makeLogger } from "#src/common/logger/mod.ts";
 
 const log = makeLogger("apple-music-source");
+const textDecoder = new TextDecoder();
 
 export const getArtistImage = async (url: string) => {
-  log.info({ url }, "Getting image for artist");
+  log.info("Getting image for artist", { url });
 
   const response = await fetch(url);
 
   if (!response.ok) {
-    log.error({ status: response.status }, "Could not fetch artists image");
+    log.error("Could not fetch artists image", { status: response.status });
 
     throw new Error("An error ocurred while searching for artist image");
   }
@@ -23,7 +23,7 @@ export const getArtistImage = async (url: string) => {
   }
 
   for await (const chunk of response.body) {
-    html += chunk.toString();
+    html += textDecoder.decode(chunk);
 
     if (/<meta property="og:image".*>/.test(html)) {
       break;
@@ -36,8 +36,8 @@ export const getArtistImage = async (url: string) => {
 
   if (!result || result.includes("apple-music-")) {
     log.info(
-      { url, image: result },
       "Image is not for a artist, using placeholder",
+      { url, image: result },
     );
 
     return config.get("media.placeholderImage");
@@ -55,8 +55,8 @@ export const getArtistImage = async (url: string) => {
   imageSplitted[imageSplitted.length - 1] = `256x256.${imageFile.at(1)}`;
 
   log.info(
-    { url, image: imageSplitted.join("/") },
     "Retrieved image for artist",
+    { url, image: imageSplitted.join("/") },
   );
 
   return imageSplitted.join("/");

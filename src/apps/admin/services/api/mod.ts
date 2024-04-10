@@ -1,2 +1,2 @@
-export { default as ReleasesService } from "./releases-service.js";
-export { default as ArtistsService } from "./artists-service.js";
+export { default as ReleasesService } from "#src/apps/admin/services/api/releases-service.ts";
+export { default as ArtistsService } from "#src/apps/admin/services/api/artists-service.ts";

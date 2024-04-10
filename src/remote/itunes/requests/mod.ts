@@ -1,2 +1,2 @@
-export * from "./get-latest-releases-by-artist.js";
-export * from "./search-artists.js";
+export * from "#src/remote/itunes/requests/get-latest-releases-by-artist.ts";
+export * from "#src/remote/itunes/requests/search-artists.ts";

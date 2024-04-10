@@ -1,8 +1,9 @@
 import { html } from "hono/html";
-import { layouts } from "../../common/mod.js";
-import { Navbar } from "../../common/partials/mod.js";
+import { layouts } from "../../common/mod.ts";
+import { Navbar } from "../../common/partials/mod.ts";
 
-const CategoriesCreatePage = () => html`
+const CategoriesCreatePage = () =>
+  html`
   <header>
     ${Navbar()}
   </header>

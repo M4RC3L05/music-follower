@@ -1,7 +1,7 @@
 import { html, raw } from "hono/html";
-import { Release } from "#src/database/mod.js";
-import { layouts } from "../../common/mod.js";
-import { Navbar } from "../../common/partials/mod.js";
+import type { Release } from "#src/database/types/mod.ts";
+import { layouts } from "#src/apps/admin/views/common/mod.ts";
+import { Navbar } from "#src/apps/admin/views/common/partials/mod.ts";
 
 type ReleasesIndexPage = {
   releases: Release[];
@@ -14,7 +14,8 @@ type ReleasesIndexPage = {
   };
 };
 
-const ReleasesIndexPage = ({ releases, pagination }: ReleasesIndexPage) => html`
+const ReleasesIndexPage = ({ releases, pagination }: ReleasesIndexPage) =>
+  html`
   <header>
     ${Navbar()}
 
@@ -28,45 +29,49 @@ const ReleasesIndexPage = ({ releases, pagination }: ReleasesIndexPage) => html`
       method="get"
     >
       ${
-        new URL(pagination.currentUrl).searchParams.has("page")
-          ? html`<input type="hidden" name="page" value=${new URL(
-              pagination.currentUrl,
-            ).searchParams.get("page")} />`
-          : html``
-      }
+    new URL(pagination.currentUrl).searchParams.has("page")
+      ? html`<input type="hidden" name="page" value=${
+        new URL(
+          pagination.currentUrl,
+        ).searchParams.get("page")
+      } />`
+      : html``
+  }
       ${
-        new URL(pagination.currentUrl).searchParams.has("limit")
-          ? html`<input type="hidden" name="limit" value=${new URL(
-              pagination.currentUrl,
-            ).searchParams.get("limit")} />`
-          : html``
-      }
+    new URL(pagination.currentUrl).searchParams.has("limit")
+      ? html`<input type="hidden" name="limit" value=${
+        new URL(
+          pagination.currentUrl,
+        ).searchParams.get("limit")
+      } />`
+      : html``
+  }
       <input type="text" name="q" placeholder="Search release" value="${
-        new URL(pagination.currentUrl).searchParams.has("q")
-          ? new URL(pagination.currentUrl).searchParams.get("q")
-          : ""
-      }" />
+    new URL(pagination.currentUrl).searchParams.has("q")
+      ? new URL(pagination.currentUrl).searchParams.get("q")
+      : ""
+  }" />
 
       <select name="hidden">
         <option value="">Filter hidden mode</option>
         <option
           value="admin"
           ${
-            new URL(pagination.currentUrl).searchParams.get("hidden") ===
-            "admin"
-              ? `${raw("selected")}`
-              : ""
-          }
+    new URL(pagination.currentUrl).searchParams.get("hidden") ===
+        "admin"
+      ? `${raw("selected")}`
+      : ""
+  }
         >
           Admin
         </option>
         <option
           value="feed"
           ${
-            new URL(pagination.currentUrl).searchParams.get("hidden") === "feed"
-              ? `${raw("selected")}`
-              : ""
-          }
+    new URL(pagination.currentUrl).searchParams.get("hidden") === "feed"
+      ? `${raw("selected")}`
+      : ""
+  }
         >
           Feed
         </option>
@@ -84,8 +89,10 @@ const ReleasesIndexPage = ({ releases, pagination }: ReleasesIndexPage) => html`
   </header>
 
   <main>
-    ${releases.map(
-      (release) => html`
+    ${
+    releases.map(
+      (release) =>
+        html`
       <section style="box-sizing: border-box">
         <aside>
           <img src=${release.coverUrl} style="width: 100%; height: auto; aspect-ratio: 1 / 1" />
@@ -104,13 +111,15 @@ const ReleasesIndexPage = ({ releases, pagination }: ReleasesIndexPage) => html`
         <a href=${`/releases/show?id=${release.id}&type=${release.type}`}>More</a>
       </section>
     `,
-    )}
+    )
+  }
   </main>
 `;
 
 export default layouts.MainLayout({
   Csss: [
-    () => html`
+    () =>
+      html`
       <style>
         #header-actions button,.button, input, select {
           font-size: .8rem;
@@ -124,7 +133,8 @@ export default layouts.MainLayout({
   Scripts: [
     () =>
       html`<script type="module">window.scrollTo({ top: 0, left: 0, behavior: "instant" })</script>`,
-    () => html`
+    () =>
+      html`
       <script type="module">
         document.getElementById("header-actions").addEventListener("submit", event => {
           event.preventDefault();

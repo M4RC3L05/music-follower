@@ -1,31 +1,57 @@
-import { InferRequestType } from "hono/client";
-import { client } from "../common/mod.js";
+import { BaseService } from "#src/apps/admin/services/common/base-service.ts";
 
-class ReleasesService {
-  async getReleases({
-    query,
-  }: { query?: InferRequestType<typeof client.api.releases.$get>["query"] }) {
-    const response = await client.api.releases.$get({ query: query ?? {} });
+class ReleasesService extends BaseService {
+  getReleases(
+    { q, hidden, notHidden, page, limit, signal }: {
+      q?: string;
+      hidden?: string;
+      notHidden?: string;
+      page?: number;
+      limit?: number;
+      signal: AbortSignal;
+    },
+  ) {
+    const query: Record<string, string> = {};
 
-    return response.json();
-  }
+    if (q) query.q = q;
+    if (hidden) query.hidden = hidden;
+    if (notHidden) query.notHidden = notHidden;
+    if (page) query.page = String(page);
+    if (limit) query.limit = String(limit);
 
-  async getRelease({ id, type }: { id: string; type: string }) {
-    const response = await client.api.releases[":id"][":type"].$get({
-      param: { id, type },
+    return this.request({
+      path: `/api/releases${Object.keys(query).length > 0 ? "?" : ""}${
+        new URLSearchParams(query).toString()
+      }`,
+      init: { signal },
     });
-
-    return response.json();
   }
 
-  async updateRelease({
-    id,
-    type,
-    hidden,
-  }: { id: string; type: string; hidden: ("feed" | "admin")[] }) {
-    await client.api.releases[":id"][":type"].$patch({
-      param: { id, type },
-      json: { hidden },
+  getRelease(
+    { id, type, signal }: { id: string; type: string; signal: AbortSignal },
+  ) {
+    return this.request({
+      path: `/api/releases/${id}/${type}`,
+      init: { signal },
+    });
+  }
+
+  updateRelease(
+    { id, type, hidden, signal }: {
+      id: string;
+      type: string;
+      hidden: ("feed" | "admin")[];
+      signal: AbortSignal;
+    },
+  ) {
+    return this.request({
+      path: `/api/releases/${id}/${type}`,
+      init: {
+        method: "PATCH",
+        body: JSON.stringify({ hidden }),
+        signal,
+        headers: { "content-type": "application/json" },
+      },
     });
   }
 }

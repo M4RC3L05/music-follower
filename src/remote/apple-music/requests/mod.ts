@@ -1,1 +1,1 @@
-export * from "./get-artist-image.js";
+export * from "#src/remote/apple-music/requests/get-artist-image.ts";
