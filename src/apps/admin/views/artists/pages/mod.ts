@@ -1,3 +1,3 @@
-export { default as Index } from "./index.js";
-export { default as Import } from "./import.js";
-export { default as Remote } from "./remote.js";
+export { default as Index } from "#src/apps/admin/views/artists/pages/index.ts";
+export { default as Import } from "#src/apps/admin/views/artists/pages/import.ts";
+export { default as Remote } from "#src/apps/admin/views/artists/pages/remote.ts";

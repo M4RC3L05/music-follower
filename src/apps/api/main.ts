@@ -1,41 +1,56 @@
-import process from "node:process";
-
-import { createAdaptorServer } from "@hono/node-server";
+import { HookDrain } from "#src/common/process/hook-drain.ts";
+import { makeLogger } from "#src/common/logger/mod.ts";
+import { gracefulShutdown } from "#src/common/process/mod.ts";
+import { makeApp } from "#src/apps/api/app.ts";
 import config from "config";
+import { makeDatabase } from "#src/database/mod.ts";
 
-import { ShutdownManager } from "@m4rc3l05/shutdown-manager";
-import { makeLogger } from "#src/common/logger/mod.js";
-import { makeDatabase } from "#src/database/mod.js";
-import { makeApp } from "./app.js";
-
-const { port, host } = config.get<{ port: number; host: string }>("apps.api");
 const log = makeLogger("api");
+const { host, port } = config.get("apps.api");
 
-const shutdownManager = new ShutdownManager({ log });
-const database = makeDatabase();
+const shutdown = new HookDrain({
+  log,
+  onFinishDrain: (error) => {
+    log.info("Exiting application");
 
-shutdownManager.addHook("database", () => {
-  database.close();
+    if (error.error) {
+      if (error.reason === "timeout") {
+        log.warn("Global shutdown timeout exceeded");
+      }
+
+      Deno.exit(1);
+    } else {
+      Deno.exit(0);
+    }
+  },
 });
 
-const app = makeApp({ database });
-const server = createAdaptorServer(app);
+gracefulShutdown({ hookDrain: shutdown, log });
 
-server.listen({ port, hostname: host }, () => {
-  log.info(`Listening on ${host}:${port}`);
-
-  if (typeof process.send === "function") {
-    log.info("Sending ready signal");
-
-    process.send("ready");
-  }
+const db = makeDatabase();
+const app = makeApp({
+  shutdown: shutdown.signal,
+  database: db,
 });
 
-shutdownManager.addHook("api", async () => {
-  await new Promise<void>((resolve, reject) => {
-    server.close((error) => {
-      if (error) reject(error);
-      else resolve();
-    });
-  });
+const server = Deno.serve({
+  hostname: host,
+  port,
+  onListen: ({ hostname, port }) => {
+    log.info(`Serving on http://${hostname}:${port}`);
+  },
+}, app.fetch);
+
+shutdown.registerHook({
+  name: "api",
+  fn: async () => {
+    await server.shutdown();
+  },
+});
+
+shutdown.registerHook({
+  name: "db",
+  fn: () => {
+    db.close();
+  },
 });

@@ -1,4 +1,4 @@
-export * as appleMusicRequests from "./apple-music/requests/mod.js";
-export * as itunesRequests from "./itunes/requests/mod.js";
+export * as appleMusicRequests from "#src/remote/apple-music/requests/mod.ts";
+export * as itunesRequests from "#src/remote/itunes/requests/mod.ts";
 
-export * from "./itunes/types.js";
+export * from "#src/remote/itunes/types.ts";

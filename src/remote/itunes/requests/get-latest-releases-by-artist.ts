@@ -1,11 +1,11 @@
 import config from "config";
 
-import { request } from "#src/common/utils/fetch-utils.js";
-import {
-  type ItunesLookupAlbumModel,
-  type ItunesLookupSongModel,
-  type ItunesResponseModel,
-} from "../types.js";
+import { request } from "#src/common/utils/fetch-utils.ts";
+import type {
+  ItunesLookupAlbumModel,
+  ItunesLookupSongModel,
+  ItunesResponseModel,
+} from "#src/remote/itunes/types.ts";
 
 const itunesLookupConfig = config.get<ItunesLookupConfig>(
   "remote.itunes.lookup",
@@ -23,11 +23,9 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   signal?: AbortSignal,
 ): Promise<
   ItunesResponseModel<
-    E extends "song"
-      ? ItunesLookupSongModel
-      : E extends "album"
-        ? ItunesLookupAlbumModel
-        : never
+    E extends "song" ? ItunesLookupSongModel
+      : E extends "album" ? ItunesLookupAlbumModel
+      : never
   >
 > => {
   const path = new URL(itunesLookupConfig.url);
@@ -57,11 +55,9 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   }
 
   const data = (await response.json()) as ItunesResponseModel<
-    E extends "song"
-      ? ItunesLookupSongModel
-      : E extends "album"
-        ? ItunesLookupAlbumModel
-        : never
+    E extends "song" ? ItunesLookupSongModel
+      : E extends "album" ? ItunesLookupAlbumModel
+      : never
   >;
 
   // Remove artists info from results

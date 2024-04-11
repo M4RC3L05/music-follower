@@ -1,19 +1,14 @@
 import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
 import { Feed } from "feed";
-import { type Context } from "hono";
-import { makeLogger } from "#src/common/logger/mod.js";
-import { type Release } from "#src/database/mod.js";
-import {
-  type ItunesLookupAlbumModel,
-  type ItunesLookupSongModel,
-} from "#src/remote/mod.js";
+import type { Context } from "hono";
+import type { Release } from "#src/database/types/mod.ts";
+import type {
+  ItunesLookupAlbumModel,
+  ItunesLookupSongModel,
+} from "#src/remote/mod.ts";
 
-const log = makeLogger("feed-middleware");
-
-export const feedMiddleware = async (c: Context) => {
-  log.info("Getting latest releases");
-
+export const feedMiddleware = (c: Context) => {
   const data = c.get("database").all<Release>(sql`
     select *
     from releases
@@ -50,14 +45,13 @@ export const feedMiddleware = async (c: Context) => {
       `.trim(),
       title: `${release.name} by ${release.artistName}`,
       id: String(release.id),
-      link:
-        release.type === "collection"
-          ? parsedMetadata.collectionViewUrl ?? release.coverUrl
-          : release.type === "track"
-            ? (parsedMetadata as ItunesLookupSongModel).trackViewUrl ??
-              parsedMetadata.collectionViewUrl ??
-              release.coverUrl
-            : release.coverUrl,
+      link: release.type === "collection"
+        ? parsedMetadata.collectionViewUrl ?? release.coverUrl
+        : release.type === "track"
+        ? (parsedMetadata as ItunesLookupSongModel).trackViewUrl ??
+          parsedMetadata.collectionViewUrl ??
+          release.coverUrl
+        : release.coverUrl,
     });
   }
 
@@ -65,7 +59,7 @@ export const feedMiddleware = async (c: Context) => {
 
   if (
     accepts?.includes("application/rss+xml") ??
-    accepts?.includes("application/xml")
+      accepts?.includes("application/xml")
   ) {
     return c.body(feed.rss2(), 200, {
       "content-type": accepts?.includes("application/xml")

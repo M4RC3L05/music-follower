@@ -1,43 +1,17 @@
-FROM docker.io/node:20.11-alpine as build
+FROM docker.io/denoland/deno:alpine-1.42.1
 
-USER node
-
-WORKDIR /home/node/app
-
-COPY --chown=node:node package.json ./
-COPY --chown=node:node package-lock.json ./
-RUN npm ci
-
-COPY --chown=node:node ./src ./src
-COPY --chown=node:node ./.swcrc ./.swcrc
-
-RUN npx swc --copy-files --include-dotfiles ./src -d dist
-
-FROM docker.io/node:20.11-alpine as prepare
-
-USER node
-
-WORKDIR /home/node/app
-
-COPY --from=build --chown=node:node /home/node/app/package.json ./
-COPY --from=build --chown=node:node /home/node/app/package-lock.json ./
-COPY --from=build --chown=node:node /home/node/app/node_modules ./node_modules
-RUN npm prune --omit=dev
-
-FROM docker.io/node:20.11-alpine as final
-
-USER node
-
-WORKDIR /home/node/app
-
-COPY --from=prepare --chown=node:node /home/node/app/package.json ./
-COPY --from=prepare --chown=node:node /home/node/app/package-lock.json ./
-COPY --from=prepare --chown=node:node /home/node/app/node_modules ./node_modules
-COPY --from=build --chown=node:node /home/node/app/dist/src ./src
-COPY --chown=node:node ./config ./config
+EXPOSE 4321
+WORKDIR /app
 
 RUN mkdir data
+RUN chown -R deno:deno ./data
 
-VOLUME [ "/home/node/app/data" ]
+USER deno
+
+COPY . .
+
+RUN deno task deps
+
+VOLUME [ "/app/data" ]
 
 EXPOSE 4321 4322 4323

@@ -1,64 +1,75 @@
-import type { Readable } from "node:stream";
-import config from "config";
-import { InferRequestType } from "hono/client";
-import { ItunesArtistSearchModel } from "#src/remote/mod.js";
-import { client, serviceRequester } from "../common/mod.js";
+import { BaseService } from "#src/apps/admin/services/common/base-service.ts";
 
-const { url } = config.get<{ url: string }>("apps.admin.services.api");
+class ArtistsService extends BaseService {
+  getArtists(
+    { q, page, limit, signal }: {
+      q?: string;
+      page?: number;
+      limit?: number;
+      signal: AbortSignal;
+    },
+  ) {
+    const query: Record<string, string> = {};
 
-class ArtistsService {
-  async getArtists({
-    query,
-  }: { query?: InferRequestType<typeof client.api.artists.$get>["query"] }) {
-    const response = await client.api.artists.$get({ query: query ?? {} });
+    if (q) query.q = q;
+    if (page) query.page = String(page);
+    if (limit) query.limit = String(limit);
 
-    return response.json();
-  }
-
-  import({
-    body,
-    headers,
-  }: {
-    body: Readable;
-    headers: { "content-type": string; "content-length": string };
-  }) {
-    return serviceRequester(`${url}/api/artists/import`, {
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      body: body as any,
-      method: "post",
-      headers: headers,
+    return this.request({
+      path: `/api/artists${Object.keys(query).length > 0 ? "?" : ""}${
+        new URLSearchParams(query).toString()
+      }`,
+      init: { signal },
     });
   }
 
-  async export() {
-    return client.api.artists.export.$get();
-  }
-
-  async searchRemote({
-    query,
-  }: {
-    query?: InferRequestType<typeof client.api.artists.remote.$get>["query"];
-  }) {
-    const response = await client.api.artists.remote.$get({
-      query: query ?? {},
+  import(
+    { body, headers, signal }: {
+      body: ReadableStream;
+      headers: { "content-type": string; "content-length": string };
+      signal: AbortSignal;
+    },
+  ) {
+    return this.request({
+      path: "/api/artists/import",
+      init: { method: "POST", headers, body, signal },
     });
-
-    return response.json() as Promise<{
-      data: (ItunesArtistSearchModel & {
-        image: string;
-        isSubscribed: boolean;
-      })[];
-    }>;
   }
 
-  async subscribe({
-    json,
-  }: { json: InferRequestType<typeof client.api.artists.$post>["json"] }) {
-    return client.api.artists.$post({ json });
+  export({ signal }: { signal: AbortSignal }) {
+    return this.request({
+      path: "/api/artists/export",
+      init: { signal },
+      sendResponse: true,
+    });
   }
 
-  async unsubscribe({ id }: { id: string }) {
-    return client.api.artists[":id"].$delete({ param: { id } });
+  searchRemote({ q, signal }: { signal: AbortSignal; q: string }) {
+    return this.request({
+      path: `/api/artists/remote?q=${q}`,
+      init: { signal },
+    });
+  }
+
+  subscribe(
+    { data, signal }: { data: Record<string, unknown>; signal: AbortSignal },
+  ) {
+    return this.request({
+      path: "/api/artists",
+      init: {
+        method: "POST",
+        signal,
+        body: JSON.stringify(data),
+        headers: { "content-type": "application/json" },
+      },
+    });
+  }
+
+  unsubscribe({ id, signal }: { id: string; signal: AbortSignal }) {
+    return this.request({
+      path: `/api/artists/${id}`,
+      init: { method: "DELETE", signal },
+    });
   }
 }
 

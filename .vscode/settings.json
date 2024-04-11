@@ -1,25 +1,11 @@
 {
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave":{
-    "source.organizeImports.biome": "explicit"
-  },
-  "javascript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.preferences.importModuleSpecifier": "shortest",
-  "javascript.preferences.importModuleSpecifier": "shortest",
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
+  "deno.enable": true,
+  "deno.unstable": true,
   "[json]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }

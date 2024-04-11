@@ -9,4 +9,4 @@ RUN mkdir /app/data
 VOLUME [ "/app/data" ]
 
 ENTRYPOINT [ ]
-CMD [ "dbmate", "-u", "sqlite:./data/app.db", "-d", "./migrations", "--no-dump-schema", "migrate" ]
+CMD [ "dbmate", "-u", "sqlite:./data/app.db", "-d", "./migrations", "--no-dump-schema", "up" ]

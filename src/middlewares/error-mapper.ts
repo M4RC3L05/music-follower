@@ -1,12 +1,11 @@
-import { type Context } from "hono";
+import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { snakeCase } from "lodash-es";
-
-import { makeLogger } from "#src/common/logger/mod.js";
+import { toSnakeCase } from "@std/text";
+import { makeLogger } from "#src/common/logger/mod.ts";
 
 type ErrorMapperDeps = {
   isJsonResponse?: boolean;
-  mappers: Array<(error: unknown) => HTTPException | undefined>;
+  mappers?: Array<(error: unknown) => HTTPException | undefined>;
   defaultMapper: (error: unknown) => HTTPException;
 };
 
@@ -14,7 +13,7 @@ const log = makeLogger("error-mapper-middleware");
 
 const respond = (error: HTTPException, c: Context) => {
   const payload = {
-    error: { code: snakeCase(error.name), message: error.message },
+    error: { code: toSnakeCase(error.name), message: error.message },
   };
 
   if ("validationErrors" in error) {
@@ -29,12 +28,7 @@ const respond = (error: HTTPException, c: Context) => {
 
 const errorMapper = (deps: ErrorMapperDeps) => {
   return (error: unknown, c: Context) => {
-    log.error(
-      !(error instanceof Error) && !(typeof error === "object")
-        ? { error }
-        : error,
-      "Caught request error",
-    );
+    log.error("Caught request error", { error });
 
     if (error instanceof HTTPException) {
       return respond(error, c);
@@ -42,7 +36,7 @@ const errorMapper = (deps: ErrorMapperDeps) => {
 
     let mapped: HTTPException | undefined;
 
-    for (const mapper of deps.mappers) {
+    for (const mapper of (deps.mappers ?? [])) {
       mapped = mapper(error);
 
       if (mapped) break;

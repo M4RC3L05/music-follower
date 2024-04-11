@@ -1,29 +1,54 @@
 import { Cron } from "@m4rc3l05/cron";
-import { ShutdownManager } from "@m4rc3l05/shutdown-manager";
 import config from "config";
-import { makeLogger } from "#src/common/logger/mod.js";
-import { makeDatabase } from "#src/database/mod.js";
-import runner from "./app.js";
+import { makeLogger } from "#src/common/logger/mod.ts";
+import { makeDatabase } from "#src/database/mod.ts";
+import runner from "#src/apps/jobs/sync-releases/app.ts";
+import { gracefulShutdown } from "#src/common/process/mod.ts";
+import { HookDrain } from "#src/common/process/hook-drain.ts";
 
 const { cron } = config.get<{
   cron: { pattern: string; tickerTimeout?: number; timezone: string };
 }>("apps.jobs.sync-releases");
 const log = makeLogger("sync-releases");
 
-const shutdownManager = new ShutdownManager({ log });
-const db = makeDatabase();
+const shutdown = new HookDrain({
+  log,
+  onFinishDrain: (error) => {
+    log.info("Exiting application");
 
-shutdownManager.addHook("database", () => {
-  db.close();
+    if (error.error) {
+      if (error.reason === "timeout") {
+        log.warn("Global shutdown timeout exceeded");
+      }
+
+      Deno.exit(1);
+    } else {
+      Deno.exit(0);
+    }
+  },
 });
+
+gracefulShutdown({ hookDrain: shutdown, log });
+
+const db = makeDatabase();
 
 const job = new Cron(cron.pattern, cron.timezone, cron.tickerTimeout);
 
-shutdownManager.addHook("sync-releases", async () => {
-  await job.stop();
+shutdown.registerHook({
+  name: "sync-releases",
+  fn: async () => {
+    await job.stop();
+  },
 });
 
-log.info({ nextAt: job.nextAt() }, "Registered sync-releases");
+shutdown.registerHook({
+  name: "database",
+  fn: () => {
+    db.close();
+  },
+});
+
+log.info("Registered sync-releases", { nextAt: job.nextAt() });
 
 for await (const signal of job.start()) {
   try {
@@ -31,7 +56,7 @@ for await (const signal of job.start()) {
 
     await runner({ abort: signal, db });
   } catch (error) {
-    log.error(error, "Error running sync-releases task");
+    log.error("Error running sync-releases task", { error });
   } finally {
     log.info("sync-releases completed");
     log.info(`Next at ${job.nextAt()}`);
