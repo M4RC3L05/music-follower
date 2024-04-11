@@ -1,6 +1,6 @@
 {
   "name": "@m4rc3l05/rss-hub",
-  "version": "15.2.1",
+  "version": "16.0.0",
   "tasks": {
     "api": "deno run -A --unstable-ffi src/apps/api/main.ts",
     "admin": "deno run -A --unstable-ffi src/apps/admin/main.ts",
