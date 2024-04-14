@@ -3,34 +3,33 @@
   "packages": {
     "specifiers": {
       "jsr:@db/sqlite@0.11.1": "jsr:@db/sqlite@0.11.1",
-      "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.5",
+      "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.6",
       "jsr:@m4rc3l05/cron@0.1.4": "jsr:@m4rc3l05/cron@0.1.4",
       "jsr:@m4rc3l05/sqlite-tag@0.1.7": "jsr:@m4rc3l05/sqlite-tag@0.1.7",
-      "jsr:@std/assert@^0.214.0": "jsr:@std/assert@0.214.0",
       "jsr:@std/assert@^0.217.0": "jsr:@std/assert@0.217.0",
       "jsr:@std/assert@^0.221.0": "jsr:@std/assert@0.221.0",
-      "jsr:@std/async@0.221.0": "jsr:@std/async@0.221.0",
+      "jsr:@std/assert@^0.222.1": "jsr:@std/assert@0.222.1",
+      "jsr:@std/async@0.222.1": "jsr:@std/async@0.222.1",
       "jsr:@std/async@^0.220.1": "jsr:@std/async@0.220.1",
-      "jsr:@std/bytes@^0.221.0": "jsr:@std/bytes@0.221.0",
-      "jsr:@std/collections@0.221.0": "jsr:@std/collections@0.221.0",
-      "jsr:@std/encoding@0.214": "jsr:@std/encoding@0.214.0",
-      "jsr:@std/encoding@0.221.0": "jsr:@std/encoding@0.221.0",
-      "jsr:@std/fmt@0.214": "jsr:@std/fmt@0.214.0",
+      "jsr:@std/bytes@^0.222.1": "jsr:@std/bytes@0.222.1",
+      "jsr:@std/collections@0.222.1": "jsr:@std/collections@0.222.1",
+      "jsr:@std/encoding@0.222.1": "jsr:@std/encoding@0.222.1",
+      "jsr:@std/encoding@^0.221.0": "jsr:@std/encoding@0.221.0",
       "jsr:@std/fmt@^0.221.0": "jsr:@std/fmt@0.221.0",
-      "jsr:@std/fs@0.214": "jsr:@std/fs@0.214.0",
+      "jsr:@std/fmt@^0.222.1": "jsr:@std/fmt@0.222.1",
       "jsr:@std/fs@^0.221.0": "jsr:@std/fs@0.221.0",
-      "jsr:@std/io@^0.221.0": "jsr:@std/io@0.221.0",
-      "jsr:@std/log@0.221.0": "jsr:@std/log@0.221.0",
-      "jsr:@std/path@0.214": "jsr:@std/path@0.214.0",
+      "jsr:@std/fs@^0.222.1": "jsr:@std/fs@0.222.1",
+      "jsr:@std/io@^0.222.1": "jsr:@std/io@0.222.1",
+      "jsr:@std/log@0.222.1": "jsr:@std/log@0.222.1",
       "jsr:@std/path@0.217": "jsr:@std/path@0.217.0",
-      "jsr:@std/path@^0.214.0": "jsr:@std/path@0.214.0",
-      "jsr:@std/streams@0.221.0": "jsr:@std/streams@0.221.0",
-      "jsr:@std/text@0.221.0": "jsr:@std/text@0.221.0",
+      "jsr:@std/path@^0.221.0": "jsr:@std/path@0.221.0",
+      "jsr:@std/streams@0.222.1": "jsr:@std/streams@0.222.1",
+      "jsr:@std/text@0.222.1": "jsr:@std/text@0.222.1",
       "npm:@vinejs/vine@2.0.0": "npm:@vinejs/vine@2.0.0",
       "npm:config@3.3.11": "npm:config@3.3.11",
       "npm:cron-parser@4.9.0": "npm:cron-parser@4.9.0",
       "npm:feed@4.2.2": "npm:feed@4.2.2",
-      "npm:hono@4.2.3": "npm:hono@4.2.3",
+      "npm:hono@4.2.4": "npm:hono@4.2.4",
       "npm:lodash-es@4.17.21": "npm:lodash-es@4.17.21",
       "npm:ms@2.1.3": "npm:ms@2.1.3"
     },
@@ -42,13 +41,13 @@
           "jsr:@std/path@0.217"
         ]
       },
-      "@denosaurs/plug@1.0.5": {
-        "integrity": "04cd988da558adc226202d88c3a434d5fcc08146eaf4baf0cea0c2284b16d2bf",
+      "@denosaurs/plug@1.0.6": {
+        "integrity": "6cf5b9daba7799837b9ffbe89f3450510f588fafef8115ddab1ff0be9cb7c1a7",
         "dependencies": [
-          "jsr:@std/encoding@0.214",
-          "jsr:@std/fmt@0.214",
-          "jsr:@std/fs@0.214",
-          "jsr:@std/path@0.214"
+          "jsr:@std/encoding@^0.221.0",
+          "jsr:@std/fmt@^0.221.0",
+          "jsr:@std/fs@^0.221.0",
+          "jsr:@std/path@^0.221.0"
         ]
       },
       "@m4rc3l05/cron@0.1.4": {
@@ -61,68 +60,62 @@
       "@m4rc3l05/sqlite-tag@0.1.7": {
         "integrity": "3dff883763c06e97f836fe1ab82482a82e897a574072f24029ade6a5d4836fbb"
       },
-      "@std/assert@0.214.0": {
-        "integrity": "55d398de76a9828fd3b1aa653f4dba3eee4c6985d90c514865d2be9bd082b140"
-      },
       "@std/assert@0.217.0": {
         "integrity": "c98e279362ca6982d5285c3b89517b757c1e3477ee9f14eb2fdf80a45aaa9642"
       },
       "@std/assert@0.221.0": {
         "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
       },
+      "@std/assert@0.222.1": {
+        "integrity": "691637161ee584a9919d1f9950ddd1272feb8e0a19e83aa5b7563cedaf73d74c"
+      },
       "@std/async@0.220.1": {
         "integrity": "61f0e9c53bf81f516aa7f54843f307eb5f05c5cf9902575a636ead162b5dfafe"
       },
-      "@std/async@0.221.0": {
-        "integrity": "f5519861754a1bb2898d227dd8ccb545abc975534aa9063e53911d6cb4e365cf",
+      "@std/async@0.222.1": {
+        "integrity": "9584f4612f96e604a7e49dba3caf703c28d3921faa5be7147a78864a93831af6",
         "dependencies": [
-          "jsr:@std/assert@^0.221.0"
+          "jsr:@std/assert@^0.222.1"
         ]
       },
-      "@std/bytes@0.221.0": {
-        "integrity": "64a047011cf833890a4a2ab7293ac55a1b4f5a050624ebc6a0159c357de91966"
+      "@std/bytes@0.222.1": {
+        "integrity": "04dbf33e889ed5f9f6a87bc6b6b882dc105fffae6d2b042f832d92d4f34771c0"
       },
-      "@std/collections@0.221.0": {
-        "integrity": "789a365bb79b06c4da79d2b93fe32ddfe03b93ab083e72c1de96303d12f84be5"
-      },
-      "@std/encoding@0.214.0": {
-        "integrity": "30a8713e1db22986c7e780555ffd2fefd1d4f9374d734bb41f5970f6c3352af5"
+      "@std/collections@0.222.1": {
+        "integrity": "234099e08eead6a87e59f4f1abdcba35df5503cfb0e852e77a19f79359ed5760"
       },
       "@std/encoding@0.221.0": {
         "integrity": "d1dd76ef0dc5d14088411e6dc1dede53bf8308c95d1537df1214c97137208e45"
       },
-      "@std/fmt@0.214.0": {
-        "integrity": "40382cff88a0783b347b4d69b94cf931ab8e549a733916718cb866c08efac4d4"
+      "@std/encoding@0.222.1": {
+        "integrity": "fb6c1d38722feebc8d4a5efa3eb2039ecec0d50d053186240484d0c4a4ce1006"
       },
       "@std/fmt@0.221.0": {
         "integrity": "379fed69bdd9731110f26b9085aeb740606b20428ce6af31ef6bd45ef8efa62a"
       },
-      "@std/fs@0.214.0": {
-        "integrity": "bc880fea0be120cb1550b1ed7faf92fe071003d83f2456a1e129b39193d85bea",
-        "dependencies": [
-          "jsr:@std/assert@^0.214.0",
-          "jsr:@std/path@^0.214.0"
-        ]
+      "@std/fmt@0.222.1": {
+        "integrity": "ec3382f9b0261c1ab1a5c804aa355d816515fa984cdd827ed32edfb187c0a722"
       },
       "@std/fs@0.221.0": {
-        "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286"
-      },
-      "@std/io@0.221.0": {
-        "integrity": "faf7f8700d46ab527fa05cc6167f4b97701a06c413024431c6b4d207caa010da"
-      },
-      "@std/log@0.221.0": {
-        "integrity": "562cd3514c4e12767337fca8c5a4b8eed01c49f0e19551d34ea376b243d2c530",
+        "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286",
         "dependencies": [
           "jsr:@std/assert@^0.221.0",
-          "jsr:@std/fmt@^0.221.0",
-          "jsr:@std/fs@^0.221.0",
-          "jsr:@std/io@^0.221.0"
+          "jsr:@std/path@^0.221.0"
         ]
       },
-      "@std/path@0.214.0": {
-        "integrity": "d5577c0b8d66f7e8e3586d864ebdf178bb326145a3611da5a51c961740300285",
+      "@std/fs@0.222.1": {
+        "integrity": "337613f33e6e5970dddb263c3a3e5b8e39c97810ad6fe326cb9f65146af2503b"
+      },
+      "@std/io@0.222.1": {
+        "integrity": "45c638370bccc0687d11e32481b276126201014516ffbe2f340700b8d81c015e"
+      },
+      "@std/log@0.222.1": {
+        "integrity": "42c69ec02e98d429e4a72b1ee71309ac77319d8714db788d9af182b2b56e8cb1",
         "dependencies": [
-          "jsr:@std/assert@^0.214.0"
+          "jsr:@std/assert@^0.222.1",
+          "jsr:@std/fmt@^0.222.1",
+          "jsr:@std/fs@^0.222.1",
+          "jsr:@std/io@^0.222.1"
         ]
       },
       "@std/path@0.217.0": {
@@ -131,18 +124,24 @@
           "jsr:@std/assert@^0.217.0"
         ]
       },
-      "@std/streams@0.221.0": {
-        "integrity": "47f2f74634b47449277c0ee79fe878da4424b66bd8975c032e3afdca88986e61",
-        "dependencies": [
-          "jsr:@std/assert@^0.221.0",
-          "jsr:@std/bytes@^0.221.0",
-          "jsr:@std/io@^0.221.0"
-        ]
-      },
-      "@std/text@0.221.0": {
-        "integrity": "a2f89ceb0d8851cd33e6774064621a1da9fbc36578cf4f02c5b5bcd7e8c84b67",
+      "@std/path@0.221.0": {
+        "integrity": "0a36f6b17314ef653a3a1649740cc8db51b25a133ecfe838f20b79a56ebe0095",
         "dependencies": [
           "jsr:@std/assert@^0.221.0"
+        ]
+      },
+      "@std/streams@0.222.1": {
+        "integrity": "0bb4220c1dc5106e45a309179f76df95c786c9fff814d195d5ee2160931bfc7c",
+        "dependencies": [
+          "jsr:@std/assert@^0.222.1",
+          "jsr:@std/bytes@^0.222.1",
+          "jsr:@std/io@^0.222.1"
+        ]
+      },
+      "@std/text@0.222.1": {
+        "integrity": "2a6ec21c153601829c7d47647945d71a3ec986254f6335dd3c22b5fd8daa9b9a",
+        "dependencies": [
+          "jsr:@std/assert@^0.222.1"
         ]
       }
     },
@@ -202,8 +201,8 @@
           "xml-js": "xml-js@1.6.11"
         }
       },
-      "hono@4.2.3": {
-        "integrity": "sha512-yZDnPOp/XzjIB7KUWaOxwLSywnhxMvAKth8hfKhWQiWXeZhBfC6GlFnEst/FOOgn7rSWjShhQPS89PLEuHxq3Q==",
+      "hono@4.2.4": {
+        "integrity": "sha512-2T5Ahxh8tT0ISKCrNeA+OIwfD5W4EZ00iIMYBBCuiIivr+sOrZYOphinARSG7wL3nFsY6zkFHMMZbcR9CzEzug==",
         "dependencies": {}
       },
       "json5@2.2.3": {
@@ -248,16 +247,16 @@
       "jsr:@db/sqlite@0.11.1",
       "jsr:@m4rc3l05/cron@0.1.4",
       "jsr:@m4rc3l05/sqlite-tag@0.1.7",
-      "jsr:@std/async@0.221.0",
-      "jsr:@std/collections@0.221.0",
-      "jsr:@std/encoding@0.221.0",
-      "jsr:@std/log@0.221.0",
-      "jsr:@std/streams@0.221.0",
-      "jsr:@std/text@0.221.0",
+      "jsr:@std/async@0.222.1",
+      "jsr:@std/collections@0.222.1",
+      "jsr:@std/encoding@0.222.1",
+      "jsr:@std/log@0.222.1",
+      "jsr:@std/streams@0.222.1",
+      "jsr:@std/text@0.222.1",
       "npm:@vinejs/vine@2.0.0",
       "npm:config@3.3.11",
       "npm:feed@4.2.2",
-      "npm:hono@4.2.3",
+      "npm:hono@4.2.4",
       "npm:lodash-es@4.17.21",
       "npm:ms@2.1.3"
     ]
