@@ -18,7 +18,7 @@
   "imports": {
     "#src/": "./src/",
     "@db/sqlite": "jsr:@db/sqlite@0.11.1",
-    "@m4rc3l05/cron": "jsr:@m4rc3l05/cron@0.1.4",
+    "@m4rc3l05/cron": "jsr:@m4rc3l05/cron@0.1.5",
     "@m4rc3l05/sqlite-tag": "jsr:@m4rc3l05/sqlite-tag@0.1.7",
     "@std/async": "jsr:@std/async@0.222.1",
     "@std/collections": "jsr:@std/collections@0.222.1",
