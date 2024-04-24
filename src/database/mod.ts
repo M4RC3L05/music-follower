@@ -62,7 +62,8 @@ export const makeDatabase = () => {
   db.exec("pragma foreign_keys = ON");
   db.exec("pragma synchronous = NORMAL");
   db.exec("pragma temp_store = MEMORY");
-  db.exec("pragma cache_size = 500000000");
+  // 4096 page_size * 10000 pages (cache_size) ≃ 40MB
+  db.exec("pragma cache_size = 10000");
   db.function("uuid_v4", () => globalThis.crypto.randomUUID());
 
   return db;
