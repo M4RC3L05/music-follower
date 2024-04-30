@@ -1,56 +1,39 @@
 import { Cron } from "@m4rc3l05/cron";
 import config from "config";
 import { makeLogger } from "#src/common/logger/mod.ts";
-import { makeDatabase } from "#src/database/mod.ts";
+import { type CustomDatabase, makeDatabase } from "#src/database/mod.ts";
 import runner from "#src/apps/jobs/sync-releases/app.ts";
 import { gracefulShutdown } from "#src/common/process/mod.ts";
-import { HookDrain } from "#src/common/process/hook-drain.ts";
+import { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
 
 const { cron } = config.get<{
   cron: { pattern: string; tickerTimeout?: number; timezone: string };
 }>("apps.jobs.sync-releases");
 const log = makeLogger("sync-releases");
+const processLifecycle = new ProcessLifecycle();
 
-const shutdown = new HookDrain({
-  log,
-  onFinishDrain: (error) => {
-    log.info("Exiting application");
+gracefulShutdown({ processLifecycle, log });
 
-    if (error.error) {
-      if (error.reason === "timeout") {
-        log.warn("Global shutdown timeout exceeded");
-      }
-
-      Deno.exit(1);
-    } else {
-      Deno.exit(0);
-    }
-  },
+processLifecycle.registerService({
+  name: "db",
+  boot: () => makeDatabase(),
+  shutdown: (db) => db.close(),
 });
 
-gracefulShutdown({ hookDrain: shutdown, log });
-
-const db = makeDatabase();
-
-const job = new Cron(cron.pattern, cron.timezone, cron.tickerTimeout);
-
-shutdown.registerHook({
-  name: "sync-releases",
-  fn: async () => {
-    await job.stop();
-  },
+processLifecycle.registerService({
+  name: "sync-releases-job",
+  boot: () => new Cron(cron.pattern, cron.timezone, cron.tickerTimeout),
+  shutdown: (cron) => cron.stop(),
 });
 
-shutdown.registerHook({
-  name: "database",
-  fn: () => {
-    db.close();
-  },
-});
+await processLifecycle.boot();
 
-log.info("Registered sync-releases", { nextAt: job.nextAt() });
+const cronJob = processLifecycle.getService<Cron>("sync-releases-job");
+const db = processLifecycle.getService<CustomDatabase>("db");
 
-for await (const signal of job.start()) {
+log.info("Registered sync-releases", { nextAt: cronJob.nextAt() });
+
+for await (const signal of cronJob.start()) {
   try {
     log.info("Running sync-releases");
 
@@ -59,6 +42,6 @@ for await (const signal of job.start()) {
     log.error("Error running sync-releases task", { error });
   } finally {
     log.info("sync-releases completed");
-    log.info(`Next at ${job.nextAt()}`);
+    log.info(`Next at ${cronJob.nextAt()}`);
   }
 }

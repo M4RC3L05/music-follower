@@ -1,33 +1,83 @@
 import type { Logger } from "@std/log";
-import { formatError } from "#src/common/logger/mod.ts";
-import type { HookDrain } from "./hook-drain.ts";
+import type { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
 
 export const gracefulShutdown = (
-  { hookDrain, log }: { hookDrain: HookDrain; log: Logger },
+  { processLifecycle, log }: {
+    processLifecycle: ProcessLifecycle;
+    log: Logger;
+  },
 ) => {
+  processLifecycle.on("bootStarted", () => {
+    log.info("Process boot started");
+  });
+
+  processLifecycle.on("bootEnded", ({ error }) => {
+    if (error) {
+      log.error("Process boot ended with error", { error });
+    } else {
+      log.info("Process boot ended");
+    }
+  });
+
+  processLifecycle.on("shutdownStarted", () => {
+    log.info("Process shutdown started");
+  });
+
+  processLifecycle.on("shutdownEnded", ({ error }) => {
+    if (error) {
+      log.error("Process shutdown ended with error", { error });
+    } else {
+      log.info("Process shutdown ended");
+    }
+
+    Deno.exit(error ? 1 : 0);
+  });
+
+  processLifecycle.on("bootServiceStarted", ({ name }) => {
+    log.info(`Service "${name}" boot started`);
+  });
+
+  processLifecycle.on("bootServiceEnded", ({ name, error }) => {
+    if (error) {
+      log.error(`Service "${name}" boot ended with error`, { error });
+    } else {
+      log.info(`Service "${name}" boot ended`);
+    }
+  });
+
+  processLifecycle.on("shutdownServiceStarted", ({ name }) => {
+    log.info(`Service "${name}" shutdown started`);
+  });
+
+  processLifecycle.on("shutdownServiceEnded", ({ name, error }) => {
+    if (error) {
+      log.error(`Service "${name}" shutdown ended with error`, { error });
+    } else {
+      log.info(`Service "${name}" shutdown ended`);
+    }
+  });
+
   for (const signal of ["SIGABRT", "SIGTERM", "SIGINT"] as Deno.Signal[]) {
     Deno.addSignalListener(signal, () => {
       log.info(`OS Signal "${signal}" captured`);
 
-      hookDrain.drain();
+      processLifecycle.shutdown();
     });
   }
 
   globalThis.addEventListener("unhandledrejection", (e) => {
-    log.error("Unhandled rejection captured", {
-      reason: e.reason instanceof Error ? formatError(e.reason) : e.reason,
-    });
-
     e.preventDefault();
 
-    hookDrain.drain();
+    log.error("Unhandled rejection captured", { reason: e.reason });
+
+    processLifecycle.shutdown();
   });
 
   globalThis.addEventListener("error", (e) => {
-    log.error("Unhandled error captured", { error: e.error });
-
     e.preventDefault();
 
-    hookDrain.drain();
+    log.error("Unhandled error captured", { error: e.error });
+
+    processLifecycle.shutdown();
   });
 };
