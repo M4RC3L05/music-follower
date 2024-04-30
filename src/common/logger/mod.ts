@@ -21,6 +21,7 @@ const formatLogArg = (arg: unknown) => {
   if (!isPlainObject(arg)) return;
 
   if (arg.error instanceof Error) arg.error = formatError(arg.error);
+  if (arg.reason instanceof Error) arg.reason = formatError(arg.reason);
 
   return arg;
 };
