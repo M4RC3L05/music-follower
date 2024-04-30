@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+echo "Check code format..."
+echo -n "  => "
+deno fmt --check
+
+echo "Check code lint..."
+echo -n "  => "
+deno lint

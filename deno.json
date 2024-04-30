@@ -6,6 +6,7 @@
     "admin": "deno run -A --unstable-ffi src/apps/admin/main.ts",
     "feed": "deno run -A --unstable-ffi src/apps/feed/main.ts",
     "jobs:sync-releases": "deno run -A --unstable-ffi src/apps/jobs/sync-releases/main.ts",
+    "dev:boot": "git config core.hooksPath ./.bin/git-hooks/ && deno task deps",
     "dev:dbmate": "deno run -A --no-lock npm:dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
     "deps:lock": "deno cache --lock=deno.lock --lock-write src/**/*.ts ./.bin/*.ts",
     "deps": "deno cache --reload --lock=deno.lock src/**/*.ts ./.bin/*.ts"
