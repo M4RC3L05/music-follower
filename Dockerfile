@@ -1,4 +1,4 @@
-FROM docker.io/denoland/deno:alpine-1.42.4
+FROM docker.io/denoland/deno:alpine-1.43.1
 
 EXPOSE 4321
 WORKDIR /app
