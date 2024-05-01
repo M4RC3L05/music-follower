@@ -9,13 +9,30 @@ const isPlainObject = (arg: unknown): arg is Record<string, unknown> =>
   arg !== null && arg !== undefined &&
   Object.getPrototypeOf(arg) === Object.prototype;
 
-export const formatError = (error: Error): Record<string, unknown> => ({
-  ...error,
-  cause: error.cause instanceof Error ? formatError(error.cause) : error.cause,
-  message: error.message,
-  name: error.name,
-  stack: error.stack,
-});
+export const formatError = (
+  error: Error | AggregateError,
+): Record<string, unknown> => {
+  const formattedError = {
+    ...error,
+    message: error.message,
+    name: error.name,
+    stack: error.stack,
+  } as Record<string, unknown>;
+
+  if (error.cause) {
+    formattedError.cause = error.cause instanceof Error
+      ? formatError(error.cause)
+      : error.cause;
+  }
+
+  if (error instanceof AggregateError && error.errors?.length > 0) {
+    formattedError.errors = error.errors.map((error) =>
+      error instanceof Error ? formatError(error) : error
+    );
+  }
+
+  return formattedError;
+};
 
 const formatLogArg = (arg: unknown) => {
   if (!isPlainObject(arg)) return;
