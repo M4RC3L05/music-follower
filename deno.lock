@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@db/sqlite@0.11.1": "jsr:@db/sqlite@0.11.1",
       "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.6",
-      "jsr:@m4rc3l05/cron@0.1.5": "jsr:@m4rc3l05/cron@0.1.5",
+      "jsr:@m4rc3l05/cron@1.0.0": "jsr:@m4rc3l05/cron@1.0.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/sqlite-tag@0.1.7": "jsr:@m4rc3l05/sqlite-tag@0.1.7",
       "jsr:@std/assert@^0.217.0": "jsr:@std/assert@0.217.0",
@@ -52,8 +52,8 @@
           "jsr:@std/path@^0.221.0"
         ]
       },
-      "@m4rc3l05/cron@0.1.5": {
-        "integrity": "dfb9818da98de2406b768617635cdd86b54f2465a91ff041eae060fe4d8b8aee",
+      "@m4rc3l05/cron@1.0.0": {
+        "integrity": "925cbbc2682abb7919c98d40dda933274fb17308019f4d1bbb4fdacb29a400b1",
         "dependencies": [
           "jsr:@std/async@0.220.1",
           "npm:cron-parser@4.9.0",
@@ -251,7 +251,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@db/sqlite@0.11.1",
-      "jsr:@m4rc3l05/cron@0.1.5",
+      "jsr:@m4rc3l05/cron@1.0.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/sqlite-tag@0.1.7",
       "jsr:@std/async@0.224.0",

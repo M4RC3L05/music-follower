@@ -22,26 +22,36 @@ processLifecycle.registerService({
 
 processLifecycle.registerService({
   name: "sync-releases-job",
-  boot: () => new Cron(cron.pattern, cron.timezone, cron.tickerTimeout),
+  boot: (pl) => {
+    const db = pl.getService<CustomDatabase>("db");
+    const job = async (signal: AbortSignal) => {
+      try {
+        log.info("Running sync-releases");
+
+        await runner({ abort: signal, db });
+      } catch (error) {
+        log.error("Error running sync-releases task", { error });
+      } finally {
+        log.info("sync-releases completed");
+
+        if (!signal.aborted) {
+          log.info(`Next at ${cronInstance.nextAt()}`);
+        }
+      }
+    };
+    const cronInstance = new Cron(job, {
+      when: cron.pattern,
+      timezone: cron.timezone,
+      tickerTimeout: cron.tickerTimeout,
+    });
+
+    log.info(`Next at ${cronInstance.nextAt()}`);
+
+    cronInstance.start();
+
+    return cronInstance;
+  },
   shutdown: (cron) => cron.stop(),
 });
 
 await processLifecycle.boot();
-
-const cronJob = processLifecycle.getService<Cron>("sync-releases-job");
-const db = processLifecycle.getService<CustomDatabase>("db");
-
-log.info("Registered sync-releases", { nextAt: cronJob.nextAt() });
-
-for await (const signal of cronJob.start()) {
-  try {
-    log.info("Running sync-releases");
-
-    await runner({ abort: signal, db });
-  } catch (error) {
-    log.error("Error running sync-releases task", { error });
-  } finally {
-    log.info("sync-releases completed");
-    log.info(`Next at ${cronJob.nextAt()}`);
-  }
-}
