@@ -1,1 +1,13 @@
 @import url("https://esm.sh/v135/simpledotcss@2.3.0/simple.min.css");
+
+
+#header-actions button,
+#header-actions .button,
+#header-actions input,
+#header-actions select,
+.artist-actions .button,
+.artist-actions button {
+  font-size: .8rem;
+  font-weight: bold;
+  padding: .5rem .7rem;
+}

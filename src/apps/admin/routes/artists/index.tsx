@@ -1,5 +1,5 @@
 import type { Hono } from "hono";
-import { artistsViews } from "#src/apps/admin/views/mod.ts";
+import { ArtistsIndexPage } from "#src/apps/admin/views/artists/pages/index.tsx";
 
 export const index = (router: Hono) => {
   router.get("/", async (c) => {
@@ -20,10 +20,10 @@ export const index = (router: Hono) => {
       pagination.limit ? `&limit=${pagination.limit}` : ""
     }${q ? `&q=${q}` : ""}`;
 
-    return c.html(
-      artistsViews.pages.Index({
-        artists,
-        pagination: {
+    return c.render(
+      <ArtistsIndexPage
+        artists={artists}
+        pagination={{
           currentUrl: c.req.url,
           startLink: previousLink.replace(/\?page=[0-9]+/, "?page=0"),
           previousLink: previousLink,
@@ -32,8 +32,8 @@ export const index = (router: Hono) => {
             /\?page=[0-9]+/,
             `?page=${Math.floor(pagination.total / pagination.limit)}`,
           ),
-        },
-      }),
+        }}
+      />,
     );
   });
 };

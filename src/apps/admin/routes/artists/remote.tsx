@@ -1,5 +1,5 @@
 import type { Hono } from "hono";
-import { artistsViews } from "#src/apps/admin/views/mod.ts";
+import { ArtistsRemotePage } from "#src/apps/admin/views/artists/pages/remote.tsx";
 
 export const remote = (router: Hono) => {
   router.get("/remote", async (c) => {
@@ -13,7 +13,7 @@ export const remote = (router: Hono) => {
         signal: c.req.raw.signal,
       });
 
-    return c.html(artistsViews.pages.Remote({ remoteArtists: data, q }));
+    return c.render(<ArtistsRemotePage q={q} remoteArtists={data} />);
   });
 
   router.post("/remote", async (c) => {

@@ -1,9 +1,9 @@
 import type { Hono } from "hono";
-import { artistsViews } from "#src/apps/admin/views/mod.ts";
+import { ArtistsImportPage } from "#src/apps/admin/views/artists/pages/import.tsx";
 
 export const importPage = (router: Hono) => {
   router.get("/import", (c) => {
-    return c.html(artistsViews.pages.Import());
+    return c.render(<ArtistsImportPage />);
   });
 
   router.post("/import", async (c) => {

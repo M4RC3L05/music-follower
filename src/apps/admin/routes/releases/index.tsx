@@ -1,5 +1,5 @@
 import type { Hono } from "hono";
-import { releasesViews } from "#src/apps/admin/views/mod.ts";
+import { ReleasesIndexPage } from "#src/apps/admin/views/releases/pages/index.tsx";
 
 export const index = (router: Hono) => {
   router.get("/", async (c) => {
@@ -22,10 +22,10 @@ export const index = (router: Hono) => {
       pagination.limit ? `&limit=${pagination.limit}` : ""
     }${q ? `&q=${q}` : ""}${hidden ? `&hidden=${hidden}` : ""}`;
 
-    return c.html(
-      releasesViews.pages.Index({
-        releases,
-        pagination: {
+    return c.render(
+      <ReleasesIndexPage
+        releases={releases}
+        pagination={{
           currentUrl: c.req.url,
           startLink: previousLink.replace(/\?page=[0-9]+/, "?page=0"),
           previousLink: previousLink,
@@ -34,8 +34,8 @@ export const index = (router: Hono) => {
             /\?page=[0-9]+/,
             `?page=${Math.floor(pagination.total / pagination.limit)}`,
           ),
-        },
-      }),
+        }}
+      />,
     );
   });
 };
