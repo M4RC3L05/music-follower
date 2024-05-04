@@ -1,9 +1,16 @@
 #!/usr/bin/env sh
 
-echo "Check code format..."
-echo -n "  => "
-deno fmt --check
+set -e
 
-echo "Check code lint..."
-echo -n "  => "
-deno lint
+FILES=$(git diff --cached --name-only --diff-filter=ACM "*.ts")
+
+if [ -n "$FILES" ]
+then
+  echo "Check code format..."
+  echo -n "  => "
+  deno fmt --check $FILES
+
+  echo "Check code lint..."
+  echo -n "  => "
+  deno lint $FILES
+fi
