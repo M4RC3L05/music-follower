@@ -10,6 +10,10 @@
     "deps:lock": "deno cache --lock=deno.lock --lock-write src/**/*.ts ./.bin/*.ts",
     "deps": "deno cache --reload --lock=deno.lock src/**/*.ts ./.bin/*.ts"
   },
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "hono/jsx"
+  },
   "lint": {
     "rules": {
       "include": ["verbatim-module-syntax"]
