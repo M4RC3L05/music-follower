@@ -1,13 +1,19 @@
 import { deepMerge } from "@std/collections";
 import { encodeBase64 } from "@std/encoding/base64";
+import { Requester } from "@m4rc3l05/requester";
+import * as requesterComposers from "@m4rc3l05/requester/composers";
 
 export abstract class BaseService {
   #baseUrl: string;
   #auth: { username: string; password: string };
+  #requester: ReturnType<Requester["build"]>;
 
   constructor(baseUrl: string, auth: { username: string; password: string }) {
     this.#baseUrl = baseUrl;
     this.#auth = auth;
+    this.#requester = new Requester().with(
+      requesterComposers.timeout({ ms: 10000 }),
+    ).build();
   }
 
   request(
@@ -17,7 +23,7 @@ export abstract class BaseService {
       sendResponse?: boolean;
     },
   ) {
-    return fetch(
+    return this.#requester(
       `${this.#baseUrl}${path}`,
       // deno-lint-ignore no-explicit-any
       deepMerge((init ?? {}) as any, {
@@ -26,9 +32,6 @@ export abstract class BaseService {
             encodeBase64(`${this.#auth.username}:${this.#auth.password}`)
           }`,
         },
-        signal: init?.signal
-          ? AbortSignal.any([init.signal, AbortSignal.timeout(10_000)])
-          : AbortSignal.timeout(10_000),
       }),
     ).then((response) => {
       if (sendResponse) return response;

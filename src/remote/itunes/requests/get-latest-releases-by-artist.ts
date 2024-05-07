@@ -1,6 +1,6 @@
 import config from "config";
-
-import { request } from "#src/common/utils/fetch-utils.ts";
+import { Requester } from "@m4rc3l05/requester";
+import * as requesterComposers from "@m4rc3l05/requester/composers";
 import type {
   ItunesLookupAlbumModel,
   ItunesLookupSongModel,
@@ -16,6 +16,10 @@ type ItunesLookupConfig = {
   getLatestsArtistMusicReleases: { limit: number };
   getLatestsArtistAlbumReleases: { limit: number };
 };
+
+const requester = new Requester().with(
+  requesterComposers.retry({ maxRetries: 3, retryDelay: 2000 }),
+).build();
 
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   artistId: number,
@@ -42,11 +46,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await request(
-    path.toString(),
-    { signal },
-    { maxRetries: 3 },
-  );
+  const response = await requester(path.toString(), { signal });
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", {

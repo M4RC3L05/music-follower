@@ -1,14 +1,19 @@
 import config from "config";
 
 import { makeLogger } from "#src/common/logger/mod.ts";
+import { Requester } from "@m4rc3l05/requester";
+import * as requesterComposers from "@m4rc3l05/requester/composers";
 
 const log = makeLogger("apple-music-source");
 const textDecoder = new TextDecoder();
+const requester = new Requester().with(
+  requesterComposers.timeout({ ms: 10000 }),
+).build();
 
 export const getArtistImage = async (url: string) => {
   log.info("Getting image for artist", { url });
 
-  const response = await fetch(url);
+  const response = await requester(url);
 
   if (!response.ok) {
     log.error("Could not fetch artists image", { status: response.status });

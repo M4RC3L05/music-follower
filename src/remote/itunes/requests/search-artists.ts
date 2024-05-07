@@ -1,5 +1,6 @@
 import config from "config";
-
+import { Requester } from "@m4rc3l05/requester";
+import * as requesterComposers from "@m4rc3l05/requester/composers";
 import type {
   ItunesArtistSearchModel,
   ItunesResponseModel,
@@ -10,6 +11,9 @@ type ItunesSearchConfig = { url: string; searchArtists: { limit: number } };
 const itunesSearchConfig = config.get<ItunesSearchConfig>(
   "remote.itunes.search",
 );
+const requester = new Requester().with(
+  requesterComposers.timeout({ ms: 10000 }),
+).build();
 
 export const searchArtists = async (query: string) => {
   const url = new URL(itunesSearchConfig.url);
@@ -17,7 +21,7 @@ export const searchArtists = async (query: string) => {
   url.searchParams.set("entity", "musicArtist");
   url.searchParams.set("limit", String(itunesSearchConfig.searchArtists.limit));
 
-  const response = await fetch(url.toString());
+  const response = await requester(url.toString());
 
   if (!response.ok) {
     throw new Error("An error ocurred while searching for artists", {
