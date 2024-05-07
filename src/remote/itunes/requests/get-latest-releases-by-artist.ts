@@ -18,6 +18,7 @@ type ItunesLookupConfig = {
 };
 
 const requester = new Requester().with(
+  requesterComposers.timeout({ ms: 10000 }),
   requesterComposers.retry({ maxRetries: 3, retryDelay: 2000 }),
 ).build();
 
