@@ -31,6 +31,7 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
       style="position: sticky; top: 0; padding: 8px 0px; z-index: 2"
     >
       <form
+        style="display: flex; align-items: center; justify-content: center; margin-left: 8px; margin-right: 8px"
         action={new URL(pagination.currentUrl).pathname}
         method="get"
       >
@@ -111,7 +112,10 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
     <main>
       {releases.map(
         (release) => (
-          <section style="box-sizing: border-box">
+          <section
+            style="overflow: auto"
+            class="clearfix"
+          >
             <aside>
               <img
                 src={release.coverUrl}

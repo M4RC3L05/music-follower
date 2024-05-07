@@ -13,7 +13,7 @@ type ArtistsIndexPageProps = {
 };
 
 const ArtistSection: FC<{ artist: Artist }> = ({ artist }) => (
-  <section style="overflow: auto;">
+  <section style="overflow: auto;" class="clearfix">
     <aside>
       <img
         src={artist.imageUrl}
@@ -72,6 +72,7 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
     >
       <form
         id="header-actions"
+        style="display: flex; align-items: center; justify-content: center; margin-left: 8px; margin-right: 8px"
         action={new URL(pagination.currentUrl).pathname}
         method="get"
       >
