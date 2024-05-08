@@ -8,12 +8,12 @@ const log = makeLogger("apple-music-source");
 const textDecoder = new TextDecoder();
 const requester = new Requester().with(
   requesterComposers.timeout({ ms: 10000 }),
-).build();
+);
 
 export const getArtistImage = async (url: string) => {
   log.info("Getting image for artist", { url });
 
-  const response = await requester(url);
+  const response = await requester.fetch(url);
 
   if (!response.ok) {
     log.error("Could not fetch artists image", { status: response.status });

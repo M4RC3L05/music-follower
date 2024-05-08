@@ -19,8 +19,9 @@ type ItunesLookupConfig = {
 
 const requester = new Requester().with(
   requesterComposers.timeout({ ms: 10000 }),
-  requesterComposers.retry({ maxRetries: 3, retryDelay: 2000 }),
-).build();
+  requesterComposers.skip({ n: 1 }, requesterComposers.delay({ ms: 2000 })),
+  requesterComposers.retry({ maxRetries: 3 }),
+);
 
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   artistId: number,
@@ -47,7 +48,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await requester(path.toString(), { signal });
+  const response = await requester.fetch(path.toString(), { signal });
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", {
