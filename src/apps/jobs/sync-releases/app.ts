@@ -119,23 +119,14 @@ export const syncReleases = (db: CustomDatabase) =>
       release.hidden = storedRelease.hidden;
     }
 
-    // Determine the feed position, defaults to using provided `feedAt`.
-    // If the collection/track is a pre-release (the releasedAt is an upcoming date) we use the releasedAt,
-    // this way we maintain the order of the release in the feed.
-    // If it was released, we set the current date, this way, it will appear in the feed in the reverse order as the releases were processed,
-    // the last release being processed will be the first in the list and so on.
-    release.feedAt = release.feedAt ??
-      storedRelease?.feedAt ??
-      (new Date(release.releasedAt).getTime() > Date.now()
-        ? new Date(release.releasedAt)
-        : new Date()).toISOString();
-
     // If for some reason the track has an invalid date (most likely there was no releasedAt in the first place)
     // we set its as the current date or the one in the db if the release was already stored, since we can stream it.
     if (Number.isNaN(new Date(release.releasedAt).getTime())) {
       release.releasedAt = storedRelease?.releasedAt ??
         new Date().toISOString();
     }
+
+    release.feedAt ??= new Date(release.releasedAt).toISOString();
 
     if (release.type === "collection") {
       log.debug("Upserting release", { id: release.id, type: release.type });
