@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import { ReleasesIndexPage } from "#src/apps/admin/views/releases/pages/index.tsx";
 
 export const index = (router: Hono) => {

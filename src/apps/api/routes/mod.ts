@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono } from "@hono/hono";
 import { artistsRoutes } from "#src/apps/api/routes/artists/mod.ts";
 import { releasesRoutes } from "#src/apps/api/routes/releases/mod.ts";
 

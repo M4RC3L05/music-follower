@@ -1,5 +1,5 @@
 import { sql } from "@m4rc3l05/sqlite-tag";
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 
 const requestParametersSchema = vine

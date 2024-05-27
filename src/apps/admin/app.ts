@@ -1,10 +1,10 @@
-import { serveStatic } from "hono/deno";
+import { serveStatic } from "@hono/hono/deno";
 import config from "config";
-import { type ContextVariableMap, Hono } from "hono";
-import { basicAuth } from "hono/basic-auth";
-import { jsxRenderer } from "hono/jsx-renderer";
-import { HTTPException } from "hono/http-exception";
-import { secureHeaders } from "hono/secure-headers";
+import { type ContextVariableMap, Hono } from "@hono/hono";
+import { basicAuth } from "@hono/hono/basic-auth";
+import { jsxRenderer } from "@hono/hono/jsx-renderer";
+import { HTTPException } from "@hono/hono/http-exception";
+import { secureHeaders } from "@hono/hono/secure-headers";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { router } from "#src/apps/admin/routes/mod.ts";
 import type {
@@ -12,10 +12,11 @@ import type {
   ReleasesService,
 } from "#src/apps/admin/services/api/mod.ts";
 import { MainLayout } from "#src/apps/admin/views/common/layouts/main.tsx";
+import { serviceRegister } from "#src/middlewares/mod.ts";
 
 const log = makeLogger("admin");
 
-declare module "hono" {
+declare module "@hono/hono" {
   interface ContextVariableMap {
     services: {
       api: {
@@ -57,12 +58,7 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
     throw new HTTPException(404, { message: "Route not found" });
   });
 
-  app.use("*", (c, next) => {
-    if (deps.services) c.set("services", deps.services);
-    if (deps.shutdown) c.set("shutdown", deps.shutdown);
-
-    return next();
-  });
+  app.use("*", serviceRegister(deps));
   app.use("*", secureHeaders({ referrerPolicy: "same-origin" }));
   app.use("*", async (c, next) => {
     try {

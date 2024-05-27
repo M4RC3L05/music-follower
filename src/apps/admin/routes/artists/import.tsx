@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import { ArtistsImportPage } from "#src/apps/admin/views/artists/pages/import.tsx";
 
 export const importPage = (router: Hono) => {

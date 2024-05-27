@@ -1,7 +1,7 @@
 import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
 import { Feed } from "feed";
-import type { Context } from "hono";
+import type { Context } from "@hono/hono";
 import type { Release } from "#src/database/types/mod.ts";
 import type {
   ItunesLookupAlbumModel,

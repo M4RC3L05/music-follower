@@ -1,5 +1,5 @@
-import type { Hono } from "hono";
-import { stream } from "hono/streaming";
+import type { Hono } from "@hono/hono";
+import { stream } from "@hono/hono/streaming";
 
 export const exportPage = (router: Hono) => {
   router.get("/export", async (c) => {

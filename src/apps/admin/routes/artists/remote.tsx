@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import { ArtistsRemotePage } from "#src/apps/admin/views/artists/pages/remote.tsx";
 
 export const remote = (router: Hono) => {

@@ -1,4 +1,4 @@
-import type { FC } from "hono/jsx";
+import type { FC } from "@hono/hono/jsx";
 import type { ItunesArtistSearchModel } from "#src/remote/mod.ts";
 
 export const ArtistsRemotePage: FC<{

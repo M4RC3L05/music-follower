@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import { ReleasesShowPage } from "#src/apps/admin/views/releases/pages/show.tsx";
 
 export const show = (router: Hono) => {

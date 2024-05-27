@@ -1,7 +1,7 @@
 import { sql } from "@m4rc3l05/sqlite-tag";
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
-import { HTTPException } from "hono/http-exception";
+import { HTTPException } from "@hono/hono/http-exception";
 
 const requestParametersSchema = vine.object({ id: vine.number() });
 const requestParametersValidator = vine.compile(requestParametersSchema);

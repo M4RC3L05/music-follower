@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono } from "@hono/hono";
 import { index } from "#src/apps/admin/routes/releases/index.tsx";
 import { show } from "#src/apps/admin/routes/releases/show.tsx";
 import { update } from "#src/apps/admin/routes/releases/update.ts";

@@ -1,4 +1,4 @@
-import type { FC } from "hono/jsx";
+import type { FC } from "@hono/hono/jsx";
 
 export const ArtistsImportPage: FC = () => (
   <>

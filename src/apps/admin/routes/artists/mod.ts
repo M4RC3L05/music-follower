@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono } from "@hono/hono";
 import { exportPage } from "#src/apps/admin/routes/artists/export.ts";
 import { importPage } from "#src/apps/admin/routes/artists/import.tsx";
 import { index } from "#src/apps/admin/routes/artists/index.tsx";

@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 import { ArtistsIndexPage } from "#src/apps/admin/views/artists/pages/index.tsx";
 
 export const index = (router: Hono) => {

@@ -1,8 +1,9 @@
-import { type ContextVariableMap, Hono } from "hono";
+import { type ContextVariableMap, Hono } from "@hono/hono";
 import type { CustomDatabase } from "#src/database/mod.ts";
 import { feedMiddleware } from "#src/apps/feed/middlewares/feed-middleware.ts";
+import { serviceRegister } from "#src/middlewares/mod.ts";
 
-declare module "hono" {
+declare module "@hono/hono" {
   interface ContextVariableMap {
     database: CustomDatabase;
     shutdown: AbortSignal;
@@ -12,12 +13,7 @@ declare module "hono" {
 export const makeApp = (deps: Partial<ContextVariableMap>) => {
   const app = new Hono();
 
-  app.use("*", (c, next) => {
-    if (deps.database) c.set("database", deps.database);
-    if (deps.shutdown) c.set("shutdown", deps.shutdown);
-
-    return next();
-  });
+  app.use("*", serviceRegister(deps));
 
   app.get("/", feedMiddleware);
 

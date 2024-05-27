@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono } from "@hono/hono";
 import { index } from "#src/apps/admin/routes/pages/index.tsx";
 
 export const pagesRoutes = () => {

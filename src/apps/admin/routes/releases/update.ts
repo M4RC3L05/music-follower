@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 
 export const update = (router: Hono) => {
   router.post("/:id/:type/state", async (c) => {

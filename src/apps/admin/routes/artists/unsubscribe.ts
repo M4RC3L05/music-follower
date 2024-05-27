@@ -1,4 +1,4 @@
-import type { Hono } from "hono";
+import type { Hono } from "@hono/hono";
 
 export const unsubscribe = (router: Hono) => {
   router.post("/:id/unsubscribe", async (c) => {

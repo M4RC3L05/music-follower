@@ -12,7 +12,7 @@
   },
   "compilerOptions": {
     "jsx": "precompile",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "@hono/hono/jsx"
   },
   "lint": {
     "rules": {
@@ -22,6 +22,7 @@
   "imports": {
     "#src/": "./src/",
     "@db/sqlite": "jsr:@db/sqlite@0.11.1",
+    "@hono/hono": "jsr:@hono/hono@4.4.0",
     "@m4rc3l05/cron": "jsr:@m4rc3l05/cron@1.1.0",
     "@m4rc3l05/process-lifecycle": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
     "@m4rc3l05/requester": "jsr:@m4rc3l05/requester@0.4.0",
@@ -35,7 +36,6 @@
     "@vinejs/vine": "npm:@vinejs/vine@2.0.0",
     "config": "npm:config@3.3.11",
     "feed": "npm:feed@4.2.2",
-    "hono": "npm:hono@4.3.5",
     "lodash-es": "npm:lodash-es@4.17.21",
     "ms": "npm:ms@2.1.3"
   }

@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono } from "@hono/hono";
 import { exportArtists } from "#src/apps/api/routes/artists/export.ts";
 import { importArtists } from "#src/apps/api/routes/artists/import.ts";
 import { searchRemote } from "#src/apps/api/routes/artists/search-remote.ts";
