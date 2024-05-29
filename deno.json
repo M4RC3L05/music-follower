@@ -26,7 +26,7 @@
     "@m4rc3l05/cron": "jsr:@m4rc3l05/cron@1.1.0",
     "@m4rc3l05/process-lifecycle": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
     "@m4rc3l05/requester": "jsr:@m4rc3l05/requester@0.4.0",
-    "@m4rc3l05/sqlite-tag": "jsr:@m4rc3l05/sqlite-tag@0.1.7",
+    "@m4rc3l05/sqlite-tag": "jsr:@m4rc3l05/sqlite-tag@0.2.0",
     "@std/async": "jsr:@std/async@0.224.1",
     "@std/collections": "jsr:@std/collections@0.224.2",
     "@std/encoding": "jsr:@std/encoding@0.224.2",

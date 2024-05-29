@@ -8,7 +8,7 @@
       "jsr:@m4rc3l05/cron@1.1.0": "jsr:@m4rc3l05/cron@1.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.4.0": "jsr:@m4rc3l05/requester@0.4.0",
-      "jsr:@m4rc3l05/sqlite-tag@0.1.7": "jsr:@m4rc3l05/sqlite-tag@0.1.7",
+      "jsr:@m4rc3l05/sqlite-tag@0.2.0": "jsr:@m4rc3l05/sqlite-tag@0.2.0",
       "jsr:@std/assert@^0.217.0": "jsr:@std/assert@0.217.0",
       "jsr:@std/assert@^0.221.0": "jsr:@std/assert@0.221.0",
       "jsr:@std/assert@^0.224.0": "jsr:@std/assert@0.224.0",
@@ -22,7 +22,7 @@
       "jsr:@std/encoding@0.224.2": "jsr:@std/encoding@0.224.2",
       "jsr:@std/encoding@^0.221.0": "jsr:@std/encoding@0.221.0",
       "jsr:@std/fmt@^0.221.0": "jsr:@std/fmt@0.221.0",
-      "jsr:@std/fmt@^0.225.0": "jsr:@std/fmt@0.225.1",
+      "jsr:@std/fmt@^0.225.0": "jsr:@std/fmt@0.225.2",
       "jsr:@std/fs@^0.221.0": "jsr:@std/fs@0.221.0",
       "jsr:@std/fs@^0.229.0": "jsr:@std/fs@0.229.1",
       "jsr:@std/io@^0.224.0": "jsr:@std/io@0.224.0",
@@ -31,7 +31,6 @@
       "jsr:@std/path@^0.221.0": "jsr:@std/path@0.221.0",
       "jsr:@std/streams@0.224.1": "jsr:@std/streams@0.224.1",
       "jsr:@std/text@0.224.0": "jsr:@std/text@0.224.0",
-      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:@vinejs/vine@2.0.0": "npm:@vinejs/vine@2.0.0",
       "npm:config@3.3.11": "npm:config@3.3.11",
       "npm:cron-parser@4.9.0": "npm:cron-parser@4.9.0",
@@ -74,8 +73,8 @@
       "@m4rc3l05/requester@0.4.0": {
         "integrity": "acf8e3e2d7f956668fc08a1c8daff4e572220a4362827a1ec2ce0878e7d3ce9f"
       },
-      "@m4rc3l05/sqlite-tag@0.1.7": {
-        "integrity": "3dff883763c06e97f836fe1ab82482a82e897a574072f24029ade6a5d4836fbb"
+      "@m4rc3l05/sqlite-tag@0.2.0": {
+        "integrity": "0d171b68807337d0da93ca0d0764bdc0cdfd1d48b65d8a935ac360e8be41c818"
       },
       "@std/assert@0.217.0": {
         "integrity": "c98e279362ca6982d5285c3b89517b757c1e3477ee9f14eb2fdf80a45aaa9642"
@@ -116,8 +115,8 @@
       "@std/fmt@0.221.0": {
         "integrity": "379fed69bdd9731110f26b9085aeb740606b20428ce6af31ef6bd45ef8efa62a"
       },
-      "@std/fmt@0.225.1": {
-        "integrity": "44a8cb375d7344adb3cb0208b85ea0bde7cdc15224c11188c85e733834ffe356"
+      "@std/fmt@0.225.2": {
+        "integrity": "8a2d157586372f9d5e74cdf0f463a828dee5d09d7de10e56394d8f20dbb5bf26"
       },
       "@std/fs@0.221.0": {
         "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286",
@@ -132,6 +131,7 @@
       "@std/io@0.224.0": {
         "integrity": "0aff885d21d829c050b8a08b1d71b54aed5841aecf227f8d77e99ec529a11e8e",
         "dependencies": [
+          "jsr:@std/assert@^0.224.0",
           "jsr:@std/bytes@^0.224.0"
         ]
       },
@@ -174,10 +174,6 @@
     "npm": {
       "@poppinss/macroable@1.0.2": {
         "integrity": "sha512-xhhEcEvhQC8mP5oOr5hbE4CmUgmw/IPV1jhpGg2xSkzoFrt9i8YVqBQt9744EFesi5F7pBheWozg63RUBM/5JA==",
-        "dependencies": {}
-      },
-      "@types/node@18.16.19": {
-        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
         "dependencies": {}
       },
       "@types/validator@13.11.10": {
@@ -275,7 +271,7 @@
       "jsr:@m4rc3l05/cron@1.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.4.0",
-      "jsr:@m4rc3l05/sqlite-tag@0.1.7",
+      "jsr:@m4rc3l05/sqlite-tag@0.2.0",
       "jsr:@std/async@0.224.1",
       "jsr:@std/collections@0.224.2",
       "jsr:@std/encoding@0.224.2",
