@@ -1,7 +1,7 @@
-import { Database, type Statement } from "@db/sqlite";
-import type { TSqlFragment } from "@m4rc3l05/sqlite-tag";
+import { Database, type RestBindParameters, Statement } from "@db/sqlite";
 import { mapKeys } from "@std/collections";
 import { toCamelCase as camelCase } from "@std/text";
+import type { SqlFragment } from "@m4rc3l05/sqlite-tag";
 import config from "config";
 
 const toCamelCase = <T>(data: unknown) => {
@@ -19,38 +19,55 @@ const toCamelCase = <T>(data: unknown) => {
   return data as T;
 };
 
-export class CustomDatabase extends Database {
-  #cache = new Map<string, Statement>();
+class CustomStmt<T = unknown> extends Statement {
+  override *[Symbol.iterator](): IterableIterator<T> {
+    for (const item of super[Symbol.iterator]()) {
+      yield toCamelCase(item);
+    }
+  }
+}
 
-  #ensureInCache(query: string) {
+export class CustomDatabase extends Database {
+  #cache = new Map<string, CustomStmt>();
+
+  #ensureInCache<T>(query: string) {
     const key = query.trim();
 
     if (!this.#cache.has(key)) {
       this.#cache.set(key, this.prepare(key));
     }
 
-    return this.#cache.get(key) as Statement;
+    return this.#cache.get(key) as CustomStmt<T>;
   }
 
-  get<T>(query: TSqlFragment): T | undefined {
-    const prepared = this.#ensureInCache(query.query);
-
-    // deno-lint-ignore no-explicit-any
-    return toCamelCase<T>(prepared.get(...(query.params as any)));
+  override prepare<T>(sql: string): CustomStmt<T> {
+    return new CustomStmt<T>(this, sql);
   }
 
-  all<T>(query: TSqlFragment): T[] {
+  get<T>(query: SqlFragment): T | undefined {
     const prepared = this.#ensureInCache(query.query);
 
-    // deno-lint-ignore no-explicit-any
-    return toCamelCase<T[]>(prepared.all(...(query.params as any)));
+    return toCamelCase<T>(prepared.get(...query.params as RestBindParameters));
   }
 
-  execute(query: TSqlFragment) {
+  all<T>(query: SqlFragment): T[] {
     const prepared = this.#ensureInCache(query.query);
 
-    // deno-lint-ignore no-explicit-any
-    return prepared.run(...(query.params as any));
+    return toCamelCase<T[]>(
+      prepared.all(...query.params as RestBindParameters),
+    );
+  }
+
+  execute(query: SqlFragment) {
+    const prepared = this.#ensureInCache(query.query);
+
+    return prepared.run(...query.params as RestBindParameters);
+  }
+
+  getPrepared<T>(query: SqlFragment) {
+    return this.prepare<T>(query.query).bind(
+      ...query.params as RestBindParameters,
+    );
   }
 }
 
