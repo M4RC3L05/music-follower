@@ -81,6 +81,7 @@ export const makeDatabase = () => {
   db.exec("pragma temp_store = MEMORY");
   // 4096 page_size * 10000 pages (cache_size) ≃ 40MB
   db.exec("pragma cache_size = 10000");
+  db.exec("pragma optimize = 0x10002");
   db.function("uuid_v4", () => globalThis.crypto.randomUUID());
 
   return db;
