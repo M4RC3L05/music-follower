@@ -22,7 +22,7 @@
   "imports": {
     "#src/": "./src/",
     "@db/sqlite": "jsr:@db/sqlite@0.11.1",
-    "@hono/hono": "jsr:@hono/hono@4.4.4",
+    "@hono/hono": "jsr:@hono/hono@4.4.6",
     "@m4rc3l05/cron": "jsr:@m4rc3l05/cron@1.1.0",
     "@m4rc3l05/process-lifecycle": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
     "@m4rc3l05/requester": "jsr:@m4rc3l05/requester@0.4.0",
