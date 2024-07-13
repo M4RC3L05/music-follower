@@ -9,7 +9,7 @@
     "jobs:sync-releases": "deno run -A --unstable-ffi src/apps/jobs/sync-releases/main.ts",
     "deps:check": "deno cache --frozen src/**/*.ts src/**/*.tsx ./.bin/*.ts",
     "deps:lock": "deno cache --frozen=false src/**/*.ts src/**/*.tsx ./.bin/*.ts",
-    "deps": "deno cache --reload src/**/*.ts src/**/*.tsx ./.bin/*.ts"
+    "deps": "deno cache --reload --frozen src/**/*.ts src/**/*.tsx ./.bin/*.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",
