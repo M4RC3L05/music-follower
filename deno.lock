@@ -114,7 +114,10 @@
         "integrity": "10a78e43d89507deda6e2ce9c7aac24ba2ee468bf74da1101d95b0fbeb463aca"
       },
       "@std/io@0.224.2": {
-        "integrity": "25ecd4f674527d660ab09e571e15eb541e8eb8a4575f2d20bdbf029374a609b5"
+        "integrity": "25ecd4f674527d660ab09e571e15eb541e8eb8a4575f2d20bdbf029374a609b5",
+        "dependencies": [
+          "jsr:@std/bytes@^1.0.0-rc.3"
+        ]
       },
       "@std/log@0.224.3": {
         "integrity": "601af539ff0c80d117fcb6cab7d9339242872d7f7f5fe4862aaf32152d86b9bf",

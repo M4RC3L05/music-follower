@@ -1,14 +1,15 @@
 {
   "name": "@m4rc3l05/rss-hub",
   "version": "16.7.0",
+  "exports": "./deno.json",
   "tasks": {
-    "api": "deno run -A --unstable-ffi src/apps/api/main.ts",
-    "admin": "deno run -A --unstable-ffi src/apps/admin/main.ts",
-    "feed": "deno run -A --unstable-ffi src/apps/feed/main.ts",
+    "api": "deno run -A --unstable-ffi --cached-only src/apps/api/main.ts",
+    "admin": "deno run -A --unstable-ffi --cached-only src/apps/admin/main.ts",
+    "feed": "deno run -A --unstable-ffi --cached-only src/apps/feed/main.ts",
     "jobs:sync-releases": "deno run -A --unstable-ffi src/apps/jobs/sync-releases/main.ts",
-    "dev:dbmate": "deno run -A --no-lock npm:dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
-    "deps:lock": "deno cache --lock=deno.lock --lock-write src/**/*.ts ./.bin/*.ts",
-    "deps": "deno cache --reload --lock=deno.lock src/**/*.ts ./.bin/*.ts"
+    "deps:check": "deno cache --frozen src/**/*.ts src/**/*.tsx ./.bin/*.ts",
+    "deps:lock": "deno cache --frozen=false src/**/*.ts src/**/*.tsx ./.bin/*.ts",
+    "deps": "deno cache --reload src/**/*.ts src/**/*.tsx ./.bin/*.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",
