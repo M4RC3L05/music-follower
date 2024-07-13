@@ -12,7 +12,10 @@ jobs:
       - name: install deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.X
+          deno-version-file: .tool-versions
+
+      - name: check deps
+        run: deno task deps:check
 
       - name: check format
         run: deno fmt --check
