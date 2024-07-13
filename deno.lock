@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@db/sqlite@0.11.1": "jsr:@db/sqlite@0.11.1",
       "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.6",
-      "jsr:@hono/hono@4.4.7": "jsr:@hono/hono@4.4.7",
+      "jsr:@hono/hono@4.4.13": "jsr:@hono/hono@4.4.13",
       "jsr:@m4rc3l05/cron@1.1.0": "jsr:@m4rc3l05/cron@1.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.4.0": "jsr:@m4rc3l05/requester@0.4.0",
@@ -14,22 +14,24 @@
       "jsr:@std/async@0.220.1": "jsr:@std/async@0.220.1",
       "jsr:@std/async@0.224.2": "jsr:@std/async@0.224.2",
       "jsr:@std/bytes@^1.0.0-rc.3": "jsr:@std/bytes@1.0.0",
-      "jsr:@std/collections@1.0.0": "jsr:@std/collections@1.0.0",
-      "jsr:@std/encoding@0.224.3": "jsr:@std/encoding@0.224.3",
+      "jsr:@std/bytes@^1.0.1-rc.3": "jsr:@std/bytes@1.0.2",
+      "jsr:@std/collections@1.0.4": "jsr:@std/collections@1.0.4",
+      "jsr:@std/encoding@1.0.1": "jsr:@std/encoding@1.0.1",
       "jsr:@std/encoding@^0.221.0": "jsr:@std/encoding@0.221.0",
       "jsr:@std/fmt@^0.221.0": "jsr:@std/fmt@0.221.0",
-      "jsr:@std/fmt@^0.225.4": "jsr:@std/fmt@0.225.4",
+      "jsr:@std/fmt@^1.0.0-rc.1": "jsr:@std/fmt@1.0.0-rc.1",
       "jsr:@std/fs@^0.221.0": "jsr:@std/fs@0.221.0",
-      "jsr:@std/fs@^1.0.0-rc.1": "jsr:@std/fs@1.0.0-rc.1",
-      "jsr:@std/io@^0.224.1": "jsr:@std/io@0.224.2",
+      "jsr:@std/fs@^1.0.0-rc.5": "jsr:@std/fs@1.0.0-rc.5",
+      "jsr:@std/io@^0.224.1": "jsr:@std/io@0.224.3",
       "jsr:@std/io@^0.224.2": "jsr:@std/io@0.224.2",
-      "jsr:@std/log@0.224.3": "jsr:@std/log@0.224.3",
+      "jsr:@std/io@^0.224.3": "jsr:@std/io@0.224.3",
+      "jsr:@std/log@0.224.5": "jsr:@std/log@0.224.5",
       "jsr:@std/path@0.217": "jsr:@std/path@0.217.0",
       "jsr:@std/path@^0.221.0": "jsr:@std/path@0.221.0",
       "jsr:@std/streams@0.224.5": "jsr:@std/streams@0.224.5",
       "jsr:@std/text@0.224.3": "jsr:@std/text@0.224.3",
       "npm:@vinejs/vine@2.1.0": "npm:@vinejs/vine@2.1.0",
-      "npm:config@3.3.11": "npm:config@3.3.11",
+      "npm:config@3.3.12": "npm:config@3.3.12",
       "npm:cron-parser@4.9.0": "npm:cron-parser@4.9.0",
       "npm:dayjs@1.11.10": "npm:dayjs@1.11.10",
       "npm:feed@4.2.2": "npm:feed@4.2.2",
@@ -53,8 +55,8 @@
           "jsr:@std/path@^0.221.0"
         ]
       },
-      "@hono/hono@4.4.7": {
-        "integrity": "069f612a089362e59786ea925d19fa834096fe92bf4f4b8dd572c508a3a708aa"
+      "@hono/hono@4.4.13": {
+        "integrity": "bd8a736b7e77c6d285c186beb37526fcb0497f48b759d508e595464b5f2ffd5c"
       },
       "@m4rc3l05/cron@1.1.0": {
         "integrity": "297bd4ea6b7c27d3b4afb8f726e8319e1e79ab887c0ef8612047e7a9e9081a9a",
@@ -88,20 +90,23 @@
       "@std/bytes@1.0.0": {
         "integrity": "9392e72af80adccaa1197912fa19990ed091cb98d5c9c4344b0c301b22d7c632"
       },
-      "@std/collections@1.0.0": {
-        "integrity": "8e4e07ce1df7badae20b80f2678c3ca3bc14cae5514c4e1817a4668ba8b1adf2"
+      "@std/bytes@1.0.2": {
+        "integrity": "fbdee322bbd8c599a6af186a1603b3355e59a5fb1baa139f8f4c3c9a1b3e3d57"
+      },
+      "@std/collections@1.0.4": {
+        "integrity": "bcc90800e489dc6bacdf68eb5dc746d6d8a033cb4f3311f0f9cf8094de429ce7"
       },
       "@std/encoding@0.221.0": {
         "integrity": "d1dd76ef0dc5d14088411e6dc1dede53bf8308c95d1537df1214c97137208e45"
       },
-      "@std/encoding@0.224.3": {
-        "integrity": "5e861b6d81be5359fad4155e591acf17c0207b595112d1840998bb9f476dbdaf"
+      "@std/encoding@1.0.1": {
+        "integrity": "5955c6c542ebb4ce6587c3b548dc71e07a6c27614f1976d1d3887b1196cf4e65"
       },
       "@std/fmt@0.221.0": {
         "integrity": "379fed69bdd9731110f26b9085aeb740606b20428ce6af31ef6bd45ef8efa62a"
       },
-      "@std/fmt@0.225.4": {
-        "integrity": "584c681cf422b70e28959b57e59012823609c087384cbf12d05f67814797fda3"
+      "@std/fmt@1.0.0-rc.1": {
+        "integrity": "3dbbd12f1704c62b5bd33c9ff928c8df47cd5c75f6637201a8c21298b28e43bc"
       },
       "@std/fs@0.221.0": {
         "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286",
@@ -110,8 +115,8 @@
           "jsr:@std/path@^0.221.0"
         ]
       },
-      "@std/fs@1.0.0-rc.1": {
-        "integrity": "10a78e43d89507deda6e2ce9c7aac24ba2ee468bf74da1101d95b0fbeb463aca"
+      "@std/fs@1.0.0-rc.5": {
+        "integrity": "fa1ea439d0bd569bf2811efb5fba393be8f860ee8ab4cd5461bf6f500d0acb08"
       },
       "@std/io@0.224.2": {
         "integrity": "25ecd4f674527d660ab09e571e15eb541e8eb8a4575f2d20bdbf029374a609b5",
@@ -119,12 +124,18 @@
           "jsr:@std/bytes@^1.0.0-rc.3"
         ]
       },
-      "@std/log@0.224.3": {
-        "integrity": "601af539ff0c80d117fcb6cab7d9339242872d7f7f5fe4862aaf32152d86b9bf",
+      "@std/io@0.224.3": {
+        "integrity": "b402edeb99c6b3778d9ae3e9927bc9085b170b41e5a09bbb7064ab2ee394ae2f",
         "dependencies": [
-          "jsr:@std/fmt@^0.225.4",
-          "jsr:@std/fs@^1.0.0-rc.1",
-          "jsr:@std/io@^0.224.2"
+          "jsr:@std/bytes@^1.0.1-rc.3"
+        ]
+      },
+      "@std/log@0.224.5": {
+        "integrity": "4612a45189438441bbd923a4cad1cce5c44c6c4a039195a3e8d831ce38894eee",
+        "dependencies": [
+          "jsr:@std/fmt@^1.0.0-rc.1",
+          "jsr:@std/fs@^1.0.0-rc.5",
+          "jsr:@std/io@^0.224.3"
         ]
       },
       "@std/path@0.217.0": {
@@ -180,8 +191,8 @@
         "integrity": "sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==",
         "dependencies": {}
       },
-      "config@3.3.11": {
-        "integrity": "sha512-Dhn63ZoWCW5EMg4P0Sl/XNsj/7RLiUIA1x1npCy+m2cRwRHzLnt3UtYtxRDMZW/6oOMdWhCzaGYkOcajGgrAOA==",
+      "config@3.3.12": {
+        "integrity": "sha512-Vmx389R/QVM3foxqBzXO8t2tUikYZP64Q6vQxGrsMpREeJc/aWRnPRERXWsYzOHAumx/AOoILWe6nU3ZJL+6Sw==",
         "dependencies": {
           "json5": "json5@2.2.3"
         }
@@ -250,19 +261,19 @@
   "workspace": {
     "dependencies": [
       "jsr:@db/sqlite@0.11.1",
-      "jsr:@hono/hono@4.4.7",
+      "jsr:@hono/hono@4.4.13",
       "jsr:@m4rc3l05/cron@1.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.4.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
       "jsr:@std/async@0.224.2",
-      "jsr:@std/collections@1.0.0",
-      "jsr:@std/encoding@0.224.3",
-      "jsr:@std/log@0.224.3",
+      "jsr:@std/collections@1.0.4",
+      "jsr:@std/encoding@1.0.1",
+      "jsr:@std/log@0.224.5",
       "jsr:@std/streams@0.224.5",
       "jsr:@std/text@0.224.3",
       "npm:@vinejs/vine@2.1.0",
-      "npm:config@3.3.11",
+      "npm:config@3.3.12",
       "npm:feed@4.2.2",
       "npm:lodash-es@4.17.21",
       "npm:ms@2.1.3"
