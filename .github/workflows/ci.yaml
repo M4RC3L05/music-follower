@@ -1,3 +1,4 @@
+---
 name: CI
 
 on: [push, pull_request]
@@ -9,16 +10,28 @@ jobs:
       - name: clone repository
         uses: actions/checkout@v4
 
-      - name: install deno
-        uses: denoland/setup-deno@v1
+      - name: setup tools
+        uses: jdx/mise-action@v2
         with:
-          deno-version-file: .tool-versions
+          install: true
+          cache: true
+
+      - name: setup python tools
+        uses: liskin/gh-pipx@v1
+        with:
+          packages: >-
+            sqlfluff
 
       - name: check deps
         run: deno task deps:check
 
       - name: check format
-        run: deno fmt --check
+        run: |
+          deno fmt --check
+          yamlfmt -dry -lint .
 
       - name: check linting
-        run: deno lint
+        run: |-
+          deno lint
+          yamllint .
+          sqlfluff lint .
