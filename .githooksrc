@@ -1,1 +1,1 @@
-HOOKS=deno,yaml,sql
+HOOKS="deno yaml sql"
