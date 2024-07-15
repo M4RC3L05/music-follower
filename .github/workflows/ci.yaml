@@ -29,6 +29,7 @@ jobs:
         run: |
           deno fmt --check
           yamlfmt -dry -lint .
+          deno run -A npm:prettier -c "./**/*.{html,css}"
 
       - name: check linting
         run: |-
