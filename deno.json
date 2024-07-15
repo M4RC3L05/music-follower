@@ -6,6 +6,7 @@
     "api": "deno run -A --unstable-ffi --cached-only src/apps/api/main.ts",
     "admin": "deno run -A --unstable-ffi --cached-only src/apps/admin/main.ts",
     "feed": "deno run -A --unstable-ffi --cached-only src/apps/feed/main.ts",
+    "dev:dbmate": "deno run -A --no-lock npm:dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
     "jobs:sync-releases": "deno run -A --unstable-ffi src/apps/jobs/sync-releases/main.ts",
     "deps:check": "deno cache --frozen src/**/*.ts src/**/*.tsx ./.bin/*.ts",
     "deps:lock": "deno cache --frozen=false src/**/*.ts src/**/*.tsx ./.bin/*.ts",
