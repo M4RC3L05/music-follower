@@ -32,11 +32,6 @@
     },
     "jobs": {
       "sync-releases": {
-        "cron": {
-          "pattern": "* * * * *",
-          "timezone": "Etc/GMT",
-          "tickerTimeout": 1000
-        },
         "max-release-time": "1 year"
       }
     }

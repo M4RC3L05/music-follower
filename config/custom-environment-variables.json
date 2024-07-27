@@ -44,14 +44,6 @@
     },
     "jobs": {
       "sync-releases": {
-        "cron": {
-          "pattern": "JOBS_SYNC_RELEASES_CRON_PATTERN",
-          "timezone": "JOBS_SYNC_RELEASES_CRON_TIMEZONE",
-          "tickerTimeout": {
-            "__name": "JOBS_SYNC_RELEASES_CRON_TICKER_TIMEOUT",
-            "__format": "number"
-          }
-        },
         "max-release-time": "JOBS_SYNC_RELEASES_MAX_RELEASE_TIME"
       }
     }
