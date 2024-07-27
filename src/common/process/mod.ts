@@ -30,7 +30,7 @@ export const gracefulShutdown = (
       log.info("Process shutdown ended");
     }
 
-    Deno.exit(error ? 1 : 0);
+    Deno.exitCode = error ? 1 : 0;
   });
 
   processLifecycle.on("bootServiceStarted", ({ name }) => {
@@ -80,4 +80,8 @@ export const gracefulShutdown = (
 
     processLifecycle.shutdown();
   });
+
+  globalThis.onunload = () => {
+    processLifecycle.shutdown();
+  };
 };

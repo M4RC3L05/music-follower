@@ -20,7 +20,10 @@ type ItunesLookupConfig = {
 const requester = new Requester().with(
   requesterComposers.timeout({ ms: 10000 }),
   requesterComposers.skip({ n: 1 }, requesterComposers.delay({ ms: 2000 })),
-  requesterComposers.retry({ maxRetries: 3 }),
+  requesterComposers.retry({
+    maxRetries: 3,
+    shouldRetry: ({ error }) => !!error && !["AbortError"].includes(error.name),
+  }),
 );
 
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(

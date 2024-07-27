@@ -1,14 +1,10 @@
-import { Cron } from "@m4rc3l05/cron";
-import config from "config";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { type CustomDatabase, makeDatabase } from "#src/database/mod.ts";
 import runner from "#src/apps/jobs/sync-releases/app.ts";
 import { gracefulShutdown } from "#src/common/process/mod.ts";
 import { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
+import { delay } from "@std/async";
 
-const { cron } = config.get<{
-  cron: { pattern: string; tickerTimeout?: number; timezone: string };
-}>("apps.jobs.sync-releases");
 const log = makeLogger("sync-releases");
 const processLifecycle = new ProcessLifecycle();
 
@@ -21,37 +17,36 @@ processLifecycle.registerService({
 });
 
 processLifecycle.registerService({
-  name: "sync-releases-job",
-  boot: (pl) => {
-    const db = pl.getService<CustomDatabase>("db");
-    const job = async (signal: AbortSignal) => {
+  name: "job",
+  boot: (pc) => {
+    const db = pc.getService<CustomDatabase>("db");
+    const ac = new AbortController();
+    const job = async () => {
       try {
         log.info("Running sync-releases");
 
-        await runner({ abort: signal, db });
+        await runner({ abort: ac.signal, db });
       } catch (error) {
         log.error("Error running sync-releases task", { error });
       } finally {
         log.info("sync-releases completed");
-
-        if (!signal.aborted) {
-          log.info(`Next at ${cronInstance.nextAt()}`);
-        }
       }
     };
-    const cronInstance = new Cron(job, {
-      when: cron.pattern,
-      timezone: cron.timezone,
-      tickerTimeout: cron.tickerTimeout,
-    });
 
-    log.info(`Next at ${cronInstance.nextAt()}`);
-
-    cronInstance.start();
-
-    return cronInstance;
+    return {
+      job: delay(0, { signal: ac.signal }).then(() => job(), (error) => {
+        log.warn("Something stopped deferred delay", { error });
+      }),
+      ac,
+    };
   },
-  shutdown: (cron) => cron.stop(),
+  shutdown: async ({ ac, job }) => {
+    if (!ac.signal.aborted) {
+      ac.abort();
+    }
+
+    await Promise.allSettled([job]);
+  },
 });
 
 await processLifecycle.boot();
