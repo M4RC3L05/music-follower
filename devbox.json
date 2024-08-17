@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
+  "packages": [
+    "deno@1.45",
+    "yamlfmt@latest",
+    "yamllint@latest",
+    "sqlfluff@latest"
+  ],
+  "shell": {
+    "init_hook": [],
+    "scripts": {
+      "check:format": [
+        "set -x",
+        "deno fmt --check",
+        "yamlfmt -dry -lint .",
+        "deno run -A --no-lock npm:prettier -c \"./**/*.{html,css}\""
+      ],
+      "check:lint": [
+        "set -x",
+        "deno lint",
+        "yamllint .",
+        "sqlfluff lint .",
+        "deno run -A --no-lock npm:markdownlint-cli2 \"**/*.{md,markdown}\" \"#{.git-hooks,.devbox}\""
+      ]
+    }
+  }
+}
