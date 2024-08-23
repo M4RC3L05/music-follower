@@ -1,6 +1,6 @@
 {
   "name": "@m4rc3l05/rss-hub",
-  "version": "17.0.0",
+  "version": "17.1.0",
   "exports": "./deno.json",
   "tasks": {
     "api": "deno run -A --unstable-ffi --cached-only src/apps/api/main.ts",
