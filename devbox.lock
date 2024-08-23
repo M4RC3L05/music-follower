@@ -113,6 +113,94 @@
         }
       }
     },
+    "sqlite@3.46.0": {
+      "last_modified": "2024-08-20T18:17:24Z",
+      "resolved": "github:NixOS/nixpkgs/d13fa5a45a34e7c8be33474f58003914430bdc5a#sqlite",
+      "source": "devbox-search",
+      "version": "3.46.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/x9l1l9kd319hg80i54y3cxn32rrzhilz-sqlite-3.46.0-bin",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/khx2r5a5hwjfvn7n9f9p8smcaaxdirv1-sqlite-3.46.0-dev"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/ab934rv6w39hha3q6km0f9l4qca32fkj-sqlite-3.46.0"
+            }
+          ],
+          "store_path": "/nix/store/x9l1l9kd319hg80i54y3cxn32rrzhilz-sqlite-3.46.0-bin"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/s3pjh20w4pdwq36vyskzmydzynyqhlz4-sqlite-3.46.0-bin",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/w49ixxrgkwwjaadcf8nlk01r4ngnall0-sqlite-3.46.0-debug"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/xfjqvpddq5wk9s1337nmavm6ilsr563p-sqlite-3.46.0-dev"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/zz17pkcabaqc8v11jn8x3x9jhxqilzz1-sqlite-3.46.0"
+            }
+          ],
+          "store_path": "/nix/store/s3pjh20w4pdwq36vyskzmydzynyqhlz4-sqlite-3.46.0-bin"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/gms9fw05wx18g3dvf1x226xs9amhzdlm-sqlite-3.46.0-bin",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/05ms62f7nw3id4i900iyaa0fcrc4hkx4-sqlite-3.46.0"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/m1amn8pjdr1gx7alw8vh5a8r2nh42ilc-sqlite-3.46.0-dev"
+            }
+          ],
+          "store_path": "/nix/store/gms9fw05wx18g3dvf1x226xs9amhzdlm-sqlite-3.46.0-bin"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/jmd9xi0qy1jdcllbcjq3cdi0rqnp2v7c-sqlite-3.46.0-bin",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/k4y3071kjmpxlkmbwlq88wq4xkfk3xv3-sqlite-3.46.0-debug"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/pmbv63crfrpqawazlw5q2mgbz9v4kn86-sqlite-3.46.0-dev"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/2qvi978srnw5fikn0cmhk65w4vk2c2kc-sqlite-3.46.0"
+            }
+          ],
+          "store_path": "/nix/store/jmd9xi0qy1jdcllbcjq3cdi0rqnp2v7c-sqlite-3.46.0-bin"
+        }
+      }
+    },
     "yamlfmt@latest": {
       "last_modified": "2024-07-31T08:48:38Z",
       "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#yamlfmt",
