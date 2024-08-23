@@ -19,9 +19,6 @@ jobs:
           cache: true
           experimental: true
 
-      - name: check deps
-        run: deno task deps:check
-
       - name: check format
         run: mise run check:format
 
