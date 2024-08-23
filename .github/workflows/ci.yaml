@@ -12,16 +12,18 @@ jobs:
       - name: clone repository
         uses: actions/checkout@v4
 
-      - name: Install devbox
-        uses: jetify-com/devbox-install-action@v0.9.0
+      - name: Install mise
+        uses: jdx/mise-action@v2
         with:
-          enable-cache: 'true'
+          install: true
+          cache: true
+          experimental: true
 
       - name: check deps
-        run: devbox run -- deno task deps:check
+        run: deno task deps:check
 
       - name: check format
-        run: devbox run check:format
+        run: mise run check:format
 
       - name: check linting
-        run: devbox run check:lint
+        run: mise run check:lint
