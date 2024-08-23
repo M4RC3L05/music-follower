@@ -1,4 +1,3 @@
-import { Cron } from "@m4rc3l05/cron";
 import { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { gracefulShutdown } from "#src/common/process/mod.ts";
@@ -22,39 +21,6 @@ processLifecycle.registerService({
 
     db.close();
   },
-});
-
-processLifecycle.registerService({
-  name: "db-optimise",
-  boot: (pl) => {
-    const db = pl.getService<CustomDatabase>("db");
-    const cronInstance = new Cron((signal) => {
-      log.info("DB optimize runing");
-
-      try {
-        db.exec("pragma optimize");
-
-        log.info("DB optimize completed");
-      } catch (error) {
-        log.error("DB optimize failed", { error });
-      }
-
-      if (!signal.aborted) {
-        log.info(`Next db optimize at ${cronInstance.nextAt()}`);
-      }
-    }, {
-      when: "0 * * * *",
-      timezone: "UTC",
-      tickerTimeout: 300,
-    });
-
-    log.info(`Next db optimize at ${cronInstance.nextAt()}`);
-
-    cronInstance.start();
-
-    return cronInstance;
-  },
-  shutdown: (cron) => cron.stop(),
 });
 
 processLifecycle.registerService({
