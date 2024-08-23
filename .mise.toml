@@ -1,0 +1,26 @@
+[tools]
+deno = "1.45"
+yamlfmt = "latest"
+yamllint = "latest"
+pipx = "latest"
+sqlite = "3.45.1"
+"pipx:sqlfluff/sqlfluff" = "latest"
+
+[tasks."check:format"]
+run = """
+set -ex
+
+deno fmt --check
+deno run -A --no-lock npm:prettier -c "./**/*.{html,css}"
+yamlfmt -dry -lint .
+"""
+
+[tasks."check:lint"]
+run = """
+set -ex
+
+deno lint
+deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}" "#.git-hooks"
+yamllint .
+sqlfluff lint .
+"""
