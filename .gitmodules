@@ -1,3 +1,0 @@
-[submodule ".git-hooks"]
-	path = .git-hooks
-	url = git@github.com:M4RC3L05/.git-hooks.git

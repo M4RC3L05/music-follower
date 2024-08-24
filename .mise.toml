@@ -18,7 +18,7 @@ yamlfmt -dry -lint .
 run = """
 set -ex
 deno lint
-deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}" "#.git-hooks"
+deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}"
 yamllint .
 sqlfluff lint .
 """
