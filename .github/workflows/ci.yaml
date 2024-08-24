@@ -19,6 +19,9 @@ jobs:
           cache: true
           experimental: true
 
+      - name: install deps
+        run: deno task deps
+
       - name: check format
         run: mise run check:format
 

@@ -89,7 +89,13 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
     }),
   );
 
-  app.get("*", jsxRenderer(MainLayout, { docType: true, stream: true }));
+  app.get(
+    "*",
+    jsxRenderer(({ children }) => <MainLayout>{children}</MainLayout>, {
+      docType: true,
+      stream: true,
+    }),
+  );
 
   return app.route("/", router());
 };

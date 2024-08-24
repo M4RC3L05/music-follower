@@ -1,7 +1,7 @@
 import { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { gracefulShutdown } from "#src/common/process/mod.ts";
-import { makeApp } from "#src/apps/admin/app.ts";
+import { makeApp } from "#src/apps/admin/app.tsx";
 import config from "config";
 import {
   ArtistsService,
