@@ -12,6 +12,8 @@ yamlfmt = "latest"
 
 [tasks."check:format"]
 run = """
+#!/usr/bin/env sh
+
 set -ex
 
 deno fmt --check
@@ -21,6 +23,8 @@ yamlfmt -dry -lint $(find . -name '*.yaml')
 
 [tasks."check:lint"]
 run = """
+#!/usr/bin/env sh
+
 set -ex
 
 deno lint
