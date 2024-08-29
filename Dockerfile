@@ -8,6 +8,7 @@ USER deno
 WORKDIR /app
 
 COPY --chown=deno:deno . .
+RUN mkdir /app/data
 
 RUN deno task deps
 
