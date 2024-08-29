@@ -1,8 +1,9 @@
 [settings]
 experimental = true
+pipx_uvx = true
 
 [tools]
-pipx = "latest"
+uv = "latest"
 sqlite = "3.46.0"
 yamllint = "latest"
 deno = "1.46"
