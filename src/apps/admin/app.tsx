@@ -82,6 +82,13 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
 
   app.get("/favicon.ico", serveStatic({ root: "./src/apps/admin/public" }));
   app.get(
+    "/public/deps/*",
+    serveStatic({
+      root: "./node_modules",
+      rewriteRequestPath: (path) => path.replace("/public/deps", ""),
+    }),
+  );
+  app.get(
     "/public/*",
     serveStatic({
       root: "./src/apps/admin/public",

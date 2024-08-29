@@ -18,7 +18,7 @@ set -ex
 
 deno fmt --check
 deno run -A --no-lock npm:prettier -c "./**/*.{html,css}"
-yamlfmt -dry -lint $(find . -name '*.yaml')
+yamlfmt -dry -lint $(find . -type f | grep -E "\\.yaml$|\\.yml$" | grep -v "node_modules/")
 """
 
 [tasks."check:lint"]
@@ -28,8 +28,8 @@ run = """
 set -ex
 
 deno lint
-deno check --no-lock $(find . -name '*.ts' -o -name '*.tsx')
-deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}"
-yamllint $(find . -name '*.yaml')
-sqlfluff lint $(find . -name '*.sql')
+deno check --no-lock $(find . -type f | grep -E "\\.ts$|\\.tsx$" | grep -v "node_modules/")
+deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}" "#node_modules"
+yamllint $(find . -type f | grep -E "\\.yaml$|\\.yml$" | grep -v "node_modules/")
+sqlfluff lint $(find . -type f | grep -E "\\.sql$" | grep -v "node_modules/")
 """

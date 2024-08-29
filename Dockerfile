@@ -1,14 +1,13 @@
 FROM docker.io/denoland/deno:alpine-1.46.1
 
-EXPOSE 4321
-WORKDIR /app
-
-RUN mkdir data
-RUN chown -R deno:deno ./data
+RUN mkdir /app
+RUN chown -R deno:deno /app
 
 USER deno
 
-COPY . .
+WORKDIR /app
+
+COPY --chown=deno:deno . .
 
 RUN deno task deps
 
