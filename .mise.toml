@@ -3,12 +3,12 @@ experimental = true
 pipx_uvx = true
 
 [tools]
-uv = "latest"
+uv = "0.4.6"
 sqlite = "3.46.0"
-yamllint = "latest"
-deno = "1.46"
-yamlfmt = "latest"
-"pipx:sqlfluff/sqlfluff" = "latest"
+yamllint = "1.35.1"
+deno = "1.46.3"
+yamlfmt = "0.13.0"
+"pipx:sqlfluff/sqlfluff" = "3.1.1"
 
 [tasks."check:format"]
 run = """
