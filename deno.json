@@ -1,5 +1,5 @@
 {
-  "name": "@m4rc3l05/rss-hub",
+  "name": "@m4rc3l05/music-follower",
   "version": "17.2.0",
   "exports": "./deno.json",
   "tasks": {
