@@ -11,6 +11,7 @@ COPY --chown=deno:deno . .
 RUN mkdir /app/data
 
 RUN deno task deps
+RUN deno eval --unstable-ffi "import '@db/sqlite'"
 
 VOLUME [ "/app/data" ]
 
