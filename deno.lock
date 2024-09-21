@@ -5,6 +5,7 @@
       "jsr:@db/sqlite@0.12.0": "jsr:@db/sqlite@0.12.0",
       "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.6",
       "jsr:@hono/hono@4.5.11": "jsr:@hono/hono@4.5.11",
+      "jsr:@m4rc3l05/pretty-logs@0.1.0": "jsr:@m4rc3l05/pretty-logs@0.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0": "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.5.0": "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0": "jsr:@m4rc3l05/sqlite-tag@0.2.0",
@@ -15,6 +16,7 @@
       "jsr:@std/collections@1.0.5": "jsr:@std/collections@1.0.5",
       "jsr:@std/encoding@1.0.4": "jsr:@std/encoding@1.0.4",
       "jsr:@std/encoding@^0.221.0": "jsr:@std/encoding@0.221.0",
+      "jsr:@std/fmt@1.0.2": "jsr:@std/fmt@1.0.2",
       "jsr:@std/fmt@^0.221.0": "jsr:@std/fmt@0.221.0",
       "jsr:@std/fmt@^1.0.2": "jsr:@std/fmt@1.0.2",
       "jsr:@std/fs@^0.221.0": "jsr:@std/fs@0.221.0",
@@ -24,6 +26,7 @@
       "jsr:@std/path@0.217": "jsr:@std/path@0.217.0",
       "jsr:@std/path@^0.221.0": "jsr:@std/path@0.221.0",
       "jsr:@std/streams@1.0.4": "jsr:@std/streams@1.0.4",
+      "jsr:@std/streams@1.0.5": "jsr:@std/streams@1.0.5",
       "jsr:@std/text@1.0.5": "jsr:@std/text@1.0.5",
       "npm:@vinejs/vine@2.1.0": "npm:@vinejs/vine@2.1.0",
       "npm:config@3.3.12": "npm:config@3.3.12",
@@ -51,6 +54,13 @@
       },
       "@hono/hono@4.5.11": {
         "integrity": "5bd6b1a3a503efb746fdcf0aae3ac536dd09229d372988bde5db0798ef64ae4f"
+      },
+      "@m4rc3l05/pretty-logs@0.1.0": {
+        "integrity": "1ab8d4a5e8fdfcc215cf7c51a223273a6dd2b33913a83a9963ebffd830c749aa",
+        "dependencies": [
+          "jsr:@std/fmt@1.0.2",
+          "jsr:@std/streams@1.0.5"
+        ]
       },
       "@m4rc3l05/process-lifecycle@0.1.0": {
         "integrity": "f900dfe4d28e8418a0d62f7636f8a3315b7b87a142a059fb50f62aa415d7585b"
@@ -123,6 +133,12 @@
       },
       "@std/streams@1.0.4": {
         "integrity": "a1a5b01c74ca1d2dcaacfe1d4bbb91392e765946d82a3471bd95539adc6da83a",
+        "dependencies": [
+          "jsr:@std/bytes@^1.0.2"
+        ]
+      },
+      "@std/streams@1.0.5": {
+        "integrity": "74e5c73d7d68eeab0d7fba3b05cbee3ba4ac5ae37c5f4e675f67e62f8f53edc4",
         "dependencies": [
           "jsr:@std/bytes@^1.0.2"
         ]
@@ -222,6 +238,7 @@
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.5.11",
+      "jsr:@m4rc3l05/pretty-logs@0.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.0",
       "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
