@@ -5,7 +5,6 @@
       "jsr:@db/sqlite@0.12.0": "jsr:@db/sqlite@0.12.0",
       "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.6",
       "jsr:@hono/hono@4.6.2": "jsr:@hono/hono@4.6.2",
-      "jsr:@m4rc3l05/pretty-logs@0.1.0": "jsr:@m4rc3l05/pretty-logs@0.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1": "jsr:@m4rc3l05/process-lifecycle@0.1.1",
       "jsr:@m4rc3l05/requester@0.5.0": "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0": "jsr:@m4rc3l05/sqlite-tag@0.2.0",
@@ -53,13 +52,6 @@
       },
       "@hono/hono@4.6.2": {
         "integrity": "35fcf3be4687825080b01bed7bbe2ac66f8d8b8939f0bad459661bf3b46d916f"
-      },
-      "@m4rc3l05/pretty-logs@0.1.0": {
-        "integrity": "1ab8d4a5e8fdfcc215cf7c51a223273a6dd2b33913a83a9963ebffd830c749aa",
-        "dependencies": [
-          "jsr:@std/fmt@1.0.2",
-          "jsr:@std/streams@1.0.5"
-        ]
       },
       "@m4rc3l05/process-lifecycle@0.1.1": {
         "integrity": "e6ee5d1a6a6e2aff27ad60c15fa65da6bcb0582387374bc231b24bd901624048"
@@ -231,7 +223,6 @@
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.6.2",
-      "jsr:@m4rc3l05/pretty-logs@0.1.0",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1",
       "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
