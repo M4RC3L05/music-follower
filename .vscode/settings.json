@@ -1,8 +1,11 @@
 {
   "editor.formatOnSave": true,
   "deno.enable": true,
-  "deno.unstable": true,
+  "deno.unstable": ["ffi"],
   "[json]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[jsonc]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[typescript]": {
