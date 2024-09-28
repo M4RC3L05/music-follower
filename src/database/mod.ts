@@ -20,8 +20,8 @@ const toCamelCase = <T>(data: unknown) => {
 };
 
 class CustomStmt<T = unknown> extends Statement {
-  override *[Symbol.iterator](): IterableIterator<T> {
-    for (const item of super[Symbol.iterator]()) {
+  override *iter(...params: RestBindParameters): IterableIterator<T> {
+    for (const item of super.iter(...params)) {
       yield toCamelCase(item);
     }
   }
