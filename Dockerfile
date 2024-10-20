@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY --chown=deno:deno deno.json deno.lock .
 RUN deno install --node-modules-dir
-RUN deno eval --unstable-ffi "import '@db/sqlite'"
+RUN deno eval "import '@db/sqlite'"
 
 COPY --chown=deno:deno . .
 RUN mkdir /app/data
