@@ -3,27 +3,27 @@
   "specifiers": {
     "jsr:@db/sqlite@0.12.0": "0.12.0",
     "jsr:@denosaurs/plug@1": "1.0.6",
-    "jsr:@hono/hono@4.6.2": "4.6.2",
+    "jsr:@hono/hono@4.6.5": "4.6.5",
     "jsr:@m4rc3l05/process-lifecycle@0.1.1": "0.1.1",
     "jsr:@m4rc3l05/requester@0.5.0": "0.5.0",
     "jsr:@m4rc3l05/sqlite-tag@0.2.0": "0.2.0",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@0.221": "0.221.0",
-    "jsr:@std/async@1.0.5": "1.0.5",
+    "jsr:@std/async@1.0.6": "1.0.6",
     "jsr:@std/bytes@^1.0.2": "1.0.2",
-    "jsr:@std/collections@1.0.6": "1.0.6",
+    "jsr:@std/collections@1.0.8": "1.0.8",
     "jsr:@std/encoding@0.221": "0.221.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fmt@0.221": "0.221.0",
     "jsr:@std/fmt@^1.0.2": "1.0.2",
     "jsr:@std/fs@0.221": "0.221.0",
-    "jsr:@std/fs@^1.0.3": "1.0.4",
-    "jsr:@std/io@~0.224.7": "0.224.9",
-    "jsr:@std/log@0.224.7": "0.224.7",
+    "jsr:@std/fs@^1.0.4": "1.0.4",
+    "jsr:@std/io@0.225": "0.225.0",
+    "jsr:@std/log@0.224.9": "0.224.9",
     "jsr:@std/path@0.217": "0.217.0",
     "jsr:@std/path@0.221": "0.221.0",
-    "jsr:@std/streams@1.0.5": "1.0.5",
-    "jsr:@std/text@1.0.6": "1.0.6",
+    "jsr:@std/streams@1.0.7": "1.0.7",
+    "jsr:@std/text@1.0.7": "1.0.7",
     "npm:@vinejs/vine@2.1.0": "2.1.0",
     "npm:config@3.3.12": "3.3.12",
     "npm:feed@4.2.2": "4.2.2",
@@ -48,8 +48,8 @@
         "jsr:@std/path@0.221"
       ]
     },
-    "@hono/hono@4.6.2": {
-      "integrity": "35fcf3be4687825080b01bed7bbe2ac66f8d8b8939f0bad459661bf3b46d916f"
+    "@hono/hono@4.6.5": {
+      "integrity": "68efe4a0ab7c4fb082cb71aa894a25e1c6cfad6d124dc943471e6758a7a1bdee"
     },
     "@m4rc3l05/process-lifecycle@0.1.1": {
       "integrity": "e6ee5d1a6a6e2aff27ad60c15fa65da6bcb0582387374bc231b24bd901624048"
@@ -66,14 +66,14 @@
     "@std/assert@0.221.0": {
       "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
     },
-    "@std/async@1.0.5": {
-      "integrity": "31d68214bfbb31bd4c6022401d484e3964147c76c9220098baa703a39b6c2da6"
+    "@std/async@1.0.6": {
+      "integrity": "6d262156dd35c4a72ee1a2f8679be40264f370cfb92e2e13d4eca2ae05e16f34"
     },
     "@std/bytes@1.0.2": {
       "integrity": "fbdee322bbd8c599a6af186a1603b3355e59a5fb1baa139f8f4c3c9a1b3e3d57"
     },
-    "@std/collections@1.0.6": {
-      "integrity": "60ad252af7df0594e6455f697920a37cd523ad66469fefcc9735e362826ac01d"
+    "@std/collections@1.0.8": {
+      "integrity": "de76692f9121838711b1d2fb5042619c074db26905a87b58cff56cfe1bd6d6d0"
     },
     "@std/encoding@0.221.0": {
       "integrity": "d1dd76ef0dc5d14088411e6dc1dede53bf8308c95d1537df1214c97137208e45"
@@ -97,14 +97,14 @@
     "@std/fs@1.0.4": {
       "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c"
     },
-    "@std/io@0.224.9": {
-      "integrity": "4414664b6926f665102e73c969cfda06d2c4c59bd5d0c603fd4f1b1c840d6ee3"
+    "@std/io@0.225.0": {
+      "integrity": "c1db7c5e5a231629b32d64b9a53139445b2ca640d828c26bf23e1c55f8c079b3"
     },
-    "@std/log@0.224.7": {
-      "integrity": "021941e5cd16de60cb11599c9b36f892aea95987fe66c753922808da27909e18",
+    "@std/log@0.224.9": {
+      "integrity": "419d04e4d93e6b1a0205ac3f94809621cfec3d328d09fec9ec59cafa3b3fcaee",
       "dependencies": [
         "jsr:@std/fmt@^1.0.2",
-        "jsr:@std/fs@^1.0.3",
+        "jsr:@std/fs@^1.0.4",
         "jsr:@std/io"
       ]
     },
@@ -120,14 +120,14 @@
         "jsr:@std/assert@0.221"
       ]
     },
-    "@std/streams@1.0.5": {
-      "integrity": "74e5c73d7d68eeab0d7fba3b05cbee3ba4ac5ae37c5f4e675f67e62f8f53edc4",
+    "@std/streams@1.0.7": {
+      "integrity": "1a93917ca0c58c01b2bfb93647189229b1702677f169b6fb61ad6241cd2e499b",
       "dependencies": [
         "jsr:@std/bytes"
       ]
     },
-    "@std/text@1.0.6": {
-      "integrity": "7051a5b72916900df19a7bbbbbf6412a475d0e3306a28119e9a63199e2608965"
+    "@std/text@1.0.7": {
+      "integrity": "344a820af99fde81ae1d4f9ce586da3f47a58cda25ac4c4dd688166cf5ed97f1"
     }
   },
   "npm": {
@@ -205,16 +205,16 @@
   "workspace": {
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
-      "jsr:@hono/hono@4.6.2",
+      "jsr:@hono/hono@4.6.5",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1",
       "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
-      "jsr:@std/async@1.0.5",
-      "jsr:@std/collections@1.0.6",
+      "jsr:@std/async@1.0.6",
+      "jsr:@std/collections@1.0.8",
       "jsr:@std/encoding@1.0.5",
-      "jsr:@std/log@0.224.7",
-      "jsr:@std/streams@1.0.5",
-      "jsr:@std/text@1.0.6",
+      "jsr:@std/log@0.224.9",
+      "jsr:@std/streams@1.0.7",
+      "jsr:@std/text@1.0.7",
       "npm:@vinejs/vine@2.1.0",
       "npm:config@3.3.12",
       "npm:feed@4.2.2",
