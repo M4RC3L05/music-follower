@@ -3,12 +3,10 @@ experimental = true
 pipx_uvx = true
 
 [tools]
-uv = "0.4.6"
+deno = "2.0.2"
+uv = "0.4.24"
 sqlite = "3.46.0"
-yamllint = "1.35.1"
-deno = "1.46.3"
-yamlfmt = "0.13.0"
-"pipx:sqlfluff/sqlfluff" = "3.1.1"
+"pipx:sqlfluff/sqlfluff" = "3.2.4"
 
 [tasks."check:format"]
 run = """
@@ -17,8 +15,6 @@ run = """
 set -ex
 
 deno fmt --check
-deno run -A --no-lock npm:prettier -c "./**/*.{html,css}"
-yamlfmt -dry -lint $(find . -type f | grep -E "\\.yaml$|\\.yml$" | grep -v "node_modules/")
 """
 
 [tasks."check:lint"]
@@ -29,7 +25,5 @@ set -ex
 
 deno lint
 deno check --no-lock $(find . -type f | grep -E "\\.ts$|\\.tsx$" | grep -v "node_modules/")
-deno run -A --no-lock npm:markdownlint-cli2 "**/*.{md,markdown}" "#node_modules"
-yamllint $(find . -type f | grep -E "\\.yaml$|\\.yml$" | grep -v "node_modules/")
 sqlfluff lint $(find . -type f | grep -E "\\.sql$" | grep -v "node_modules/")
 """

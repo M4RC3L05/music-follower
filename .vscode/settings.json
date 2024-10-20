@@ -1,7 +1,6 @@
 {
   "editor.formatOnSave": true,
   "deno.enable": true,
-  "deno.unstable": ["ffi"],
   "[json]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
@@ -15,6 +14,12 @@
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[markdown]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[yaml]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }

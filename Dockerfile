@@ -1,4 +1,4 @@
-FROM docker.io/denoland/deno:alpine-1.46.3
+FROM docker.io/denoland/deno:alpine-2.0.2
 
 RUN mkdir /app
 RUN chown -R deno:deno /app
@@ -7,11 +7,12 @@ USER deno
 
 WORKDIR /app
 
+COPY --chown=deno:deno deno.json deno.lock .
+RUN deno install --node-modules-dir
+RUN deno eval --unstable-ffi "import '@db/sqlite'"
+
 COPY --chown=deno:deno . .
 RUN mkdir /app/data
-
-RUN deno task deps
-RUN deno eval --unstable-ffi "import '@db/sqlite'"
 
 VOLUME [ "/app/data" ]
 
