@@ -3,13 +3,13 @@
   "specifiers": {
     "jsr:@db/sqlite@0.12.0": "0.12.0",
     "jsr:@denosaurs/plug@1": "1.0.6",
-    "jsr:@hono/hono@4.6.7": "4.6.7",
+    "jsr:@hono/hono@4.6.8": "4.6.8",
     "jsr:@m4rc3l05/process-lifecycle@0.1.1": "0.1.1",
     "jsr:@m4rc3l05/requester@0.5.0": "0.5.0",
     "jsr:@m4rc3l05/sqlite-tag@0.2.0": "0.2.0",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@0.221": "0.221.0",
-    "jsr:@std/async@1.0.7": "1.0.7",
+    "jsr:@std/async@1.0.8": "1.0.8",
     "jsr:@std/collections@1.0.9": "1.0.9",
     "jsr:@std/encoding@0.221": "0.221.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
@@ -21,7 +21,7 @@
     "jsr:@std/log@0.224.9": "0.224.9",
     "jsr:@std/path@0.217": "0.217.0",
     "jsr:@std/path@0.221": "0.221.0",
-    "jsr:@std/text@1.0.7": "1.0.7",
+    "jsr:@std/text@1.0.8": "1.0.8",
     "npm:@vinejs/vine@2.1.0": "2.1.0",
     "npm:config@3.3.12": "3.3.12",
     "npm:feed@4.2.2": "4.2.2",
@@ -46,8 +46,8 @@
         "jsr:@std/path@0.221"
       ]
     },
-    "@hono/hono@4.6.7": {
-      "integrity": "0f26a88942571a8eefea5ff7254691f6961fa2cc24fb777f8cdee282bb62c364"
+    "@hono/hono@4.6.8": {
+      "integrity": "4c92cb895360d93b7bc637c0c3f26449761b2bb160009c0387a37a1d457850f0"
     },
     "@m4rc3l05/process-lifecycle@0.1.1": {
       "integrity": "e6ee5d1a6a6e2aff27ad60c15fa65da6bcb0582387374bc231b24bd901624048"
@@ -64,8 +64,8 @@
     "@std/assert@0.221.0": {
       "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
     },
-    "@std/async@1.0.7": {
-      "integrity": "f4fadc0124432e37cba11e8b3880164661a664de00a65118d976848f32f96290"
+    "@std/async@1.0.8": {
+      "integrity": "c057c5211a0f1d12e7dcd111ab430091301b8d64b4250052a79d277383bc3ba7"
     },
     "@std/collections@1.0.9": {
       "integrity": "4f58104ead08a04a2199374247f07befe50ba01d9cca8cbb23ab9a0419921e71"
@@ -115,8 +115,8 @@
         "jsr:@std/assert@0.221"
       ]
     },
-    "@std/text@1.0.7": {
-      "integrity": "344a820af99fde81ae1d4f9ce586da3f47a58cda25ac4c4dd688166cf5ed97f1"
+    "@std/text@1.0.8": {
+      "integrity": "40ba34caa095f393e78796e5eda37b8b4e2cc6cfd6f51f34658ad7487b1451e4"
     }
   },
   "npm": {
@@ -194,16 +194,15 @@
   "workspace": {
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
-      "jsr:@hono/hono@4.6.7",
+      "jsr:@hono/hono@4.6.8",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1",
       "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
-      "jsr:@std/async@1.0.7",
+      "jsr:@std/async@1.0.8",
       "jsr:@std/collections@1.0.9",
       "jsr:@std/encoding@1.0.5",
       "jsr:@std/log@0.224.9",
-      "jsr:@std/streams@1.0.8",
-      "jsr:@std/text@1.0.7",
+      "jsr:@std/text@1.0.8",
       "npm:@vinejs/vine@2.1.0",
       "npm:config@3.3.12",
       "npm:feed@4.2.2",
