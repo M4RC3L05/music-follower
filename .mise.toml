@@ -3,7 +3,7 @@ experimental = true
 pipx_uvx = true
 
 [tools]
-deno = "2.0.3"
+deno = "2.0.4"
 sqlite = "3.46.0"
 uv = "0.4.27"
 "pipx:sqlfluff/sqlfluff" = "3.2.5"
