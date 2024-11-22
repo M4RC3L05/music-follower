@@ -1,12 +1,9 @@
 [settings]
 experimental = true
-pipx_uvx = true
 
 [tools]
 sqlite = "3.46.0"
-uv = "0.4.27"
-"pipx:sqlfluff/sqlfluff" = "3.2.5"
-deno = "2.0.5"
+deno = "2.1.1"
 
 [tasks."check:format"]
 run = """
@@ -14,7 +11,7 @@ run = """
 
 set -ex
 
-deno fmt --check
+deno fmt --check --log-level trace
 """
 
 [tasks."check:lint"]
@@ -25,5 +22,4 @@ set -ex
 
 deno lint
 deno check --no-lock $(find . -type f | grep -E "\\.ts$|\\.tsx$" | grep -v "node_modules/")
-sqlfluff lint $(find . -type f | grep -E "\\.sql$" | grep -v "node_modules/")
 """

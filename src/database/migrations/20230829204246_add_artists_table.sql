@@ -1,9 +1,9 @@
 -- migrate:up
-
-create table artists (
-  id integer not null primary key,
-  name text not null,
-  "imageUrl" text not null
-) strict, without rowid;
+CREATE TABLE artists (
+  id integer NOT NULL PRIMARY KEY,
+  name text NOT NULL,
+  "imageUrl" text NOT NULL
+) strict,
+without rowid;
 
 -- migrate:down

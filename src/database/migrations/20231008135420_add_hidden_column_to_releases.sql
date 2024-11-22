@@ -1,5 +1,7 @@
 -- migrate:up
-
-alter table releases add column hidden text not null default ('[]');
+ALTER TABLE
+  releases
+ADD
+  COLUMN hidden text NOT NULL DEFAULT ('[]');
 
 -- migrate:down
