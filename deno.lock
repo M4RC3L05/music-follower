@@ -3,22 +3,22 @@
   "specifiers": {
     "jsr:@db/sqlite@0.12.0": "0.12.0",
     "jsr:@denosaurs/plug@1": "1.0.6",
-    "jsr:@hono/hono@4.6.9": "4.6.9",
+    "jsr:@hono/hono@4.6.12": "4.6.12",
     "jsr:@m4rc3l05/process-lifecycle@0.1.1": "0.1.1",
     "jsr:@m4rc3l05/requester@0.5.0": "0.5.0",
     "jsr:@m4rc3l05/sqlite-tag@0.2.0": "0.2.0",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@0.221": "0.221.0",
-    "jsr:@std/async@1.0.8": "1.0.8",
+    "jsr:@std/async@1.0.9": "1.0.9",
     "jsr:@std/collections@1.0.9": "1.0.9",
     "jsr:@std/encoding@0.221": "0.221.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fmt@0.221": "0.221.0",
-    "jsr:@std/fmt@^1.0.2": "1.0.2",
+    "jsr:@std/fmt@^1.0.3": "1.0.3",
     "jsr:@std/fs@0.221": "0.221.0",
-    "jsr:@std/fs@^1.0.4": "1.0.4",
+    "jsr:@std/fs@^1.0.6": "1.0.6",
     "jsr:@std/io@0.225": "0.225.0",
-    "jsr:@std/log@0.224.9": "0.224.9",
+    "jsr:@std/log@0.224.11": "0.224.11",
     "jsr:@std/path@0.217": "0.217.0",
     "jsr:@std/path@0.221": "0.221.0",
     "jsr:@std/text@1.0.8": "1.0.8",
@@ -46,8 +46,8 @@
         "jsr:@std/path@0.221"
       ]
     },
-    "@hono/hono@4.6.9": {
-      "integrity": "4d4975f5c023d4416d26e6dd4a498c56e59958561733f56f55a9be57f023603b"
+    "@hono/hono@4.6.12": {
+      "integrity": "fa0b97fa7c3292f0d9957109ac07a475fe485868795b71b8e3114c284152cdb5"
     },
     "@m4rc3l05/process-lifecycle@0.1.1": {
       "integrity": "e6ee5d1a6a6e2aff27ad60c15fa65da6bcb0582387374bc231b24bd901624048"
@@ -64,8 +64,8 @@
     "@std/assert@0.221.0": {
       "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
     },
-    "@std/async@1.0.8": {
-      "integrity": "c057c5211a0f1d12e7dcd111ab430091301b8d64b4250052a79d277383bc3ba7"
+    "@std/async@1.0.9": {
+      "integrity": "c6472fd0623b3f3daae023cdf7ca5535e1b721dfbf376562c0c12b3fb4867f91"
     },
     "@std/collections@1.0.9": {
       "integrity": "4f58104ead08a04a2199374247f07befe50ba01d9cca8cbb23ab9a0419921e71"
@@ -79,8 +79,8 @@
     "@std/fmt@0.221.0": {
       "integrity": "379fed69bdd9731110f26b9085aeb740606b20428ce6af31ef6bd45ef8efa62a"
     },
-    "@std/fmt@1.0.2": {
-      "integrity": "87e9dfcdd3ca7c066e0c3c657c1f987c82888eb8103a3a3baa62684ffeb0f7a7"
+    "@std/fmt@1.0.3": {
+      "integrity": "97765c16aa32245ff4e2204ecf7d8562496a3cb8592340a80e7e554e0bb9149f"
     },
     "@std/fs@0.221.0": {
       "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286",
@@ -89,17 +89,17 @@
         "jsr:@std/path@0.221"
       ]
     },
-    "@std/fs@1.0.4": {
-      "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c"
+    "@std/fs@1.0.6": {
+      "integrity": "42b56e1e41b75583a21d5a37f6a6a27de9f510bcd36c0c85791d685ca0b85fa2"
     },
     "@std/io@0.225.0": {
       "integrity": "c1db7c5e5a231629b32d64b9a53139445b2ca640d828c26bf23e1c55f8c079b3"
     },
-    "@std/log@0.224.9": {
-      "integrity": "419d04e4d93e6b1a0205ac3f94809621cfec3d328d09fec9ec59cafa3b3fcaee",
+    "@std/log@0.224.11": {
+      "integrity": "df5e5a6d6ab8bcea016a17982cd2435f65234d6618bf631925587c0b2eae2a4e",
       "dependencies": [
-        "jsr:@std/fmt@^1.0.2",
-        "jsr:@std/fs@^1.0.4",
+        "jsr:@std/fmt@^1.0.3",
+        "jsr:@std/fs@^1.0.6",
         "jsr:@std/io"
       ]
     },
@@ -194,14 +194,14 @@
   "workspace": {
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
-      "jsr:@hono/hono@4.6.9",
+      "jsr:@hono/hono@4.6.12",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1",
       "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
-      "jsr:@std/async@1.0.8",
+      "jsr:@std/async@1.0.9",
       "jsr:@std/collections@1.0.9",
       "jsr:@std/encoding@1.0.5",
-      "jsr:@std/log@0.224.9",
+      "jsr:@std/log@0.224.11",
       "jsr:@std/text@1.0.8",
       "npm:@vinejs/vine@2.1.0",
       "npm:config@3.3.12",
