@@ -3,7 +3,7 @@ experimental = true
 
 [tools]
 sqlite = "3.46.0"
-deno = "2.1.1"
+deno = "2.1.2"
 
 [tasks."check:format"]
 run = """
