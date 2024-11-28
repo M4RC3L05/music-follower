@@ -7,7 +7,7 @@
     "admin": "deno run -A --cached-only src/apps/admin/main.ts",
     "feed": "deno run -A --cached-only src/apps/feed/main.ts",
     "pretty-logs": "deno run --no-lock jsr:@m4rc3l05/pretty-logs@0.2.2/bin/deno",
-    "dev:dbmate": "deno run -Ar --no-lock npm:dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
+    "dev:dbmate": "deno run -Ar --no-lock npm:dbmate@2.15.0 -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
     "jobs:sync-releases": "deno run -A --cached-only src/apps/jobs/sync-releases/main.ts"
   },
   "compilerOptions": {
