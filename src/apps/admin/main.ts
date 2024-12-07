@@ -25,10 +25,12 @@ processLifecycle.registerService({
           artistsService: new ArtistsService(
             servicesConfig.api.url,
             servicesConfig.api.basicAuth,
+            pl.signal,
           ),
           releasesService: new ReleasesService(
             servicesConfig.api.url,
             servicesConfig.api.basicAuth,
+            pl.signal,
           ),
         },
       },

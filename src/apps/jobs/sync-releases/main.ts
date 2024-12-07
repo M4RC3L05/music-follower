@@ -3,7 +3,6 @@ import { type CustomDatabase, makeDatabase } from "#src/database/mod.ts";
 import runner from "#src/apps/jobs/sync-releases/app.ts";
 import { gracefulShutdown } from "#src/common/process/mod.ts";
 import { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
-import { delay } from "@std/async";
 
 const log = makeLogger("sync-releases");
 const processLifecycle = new ProcessLifecycle();
@@ -20,12 +19,11 @@ processLifecycle.registerService({
   name: "job",
   boot: (pc) => {
     const db = pc.getService<CustomDatabase>("db");
-    const ac = new AbortController();
     const job = async () => {
       try {
         log.info("Running sync-releases");
 
-        await runner({ abort: ac.signal, db });
+        await runner({ abort: pc.signal, db });
       } catch (error) {
         log.error("Error running sync-releases task", { error });
       } finally {
@@ -33,20 +31,9 @@ processLifecycle.registerService({
       }
     };
 
-    return {
-      job: delay(0, { signal: ac.signal }).then(() => job(), (error) => {
-        log.warn("Something stopped deferred delay", { error });
-      }),
-      ac,
-    };
+    return { job: job() };
   },
-  shutdown: async ({ ac, job }) => {
-    if (!ac.signal.aborted) {
-      ac.abort();
-    }
-
-    await Promise.allSettled([job]);
-  },
+  shutdown: ({ job }) => job,
 });
 
 await processLifecycle.boot();

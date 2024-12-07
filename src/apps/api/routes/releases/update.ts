@@ -1,6 +1,6 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
+import { HTTPException } from "@hono/hono/http-exception";
 
 const requestParametersSchema = vine
   .object({ id: vine.number(), type: vine.string() });
@@ -17,12 +17,16 @@ export const update = (router: Hono) => {
       requestBodyValidator.validate(await c.req.json()),
     ]);
 
-    c.get("database").execute(sql`
+    const [item] = c.get("database").sql<{ id: string }>`
       update releases
       set hidden = ${JSON.stringify(hidden)}
       where id = ${id} and type = ${type}
-      returning *
-    `);
+      returning id
+    `;
+
+    if (!item) {
+      throw new HTTPException(404, { message: "Could not find release" });
+    }
 
     return c.body(null, 204);
   });

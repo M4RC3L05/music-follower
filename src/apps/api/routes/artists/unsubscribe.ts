@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 import { HTTPException } from "@hono/hono/http-exception";
@@ -10,12 +9,13 @@ export const unsubscribe = (router: Hono) => {
   return router.delete("/:id", async (c) => {
     const { id } = await requestParametersValidator.validate(c.req.param());
 
-    const changes = c.get("database").execute(sql`
+    const [item] = c.get("database").sql`
       delete from artists
       where id = ${id}
-    `);
+      returning id
+    `;
 
-    if (changes <= 0) {
+    if (!item) {
       throw new HTTPException(404, { message: "Artists not found" });
     }
 

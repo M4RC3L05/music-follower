@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 import {
@@ -24,11 +23,12 @@ export const searchRemote = (router: Hono) => {
 
     const artistsSearch = await itunesRequests.searchArtists(
       remoteArtistQuery,
+      c.get("shutdown"),
     );
 
     const images = await Promise.allSettled(
       artistsSearch.results.map(({ artistLinkUrl }) =>
-        appleMusicRequests.getArtistImage(artistLinkUrl)
+        appleMusicRequests.getArtistImage(artistLinkUrl, c.get("shutdown"))
       ),
     );
 
@@ -37,11 +37,10 @@ export const searchRemote = (router: Hono) => {
       image: images.at(index)?.status === "rejected"
         ? config.get<string>("media.placeholderImage")
         : (images.at(index) as PromiseFulfilledResult<string>).value,
-      isSubscribed: c
+      isSubscribed: (c
         .get("database")
-        .get(
-          sql`select id from artists where id = ${artist.artistId}`,
-        ) !== undefined,
+        .sql`select id from artists where id = ${artist.artistId}`[0]) !==
+        undefined,
     }));
 
     return c.json({ data: remoteArtists }, 200);

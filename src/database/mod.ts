@@ -1,73 +1,27 @@
-import { Database, type RestBindParameters, Statement } from "@db/sqlite";
-import { mapKeys } from "@std/collections";
-import { toCamelCase as camelCase } from "@std/text";
-import type { SqlFragment } from "@m4rc3l05/sqlite-tag";
+import { Database, type Statement } from "@db/sqlite";
 import config from "config";
 
-const toCamelCase = <T>(data: unknown) => {
-  if (Array.isArray(data)) {
-    return data.map((item) => mapKeys(item, (key) => camelCase(key))) as T;
-  }
-
-  if (typeof data === "object") {
-    return mapKeys(
-      data as Record<string, unknown>,
-      (key) => camelCase(key),
-    ) as T;
-  }
-
-  return data as T;
-};
-
-class CustomStmt<T = unknown> extends Statement {
-  override *iter(...params: RestBindParameters): IterableIterator<T> {
-    for (const item of super.iter(...params)) {
-      yield toCamelCase(item);
-    }
-  }
-}
-
 export class CustomDatabase extends Database {
-  #cache = new Map<string, CustomStmt>();
+  #cache = new Map<string, Statement>();
 
-  #ensureInCache<T>(query: string) {
+  #ensureInCache(query: string) {
     const key = query.trim();
 
     if (!this.#cache.has(key)) {
-      this.#cache.set(key, this.prepare(key));
+      this.#cache.set(key, super.prepare(key));
     }
 
-    return this.#cache.get(key) as CustomStmt<T>;
+    return this.#cache.get(key)!;
   }
 
-  override prepare<T>(sql: string): CustomStmt<T> {
-    return new CustomStmt<T>(this, sql);
+  override prepare(sql: string): Statement {
+    return this.#ensureInCache(sql);
   }
 
-  get<T>(query: SqlFragment): T | undefined {
-    const prepared = this.#ensureInCache(query.query);
+  override close(): void {
+    super.close();
 
-    return toCamelCase<T>(prepared.get(...query.params as RestBindParameters));
-  }
-
-  all<T>(query: SqlFragment): T[] {
-    const prepared = this.#ensureInCache(query.query);
-
-    return toCamelCase<T[]>(
-      prepared.all(...query.params as RestBindParameters),
-    );
-  }
-
-  execute(query: SqlFragment) {
-    const prepared = this.#ensureInCache(query.query);
-
-    return prepared.run(...query.params as RestBindParameters);
-  }
-
-  getPrepared<T>(query: SqlFragment) {
-    return this.prepare<T>(query.query).bind(
-      ...query.params as RestBindParameters,
-    );
+    this.#cache.clear();
   }
 }
 

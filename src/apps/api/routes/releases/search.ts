@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 import type { Release } from "#src/database/types/mod.ts";
@@ -16,53 +15,45 @@ const requestQueryValidator = vine.compile(requestQuerySchema);
 export const search = (router: Hono) => {
   return router.get("/", async (c) => {
     const query = await requestQueryValidator.validate(c.req.query());
-    const sqlQuery = sql`
+
+    const data = c.get("database").sql<Release & { totalItems: number }>`
+      with items as (
         select *
         from releases
-        where (
-          ${
-      sql.join(
-        [
-          sql.if(
-            () => !!query.q && query.q.length > 0,
-            () =>
-              sql`("artistName" like ${`%${query.q}%`} or name like ${`%${query.q}%`})`,
-          ),
-          sql.if(
-            () => !!query.hidden && query.hidden.length > 0,
-            () =>
-              sql`(exists (
-                  select true from json_each(hidden)
-                  where json_each.value is ${query.hidden}
-                ))`,
-          ),
-          sql.if(
-            () => !!query.notHidden && query.notHidden.length > 0,
-            () =>
-              sql`(not exists (
-                  select true from json_each(hidden)
-                  where json_each.value is ${query.notHidden}
-                ))`,
-          ),
-        ],
-        sql` and `,
+        where
+          iif(
+            ${query.q ?? -1} = -1,
+            true,
+                "artistName" like ${`%${query.q ?? -1}%`}
+            or name like ${`%${query.q ?? -1}%`}
+          )
+          and
+          iif(
+            ${query.hidden ?? -1} = -1,
+            true,
+            exists (
+              select true from json_each(hidden)
+              where json_each.value is ${query.hidden ?? -1}
+            )
+          )
+          and
+          iif(
+            ${query.notHidden ?? -1} = -1,
+            true,
+            not exists (
+              select true from json_each(hidden)
+              where json_each.value is ${query.notHidden ?? -1}
+            )
+          )
       )
-    }
-        )
-        order by "releasedAt" desc
-      `;
-
-    const { total } = c
-      .get("database")
-      .get<{ total: number }>(
-        sql`select count(id) as total from (${sqlQuery})`,
-      )!;
-
-    const data = c.get("database").all<Release>(
-      sql`${sqlQuery}
-          limit ${query.limit}
-          offset ${query.page * query.limit}`,
-    );
+      select *, ti."totalItems" as "totalItems"
+      from 
+        items,
+        (select count(id) as "totalItems" from items) as ti
+      order by "releasedAt" desc
+      limit ${query.limit}
+      offset ${query.page * query.limit}
+    `;
 
     return c.json(
       {
@@ -71,9 +62,9 @@ export const search = (router: Hono) => {
           previous: Math.max(query.page - 1, 0),
           next: Math.min(
             query.page + 1,
-            Math.floor(total / query.limit),
+            Math.floor((data[0]?.totalItems ?? 0) / query.limit),
           ),
-          total,
+          total: data[0]?.totalItems ?? 0,
           limit: query.limit,
         },
       },

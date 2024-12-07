@@ -7,6 +7,7 @@ import { errorMapper, serviceRegister } from "#src/middlewares/mod.ts";
 import type { CustomDatabase } from "#src/database/mod.ts";
 import type { ContextVariableMap } from "@hono/hono";
 import { router } from "#src/apps/api/routes/mod.ts";
+import { HTTPException } from "@hono/hono/http-exception";
 
 declare module "@hono/hono" {
   interface ContextVariableMap {
@@ -30,8 +31,13 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
   app.onError(
     errorMapper({
       defaultMapper: errorMappers.defaultErrorMapper,
+      mappers: [errorMappers.validationErrorMapper],
     }),
   );
+
+  app.notFound(() => {
+    throw new HTTPException(404, { message: "Route not found" });
+  });
 
   return app.route("/api", router());
 };

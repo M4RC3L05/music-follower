@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 import type { Release } from "#src/database/types/mod.ts";
@@ -16,14 +15,14 @@ export const get = (router: Hono) => {
       c.req.param(),
     );
 
-    const release = c.get("database").get<Release>(sql`
-        select *
-        from releases
-        where id = ${id} and type = ${type}
-      `);
+    const [release] = c.get("database").sql<Release>`
+      select *
+      from releases
+      where id = ${id} and type = ${type}
+    `;
 
     if (!release) {
-      throw new HTTPException(404, { message: "Could not find feed" });
+      throw new HTTPException(404, { message: "Could not find release" });
     }
 
     return c.json({ data: release }, 200);

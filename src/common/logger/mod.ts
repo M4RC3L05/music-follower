@@ -4,6 +4,8 @@ import {
   Logger,
   type LogRecord,
 } from "@std/log";
+import { mapValues } from "@std/collections";
+import { memoize } from "@std/cache";
 
 const isPlainObject = (arg: unknown): arg is Record<string, unknown> =>
   arg !== null && arg !== undefined &&
@@ -22,6 +24,11 @@ export const formatError = (
   if (error.cause) {
     formattedError.cause = error.cause instanceof Error
       ? formatError(error.cause)
+      : typeof error.cause === "object"
+      ? mapValues(
+        error.cause,
+        (value: unknown) => value instanceof Error ? formatError(value) : value,
+      )
       : error.cause;
   }
 
@@ -57,7 +64,7 @@ const logFormatter = (
   return JSON.stringify(payload);
 };
 
-export const makeLogger = (namespace: string) => {
+export const makeLogger = memoize((namespace: string) => {
   const handlers: BaseHandler[] = [];
 
   if (Deno.env.get("ENV") !== "test") {
@@ -70,4 +77,4 @@ export const makeLogger = (namespace: string) => {
   }
 
   return new Logger(namespace, "INFO", { handlers: handlers });
-};
+}, { getKey: (namespace) => namespace });

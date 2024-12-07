@@ -5,27 +5,34 @@
     "jsr:@denosaurs/plug@1": "1.0.6",
     "jsr:@hono/hono@4.6.12": "4.6.12",
     "jsr:@m4rc3l05/process-lifecycle@0.1.1": "0.1.1",
-    "jsr:@m4rc3l05/requester@0.5.0": "0.5.0",
     "jsr:@m4rc3l05/sqlite-tag@0.2.0": "0.2.0",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@0.221": "0.221.0",
+    "jsr:@std/assert@1.0.8": "1.0.8",
+    "jsr:@std/assert@^1.0.8": "1.0.8",
     "jsr:@std/async@1.0.9": "1.0.9",
+    "jsr:@std/async@^1.0.8": "1.0.9",
+    "jsr:@std/cache@0.1.3": "0.1.3",
     "jsr:@std/collections@1.0.9": "1.0.9",
+    "jsr:@std/data-structures@^1.0.4": "1.0.4",
     "jsr:@std/encoding@0.221": "0.221.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fmt@0.221": "0.221.0",
     "jsr:@std/fmt@^1.0.3": "1.0.3",
     "jsr:@std/fs@0.221": "0.221.0",
+    "jsr:@std/fs@^1.0.5": "1.0.6",
     "jsr:@std/fs@^1.0.6": "1.0.6",
+    "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/io@0.225": "0.225.0",
     "jsr:@std/log@0.224.11": "0.224.11",
     "jsr:@std/path@0.217": "0.217.0",
     "jsr:@std/path@0.221": "0.221.0",
+    "jsr:@std/path@^1.0.8": "1.0.8",
+    "jsr:@std/testing@1.0.5": "1.0.5",
     "jsr:@std/text@1.0.8": "1.0.8",
     "npm:@vinejs/vine@2.1.0": "2.1.0",
     "npm:config@3.3.12": "3.3.12",
     "npm:feed@4.2.2": "4.2.2",
-    "npm:lodash-es@4.17.21": "4.17.21",
     "npm:ms@2.1.3": "2.1.3",
     "npm:simpledotcss@2.3.2": "2.3.2"
   },
@@ -52,9 +59,6 @@
     "@m4rc3l05/process-lifecycle@0.1.1": {
       "integrity": "e6ee5d1a6a6e2aff27ad60c15fa65da6bcb0582387374bc231b24bd901624048"
     },
-    "@m4rc3l05/requester@0.5.0": {
-      "integrity": "e54fc9197b15bd2e70b739439f85394edd43fbb22934f04cd7d8384aa18ca417"
-    },
     "@m4rc3l05/sqlite-tag@0.2.0": {
       "integrity": "0d171b68807337d0da93ca0d0764bdc0cdfd1d48b65d8a935ac360e8be41c818"
     },
@@ -64,11 +68,23 @@
     "@std/assert@0.221.0": {
       "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
     },
+    "@std/assert@1.0.8": {
+      "integrity": "ebe0bd7eb488ee39686f77003992f389a06c3da1bbd8022184804852b2fa641b",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
     "@std/async@1.0.9": {
       "integrity": "c6472fd0623b3f3daae023cdf7ca5535e1b721dfbf376562c0c12b3fb4867f91"
     },
+    "@std/cache@0.1.3": {
+      "integrity": "8d3ab61d994d0915295048999f34a8ce2280f0e4d1f4cccb08c9e3d297c0c6ec"
+    },
     "@std/collections@1.0.9": {
       "integrity": "4f58104ead08a04a2199374247f07befe50ba01d9cca8cbb23ab9a0419921e71"
+    },
+    "@std/data-structures@1.0.4": {
+      "integrity": "fa0e20c11eb9ba673417450915c750a0001405a784e2a4e0c3725031681684a0"
     },
     "@std/encoding@0.221.0": {
       "integrity": "d1dd76ef0dc5d14088411e6dc1dede53bf8308c95d1537df1214c97137208e45"
@@ -90,7 +106,13 @@
       ]
     },
     "@std/fs@1.0.6": {
-      "integrity": "42b56e1e41b75583a21d5a37f6a6a27de9f510bcd36c0c85791d685ca0b85fa2"
+      "integrity": "42b56e1e41b75583a21d5a37f6a6a27de9f510bcd36c0c85791d685ca0b85fa2",
+      "dependencies": [
+        "jsr:@std/path@^1.0.8"
+      ]
+    },
+    "@std/internal@1.0.5": {
+      "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
     },
     "@std/io@0.225.0": {
       "integrity": "c1db7c5e5a231629b32d64b9a53139445b2ca640d828c26bf23e1c55f8c079b3"
@@ -113,6 +135,20 @@
       "integrity": "0a36f6b17314ef653a3a1649740cc8db51b25a133ecfe838f20b79a56ebe0095",
       "dependencies": [
         "jsr:@std/assert@0.221"
+      ]
+    },
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    },
+    "@std/testing@1.0.5": {
+      "integrity": "6e693cbec94c81a1ad3df668685c7ba8e20742bb10305bc7137faa5cf16d2ec4",
+      "dependencies": [
+        "jsr:@std/assert@^1.0.8",
+        "jsr:@std/async@^1.0.8",
+        "jsr:@std/data-structures",
+        "jsr:@std/fs@^1.0.5",
+        "jsr:@std/internal",
+        "jsr:@std/path@^1.0.8"
       ]
     },
     "@std/text@1.0.8": {
@@ -166,9 +202,6 @@
     "json5@2.2.3": {
       "integrity": "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="
     },
-    "lodash-es@4.17.21": {
-      "integrity": "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
-    },
     "ms@2.1.3": {
       "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
@@ -196,17 +229,18 @@
       "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.6.12",
       "jsr:@m4rc3l05/process-lifecycle@0.1.1",
-      "jsr:@m4rc3l05/requester@0.5.0",
       "jsr:@m4rc3l05/sqlite-tag@0.2.0",
+      "jsr:@std/assert@1.0.8",
       "jsr:@std/async@1.0.9",
+      "jsr:@std/cache@0.1.3",
       "jsr:@std/collections@1.0.9",
       "jsr:@std/encoding@1.0.5",
       "jsr:@std/log@0.224.11",
+      "jsr:@std/testing@1.0.5",
       "jsr:@std/text@1.0.8",
       "npm:@vinejs/vine@2.1.0",
       "npm:config@3.3.12",
       "npm:feed@4.2.2",
-      "npm:lodash-es@4.17.21",
       "npm:ms@2.1.3",
       "npm:simpledotcss@2.3.2"
     ]

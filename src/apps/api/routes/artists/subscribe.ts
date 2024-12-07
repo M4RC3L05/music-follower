@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
 
@@ -16,13 +15,13 @@ export const subscribe = (router: Hono) => {
       await c.req.json(),
     );
 
-    const inserted = c.get("database").get(sql`
-        insert into artists
-          (id, name, "imageUrl")
-        values
-          (${id}, ${name}, ${image})
-        returning *;
-      `);
+    const [inserted] = c.get("database").sql`
+      insert into artists
+        (id, name, "imageUrl")
+      values
+        (${id}, ${name}, ${image})
+      returning *;
+    `;
 
     return c.json({ data: inserted }, 201);
   });

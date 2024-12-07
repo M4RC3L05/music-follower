@@ -81,7 +81,7 @@ export const gracefulShutdown = (
     processLifecycle.shutdown();
   });
 
-  globalThis.onunload = () => {
+  globalThis.onbeforeunload = () => {
     processLifecycle.shutdown();
   };
 };

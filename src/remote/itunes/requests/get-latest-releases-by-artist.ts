@@ -1,11 +1,10 @@
 import config from "config";
-import { Requester } from "@m4rc3l05/requester";
-import * as requesterComposers from "@m4rc3l05/requester/composers";
 import type {
   ItunesLookupAlbumModel,
   ItunesLookupSongModel,
   ItunesResponseModel,
 } from "#src/remote/itunes/types.ts";
+import { deadline, retry } from "@std/async";
 
 const itunesLookupConfig = config.get<ItunesLookupConfig>(
   "remote.itunes.lookup",
@@ -16,15 +15,6 @@ type ItunesLookupConfig = {
   getLatestsArtistMusicReleases: { limit: number };
   getLatestsArtistAlbumReleases: { limit: number };
 };
-
-const requester = new Requester().with(
-  requesterComposers.timeout({ ms: 10000 }),
-  requesterComposers.skip({ n: 1 }, requesterComposers.delay({ ms: 2000 })),
-  requesterComposers.retry({
-    maxRetries: 3,
-    shouldRetry: ({ error }) => !!error && !["AbortError"].includes(error.name),
-  }),
-);
 
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   artistId: number,
@@ -51,7 +41,17 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
     ),
   );
 
-  const response = await requester.fetch(path.toString(), { signal });
+  const response = await deadline(
+    retry(() => fetch(path, { signal }), {
+      maxAttempts: 3,
+      minTimeout: 2000,
+      maxTimeout: 2000,
+      multiplier: 1,
+      jitter: 0,
+    }),
+    10_000,
+    { signal },
+  );
 
   if (!response.ok) {
     throw new Error("Error requesting lookup artists releases", {

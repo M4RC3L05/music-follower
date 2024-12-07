@@ -1,6 +1,4 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import config from "config";
-import { pick } from "lodash-es";
 import ms from "ms";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import type { Artist, Release } from "#src/database/types/mod.ts";
@@ -9,11 +7,14 @@ import {
   type ItunesLookupSongModel,
   itunesRequests,
 } from "#src/remote/mod.ts";
-import { formatError } from "#src/common/logger/mod.ts";
 import type { CustomDatabase } from "#src/database/mod.ts";
 import { delay } from "@std/async";
 
 const log = makeLogger("sync-releases-job");
+const notBefore = new Date(
+  Date.now() -
+    ms(config.get<string>("apps.jobs.sync-releases.max-release-time")),
+);
 
 enum ErrorCodes {
   SONG_AND_ALBUM_RELEASES_REQUEST_FAILED =
@@ -24,31 +25,21 @@ enum ErrorCodes {
 const usableRelease = (
   release: ItunesLookupAlbumModel | ItunesLookupSongModel,
 ) => {
-  const isInThePastYears = new Date(release.releaseDate) <
-    new Date(
-      Date.now() -
-        ms(config.get<string>("apps.jobs.sync-releases.max-release-time")),
-    );
+  const isToOLd = new Date(release.releaseDate) < notBefore;
 
-  let isCompilation = release.artistName
-    ?.toLowerCase?.()
-    ?.includes?.("Various Artists".toLowerCase());
-
-  if (release.wrapperType === "track" && release.collectionArtistName) {
-    isCompilation = isCompilation &&
-      release.collectionArtistName
-        ?.toLowerCase?.()
-        ?.includes?.("Various Artists".toLowerCase());
-  }
-
-  const isDjMix = release.collectionName
-    ?.toLowerCase?.()
-    ?.includes?.("(DJ Mix)".toLowerCase()) ||
-    release.collectionCensoredName
+  const isCompilation =
+    (release.wrapperType === "track"
+      ? (release as ItunesLookupSongModel).collectionArtistName
+      : release.artistName)
       ?.toLowerCase?.()
-      ?.includes?.("(DJ Mix)".toLowerCase());
+      ?.includes?.("Various Artists".toLowerCase());
 
-  return !isInThePastYears && !isCompilation && !isDjMix;
+  const isDjMix = release.collectionName?.toLowerCase?.()
+    ?.includes?.("DJ Mix".toLowerCase()) ||
+    release.collectionCensoredName?.toLowerCase?.()
+      ?.includes?.("DJ Mix".toLowerCase());
+
+  return !isToOLd && !isCompilation && !isDjMix;
 };
 
 const getRelases = async (artist: Artist, signal?: AbortSignal) => {
@@ -62,9 +53,7 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
   if (songsResult.status === "rejected" && albumsResult.status === "rejected") {
     throw new Error("Releases request failed", {
       cause: {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         albumsCause: albumsResult.reason,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         songsCause: songsResult.reason,
         code: ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED,
       },
@@ -94,8 +83,27 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
   return results;
 };
 
-export const syncReleases = (db: CustomDatabase) =>
-(
+const insertOrReplaceRelease = (db: CustomDatabase, release: Release) => {
+  return db.sql`
+    insert or replace into releases 
+      (id, "artistName", name, "releasedAt", "coverUrl", type, hidden, metadata, "feedAt")
+    values
+      (
+        ${release.id},
+        ${release.artistName},
+        ${release.name},
+        ${release.releasedAt},
+        ${release.coverUrl},
+        ${release.type},
+        ${release.hidden},
+        ${release.metadata},
+        ${release.feedAt}
+      )
+`;
+};
+
+const syncReleases = (
+  db: CustomDatabase,
   releases: Array<
     Omit<Release, "feedAt"> & {
       collectionId?: number;
@@ -106,13 +114,13 @@ export const syncReleases = (db: CustomDatabase) =>
   options?: { noHiddenOverride: boolean },
 ) => {
   for (const { collectionId, isStreamable, ...release } of releases) {
-    const storedRelease = db.get<Release>(sql`
+    const [storedRelease] = db.sql<Release>`
       select *
       from releases
       where id = ${release.id}
-      and   type = ${release.type}
+      and type = ${release.type}
       limit 1;
-    `);
+    `;
 
     // Do not override currently setted hidden status
     if (storedRelease && options?.noHiddenOverride) {
@@ -129,50 +137,32 @@ export const syncReleases = (db: CustomDatabase) =>
     release.feedAt ??= new Date(release.releasedAt).toISOString();
 
     if (release.type === "collection") {
-      log.debug("Upserting release", { id: release.id, type: release.type });
-
-      db.execute(sql`
-          insert or replace into releases ${
-        sql.insert(
-          pick(release, [
-            "id",
-            "artistName",
-            "name",
-            "releasedAt",
-            "coverUrl",
-            "type",
-            "hidden",
-            "metadata",
-            "feedAt",
-          ]),
-        )
-      }`);
+      insertOrReplaceRelease(db, release as Release);
 
       continue;
     }
 
     if (!isStreamable) {
-      log.debug("Release is not streamable, ignoring", { id: release.id });
+      log.info("Release is not streamable, ignoring", { id: release.id });
 
       continue;
     }
 
     // This is for music releases that are a part of an album that is
     // yet to be releases but some songs are already available.
-    const album = db.get<Release>(sql`
+    const [album] = db.sql<Release>`
       select * from releases
       where id = ${collectionId}
-      and   type = 'collection'
+      and type = 'collection'
       limit 1;
-    `);
+    `;
 
     // Ignore tracks that we do not have an album to.
     // Must likely a track belonging in a mix or compilation.
-    // At least we have the collection (album) that represents the single.
+    // At least we should have the collection (album) that represents the single.
     if (!album) {
-      log.debug("Track does not have a previous saved album", {
+      log.info("Track does not have a previous saved album, ignoring", {
         id: release.id,
-        release,
       });
 
       continue;
@@ -180,33 +170,15 @@ export const syncReleases = (db: CustomDatabase) =>
 
     // If we have an album and the album was already released we return
     if (new Date(album.releasedAt) <= new Date()) {
-      log.debug(
+      log.info(
         "The album that contains the current track release, was already released, ignoring",
-        { id: release.id },
+        { id: release.id, albumId: album.id },
       );
 
       continue;
     }
 
-    log.debug("Upserting release", { id: release.id, type: release.type });
-
-    db.execute(
-      sql`insert or replace into releases ${
-        sql.insert(
-          pick(release, [
-            "id",
-            "artistName",
-            "name",
-            "releasedAt",
-            "coverUrl",
-            "type",
-            "hidden",
-            "metadata",
-            "feedAt",
-          ]),
-        )
-      }`,
-    );
+    insertOrReplaceRelease(db, release as Release);
   }
 };
 
@@ -218,27 +190,26 @@ const runner = async ({
     return;
   }
 
-  log.info("Begin releases sync.");
+  log.info("Begin releases sync");
 
-  const mappedSyncReleases = syncReleases(db);
-  const artists = db.all<Artist>(sql`select * from artists;`);
-  const size = db.get<{ total: string }>(
-    sql`select count(id) as total from artists`,
-  );
+  const artists = db.prepare(`
+      select *, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
+      from 
+        artists,
+        (select count(id) as "totalItems" from artists) as ti
+      order by id;
+    `)
+    .iter() as IterableIterator<Artist & { index: number; totalItems: number }>;
 
-  if (!size) {
-    throw new Error("Could not get size of artists");
-  }
+  for (const artist of artists) {
+    const isLastArtist = artist.index >= artist.totalItems;
 
-  const total = Number(size.total);
-
-  for (const [key, artist] of artists.entries()) {
     if (abort.aborted) {
       break;
     }
 
     log.info(
-      `Processing releases from "${artist.name}" at ${key + 1} of ${total}.`,
+      `Processing releases from "${artist.name}" at ${artist.index} of ${artist.totalItems}`,
     );
 
     let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
@@ -248,30 +219,26 @@ const runner = async ({
     } catch (error: unknown) {
       switch (((error as Error).cause as { code?: ErrorCodes }).code) {
         case ErrorCodes.SONG_AND_ALBUM_RELEASES_REQUEST_FAILED: {
-          const { albumsCause, songsCause } = (error as Error).cause as {
-            albumsCause: unknown;
-            songsCause: unknown;
-          };
-          log.error("Could not get releases", {
-            error,
-            songsCause: songsCause instanceof Error
-              ? formatError(songsCause)
-              : songsCause,
-            albumsCause: albumsCause instanceof Error
-              ? formatError(albumsCause)
-              : albumsCause,
-          });
-          log.info("Waiting 5 seconds before processing next artist");
+          log.error("Could not get releases", { error });
 
-          await delay(5000, { signal: abort }).catch(() => {});
+          if (!isLastArtist) {
+            log.info("Waiting 5 seconds before processing next artist");
+
+            await delay(5000, { signal: abort }).catch(() => {});
+          }
+
           continue;
         }
 
         case ErrorCodes.NO_RELEASES_FOUND: {
-          log.warn("No remote data found.", { error });
-          log.info("Waiting 5 seconds before processing next artist");
+          log.warn("No remote data found", { error });
 
-          await delay(5000, { signal: abort }).catch(() => {});
+          if (!isLastArtist) {
+            log.info("Waiting 5 seconds before processing next artist");
+
+            await delay(5000, { signal: abort }).catch(() => {});
+          }
+
           continue;
         }
 
@@ -329,29 +296,25 @@ const runner = async ({
       db.transaction(() => {
         // We process albums first so that we can then check if we should include tracks,
         // that are already available but belong to a album that is yet to be released.
-        mappedSyncReleases(
-          releases.filter(({ type }) => type === "collection"),
-          { noHiddenOverride: true },
-        );
-        mappedSyncReleases(
-          releases.filter(({ type }) => type === "track"),
-          { noHiddenOverride: true },
-        );
+        syncReleases(db, releases.filter(({ type }) => type === "collection"), {
+          noHiddenOverride: true,
+        });
+        syncReleases(db, releases.filter(({ type }) => type === "track"), {
+          noHiddenOverride: true,
+        });
       }).immediate();
     } catch (error: unknown) {
       log.error("Something wrong ocurred while upserting releases", { error });
     }
 
-    if (abort.aborted) {
-      break;
+    if (!isLastArtist) {
+      log.info("Waiting 5 seconds before processing next artist");
+
+      await delay(5000, { signal: abort }).catch(() => {});
     }
-
-    log.info("Waiting 5 seconds before processing next artist");
-
-    await delay(5000, { signal: abort }).catch(() => {});
   }
 
-  log.info("Releases sync ended.");
+  log.info("Releases sync ended");
 };
 
 export default runner;

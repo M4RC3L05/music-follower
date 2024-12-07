@@ -1,4 +1,3 @@
-import { sql } from "@m4rc3l05/sqlite-tag";
 import type { Hono } from "@hono/hono";
 import { HTTPException } from "@hono/hono/http-exception";
 import type { Artist } from "#src/database/types/mod.ts";
@@ -25,7 +24,7 @@ export const importArtists = (router: Hono) => {
 
     c.get("database").transaction(() => {
       for (const artist of parsed.data) {
-        c.get("database").execute(sql`
+        c.get("database").sql`
           insert into artists (id, "imageUrl", name)
           values (${artist.id}, ${artist.imageUrl}, ${artist.name})
           on conflict (id)
@@ -33,7 +32,7 @@ export const importArtists = (router: Hono) => {
             id = ${artist.id},
             "imageUrl" = ${artist.imageUrl},
             name = ${artist.name}
-        `);
+        `;
       }
     }).immediate();
 
