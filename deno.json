@@ -25,7 +25,7 @@
     },
     "cmd:dbmate": {
       "description": "Interact with dbmate",
-      "command": "deno run -Ar --no-lock npm:dbmate@2.15.0 -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema"
+      "command": "deno run -A --no-lock npm:dbmate@2.23.0 -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema"
     },
     "pre:test": {
       "description": "Command to run before runing tests",
