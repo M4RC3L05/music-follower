@@ -3,14 +3,36 @@
   "version": "17.3.8",
   "exports": "./deno.json",
   "tasks": {
-    "api": "deno run -A --cached-only src/apps/api/main.ts",
-    "admin": "deno run -A --cached-only src/apps/admin/main.ts",
-    "feed": "deno run -A --cached-only src/apps/feed/main.ts",
-    "pretty-logs": "deno run -A --no-lock npm:pino-pretty@13.0.0 -m message --levelKey level --timestampKey datetime -k \"data.error,data.err\" -c -C",
-    "dev:dbmate": "deno run -Ar --no-lock npm:dbmate@2.15.0 -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema",
-    "jobs:sync-releases": "deno run -A --cached-only src/apps/jobs/sync-releases/main.ts",
-    "pre:test": "deno eval \"import '@db/sqlite'\"",
+    "api": {
+      "description": "Run api app",
+      "command": "deno run -A --cached-only src/apps/api/main.ts"
+    },
+    "admin": {
+      "description": "Run admin app",
+      "command": "deno run -A --cached-only src/apps/admin/main.ts"
+    },
+    "feed": {
+      "description": "Run feed app",
+      "command": "deno run -A --cached-only src/apps/feed/main.ts"
+    },
+    "jobs:sync-releases": {
+      "description": "Run sync releases job",
+      "command": "deno run -A --cached-only src/apps/jobs/sync-releases/main.ts"
+    },
+    "cmd:pino-pretty": {
+      "description": "Interact with pino-pretty",
+      "command": "deno run -A --no-lock npm:pino-pretty@13.0.0 -m message --levelKey level --timestampKey datetime -k \"data.error,data.err\" -c -C"
+    },
+    "cmd:dbmate": {
+      "description": "Interact with dbmate",
+      "command": "deno run -Ar --no-lock npm:dbmate@2.15.0 -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema"
+    },
+    "pre:test": {
+      "description": "Command to run before runing tests",
+      "command": "deno eval \"import '@db/sqlite'\""
+    },
     "test": {
+      "description": "Run tests",
       "command": "ENV=test NODE_ENV=test deno test -A --no-check --trace-leaks --parallel",
       "dependencies": ["pre:test"]
     }
