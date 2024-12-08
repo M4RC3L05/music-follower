@@ -39,3 +39,7 @@ processLifecycle.registerService({
 });
 
 await processLifecycle.boot();
+
+if (Deno.env.get("BUILD_DRY_RUN") === "true") {
+  await processLifecycle.shutdown();
+}
