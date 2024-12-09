@@ -134,7 +134,12 @@ const syncReleases = (
         new Date().toISOString();
     }
 
-    release.feedAt ??= new Date(release.releasedAt).toISOString();
+    // Only use releasedAt if it is a date in the future
+    release.feedAt ??= !Number.isNaN(new Date(release.releasedAt).getTime())
+      ? new Date(release.releasedAt) > new Date()
+        ? new Date(release.releasedAt).toISOString()
+        : new Date().toISOString()
+      : new Date().toISOString();
 
     if (release.type === "collection") {
       insertOrReplaceRelease(db, release as Release);

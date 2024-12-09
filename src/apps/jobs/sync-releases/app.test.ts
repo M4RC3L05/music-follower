@@ -802,6 +802,124 @@ describe("runner()", () => {
       );
     });
 
+    it("should use releasedAt as feedAt if it is a date in the future", async () => {
+      const releasedAt = new Date(Date.now() + 100_000).toISOString();
+      const artists = testFixtures.loadArtist(db);
+      const album = testFixtures.generateItunesAlbumLookupResultItem({
+        releaseDate: releasedAt,
+      });
+
+      using fetchStub = stub(globalThis, "fetch", (input) => {
+        if (input.toString().includes("song")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "song",
+              ),
+            ),
+          );
+        }
+
+        if (input.toString().includes("album")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "album",
+                album,
+              ),
+            ),
+          );
+        }
+
+        return Promise.resolve(new Response("Not found", { status: 404 }));
+      });
+      using syncReleasesJobLogInfoSpy = spy(syncReleasesJobLog, "info");
+
+      await runner({ db, abort: new AbortController().signal });
+
+      assertSpyCalls(fetchStub, 2);
+      assertSpyCalls(syncReleasesJobLogInfoSpy, 5);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 0, ["Begin releases sync"]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 2, ["Usable releases", {
+        id: artists.id,
+        releases: [
+          `${album.collectionName} by ${album.artistName}`,
+        ],
+      }]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 3, [
+        "Upserting releases for artist",
+        { id: artists.id },
+      ]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 4, [
+        "Releases sync ended",
+      ]);
+      assertEquals(
+        db.sql`select * from releases where id = ${album.collectionId}`[0]
+          .feedAt,
+        releasedAt,
+      );
+    });
+
+    it("should not use releasedAt as feedAt if it is not a date in the future", async () => {
+      const now = Date.now();
+      const releasedAt = new Date(now - 100_000).toISOString();
+      const artists = testFixtures.loadArtist(db);
+      const album = testFixtures.generateItunesAlbumLookupResultItem({
+        releaseDate: releasedAt,
+      });
+
+      using fetchStub = stub(globalThis, "fetch", (input) => {
+        if (input.toString().includes("song")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "song",
+              ),
+            ),
+          );
+        }
+
+        if (input.toString().includes("album")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "album",
+                album,
+              ),
+            ),
+          );
+        }
+
+        return Promise.resolve(new Response("Not found", { status: 404 }));
+      });
+      using syncReleasesJobLogInfoSpy = spy(syncReleasesJobLog, "info");
+      using _ = new FakeTime(now);
+
+      await runner({ db, abort: new AbortController().signal });
+
+      assertSpyCalls(fetchStub, 2);
+      assertSpyCalls(syncReleasesJobLogInfoSpy, 5);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 0, ["Begin releases sync"]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 2, ["Usable releases", {
+        id: artists.id,
+        releases: [
+          `${album.collectionName} by ${album.artistName}`,
+        ],
+      }]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 3, [
+        "Upserting releases for artist",
+        { id: artists.id },
+      ]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 4, [
+        "Releases sync ended",
+      ]);
+      assertEquals(
+        db.sql`select * from releases where id = ${album.collectionId}`[0]
+          .feedAt,
+        new Date().toISOString(),
+      );
+    });
+
     describe("song", () => {
       it("should ignore song if not streamable", async () => {
         const artists = testFixtures.loadArtist(db);
