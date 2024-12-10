@@ -802,6 +802,70 @@ describe("runner()", () => {
       );
     });
 
+    it("should use stored feedAt as feedAt if it exists", async () => {
+      const releasedAt = new Date(Date.now() + 100_000).toISOString();
+      const feedAt = new Date(Date.now() + 200_000).toISOString();
+      const artists = testFixtures.loadArtist(db);
+      const albumStored = testFixtures.loadRelease(db, {
+        type: "collection",
+        feedAt,
+      });
+      const album = testFixtures.generateItunesAlbumLookupResultItem({
+        releaseDate: releasedAt,
+        collectionId: albumStored.id,
+      });
+
+      using fetchStub = stub(globalThis, "fetch", (input) => {
+        if (input.toString().includes("song")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "song",
+              ),
+            ),
+          );
+        }
+
+        if (input.toString().includes("album")) {
+          return Promise.resolve(
+            Response.json(
+              testFixtures.generateItunesArtistLatestReleasesResult(
+                "album",
+                album,
+              ),
+            ),
+          );
+        }
+
+        return Promise.resolve(new Response("Not found", { status: 404 }));
+      });
+      using syncReleasesJobLogInfoSpy = spy(syncReleasesJobLog, "info");
+
+      await runner({ db, abort: new AbortController().signal });
+
+      assertSpyCalls(fetchStub, 2);
+      assertSpyCalls(syncReleasesJobLogInfoSpy, 5);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 0, ["Begin releases sync"]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 2, ["Usable releases", {
+        id: artists.id,
+        releases: [
+          `${album.collectionName} by ${album.artistName}`,
+        ],
+      }]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 3, [
+        "Upserting releases for artist",
+        { id: artists.id },
+      ]);
+      assertSpyCallArgs(syncReleasesJobLogInfoSpy, 4, [
+        "Releases sync ended",
+      ]);
+      assertEquals(
+        db.sql`select * from releases where id = ${album.collectionId}`[0]
+          .feedAt,
+        feedAt,
+      );
+    });
+
     it("should use releasedAt as feedAt if it is a date in the future", async () => {
       const releasedAt = new Date(Date.now() + 100_000).toISOString();
       const artists = testFixtures.loadArtist(db);
@@ -1196,6 +1260,81 @@ describe("runner()", () => {
           db.sql`select * from releases where id = ${song.trackId} and type = 'track'`
             .length,
           1,
+        );
+      });
+
+      it("should upsert synced releases", async () => {
+        const artists = testFixtures.loadArtist(db);
+        const storedSong = testFixtures.loadRelease(db, {
+          type: "track",
+          name: "foo",
+        });
+        const album = testFixtures.generateItunesAlbumLookupResultItem({
+          releaseDate: new Date(Date.now() + 1000).toISOString(),
+        });
+        const song = testFixtures.generateItunesSongLookupResultItem({
+          collectionId: album.collectionId,
+          trackId: storedSong.id,
+          trackName: "bar",
+        });
+
+        using fetchStub = stub(globalThis, "fetch", (input) => {
+          if (input.toString().includes("song")) {
+            return Promise.resolve(
+              Response.json(
+                testFixtures.generateItunesArtistLatestReleasesResult(
+                  "song",
+                  song,
+                ),
+              ),
+            );
+          }
+
+          if (input.toString().includes("album")) {
+            return Promise.resolve(
+              Response.json(
+                testFixtures.generateItunesArtistLatestReleasesResult(
+                  "album",
+                  album,
+                ),
+              ),
+            );
+          }
+
+          return Promise.resolve(new Response("Not found", { status: 404 }));
+        });
+        using syncReleasesJobLogInfoSpy = spy(syncReleasesJobLog, "info");
+
+        await runner({ db, abort: new AbortController().signal });
+
+        assertSpyCalls(fetchStub, 2);
+        assertSpyCalls(syncReleasesJobLogInfoSpy, 5);
+        assertSpyCallArgs(syncReleasesJobLogInfoSpy, 0, [
+          "Begin releases sync",
+        ]);
+        assertSpyCallArgs(syncReleasesJobLogInfoSpy, 1, [
+          'Processing releases from "foo" at 1 of 1',
+        ]);
+        assertSpyCallArgs(syncReleasesJobLogInfoSpy, 2, ["Usable releases", {
+          id: artists.id,
+          releases: [
+            `${album.collectionName} by ${album.artistName}`,
+            `${song.trackName} by ${song.artistName}`,
+          ],
+        }]);
+        assertSpyCallArgs(syncReleasesJobLogInfoSpy, 3, [
+          "Upserting releases for artist",
+          { id: artists.id },
+        ]);
+        assertSpyCallArgs(syncReleasesJobLogInfoSpy, 4, [
+          "Releases sync ended",
+        ]);
+        assertEquals(db.sql`select * from releases`.length, 2);
+        assertEquals(
+          db.sql`select * from releases where id = ${song.trackId} and type = 'track'`[
+            0
+          ].name,
+          "bar",
         );
       });
     });

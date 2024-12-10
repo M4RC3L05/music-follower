@@ -134,12 +134,28 @@ const syncReleases = (
         new Date().toISOString();
     }
 
-    // Only use releasedAt if it is a date in the future
-    release.feedAt ??= !Number.isNaN(new Date(release.releasedAt).getTime())
-      ? new Date(release.releasedAt) > new Date()
-        ? new Date(release.releasedAt).toISOString()
-        : new Date().toISOString()
-      : new Date().toISOString();
+    // If we alrady have a stored feed at, keep it.
+    if (
+      storedRelease &&
+      !release.feedAt &&
+      !Number.isNaN(new Date(storedRelease.feedAt).getTime())
+    ) {
+      release.feedAt = storedRelease.feedAt;
+    }
+
+    // If releasedAt is in the future use it.
+    if (
+      !release.feedAt &&
+      !Number.isNaN(new Date(release.releasedAt).getTime()) &&
+      new Date(release.releasedAt) > new Date()
+    ) {
+      release.feedAt = new Date(release.releasedAt).toISOString();
+    }
+
+    // If not the above use current date.
+    if (!release.feedAt) {
+      release.feedAt = new Date().toISOString();
+    }
 
     if (release.type === "collection") {
       insertOrReplaceRelease(db, release as Release);
