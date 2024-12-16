@@ -33,7 +33,7 @@
     },
     "test": {
       "description": "Run tests",
-      "command": "ENV=test NODE_ENV=test deno test -A --no-check --trace-leaks --parallel",
+      "command": "ENV=test NODE_ENV=test deno test --allow-read --allow-env --allow-ffi --no-check --trace-leaks --parallel",
       "dependencies": ["pre:test"]
     }
   },
