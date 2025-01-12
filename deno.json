@@ -35,6 +35,22 @@
       "description": "Run tests",
       "command": "ENV=test NODE_ENV=test deno test --allow-read --allow-env --allow-ffi --no-check --trace-leaks --parallel",
       "dependencies": ["pre:test"]
+    },
+    "check:fmt": {
+      "description": "Run formatting checks",
+      "command": "deno fmt --check"
+    },
+    "check:lint": {
+      "description": "Run lint checks",
+      "command": "deno lint"
+    },
+    "check:check": {
+      "description": "Run check checks",
+      "command": "deno check ."
+    },
+    "checks": {
+      "description": "Run code checks",
+      "dependencies": ["check:fmt", "check:lint", "check:check"]
     }
   },
   "compilerOptions": {

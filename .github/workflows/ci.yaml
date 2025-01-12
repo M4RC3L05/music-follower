@@ -24,11 +24,8 @@ jobs:
       - name: install deps
         run: deno install --node-modules-dir
 
-      - name: check format
-        run: mise run check:format
-
-      - name: check linting
-        run: mise run check:lint
+      - name: run code checks
+        run: deno task checks
 
       - name: run tests
         run: deno task test

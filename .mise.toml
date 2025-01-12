@@ -1,25 +1,3 @@
-[settings]
-experimental = true
-
 [tools]
 sqlite = "3.46.0"
 deno = "2.1.5"
-
-[tasks."check:format"]
-run = """
-#!/usr/bin/env sh
-
-set -ex
-
-deno fmt --check
-"""
-
-[tasks."check:lint"]
-run = """
-#!/usr/bin/env sh
-
-set -ex
-
-deno lint
-deno check .
-"""
