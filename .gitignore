@@ -1,12 +1,5 @@
-node_modules
-dist
 data/*
 !data/.gitkeep
-data/db.sqlite
-data/app.db
-.pm2/*
-!.pm2/*.example
 config/local.json
-config/development.json
-coverage
-**/public/config.json
+node_modules
+**/public/css/*.min.css

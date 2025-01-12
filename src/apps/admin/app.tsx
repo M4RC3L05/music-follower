@@ -63,14 +63,19 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
   app.use("*", async (c, next) => {
     try {
       await next();
-    } finally {
       // This is important so that we always make sure the browser will not cache the previous page
       // so that the requests are always made.
-      if (!c.req.path.startsWith("/public")) {
-        c.header("cache-control", "no-cache, no-store, must-revalidate");
-        c.header("pragma", "no-cache");
-        c.header("expires", "0");
-      }
+      c.header("cache-control", "no-cache, no-store, must-revalidate");
+      c.header("pragma", "no-cache");
+      c.header("expires", "0");
+    } catch (error) {
+      // This is important so that we always make sure the browser will not cache the previous page
+      // so that the requests are always made.
+      c.header("cache-control", "no-cache, no-store, must-revalidate");
+      c.header("pragma", "no-cache");
+      c.header("expires", "0");
+
+      throw error;
     }
   });
   app.use(
@@ -81,13 +86,6 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
   );
 
   app.get("/favicon.ico", serveStatic({ root: "./src/apps/admin/public" }));
-  app.get(
-    "/public/deps/*",
-    serveStatic({
-      root: "./node_modules",
-      rewriteRequestPath: (path) => path.replace("/public/deps", ""),
-    }),
-  );
   app.get(
     "/public/*",
     serveStatic({

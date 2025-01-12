@@ -2,3 +2,4 @@ config/local.json
 data
 node_modules
 .git
+**/public/css/*.min.css
