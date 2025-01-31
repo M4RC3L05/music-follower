@@ -9,7 +9,7 @@ export const MainLayout: FC<PropsWithChildren> = (
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>MUSIC FOLLOWER | ADMIN</title>
-      <link rel="stylesheet" href="/public/css/main.min.css" />
+      <link rel="stylesheet" href="/public/css/main.css" />
     </head>
 
     <body>

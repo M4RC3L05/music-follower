@@ -7,14 +7,9 @@
       "description": "Run api app",
       "command": "deno run -A --cached-only src/apps/api/main.ts"
     },
-    "admin:bundle:css": {
-      "description": "Bundle admin app css",
-      "command": "src/apps/admin/.scripts/bundle.ts"
-    },
     "admin": {
       "description": "Run admin app",
-      "command": "deno run -A --cached-only src/apps/admin/main.ts",
-      "dependencies": ["admin:bundle:css"]
+      "command": "deno run -A --cached-only src/apps/admin/main.ts"
     },
     "feed": {
       "description": "Run feed app",
@@ -75,6 +70,7 @@
   "lock": {
     "frozen": true
   },
+  "nodeModulesDir": "auto",
   "imports": {
     "#src/": "./src/",
     "@db/sqlite": "jsr:@db/sqlite@0.12.0",

@@ -93,6 +93,13 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
       rewriteRequestPath: (path) => path.replace("/public", ""),
     }),
   );
+  app.get(
+    "/deps/*",
+    serveStatic({
+      root: "./node_modules",
+      rewriteRequestPath: (path) => path.replace("/deps", ""),
+    }),
+  );
 
   app.get(
     "*",

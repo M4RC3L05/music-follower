@@ -1,4 +1,4 @@
-@import url("https://esm.sh/simpledotcss@2.3.3/simple.min.css");
+@import url("/deps/simpledotcss/simple.min.css");
 
 .clearfix::after {
   content: "";

@@ -8,6 +8,11 @@ import {
   ReleasesService,
 } from "#src/apps/admin/services/api/mod.ts";
 
+// Add css dep to node_modules
+// deno-lint-ignore ban-ts-comment
+// @ts-ignore
+await import("simpledotcss").catch(() => {});
+
 const log = makeLogger("admin");
 const { host, port } = config.get("apps.admin");
 const servicesConfig = config.get("apps.admin.services");
