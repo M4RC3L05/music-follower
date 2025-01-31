@@ -22,7 +22,7 @@ jobs:
           cache: true
 
       - name: install deps
-        run: deno install --node-modules-dir
+        run: deno install
 
       - name: run code checks
         run: deno task checks
