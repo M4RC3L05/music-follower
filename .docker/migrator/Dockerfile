@@ -1,4 +1,4 @@
-FROM amacneil/dbmate:2.24.2
+FROM amacneil/dbmate:2.25.0
 
 WORKDIR /app
 
