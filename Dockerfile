@@ -1,4 +1,4 @@
-FROM docker.io/denoland/deno:alpine-2.1.6 as build
+FROM docker.io/denoland/deno:alpine-2.1.9 as build
 
 RUN mkdir /app
 RUN chown -R deno:deno /app
@@ -13,7 +13,7 @@ RUN deno install
 
 RUN deno task admin:bundle:css
 
-FROM docker.io/denoland/deno:alpine-2.1.6
+FROM docker.io/denoland/deno:alpine-2.1.9
 
 RUN mkdir /app
 RUN chown -R deno:deno /app
