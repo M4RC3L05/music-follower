@@ -1,67 +1,27 @@
-import type { Logger } from "@std/log";
-import type { ProcessLifecycle } from "@m4rc3l05/process-lifecycle";
+import { makeLogger } from "#src/common/logger/mod.ts";
 
-export const gracefulShutdown = (
-  { processLifecycle, log }: {
-    processLifecycle: ProcessLifecycle;
-    log: Logger;
-  },
-) => {
-  processLifecycle.on("bootStarted", () => {
-    log.info("Process boot started");
+export const gracefulShutdown = () => {
+  const log = makeLogger("gracefull-shutdown");
+  const abortController = new AbortController();
+  const { promise, resolve } = Promise.withResolvers<void>();
+
+  abortController.signal.addEventListener("abort", () => {
+    resolve();
   });
 
-  processLifecycle.on("bootEnded", ({ error }) => {
-    if (error) {
-      log.error("Process boot ended with error", { error });
-    } else {
-      log.info("Process boot ended");
-    }
-  });
+  const abort = () => {
+    if (!abortController.signal.aborted) abortController.abort();
+  };
 
-  processLifecycle.on("shutdownStarted", () => {
-    log.info("Process shutdown started");
-  });
-
-  processLifecycle.on("shutdownEnded", ({ error }) => {
-    if (error) {
-      log.error("Process shutdown ended with error", { error });
-    } else {
-      log.info("Process shutdown ended");
-    }
-
-    Deno.exitCode = error ? 1 : 0;
-  });
-
-  processLifecycle.on("bootServiceStarted", ({ name }) => {
-    log.info(`Service "${name}" boot started`);
-  });
-
-  processLifecycle.on("bootServiceEnded", ({ name, error }) => {
-    if (error) {
-      log.error(`Service "${name}" boot ended with error`, { error });
-    } else {
-      log.info(`Service "${name}" boot ended`);
-    }
-  });
-
-  processLifecycle.on("shutdownServiceStarted", ({ name }) => {
-    log.info(`Service "${name}" shutdown started`);
-  });
-
-  processLifecycle.on("shutdownServiceEnded", ({ name, error }) => {
-    if (error) {
-      log.error(`Service "${name}" shutdown ended with error`, { error });
-    } else {
-      log.info(`Service "${name}" shutdown ended`);
-    }
-  });
+  if (Deno.env.get("BUILD_DRY_RUN") === "true") {
+    abort();
+  }
 
   for (const signal of ["SIGABRT", "SIGTERM", "SIGINT"] as Deno.Signal[]) {
     Deno.addSignalListener(signal, () => {
       log.info(`OS Signal "${signal}" captured`);
 
-      processLifecycle.shutdown();
+      abort();
     });
   }
 
@@ -70,7 +30,7 @@ export const gracefulShutdown = (
 
     log.error("Unhandled rejection captured", { reason: e.reason });
 
-    processLifecycle.shutdown();
+    abort();
   });
 
   globalThis.addEventListener("error", (e) => {
@@ -78,10 +38,35 @@ export const gracefulShutdown = (
 
     log.error("Unhandled error captured", { error: e.error });
 
-    processLifecycle.shutdown();
+    abort();
   });
 
   globalThis.onbeforeunload = () => {
-    processLifecycle.shutdown();
+    abort();
+  };
+
+  globalThis.onunload = () => {
+    log.info(`Existing process with status "${Deno.exitCode}"`);
+  };
+
+  const shutdownP = promise.then(() => {
+    // Force exit after 10 seconds.
+    Deno.unrefTimer(
+      setTimeout(() => {
+        log.error("Process force to exit");
+
+        Deno.exit(1);
+      }, 10_000),
+    );
+  });
+
+  return {
+    promise: shutdownP,
+    signal: abortController.signal,
+    done: () => {
+      abort();
+
+      return shutdownP;
+    },
   };
 };

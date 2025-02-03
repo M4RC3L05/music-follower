@@ -4,7 +4,6 @@
     "jsr:@db/sqlite@0.12.0": "0.12.0",
     "jsr:@denosaurs/plug@1": "1.0.6",
     "jsr:@hono/hono@4.6.20": "4.6.20",
-    "jsr:@m4rc3l05/process-lifecycle@1.0.0": "1.0.0",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@0.221": "0.221.0",
     "jsr:@std/assert@1.0.10": "1.0.10",
@@ -60,9 +59,6 @@
     },
     "@hono/hono@4.6.20": {
       "integrity": "0db02d7b80db67a17e18b434c6105af002412cada5e908013086eb9fa9466a87"
-    },
-    "@m4rc3l05/process-lifecycle@1.0.0": {
-      "integrity": "652ffcc8d8c5594ae4cdbc58d244a59081e75ac302b4a06723c17fcf5cd268ed"
     },
     "@std/assert@0.217.0": {
       "integrity": "c98e279362ca6982d5285c3b89517b757c1e3477ee9f14eb2fdf80a45aaa9642"
@@ -366,7 +362,6 @@
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.6.20",
-      "jsr:@m4rc3l05/process-lifecycle@1.0.0",
       "jsr:@std/assert@1.0.11",
       "jsr:@std/async@1.0.10",
       "jsr:@std/cache@0.1.3",
