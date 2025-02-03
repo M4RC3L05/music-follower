@@ -4,6 +4,7 @@ export const gracefulShutdown = () => {
   const log = makeLogger("gracefull-shutdown");
   const abortController = new AbortController();
   const { promise, resolve } = Promise.withResolvers<void>();
+  let exitCode = 0;
 
   abortController.signal.addEventListener("abort", () => {
     resolve();
@@ -30,6 +31,8 @@ export const gracefulShutdown = () => {
 
     log.error("Unhandled rejection captured", { reason: e.reason });
 
+    exitCode = 1;
+
     abort();
   });
 
@@ -37,6 +40,8 @@ export const gracefulShutdown = () => {
     e.preventDefault();
 
     log.error("Unhandled error captured", { error: e.error });
+
+    exitCode = 1;
 
     abort();
   });
@@ -46,6 +51,7 @@ export const gracefulShutdown = () => {
   };
 
   globalThis.onunload = () => {
+    Deno.exitCode = exitCode;
     log.info(`Existing process with status "${Deno.exitCode}"`);
   };
 
