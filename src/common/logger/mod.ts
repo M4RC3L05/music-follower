@@ -4,48 +4,18 @@ import {
   Logger,
   type LogRecord,
 } from "@std/log";
-import { mapValues } from "@std/collections";
 import { memoize } from "@std/cache";
+import pineSerializer from "pino-std-serializers";
 
-const isPlainObject = (arg: unknown): arg is Record<string, unknown> =>
-  arg !== null && arg !== undefined &&
-  Object.getPrototypeOf(arg) === Object.prototype;
-
-export const formatError = (
-  error: Error | AggregateError,
-): Record<string, unknown> => {
-  const formattedError = {
-    ...error,
-    message: error.message,
-    name: error.name,
-    stack: error.stack,
-  } as Record<string, unknown>;
-
-  if (error.cause) {
-    formattedError.cause = error.cause instanceof Error
-      ? formatError(error.cause)
-      : typeof error.cause === "object"
-      ? mapValues(
-        error.cause,
-        (value: unknown) => value instanceof Error ? formatError(value) : value,
-      )
-      : error.cause;
+// deno-lint-ignore no-explicit-any
+const formatLogArg = (arg: any) => {
+  if (arg?.error instanceof Error) {
+    arg.error = pineSerializer.errWithCause(arg.error);
   }
 
-  if (error instanceof AggregateError && error.errors?.length > 0) {
-    formattedError.errors = error.errors.map((error) =>
-      error instanceof Error ? formatError(error) : error
-    );
+  if (arg?.reason instanceof Error) {
+    arg.reason = pineSerializer.errWithCause(arg.reason);
   }
-
-  return formattedError;
-};
-
-const formatLogArg = (arg: unknown) => {
-  if (!isPlainObject(arg)) return;
-
-  if (arg.error instanceof Error) arg.error = formatError(arg.error);
-  if (arg.reason instanceof Error) arg.reason = formatError(arg.reason);
 
   return arg;
 };
@@ -53,15 +23,13 @@ const formatLogArg = (arg: unknown) => {
 const logFormatter = (
   { args, datetime, levelName, loggerName, msg }: LogRecord,
 ) => {
-  const payload = {
+  return JSON.stringify({
     datetime: datetime.toISOString(),
     level: levelName,
     name: loggerName,
     message: msg,
     data: formatLogArg(args[0]),
-  };
-
-  return JSON.stringify(payload);
+  });
 };
 
 export const makeLogger = memoize((namespace: string) => {
