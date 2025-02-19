@@ -83,7 +83,7 @@ export const ArtistsRemotePage: FC<{
                       value={remoteArtist.image}
                     />
 
-                    <button disabled={remoteArtist.isSubscribed}>
+                    <button type="submit" disabled={remoteArtist.isSubscribed}>
                       Subscribe
                     </button>
                   </form>

@@ -32,17 +32,18 @@ const ArtistSection: FC<{ artist: Artist }> = ({ artist }) => (
           action={`/artists/${artist.id}/unsubscribe`}
           method="post"
         >
-          <button>
+          <button type="button">
             Yes
           </button>
         </form>
 
         <form method="dialog" style="display: inline; margin-right: 8px">
-          <button>No</button>
+          <button type="button">No</button>
         </form>
       </dialog>
 
       <button
+        type="button"
         style="display: inline; margin-right: 8px"
         onclick={`getElementById("dialog-${artist.id}").show()`}
       >
@@ -140,7 +141,12 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
     </header>
 
     <main>
-      {artists.map((artist) => <ArtistSection artist={artist} />)}
+      {artists.map((artist) => (
+        <ArtistSection
+          key={artist.id}
+          artist={artist}
+        />
+      ))}
     </main>
   </>
 );
