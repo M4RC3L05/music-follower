@@ -39,7 +39,7 @@
     "npm:ms@2.1.3": "2.1.3",
     "npm:pino-pretty@13.0.0": "13.0.0",
     "npm:pino-std-serializers@7": "7.0.0",
-    "npm:simpledotcss@2.3.3": "2.3.3"
+    "npm:simpledotcss@2.3.4": "2.3.4"
   },
   "jsr": {
     "@db/sqlite@0.12.0": {
@@ -334,8 +334,8 @@
     "secure-json-parse@2.7.0": {
       "integrity": "sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw=="
     },
-    "simpledotcss@2.3.3": {
-      "integrity": "sha512-nZsnZQK0mOxDjhG2LXAQaHBGfDHQvOIrNz8w8oACDq+wZniw9IPzbYKfTWjQy7zxaqJ89W1Yq1uhFzTz/i9kwA=="
+    "simpledotcss@2.3.4": {
+      "integrity": "sha512-ybCUVbOQ/GUUpzQfcfIElvDSHY1EJCb9I+icVxiSZpjn71QXeiEQT/Whqbi3AOScYaM97IAWEUpxY1kCI/PH8A=="
     },
     "sonic-boom@4.2.0": {
       "integrity": "sha512-INb7TM37/mAcsGmc9hyyI6+QR3rR1zVRu36B0NeGXKnOOLiZOfER5SA+N7X7k3yUYRzLWafduTDvJAfDswwEww==",
@@ -381,7 +381,7 @@
       "npm:ms@2.1.3",
       "npm:pino-pretty@13.0.0",
       "npm:pino-std-serializers@7",
-      "npm:simpledotcss@2.3.3"
+      "npm:simpledotcss@2.3.4"
     ]
   }
 }
