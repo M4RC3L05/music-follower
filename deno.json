@@ -5,19 +5,19 @@
   "tasks": {
     "api": {
       "description": "Run api app",
-      "command": "deno run -A --cached-only src/apps/api/main.ts"
+      "command": "deno run -A --cached-only --watch src/apps/api/main.ts"
     },
     "admin": {
       "description": "Run admin app",
-      "command": "deno run -A --cached-only src/apps/admin/main.ts"
+      "command": "deno run -A --cached-only --watch src/apps/admin/main.ts"
     },
     "feed": {
       "description": "Run feed app",
-      "command": "deno run -A --cached-only src/apps/feed/main.ts"
+      "command": "deno run -A --cached-only --watch src/apps/feed/main.ts"
     },
     "jobs:sync-releases": {
       "description": "Run sync releases job",
-      "command": "deno run -A --cached-only src/apps/jobs/sync-releases/main.ts"
+      "command": "deno run -A --cached-only --watch src/apps/jobs/sync-releases/main.ts"
     },
     "dev:pretty-logs": {
       "description": "Prettify logs",

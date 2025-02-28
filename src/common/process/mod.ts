@@ -51,8 +51,10 @@ export const gracefulShutdown = () => {
   };
 
   globalThis.onunload = () => {
-    Deno.exitCode = exitCode;
-    log.info(`Existing process with status "${Deno.exitCode}"`);
+    log.info(`Existing process with status "${exitCode}"`);
+
+    // Under deno watch if not called it will hang.
+    Deno.exit(exitCode);
   };
 
   const shutdownP = promise.then(() => {
@@ -61,7 +63,10 @@ export const gracefulShutdown = () => {
       setTimeout(() => {
         log.error("Process force to exit");
 
-        Deno.exit(1);
+        exitCode = 1;
+
+        // Force exit.
+        Deno.exit(exitCode);
       }, 10_000),
     );
   });
