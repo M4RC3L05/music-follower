@@ -4,10 +4,12 @@ import { makeDatabase } from "#src/database/mod.ts";
 import { makeServer } from "#src/apps/feed/server.ts";
 
 const { promise: shutdownPromise, signal: shutdownSignal } = gracefulShutdown();
+await using ads = new AsyncDisposableStack();
 
-using database = makeDatabase();
-await using _server = makeServer(
+const database = ads.use(makeDatabase());
+
+ads.use(makeServer(
   makeApp({ shutdown: shutdownSignal, database: database }),
-);
+));
 
 await shutdownPromise;

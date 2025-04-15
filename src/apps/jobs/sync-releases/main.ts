@@ -6,8 +6,9 @@ import { gracefulShutdown } from "#src/common/process/mod.ts";
 const log = makeLogger("sync-releases");
 
 const { done, signal: shutdownSignal } = gracefulShutdown();
+await using ads = new AsyncDisposableStack();
 
-using database = makeDatabase();
+const database = ads.use(makeDatabase());
 
 try {
   log.info("Running sync-releases");

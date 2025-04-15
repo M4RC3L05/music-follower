@@ -46,16 +46,11 @@ export const gracefulShutdown = () => {
     abort();
   });
 
-  globalThis.onbeforeunload = () => {
+  globalThis.addEventListener("beforeunload", () => {
     abort();
-  };
 
-  globalThis.onunload = () => {
     log.info(`Existing process with status "${exitCode}"`);
-
-    // Under deno watch if not called it will hang.
-    Deno.exit(exitCode);
-  };
+  });
 
   const shutdownP = promise.then(() => {
     // Force exit after 10 seconds.
