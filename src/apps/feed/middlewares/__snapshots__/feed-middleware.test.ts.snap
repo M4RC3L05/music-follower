@@ -79,9 +79,9 @@ snapshot[`global > GET / > should send body as "application/json" if accepts is 
     "items": [
         {
             "id": "1",
+            "content_html": "<img src=\\\\"http://example.com\\\\" />\\\\n          <h1>foo</h1><p>bar</p>\\\\n          <p>1970</p>",
             "url": "http://example.com",
             "title": "foo by bar",
-            "summary": "<img src=\\\\"http://example.com\\\\" />\\\\n          <h1>foo</h1><p>bar</p>\\\\n          <p>1970</p>",
             "date_modified": "1970-01-01T00:00:00.000Z"
         }
     ]

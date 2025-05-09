@@ -92,7 +92,7 @@ describe("GET /", () => {
           id: String(releaseNew.id),
           url: releaseNew.coverUrl,
           title: `${releaseNew.name} by ${releaseNew.artistName}`,
-          summary: `
+          content_html: `
           <img src="${releaseNew.coverUrl}" />
           <h1>${releaseNew.name}</h1><p>${releaseNew.artistName}</p>
           <p>${new Date(releaseNew.releasedAt).getFullYear()}</p>
@@ -102,7 +102,7 @@ describe("GET /", () => {
           id: String(release.id),
           url: release.coverUrl,
           title: `${release.name} by ${release.artistName}`,
-          summary: `
+          content_html: `
           <img src="${release.coverUrl}" />
           <h1>${release.name}</h1><p>${release.artistName}</p>
           <p>${new Date(release.releasedAt).getFullYear()}</p>
