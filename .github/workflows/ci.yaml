@@ -22,7 +22,7 @@ jobs:
           cache: true
 
       - name: install deps
-        run: deno install
+        run: deno install --frozen=true
 
       - name: run code checks
         run: deno task checks
