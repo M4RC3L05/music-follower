@@ -67,9 +67,6 @@
     "exclude": ["node_modules"]
   },
   "unstable": ["fmt-sql"],
-  "lock": {
-    "frozen": true
-  },
   "nodeModulesDir": "auto",
   "imports": {
     "#src/": "./src/",
