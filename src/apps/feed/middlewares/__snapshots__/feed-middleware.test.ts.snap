@@ -15,7 +15,7 @@ snapshot[`global > GET / > should send body as "application/rss+xml" if accepts 
         <item>
             <title><![CDATA[foo by bar]]></title>
             <link>http://example.com</link>
-            <guid>1</guid>
+            <guid isPermaLink="false">1</guid>
             <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
             <description><![CDATA[<img src="http://example.com" />
           <h1>foo</h1><p>bar</p>
@@ -40,7 +40,7 @@ snapshot[`global > GET / > should send body as "application/xml" if accepts is "
         <item>
             <title><![CDATA[foo by bar]]></title>
             <link>http://example.com</link>
-            <guid>1</guid>
+            <guid isPermaLink="false">1</guid>
             <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
             <description><![CDATA[<img src="http://example.com" />
           <h1>foo</h1><p>bar</p>
