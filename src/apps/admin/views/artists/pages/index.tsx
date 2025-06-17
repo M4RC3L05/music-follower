@@ -32,7 +32,7 @@ const ArtistSection: FC<{ artist: Artist }> = ({ artist }) => (
           action={`/artists/${artist.id}/unsubscribe`}
           method="post"
         >
-          <button type="button">
+          <button type="submit">
             Yes
           </button>
         </form>
