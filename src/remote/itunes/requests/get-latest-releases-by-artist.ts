@@ -42,7 +42,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   );
 
   const response = await deadline(
-    retry(() => fetch(path, { signal }), {
+    retry(() => fetch(path, signal ? { signal } : undefined), {
       maxAttempts: 3,
       minTimeout: 2000,
       maxTimeout: 2000,
@@ -50,7 +50,7 @@ export const getLatestReleasesByArtist = async <E extends "song" | "album">(
       jitter: 0,
     }),
     10_000,
-    { signal },
+    signal ? { signal } : undefined,
   );
 
   if (!response.ok) {

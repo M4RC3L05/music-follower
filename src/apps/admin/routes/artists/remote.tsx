@@ -4,7 +4,7 @@ import { ArtistsRemotePage } from "#src/apps/admin/views/artists/pages/remote.ts
 export const remote = (router: Hono) => {
   router.get("/remote", async (c) => {
     const { q } = c.req.query();
-    const hasQuery = q?.trim().length > 0;
+    const hasQuery = q && q.trim().length > 0;
 
     const { data } = !hasQuery
       ? { data: [] }
@@ -13,7 +13,7 @@ export const remote = (router: Hono) => {
         signal: c.req.raw.signal,
       });
 
-    return c.render(<ArtistsRemotePage q={q} remoteArtists={data} />);
+    return c.render(<ArtistsRemotePage q={q ?? ""} remoteArtists={data} />);
   });
 
   router.post("/remote", async (c) => {

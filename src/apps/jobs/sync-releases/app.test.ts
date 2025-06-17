@@ -95,39 +95,39 @@ describe("runner()", () => {
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any).error,
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any).error,
         Error,
         "Releases request failed",
       );
       assertEquals(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause.code,
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause.code,
         "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .albumsCause,
         Error,
         "Error requesting lookup artists releases",
       );
       assertEquals(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .albumsCause
           .cause,
         401,
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .songsCause,
         Error,
         "Error requesting lookup artists releases",
       );
       assertEquals(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .songsCause
           .cause,
         400,
@@ -175,13 +175,13 @@ describe("runner()", () => {
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogWarnSpy.calls[0].args[1] as any).error,
+        (syncReleasesJobLogWarnSpy.calls[0]?.args[1] as any).error,
         Error,
         "No releases",
       );
       assertEquals(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogWarnSpy.calls[0].args[1] as any).error.cause,
+        (syncReleasesJobLogWarnSpy.calls[0]?.args[1] as any).error.cause,
         { code: "NO_RELEASES_FOUND" },
       );
     });
@@ -216,25 +216,25 @@ describe("runner()", () => {
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any).error,
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any).error,
         Error,
         "Releases request failed",
       );
       assertEquals(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause.code,
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause.code,
         "SONG_AND_ALBUM_RELEASES_REQUEST_FAILED",
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .albumsCause,
         Error,
         "Retrying exceeded the maxAttempts (3)",
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .albumsCause
           .cause,
         Error,
@@ -242,14 +242,14 @@ describe("runner()", () => {
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .songsCause,
         Error,
         "Retrying exceeded the maxAttempts (3)",
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any)!.error.cause
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any)!.error.cause
           .songsCause
           .cause,
         Error,
@@ -674,7 +674,7 @@ describe("runner()", () => {
       );
       assertIsError(
         // deno-lint-ignore no-explicit-any
-        (syncReleasesJobLogErrorSpy.calls[0].args[1] as any).error,
+        (syncReleasesJobLogErrorSpy.calls[0]?.args[1] as any).error,
         Error,
         "foo",
       );
@@ -738,8 +738,9 @@ describe("runner()", () => {
         "Releases sync ended",
       ]);
       assertEquals(
-        db.sql`select * from releases where id = ${album.collectionId}`[0]
-          .releasedAt,
+        db.sql`select * from releases where id = ${album.collectionId}`[0]?.[
+          "releasedAt"
+        ],
         releasedAt,
       );
     });
@@ -796,8 +797,9 @@ describe("runner()", () => {
         "Releases sync ended",
       ]);
       assertEquals(
-        db.sql`select * from releases where id = ${album.collectionId}`[0]
-          .releasedAt,
+        db.sql`select * from releases where id = ${album.collectionId}`[0]?.[
+          "releasedAt"
+        ],
         new Date().toISOString(),
       );
     });
@@ -860,8 +862,9 @@ describe("runner()", () => {
         "Releases sync ended",
       ]);
       assertEquals(
-        db.sql`select * from releases where id = ${album.collectionId}`[0]
-          .feedAt,
+        db.sql`select * from releases where id = ${album.collectionId}`[0]?.[
+          "feedAt"
+        ],
         feedAt,
       );
     });
@@ -918,8 +921,9 @@ describe("runner()", () => {
         "Releases sync ended",
       ]);
       assertEquals(
-        db.sql`select * from releases where id = ${album.collectionId}`[0]
-          .feedAt,
+        db.sql`select * from releases where id = ${album.collectionId}`[0]?.[
+          "feedAt"
+        ],
         releasedAt,
       );
     });
@@ -978,8 +982,9 @@ describe("runner()", () => {
         "Releases sync ended",
       ]);
       assertEquals(
-        db.sql`select * from releases where id = ${album.collectionId}`[0]
-          .feedAt,
+        db.sql`select * from releases where id = ${album.collectionId}`[0]?.[
+          "feedAt"
+        ],
         new Date().toISOString(),
       );
     });
@@ -1333,7 +1338,7 @@ describe("runner()", () => {
         assertEquals(
           db.sql`select * from releases where id = ${song.trackId} and type = 'track'`[
             0
-          ].name,
+          ]?.["name"],
           "bar",
         );
       });

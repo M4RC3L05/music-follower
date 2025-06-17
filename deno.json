@@ -55,12 +55,23 @@
   },
   "compilerOptions": {
     "jsx": "precompile",
-    "jsxImportSource": "@hono/hono/jsx"
+    "jsxImportSource": "@hono/hono/jsx",
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "lint": {
     "exclude": ["node_modules"],
     "rules": {
-      "include": ["verbatim-module-syntax"]
+      "include": ["verbatim-module-syntax"],
+      "tags": ["recommended", "jsx", "jsr"]
     }
   },
   "fmt": {

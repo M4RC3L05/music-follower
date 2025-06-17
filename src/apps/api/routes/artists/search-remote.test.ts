@@ -167,13 +167,13 @@ describe("GET /api/artists/remote", () => {
       0,
       "https://itunes.apple.com/search?term=foo&entity=musicArtist&limit=8",
     );
-    assertExists(fetchStub.calls[0].args[1]?.signal);
+    assertExists(fetchStub.calls[0]?.args[1]?.signal);
     assertSpyCallArg(fetchStub, 1, 0, "foo");
-    assertExists(fetchStub.calls[1].args[1]?.signal);
+    assertExists(fetchStub.calls[1]?.args[1]?.signal);
     assertSpyCallArg(fetchStub, 2, 0, "bar:ok");
-    assertExists(fetchStub.calls[2].args[1]?.signal);
+    assertExists(fetchStub.calls[2]?.args[1]?.signal);
     assertSpyCallArg(fetchStub, 3, 0, "bar:no");
-    assertExists(fetchStub.calls[3].args[1]?.signal);
+    assertExists(fetchStub.calls[3]?.args[1]?.signal);
     assertSpyCallArg(fetchStub, 4, 0, "bar:no-match-apple-music");
   });
 

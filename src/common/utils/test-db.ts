@@ -3,8 +3,11 @@ import type { CustomDatabase } from "#src/database/mod.ts";
 export const runMigrations = async (db: CustomDatabase) => {
   const migrationsPathRelative = "../../database/migrations";
   const migartionsDir = new URL(migrationsPathRelative, import.meta.url);
-  let [{ foreign_keys: foreingKeysVal }] = db.sql`pragma foreign_keys`;
-  foreingKeysVal = foreingKeysVal === 1 ? "ON" : "OFF";
+  const [row] = db.sql<{ foreign_keys: number }>`pragma foreign_keys`;
+
+  if (!row) throw new Error("Could not get current foreign keys status");
+
+  const foreingKeysVal = row.foreign_keys === 1 ? "ON" : "OFF";
 
   db.exec("pragma foreign_keys = off");
 

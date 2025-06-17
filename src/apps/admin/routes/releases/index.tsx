@@ -1,19 +1,39 @@
 import type { Hono } from "@hono/hono";
 import { ReleasesIndexPage } from "#src/apps/admin/views/releases/pages/index.tsx";
+import type { ReleasesService } from "#src/apps/admin/services/api/mod.ts";
+
+const resolveGetReleasesArgs = (
+  data: Record<string, string | AbortSignal | undefined>,
+) => {
+  const result: Parameters<ReleasesService["getReleases"]>[0] = {
+    signal: data.signal as AbortSignal,
+  };
+
+  if (data.hidden) result.hidden = data.hidden as string;
+  if (data.limit) result.limit = Number(data.limit);
+  if (data.page) result.page = Number(data.page);
+  if (data.q) result.q = data.q as string;
+  if (data.notHidden) result.notHidden = data.notHidden as string;
+
+  return result;
+};
 
 export const index = (router: Hono) => {
   router.get("/", async (c) => {
     const { hidden, limit, page, q } = c.req.query();
     const { data: releases, pagination } = await c
       .get("services")
-      .api.releasesService.getReleases({
-        hidden: hidden === "" ? undefined : hidden,
-        limit: limit ? Number(limit) : undefined,
-        page: page ? Number(page) : undefined,
-        q,
-        notHidden: !hidden || hidden.length <= 0 ? "admin" : undefined,
-        signal: c.req.raw.signal,
-      });
+      .api
+      .releasesService.getReleases(
+        resolveGetReleasesArgs({
+          hidden: hidden === "" ? undefined : hidden,
+          limit,
+          page,
+          q,
+          notHidden: !hidden || hidden.length <= 0 ? "admin" : undefined,
+          signal: c.req.raw.signal,
+        }),
+      );
 
     const previousLink = `/releases?page=${pagination.previous}${
       pagination.limit ? `&limit=${pagination.limit}` : ""

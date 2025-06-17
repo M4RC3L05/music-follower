@@ -140,6 +140,6 @@ describe("PATCH /api/releases/:id/:type", () => {
       .sql`select hidden from releases where id = ${release.id} and type = ${release.type}`;
 
     assertEquals(response.status, 204);
-    assertEquals(updated.hidden, JSON.stringify(["feed"]));
+    assertEquals(updated?.hidden, JSON.stringify(["feed"]));
   });
 });

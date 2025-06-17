@@ -12,7 +12,7 @@ export abstract class BaseService {
   ) {
     this.#baseUrl = baseUrl;
     this.#auth = auth;
-    this.#signal = signal;
+    if (signal) this.#signal = signal;
   }
 
   request(
