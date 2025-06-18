@@ -49,7 +49,6 @@ export const makeDatabase = () => {
   db.exec("pragma synchronous = NORMAL");
   db.exec("pragma temp_store = MEMORY");
   db.exec("pragma optimize = 0x10002");
-  db.function("uuid_v4", () => globalThis.crypto.randomUUID());
 
   log.info("Database created successfully");
 
