@@ -50,6 +50,8 @@ export const gracefulShutdown = () => {
     abort();
 
     log.info(`Existing process with status "${exitCode}"`);
+
+    Deno.exitCode = exitCode;
   });
 
   const shutdownP = promise.then(() => {
