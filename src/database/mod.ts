@@ -30,7 +30,6 @@ export class CustomDatabase extends Database {
   [Symbol.dispose]() {
     log.info("Closing database");
 
-    this.exec("pragma analysis_limit = 400");
     this.exec("pragma optimize");
 
     this.close();
