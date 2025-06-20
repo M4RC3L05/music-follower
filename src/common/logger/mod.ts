@@ -5,16 +5,27 @@ import {
   type LogRecord,
 } from "@std/log";
 import { memoize } from "@std/cache";
-import pineSerializer from "pino-std-serializers";
+import pineSerializer, { type SerializedError } from "pino-std-serializers";
 
-// deno-lint-ignore no-explicit-any
-const formatLogArg = (arg: any) => {
-  if (arg?.error instanceof Error) {
-    arg.error = pineSerializer.errWithCause(arg.error);
+const formatLogArg = (arg: unknown) => {
+  if (
+    arg &&
+    typeof arg === "object" &&
+    (arg as Record<string, unknown>).error instanceof Error
+  ) {
+    (arg as { error: SerializedError }).error = pineSerializer.errWithCause(
+      (arg as { error: Error }).error,
+    );
   }
 
-  if (arg?.reason instanceof Error) {
-    arg.reason = pineSerializer.errWithCause(arg.reason);
+  if (
+    arg &&
+    typeof arg === "object" &&
+    (arg as Record<string, unknown>).reason instanceof Error
+  ) {
+    (arg as { reason: SerializedError }).reason = pineSerializer.errWithCause(
+      (arg as { reason: Error }).reason,
+    );
   }
 
   return arg;

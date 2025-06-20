@@ -47,11 +47,7 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
       return c.redirect(c.req.header("Referer") ?? "/");
     }
 
-    return c.text(
-      error.message ?? "Something broke",
-      // deno-lint-ignore no-explicit-any
-      (error as any).status ?? 500,
-    );
+    return c.text(error.message ?? "Something broke", 500);
   });
 
   app.notFound(() => {
