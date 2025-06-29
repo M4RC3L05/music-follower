@@ -47,7 +47,10 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
       return c.redirect(c.req.header("Referer") ?? "/");
     }
 
-    return c.text(error.message ?? "Something broke", 500);
+    return c.text(
+      "Something broke",
+      error instanceof HTTPException ? error.status : 500,
+    );
   });
 
   app.notFound(() => {
