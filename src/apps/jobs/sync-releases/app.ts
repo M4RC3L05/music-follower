@@ -42,7 +42,7 @@ const usableRelease = (
   return !isToOLd && !isCompilation && !isDjMix;
 };
 
-const getRelases = async (artist: Artist, signal?: AbortSignal) => {
+const getRelases = async (artist: Pick<Artist, "id">, signal?: AbortSignal) => {
   let results: Array<ItunesLookupAlbumModel | ItunesLookupSongModel> = [];
 
   const [songsResult, albumsResult] = await Promise.allSettled([
@@ -85,7 +85,7 @@ const getRelases = async (artist: Artist, signal?: AbortSignal) => {
 
 const insertOrReplaceRelease = (db: CustomDatabase, release: Release) => {
   return db.sql`
-    insert or replace into releases 
+    insert or replace into releases
       (id, "artistName", name, "releasedAt", "coverUrl", type, hidden, metadata, "feedAt")
     values
       (
@@ -214,13 +214,15 @@ const runner = async ({
   log.info("Begin releases sync");
 
   const artists = db.prepare(`
-      select *, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
-      from 
+      select id, name, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
+      from
         artists,
         (select count(id) as "totalItems" from artists) as ti
       order by id;
     `)
-    .iter() as IterableIterator<Artist & { index: number; totalItems: number }>;
+    .iter() as IterableIterator<
+      Pick<Artist, "id" | "name"> & { index: number; totalItems: number }
+    >;
 
   for (const artist of artists) {
     const isLastArtist = artist.index >= artist.totalItems;

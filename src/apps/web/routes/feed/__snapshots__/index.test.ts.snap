@@ -1,0 +1,89 @@
+export const snapshot = {};
+
+snapshot[`global > GET /feed > should send body as "application/rss+xml" if accepts is "application/rss+xml" 1`] = `
+'<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Music releases</title>
+        <link>undefined</link>
+        <description>Get the latest music releases from artist you follow</description>
+        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Music Follower</generator>
+        <language>en</language>
+        <copyright>Music Follower</copyright>
+        <item>
+            <title><![CDATA[foo by bar]]></title>
+            <link>http://example.com</link>
+            <guid isPermaLink="false">1</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+            <description><![CDATA[<img src="http://example.com" />
+          <h1>foo</h1><p>bar</p>
+          <p>1970</p>]]></description>
+        </item>
+    </channel>
+</rss>'
+`;
+
+snapshot[`global > GET /feed > should send body as "application/xml" if accepts is "application/xml" 1`] = `
+'<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Music releases</title>
+        <link>undefined</link>
+        <description>Get the latest music releases from artist you follow</description>
+        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Music Follower</generator>
+        <language>en</language>
+        <copyright>Music Follower</copyright>
+        <item>
+            <title><![CDATA[foo by bar]]></title>
+            <link>http://example.com</link>
+            <guid isPermaLink="false">1</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+            <description><![CDATA[<img src="http://example.com" />
+          <h1>foo</h1><p>bar</p>
+          <p>1970</p>]]></description>
+        </item>
+    </channel>
+</rss>'
+`;
+
+snapshot[`global > GET /feed > should send body as "application/atom+xml" if accepts is "application/atom+xml" 1`] = `
+'<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>music_follower</id>
+    <title>Music releases</title>
+    <updated>1970-01-01T00:00:00.000Z</updated>
+    <generator>Music Follower</generator>
+    <subtitle>Get the latest music releases from artist you follow</subtitle>
+    <rights>Music Follower</rights>
+    <entry>
+        <title type="html"><![CDATA[foo by bar]]></title>
+        <id>1</id>
+        <link href="http://example.com"/>
+        <updated>1970-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<img src="http://example.com" />
+          <h1>foo</h1><p>bar</p>
+          <p>1970</p>]]></summary>
+    </entry>
+</feed>'
+`;
+
+snapshot[`global > GET /feed > should send body as "application/json" if accepts is "application/json" 1`] = `
+'{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Music releases",
+    "description": "Get the latest music releases from artist you follow",
+    "items": [
+        {
+            "id": "1",
+            "content_html": "<img src=\\\\"http://example.com\\\\" />\\\\n          <h1>foo</h1><p>bar</p>\\\\n          <p>1970</p>",
+            "url": "http://example.com",
+            "title": "foo by bar",
+            "date_modified": "1970-01-01T00:00:00.000Z"
+        }
+    ]
+}'
+`;

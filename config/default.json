@@ -1,33 +1,14 @@
 {
   "apps": {
-    "feed": {
+    "web": {
       "host": "127.0.0.1",
       "port": 4321,
-      "maxReleases": 50
-    },
-    "api": {
-      "host": "127.0.0.1",
-      "port": 4323,
-      "basicAuth": {
-        "username": "foo",
-        "password": "bar"
-      }
-    },
-    "admin": {
-      "host": "127.0.0.1",
-      "port": 4322,
       "basicAuth": {
         "username": "foo",
         "password": "bar"
       },
-      "services": {
-        "api": {
-          "url": "http://127.0.0.1:4323",
-          "basicAuth": {
-            "username": "foo",
-            "password": "bar"
-          }
-        }
+      "feed": {
+        "maxReleases": 50
       }
     },
     "jobs": {
@@ -58,7 +39,10 @@
       }
     }
   },
+  "csrf": {
+    "origin": "\\.*"
+  },
   "media": {
-    "placeholderImage": "https://placehold.co/512"
+    "remoteArtistsPlaceholderImage": "/public/images/remote-artist-image-default.svg"
   }
 }

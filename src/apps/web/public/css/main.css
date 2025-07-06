@@ -1,0 +1,14 @@
+@import url("/deps/bootstrap/dist/css/bootstrap.min.css");
+@import url("/deps/bootstrap-icons/font/bootstrap-icons.min.css");
+
+#flash-messages > :first-child {
+  margin-top: auto;
+}
+
+@media only screen and (max-width: calc(600px + 2.6rem)) {
+  #flash-messages {
+    left: 1.3rem !important;
+    right: 1.3rem !important;
+    width: auto !important;
+  }
+}

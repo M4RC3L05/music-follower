@@ -1,13 +1,5 @@
-import config from "config";
-
-import { makeLogger } from "#src/common/logger/mod.ts";
-
-const log = makeLogger("apple-music-source");
-const textDecoder = new TextDecoder();
-
 export const getArtistImage = async (url: string, signal?: AbortSignal) => {
-  log.info("Getting image for artist", { url });
-
+  const textDecoder = new TextDecoder();
   const response = await fetch(url, {
     signal: signal
       ? AbortSignal.any([AbortSignal.timeout(10_000), signal])
@@ -15,8 +7,6 @@ export const getArtistImage = async (url: string, signal?: AbortSignal) => {
   });
 
   if (!response.ok) {
-    log.error("Could not fetch artists image", { status: response.status });
-
     throw new Error("An error ocurred while searching for artist image");
   }
 
@@ -29,22 +19,19 @@ export const getArtistImage = async (url: string, signal?: AbortSignal) => {
   for await (const chunk of response.body) {
     html += textDecoder.decode(chunk);
 
-    if (/<meta property="og:image".*>/.test(html)) {
+    if (
+      /<meta property="og:image".*>/im.test(html) || /<\/head>/im.test(html)
+    ) {
       break;
     }
   }
 
-  const result = /<meta\s+property="og:image"\s+content="([^"]*)"/gm
+  const result = /<meta\s+property="og:image"\s+content="([^"]*)"/im
     .exec(html)
     ?.at(1);
 
   if (!result || result.includes("apple-music-")) {
-    log.info(
-      "Image is not for a artist, using placeholder",
-      { url, image: result },
-    );
-
-    return config.get("media.placeholderImage");
+    throw new Error(`Invalid artist image of "${result}"`);
   }
 
   const imageSplitted = result.split("/");
@@ -57,11 +44,6 @@ export const getArtistImage = async (url: string, signal?: AbortSignal) => {
   }
 
   imageSplitted[imageSplitted.length - 1] = `256x256.${imageFile.at(1)}`;
-
-  log.info(
-    "Retrieved image for artist",
-    { url, image: imageSplitted.join("/") },
-  );
 
   return imageSplitted.join("/");
 };

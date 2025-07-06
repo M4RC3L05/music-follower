@@ -30,13 +30,13 @@ export const loadRelease = (db: CustomDatabase, data?: Partial<Release>) => {
 
 export const loadArtist = (db: CustomDatabase, data?: Partial<Artist>) => {
   return db.sql<Artist>`
-    insert into artists (id, name, "imageUrl")
+    insert into artists (id, name, image)
     values (
       ${
     data?.id ?? Number(Math.random().toFixed(7).toString().replace("0.", ""))
   },
       ${data?.name ?? "foo"},
-      ${data?.imageUrl ?? "http://example.com"}
+      ${data?.image ?? "http://example.com"}
     )
     returning *
   `.at(0)!;

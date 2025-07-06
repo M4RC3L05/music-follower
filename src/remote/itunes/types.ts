@@ -9,6 +9,17 @@ export type ItunesArtistSearchModel = {
   primaryGenreId: number;
 };
 
+export type ItunesLookupArtistModel = {
+  wrapperType: "artist";
+  artistType: "Artist";
+  artistName: string;
+  artistLinkUrl: string;
+  artistId: number;
+  amgArtistId: number;
+  primaryGenreName: string;
+  primaryGenreId: number;
+};
+
 export type ItunesLookupAlbumModel = {
   wrapperType: "collection";
   collectionType: "Album";

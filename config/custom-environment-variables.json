@@ -1,44 +1,19 @@
 {
   "apps": {
-    "feed": {
-      "host": "APPS_FEED_HOST",
+    "web": {
+      "host": "APPS_WEB_HOST",
       "port": {
-        "__name": "APPS_FEED_PORT",
-        "__format": "number"
-      },
-      "maxReleases": {
-        "__name": "APPS_FEED_MAX_RELEASES",
-        "__format": "number"
-      }
-    },
-    "api": {
-      "host": "APPS_API_HOST",
-      "port": {
-        "__name": "APPS_API_PORT",
+        "__name": "APPS_WEB_PORT",
         "__format": "number"
       },
       "basicAuth": {
-        "username": "APPS_API_BASIC_AUTH_USERNAME",
-        "password": "APPS_API_BASIC_AUTH_PASSWORD"
-      }
-    },
-    "admin": {
-      "host": "APPS_ADMIN_HOST",
-      "port": {
-        "__name": "APPS_ADMIN_PORT",
-        "__format": "number"
+        "username": "APPS_WEB_BASIC_AUTH_USERNAME",
+        "password": "APPS_WEB_BASIC_AUTH_PASSWORD"
       },
-      "basicAuth": {
-        "username": "APPS_ADMIN_BASIC_AUTH_USERNAME",
-        "password": "APPS_ADMIN_BASIC_AUTH_PASSWORD"
-      },
-      "services": {
-        "api": {
-          "url": "APPS_ADMIN_SERVICES_API_URL",
-          "basicAuth": {
-            "username": "APPS_ADMIN_SERVICES_API_BASIC_AUTH_USERNAME",
-            "password": "APPS_ADMIN_SERVICES_API_BASIC_AUTH_PASSWORD"
-          }
+      "feed": {
+        "maxReleases": {
+          "__name": "APPS_WEB_FEED_MAX_RELEASES",
+          "__format": "number"
         }
       }
     },
@@ -78,6 +53,9 @@
         }
       }
     }
+  },
+  "csrf": {
+    "origin": "CSRF_ORIGIN"
   },
   "media": {
     "placeholderImage": "MEDIA_PLACEHOLDER_IMAGE"
