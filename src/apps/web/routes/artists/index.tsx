@@ -1,7 +1,7 @@
 import type { Hono } from "@hono/hono";
 import { ArtistsIndexPage } from "#src/apps/web/views/artists/pages/index.tsx";
 import vine from "@vinejs/vine";
-import { Artist } from "#src/database/types/mod.ts";
+import type { Artist } from "#src/database/types/mod.ts";
 
 vine.convertEmptyStringsToNull = true;
 const requestQuerySchema = vine

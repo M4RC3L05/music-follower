@@ -1,5 +1,5 @@
 import type { FC } from "@hono/hono/jsx";
-import { SessionFlashFormErrors } from "#src/apps/web/types.ts";
+import type { SessionFlashFormErrors } from "#src/apps/web/types.ts";
 
 export const ArtistsImportPage: FC<
   { formErrors?: SessionFlashFormErrors | undefined }
@@ -32,7 +32,7 @@ export const ArtistsImportPage: FC<
                 {formErrors?.file
                   ? (
                     <div class="invalid-feedback">
-                      {formErrors.file.map((item) => <p>{item}</p>)}
+                      {formErrors.file.map((item, i) => <p key={i}>{item}</p>)}
                     </div>
                   )
                   : null}

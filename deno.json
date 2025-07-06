@@ -34,11 +34,11 @@
     },
     "check:fmt": {
       "description": "Run formatting checks",
-      "command": "deno fmt --check"
+      "command": "deno fmt --check ."
     },
     "check:lint": {
       "description": "Run lint checks",
-      "command": "deno lint"
+      "command": "deno lint ."
     },
     "check:check": {
       "description": "Run check checks",

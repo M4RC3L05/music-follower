@@ -1,6 +1,6 @@
 import type { FC } from "@hono/hono/jsx";
 import type { Release } from "#src/database/types/mod.ts";
-import { SessionFlashFormErrors } from "#src/apps/web/types.ts";
+import type { SessionFlashFormErrors } from "#src/apps/web/types.ts";
 
 type ReleasesIndexPage = {
   releases: Release[];
@@ -72,7 +72,7 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
                     {formErrors?.q
                       ? (
                         <div class="invalid-feedback">
-                          {formErrors.q.map((item) => <p>{item}</p>)}
+                          {formErrors.q.map((item, i) => <p key={i}>{item}</p>)}
                         </div>
                       )
                       : null}
@@ -109,7 +109,9 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
                     {formErrors?.hidden
                       ? (
                         <div class="invalid-feedback">
-                          {formErrors.hidden.map((item) => <p>{item}</p>)}
+                          {formErrors.hidden.map((item, i) => (
+                            <p key={i}>{item}</p>
+                          ))}
                         </div>
                       )
                       : null}

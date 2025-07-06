@@ -1,6 +1,6 @@
 import type { FC } from "@hono/hono/jsx";
 import type { ItunesArtistSearchModel } from "#src/remote/mod.ts";
-import { SessionFlashFormErrors } from "#src/apps/web/types.ts";
+import type { SessionFlashFormErrors } from "#src/apps/web/types.ts";
 
 export const ArtistsRemotePage: FC<{
   formErrors?: SessionFlashFormErrors | undefined;
@@ -37,7 +37,7 @@ export const ArtistsRemotePage: FC<{
                 {formErrors?.q
                   ? (
                     <div class="invalid-feedback">
-                      {formErrors.q.map((item) => <p>{item}</p>)}
+                      {formErrors.q.map((item, i) => <p key={i}>{item}</p>)}
                     </div>
                   )
                   : null}

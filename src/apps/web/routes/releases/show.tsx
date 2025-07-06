@@ -2,7 +2,7 @@ import type { Hono } from "@hono/hono";
 import { ReleasesShowPage } from "#src/apps/web/views/releases/pages/show.tsx";
 import vine from "@vinejs/vine";
 import { HTTPException } from "@hono/hono/http-exception";
-import { Release } from "#src/database/types/mod.ts";
+import type { Release } from "#src/database/types/mod.ts";
 
 const requestParametersSchema = vine.object({
   id: vine.number(),
