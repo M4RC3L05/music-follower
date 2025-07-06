@@ -83,7 +83,7 @@ const ArtistSection: FC<{ artist: Artist }> = ({ artist }) => (
           data-bs-toggle="modal"
           data-bs-target={`#unsub-artist-modal-${artist.id}`}
         >
-          Unsubscribe ⨯?
+          Unsubscribe <i class="bi bi-person-dash"></i> ?
         </button>
       </div>
     </section>
@@ -159,7 +159,7 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
 
                   <div class="col-auto">
                     <button type="submit" class="btn btn-outline-primary">
-                      Search
+                      Search <i class="bi bi-search"></i>
                     </button>
                   </div>
                 </form>
@@ -169,20 +169,20 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
                     href="/artists/remote"
                     class="btn btn-sm btn-outline-primary me-2"
                   >
-                    Find artists
+                    Find artists <i class="bi bi-person-add"></i>
                   </a>
                   <a
                     href="/artists/import"
                     class="btn btn-sm btn-outline-primary me-2"
                   >
-                    Import ↥
+                    Import <i class="bi bi-upload"></i>
                   </a>
                   <a
                     href="/artists/export"
                     target="_blank"
                     class="btn btn-sm btn-outline-primary"
                   >
-                    Export ↧
+                    Export <i class="bi bi-download"></i>
                   </a>
                 </div>
 
@@ -191,25 +191,25 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.startLink}
                   >
-                    « Start
+                    <i class="bi bi-chevron-double-left"></i> Start
                   </a>
                   <a
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.previousLink}
                   >
-                    ← Previous
+                    <i class="bi bi-chevron-left"></i> Previous
                   </a>
                   <a
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.nextLink}
                   >
-                    Next →
+                    Next <i class="bi bi-chevron-right"></i>
                   </a>
                   <a
                     class="btn btn-sm btn-outline-primary"
                     href={pagination.endLink}
                   >
-                    End »
+                    End <i class="bi bi-chevron-double-right"></i>
                   </a>
                 </div>
               </div>

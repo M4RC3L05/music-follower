@@ -29,7 +29,9 @@ export const ReleasesShowPage: FC<ReleasesShowPage> = ({ release }) => (
                     value={release.hidden.includes("admin") ? "hide" : "show"}
                   />
                   <button type="submit" class="btn btn-outline-primary">
-                    Hidden Admin {release.hidden.includes("admin") ? "☑" : "☐"}
+                    Hidden Admin {release.hidden.includes("admin")
+                      ? <i class="bi bi-check-square"></i>
+                      : <i class="bi bi-square"></i>}
                   </button>
                 </form>
 
@@ -45,7 +47,9 @@ export const ReleasesShowPage: FC<ReleasesShowPage> = ({ release }) => (
                     value={release.hidden.includes("feed") ? "hide" : "show"}
                   />
                   <button type="submit" class="btn btn-outline-primary">
-                    Hidden Feed {release.hidden.includes("feed") ? "☑" : "☐"}
+                    Hidden Feed {release.hidden.includes("feed")
+                      ? <i class="bi bi-check-square"></i>
+                      : <i class="bi bi-square"></i>}
                   </button>
                 </form>
               </div>

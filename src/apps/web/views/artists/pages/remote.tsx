@@ -45,7 +45,7 @@ export const ArtistsRemotePage: FC<{
 
               <div class="d-grid">
                 <button type="submit" class="btn btn-outline-primary">
-                  Search
+                  Search <i class="bi bi-search"></i>
                 </button>
               </div>
             </form>

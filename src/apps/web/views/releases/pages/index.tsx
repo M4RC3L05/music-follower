@@ -119,7 +119,7 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
 
                   <div class="col-auto">
                     <button type="submit" class="btn btn-outline-primary">
-                      Search
+                      Search <i class="bi bi-search"></i>
                     </button>
                   </div>
                 </form>
@@ -129,25 +129,25 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.startLink}
                   >
-                    « Start
+                    <i class="bi bi-chevron-double-left"></i> Start
                   </a>
                   <a
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.previousLink}
                   >
-                    ← Previous
+                    <i class="bi bi-chevron-left"></i> Previous
                   </a>
                   <a
                     class="btn btn-sm btn-outline-primary me-2"
                     href={pagination.nextLink}
                   >
-                    Next →
+                    Next <i class="bi bi-chevron-right"></i>
                   </a>
                   <a
-                    class="btn btn-sm btn-outline-primary me-2"
+                    class="btn btn-sm btn-outline-primary"
                     href={pagination.endLink}
                   >
-                    End »
+                    End <i class="bi bi-chevron-double-right"></i>
                   </a>
                 </div>
               </div>
