@@ -5,6 +5,7 @@ import type {
   ItunesLookupAlbumModel,
   ItunesLookupSongModel,
 } from "#src/remote/mod.ts";
+import { JsonStringifyStream } from "@std/json";
 
 export const loadRelease = (db: CustomDatabase, data?: Partial<Release>) => {
   return db.sql<Release>`
@@ -43,19 +44,28 @@ export const loadArtist = (db: CustomDatabase, data?: Partial<Artist>) => {
 };
 
 export const maxArtistsImportPayload = new File(
-  ["0".repeat((1024 * 1024 * 3) + 1)],
-  "foo.json",
+  ["0".repeat((1024 * 1024 * 100) + 1)],
+  "foo.jsonl.gz",
   {
-    type: "text/plain",
+    type: "application/gzip",
   },
 );
 
-export const generateArtistsFileExport = (artists?: Artist[]) => {
+export const generateInavlidArtistsFileExport = () => {
+  return new File(["0"], "foo.txt", { type: "text/plain" });
+};
+
+export const generateArtistsFileExport = async (artists?: Artist[]) => {
   return new File(
-    [JSON.stringify({ data: artists ?? [] })],
-    "foo.json",
+    await Array.fromAsync(
+      ReadableStream.from(artists ?? [])
+        .pipeThrough(new JsonStringifyStream())
+        .pipeThrough(new TextEncoderStream())
+        .pipeThrough(new CompressionStream("gzip")),
+    ),
+    "foo.jsonl.gzip",
     {
-      type: "text/plain",
+      type: "application/gzip",
     },
   );
 };

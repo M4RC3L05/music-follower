@@ -7,7 +7,7 @@ import type {
   ItunesLookupSongModel,
 } from "#src/remote/mod.ts";
 
-const maxReleases = config.get("apps.web.feed.maxReleases");
+const maxReleases = config.get<number>("apps.web.feed.maxReleases");
 
 export const index = (router: Hono) => {
   router.get("/", (c) => {

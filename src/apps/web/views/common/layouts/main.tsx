@@ -146,7 +146,7 @@ export const MainLayout: FC<
                   style={{ pointerEvents: "all" }}
                 >
                   <i class="bi bi-exclamation-triangle me-2"></i>
-                  <div>{errMsg}</div>
+                  {errMsg}
                   <button
                     type="button"
                     class="btn-close"
@@ -186,7 +186,7 @@ export const MainLayout: FC<
                   style={{ pointerEvents: "all" }}
                 >
                   <i class="bi bi-exclamation-square me-2"></i>
-                  <div>{errMsg}</div>
+                  {errMsg}
                   <button
                     type="button"
                     class="btn-close"

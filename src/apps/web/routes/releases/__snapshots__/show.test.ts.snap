@@ -1,0 +1,161 @@
+export const snapshot = {};
+
+snapshot[`global > GET /releases/:id/:type > snapshot > should display release 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header
+    class="mx-auto my-3 position-sticky z-2 mb-5"
+    style="top:1rem"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card px-3 py-4">
+            <div class="card-body d-flex justify-content-center align-items-center">
+              <form
+                action="/releases/1/track/state"
+                method="post"
+                style="margin-right: 8px"
+              >
+                <input
+                  type="hidden"
+                  name="option"
+                  value="admin"
+                >
+                <input
+                  class="form-control"
+                  type="hidden"
+                  name="state"
+                  value="hide"
+                >
+                <button
+                  type="submit"
+                  class="btn btn-outline-primary"
+                >
+                  Hidden Admin
+                  <i class="bi bi-square">
+                  </i>
+                </button>
+              </form>
+              <form
+                action="/releases/1/track/state"
+                method="post"
+              >
+                <input
+                  type="hidden"
+                  name="option"
+                  value="feed"
+                >
+                <input
+                  class="form-control"
+                  type="hidden"
+                  name="state"
+                  value="hide"
+                >
+                <button
+                  type="submit"
+                  class="btn btn-outline-primary"
+                >
+                  Hidden Feed
+                  <i class="bi bi-square">
+                  </i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div style="display: flex; justify-content: center">
+            <img
+              class="img-fluid rounded mb-2"
+              src="http://example.com"
+              style="aspect-ratio:1 / 1"
+            >
+          </div>
+          <h3>
+            bar by foo
+          </h3>
+          <span class="badge rounded-pill text-bg-primary mb-2">
+            track
+          </span>
+          <p>
+            Release date: N/A
+          </p>
+          <h4>
+            Metadata:
+          </h4>
+          <pre>
+            {}
+          </pre>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;

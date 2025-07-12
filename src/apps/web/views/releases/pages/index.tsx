@@ -189,8 +189,7 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
                     <h3>{release.name} by {release.artistName}</h3>
 
                     <p>
-                      Released at{" "}
-                      {new Date(release.releasedAt).toLocaleString()}
+                      Released at {new Date(release.releasedAt).toISOString()}
                     </p>
 
                     <a

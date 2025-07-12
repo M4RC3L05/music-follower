@@ -6,11 +6,10 @@ import {
   type ItunesArtistSearchModel,
   itunesRequests,
 } from "#src/remote/mod.ts";
-import { HTTPException } from "@hono/hono/http-exception";
 import config from "config";
 
 const getRequestQuerySchema = vine.object({
-  q: vine.string().trim().minLength(1).optional(),
+  q: vine.string().trim().optional(),
 });
 const getRequestQueryValidator = vine.compile(getRequestQuerySchema);
 
@@ -86,10 +85,16 @@ export const remote = (router: Hono) => {
     `;
 
     if (!inserted) {
-      throw new HTTPException(400, {
-        message: "Could not subscribe to artists",
+      c.get("session").flash("flashMessages", {
+        error: [`Could not subscribe to "${name}"`],
       });
+
+      return c.redirect("/artists/remote");
     }
+
+    c.get("session").flash("flashMessages", {
+      success: [`Subscribed to "${name}" successfully`],
+    });
 
     return c.redirect("/artists");
   });

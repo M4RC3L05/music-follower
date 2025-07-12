@@ -223,7 +223,7 @@ export const ArtistsIndexPage: FC<ArtistsIndexPageProps> = (
       <div class="container">
         <div className="row">
           {artists.length <= 0
-            ? <p class="text-center">No releases to show</p>
+            ? <p class="text-center">No artists to show</p>
             : null}
           {artists.map((artist) => (
             <div class="col-12">

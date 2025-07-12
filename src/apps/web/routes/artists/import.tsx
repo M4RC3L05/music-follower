@@ -85,7 +85,7 @@ export const importPage = (router: Hono) => {
     }
 
     c.get("session").flash("flashMessages", {
-      success: [`${artistsImported} artist(s) imported successfully`],
+      success: [`Successfully imported ${artistsImported} artist(s)`],
     });
 
     return c.redirect("/artists");

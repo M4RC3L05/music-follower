@@ -99,7 +99,9 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
     }
 
     const errorMessage = error instanceof HTTPException
-      ? STATUS_TEXT[error.status as StatusCode] ?? "Something broke..."
+      ? (error.message.trim().length > 0 ? error.message : undefined) ??
+        STATUS_TEXT[error.status as StatusCode] ??
+        "Something broke..."
       : "Something broke...";
     c.status(error instanceof HTTPException ? error.status : 500);
 
@@ -213,6 +215,56 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
       origin: (origin) => new RegExp(config.get("csrf.origin")).test(origin),
     }),
   );
+
+  if (Deno.env.get("ENV") === "test") {
+    app.get("/test/flash-messages", (c) => {
+      c.get("session").flash("flashMessages", {
+        error: ["error", "error2"],
+        info: ["info"],
+        success: ["success"],
+        warning: ["warning"],
+      });
+
+      return c.render("");
+    });
+
+    app.get("/test/error", (c) => {
+      const { type } = c.req.query();
+
+      if (type === "http") {
+        throw new HTTPException(400, {
+          res: new Response(null, { headers: { "x-foo": "bar" } }),
+        });
+      }
+
+      if (type === "http422") {
+        throw new HTTPException(422, {
+          message: "foo",
+          cause: { foo: ["yes"] },
+        });
+      }
+
+      if (type === "valierr") {
+        const e = new errors.E_VALIDATION_ERROR([{
+          message: "lorem ipsum",
+          field: "foo",
+        }, {
+          message: "lorem lorem",
+          field: "bar",
+        }]);
+
+        e.message = "foo";
+
+        throw e;
+      }
+
+      if (type === "multparterr") {
+        throw new MultipartParseError("foo");
+      }
+
+      throw new Error("foo");
+    });
+  }
 
   return app.route("/", router());
 };

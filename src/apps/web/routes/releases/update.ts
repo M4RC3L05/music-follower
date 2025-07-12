@@ -1,6 +1,5 @@
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
-import { HTTPException } from "@hono/hono/http-exception";
 import type { Release } from "#src/database/types/mod.ts";
 
 const requestParametersSchema = vine
@@ -28,16 +27,18 @@ export const update = (router: Hono) => {
     `;
 
     if (!release) {
-      throw new HTTPException(404, { message: "Release not found" });
+      c.get("session").flash("flashMessages", { error: ["Release not found"] });
+
+      return c.redirect(`/releases/${id}/${type}`);
     }
 
     const finalHidden = [...JSON.parse(release.hidden)];
 
-    if (state === "show") {
+    if (state === "hide") {
       finalHidden.push(option);
     }
 
-    if (state === "hide") {
+    if (state === "show") {
       finalHidden.splice(finalHidden.indexOf(option), 1);
     }
 
@@ -49,9 +50,11 @@ export const update = (router: Hono) => {
     `;
 
     if (!updated) {
-      throw new HTTPException(404, { message: "Release not found" });
+      c.get("session").flash("flashMessages", {
+        error: ["Could not update hidden status"],
+      });
     }
 
-    return c.redirect(c.req.header("Referer") ?? "/");
+    return c.redirect(`/releases/${id}/${type}`);
   });
 };

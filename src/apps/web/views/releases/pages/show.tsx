@@ -26,7 +26,7 @@ export const ReleasesShowPage: FC<ReleasesShowPage> = ({ release }) => (
                     class="form-control"
                     type="hidden"
                     name="state"
-                    value={release.hidden.includes("admin") ? "hide" : "show"}
+                    value={release.hidden.includes("admin") ? "show" : "hide"}
                   />
                   <button type="submit" class="btn btn-outline-primary">
                     Hidden Admin {release.hidden.includes("admin")
@@ -44,7 +44,7 @@ export const ReleasesShowPage: FC<ReleasesShowPage> = ({ release }) => (
                     class="form-control"
                     type="hidden"
                     name="state"
-                    value={release.hidden.includes("feed") ? "hide" : "show"}
+                    value={release.hidden.includes("feed") ? "show" : "hide"}
                   />
                   <button type="submit" class="btn btn-outline-primary">
                     Hidden Feed {release.hidden.includes("feed")
@@ -86,8 +86,9 @@ export const ReleasesShowPage: FC<ReleasesShowPage> = ({ release }) => (
             </span>
 
             <p>
-              Release date{" "}
-              {new Date(release?.releasedAt ?? "").toLocaleString()}
+              Release date: {release?.releasedAt
+                ? new Date(release.releasedAt).toISOString()
+                : "N/A"}
             </p>
 
             {typeof (JSON.parse(release?.metadata ?? "{}") as Record<

@@ -1,0 +1,337 @@
+export const snapshot = {};
+
+snapshot[`global > App > snapshots > should render default layout correctly 1`] = `
+'
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    >
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+    <title>
+      MUSIC FOLLOWER | ADMIN
+    </title>
+    <link
+      rel="stylesheet"
+      href="/public/css/main.css"
+    >
+    <script type="module">
+      const getPreferredTheme = () => {
+              return globalThis.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+            };
+
+            const setTheme = (theme) => {
+              document.documentElement.setAttribute("data-bs-theme", theme);
+            };
+
+            setTheme(getPreferredTheme());
+
+            globalThis.matchMedia("(prefers-color-scheme: dark)").addEventListener(
+              "change",
+              () => {
+                setTheme(getPreferredTheme());
+              },
+            );
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container">
+        <a
+          class="navbar-brand"
+          href="/"
+        >
+          Music Follower
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon">
+          </span>
+        </button>
+        <div
+          class="collapse navbar-collapse"
+          id="navbarSupportedContent"
+        >
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link "
+                aria-current="page"
+                href="/"
+              >
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link "
+                href="/artists"
+              >
+                Artists
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link "
+                href="/releases"
+              >
+                Releases
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div
+      id="flash-messages"
+      class="position-fixed z-3 vstack gap-2 overflow-x-hidden overflow-y-scroll"
+      style="bottom:1.3rem;right:1.3rem;width:600px;top:1.3rem;pointer-events:none"
+    >
+      <div
+        class="alert alert-danger alert-dismissible fade show mb-0 d-flex align-items-center"
+        role="alert"
+        style="pointer-events:all"
+      >
+        <i class="bi bi-x-circle me-2">
+        </i>
+        error
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div
+        class="alert alert-danger alert-dismissible fade show mb-0 d-flex align-items-center"
+        role="alert"
+        style="pointer-events:all"
+      >
+        <i class="bi bi-x-circle me-2">
+        </i>
+        error2
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div
+        class="alert alert-warning alert-dismissible fade show mb-0 d-flex align-items-center"
+        role="alert"
+        style="pointer-events:all"
+      >
+        <i class="bi bi-exclamation-triangle me-2">
+        </i>
+        warning
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div
+        class="alert alert-success alert-dismissible fade show mb-0 d-flex align-items-center"
+        role="alert"
+        style="pointer-events:all"
+      >
+        <i class="bi bi-check-square me-2">
+        </i>
+        success
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div
+        class="alert alert-info alert-dismissible fade show mb-0 d-flex align-items-center"
+        role="alert"
+        style="pointer-events:all"
+      >
+        <i class="bi bi-exclamation-square me-2">
+        </i>
+        info
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+        </button>
+      </div>
+    </div>
+    <script
+      type="module"
+      src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+    >
+    </script>
+  </body>
+</html>
+'
+`;
+
+snapshot[`global > App > should render flash messages 1`] = `
+'
+<div
+  id="flash-messages"
+  class="position-fixed z-3 vstack gap-2 overflow-x-hidden overflow-y-scroll"
+  style="bottom:1.3rem;right:1.3rem;width:600px;top:1.3rem;pointer-events:none"
+>
+  <div
+    class="alert alert-danger alert-dismissible fade show mb-0 d-flex align-items-center"
+    role="alert"
+    style="pointer-events:all"
+  >
+    <i class="bi bi-x-circle me-2">
+    </i>
+    error
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+    </button>
+  </div>
+  <div
+    class="alert alert-danger alert-dismissible fade show mb-0 d-flex align-items-center"
+    role="alert"
+    style="pointer-events:all"
+  >
+    <i class="bi bi-x-circle me-2">
+    </i>
+    error2
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+    </button>
+  </div>
+  <div
+    class="alert alert-warning alert-dismissible fade show mb-0 d-flex align-items-center"
+    role="alert"
+    style="pointer-events:all"
+  >
+    <i class="bi bi-exclamation-triangle me-2">
+    </i>
+    warning
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+    </button>
+  </div>
+  <div
+    class="alert alert-success alert-dismissible fade show mb-0 d-flex align-items-center"
+    role="alert"
+    style="pointer-events:all"
+  >
+    <i class="bi bi-check-square me-2">
+    </i>
+    success
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+    </button>
+  </div>
+  <div
+    class="alert alert-info alert-dismissible fade show mb-0 d-flex align-items-center"
+    role="alert"
+    style="pointer-events:all"
+  >
+    <i class="bi bi-exclamation-square me-2">
+    </i>
+    info
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+    </button>
+  </div>
+</div>
+'
+`;
+
+snapshot[`global > App > should catch unknown errors and return 500 1`] = `
+'
+<body>
+  <main>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col text-center">
+          <h1>
+            Something broke...
+          </h1>
+          <a href="/">
+            Go Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
+
+snapshot[`global > App > should catch http errors and return their status code and proxy any headers 1`] = `
+'
+<body>
+  <main>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col text-center">
+          <h1>
+            Bad Request
+          </h1>
+          <a href="/">
+            Go Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;

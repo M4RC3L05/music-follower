@@ -13,7 +13,9 @@ export const artistsRoutes = () => {
   router.use(
     "*",
     basicAuth({
-      ...config.get<{ name: string; pass: string }>("apps.web.basicAuth"),
+      ...config.get<{ username: string; password: string }>(
+        "apps.web.basicAuth",
+      ),
     }),
   );
 

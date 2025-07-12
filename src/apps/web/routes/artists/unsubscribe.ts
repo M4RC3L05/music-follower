@@ -1,6 +1,5 @@
 import type { Hono } from "@hono/hono";
 import vine from "@vinejs/vine";
-import { HTTPException } from "@hono/hono/http-exception";
 
 const requestParamsSchema = vine.object({ id: vine.number() });
 const requestParamsValidator = vine.compile(requestParamsSchema);
@@ -12,15 +11,21 @@ export const unsubscribe = (router: Hono) => {
     const [deleted] = c.get("database").sql`
       delete from artists
       where id = ${id}
-      returning id
+      returning id, name
     `;
 
     if (!deleted) {
-      throw new HTTPException(400, {
-        message: "Could not unsubscribe from artist",
+      c.get("session").flash("flashMessages", {
+        error: ["No artist found to unsubscribe"],
       });
+
+      return c.redirect("/artists");
     }
 
-    return c.redirect(c.req.header("Referer") ?? "/");
+    c.get("session").flash("flashMessages", {
+      success: [`Unsubscribed to ${deleted.name} successfully`],
+    });
+
+    return c.redirect("/artists");
   });
 };

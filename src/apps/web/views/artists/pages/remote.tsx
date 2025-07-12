@@ -53,6 +53,10 @@ export const ArtistsRemotePage: FC<{
         </div>
       </div>
 
+      {q.length > 0 && remoteArtists.length <= 0
+        ? <p class="text-center mt-5">No remote artists found</p>
+        : undefined}
+
       {remoteArtists.length > 0
         ? (
           <div class="container mt-5">

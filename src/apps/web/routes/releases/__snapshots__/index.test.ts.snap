@@ -1,0 +1,382 @@
+export const snapshot = {};
+
+snapshot[`global > GET /releases > snapshot > should display without releases 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header
+    class="mx-auto my-3 position-sticky z-2 mb-5"
+    style="top:1rem"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card px-3 py-4">
+            <div calss="card-body">
+              <form
+                class="row g-2 justify-content-center mb-3"
+                action="/releases"
+                method="get"
+              >
+                <div class="col-auto">
+                  <input
+                    class="form-control "
+                    type="text"
+                    name="q"
+                    placeholder="Search release"
+                    value
+                  >
+                </div>
+                <div class="col-auto">
+                  <select
+                    name="hidden"
+                    class="form-control "
+                  >
+                    <option value="none">
+                      Filter hidden mode
+                    </option>
+                    <option value="admin">
+                      Admin
+                    </option>
+                    <option value="feed">
+                      Feed
+                    </option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary"
+                  >
+                    Search
+                    <i class="bi bi-search">
+                    </i>
+                  </button>
+                </div>
+              </form>
+              <div class="d-flex justify-content-center mb-2">
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-double-left">
+                  </i>
+                  Start
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-left">
+                  </i>
+                  Previous
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  Next
+                  <i class="bi bi-chevron-right">
+                  </i>
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  End
+                  <i class="bi bi-chevron-double-right">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <p class="text-center">
+          No releases to show
+        </p>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
+
+snapshot[`global > GET /releases > snapshot > should display with releases 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header
+    class="mx-auto my-3 position-sticky z-2 mb-5"
+    style="top:1rem"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card px-3 py-4">
+            <div calss="card-body">
+              <form
+                class="row g-2 justify-content-center mb-3"
+                action="/releases"
+                method="get"
+              >
+                <div class="col-auto">
+                  <input
+                    class="form-control "
+                    type="text"
+                    name="q"
+                    placeholder="Search release"
+                    value
+                  >
+                </div>
+                <div class="col-auto">
+                  <select
+                    name="hidden"
+                    class="form-control "
+                  >
+                    <option value="none">
+                      Filter hidden mode
+                    </option>
+                    <option value="admin">
+                      Admin
+                    </option>
+                    <option value="feed">
+                      Feed
+                    </option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary"
+                  >
+                    Search
+                    <i class="bi bi-search">
+                    </i>
+                  </button>
+                </div>
+              </form>
+              <div class="d-flex justify-content-center mb-2">
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-double-left">
+                  </i>
+                  Start
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-left">
+                  </i>
+                  Previous
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  Next
+                  <i class="bi bi-chevron-right">
+                  </i>
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary"
+                  href="/releases?limit=12&amp;page=0"
+                >
+                  End
+                  <i class="bi bi-chevron-double-right">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <section class="mb-4 text-center text-md-start d-block d-md-flex">
+            <img
+              class="img-fluid rounded me-md-5 mb-2 mb-md-0"
+              src="http://example.com"
+              style="aspect-ratio:1 / 1;max-width:250px"
+            >
+            <div>
+              <span class="badge rounded-pill text-bg-primary mb-2">
+                track
+              </span>
+              <h3>
+                bar by foo
+              </h3>
+              <p>
+                Released at 1970-01-01T00:00:00.000Z
+              </p>
+              <a
+                class="btn btn-outline-primary"
+                href="/releases/1/track"
+              >
+                More
+              </a>
+            </div>
+          </section>
+          <hr>
+        </div>
+        <div class="col-12">
+          <section class="mb-4 text-center text-md-start d-block d-md-flex">
+            <img
+              class="img-fluid rounded me-md-5 mb-2 mb-md-0"
+              src="http://example.com"
+              style="aspect-ratio:1 / 1;max-width:250px"
+            >
+            <div>
+              <span class="badge rounded-pill text-bg-primary mb-2">
+                track
+              </span>
+              <h3>
+                bar by foo
+              </h3>
+              <p>
+                Released at 1970-01-01T00:00:00.000Z
+              </p>
+              <a
+                class="btn btn-outline-primary"
+                href="/releases/2/track"
+              >
+                More
+              </a>
+            </div>
+          </section>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;

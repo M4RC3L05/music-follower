@@ -1,0 +1,602 @@
+export const snapshot = {};
+
+snapshot[`global > GET /artists > snapshot > render artists index page without artists 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header
+    class="mx-auto my-3 position-sticky z-2 mb-5"
+    style="top:1rem"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card px-3 py-4">
+            <div calss="card-body">
+              <form
+                class="row g-2 justify-content-center mb-3"
+                action="/artists"
+                method="get"
+              >
+                <div class="col-auto">
+                  <input
+                    class="form-control "
+                    type="text"
+                    name="q"
+                    placeholder="Search subscribed artists"
+                    value
+                  >
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary"
+                  >
+                    Search
+                    <i class="bi bi-search">
+                    </i>
+                  </button>
+                </div>
+              </form>
+              <div class="d-flex justify-content-center mb-2">
+                <a
+                  href="/artists/remote"
+                  class="btn btn-sm btn-outline-primary me-2"
+                >
+                  Find artists
+                  <i class="bi bi-person-add">
+                  </i>
+                </a>
+                <a
+                  href="/artists/import"
+                  class="btn btn-sm btn-outline-primary me-2"
+                >
+                  Import
+                  <i class="bi bi-upload">
+                  </i>
+                </a>
+                <a
+                  href="/artists/export"
+                  target="_blank"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  Export
+                  <i class="bi bi-download">
+                  </i>
+                </a>
+              </div>
+              <div class="d-flex justify-content-center">
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-double-left">
+                  </i>
+                  Start
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-left">
+                  </i>
+                  Previous
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  Next
+                  <i class="bi bi-chevron-right">
+                  </i>
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  End
+                  <i class="bi bi-chevron-double-right">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <p class="text-center">
+          No artists to show
+        </p>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
+
+snapshot[`global > GET /artists > snapshot > render artists index page with artists 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header
+    class="mx-auto my-3 position-sticky z-2 mb-5"
+    style="top:1rem"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card px-3 py-4">
+            <div calss="card-body">
+              <form
+                class="row g-2 justify-content-center mb-3"
+                action="/artists"
+                method="get"
+              >
+                <div class="col-auto">
+                  <input
+                    class="form-control "
+                    type="text"
+                    name="q"
+                    placeholder="Search subscribed artists"
+                    value
+                  >
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary"
+                  >
+                    Search
+                    <i class="bi bi-search">
+                    </i>
+                  </button>
+                </div>
+              </form>
+              <div class="d-flex justify-content-center mb-2">
+                <a
+                  href="/artists/remote"
+                  class="btn btn-sm btn-outline-primary me-2"
+                >
+                  Find artists
+                  <i class="bi bi-person-add">
+                  </i>
+                </a>
+                <a
+                  href="/artists/import"
+                  class="btn btn-sm btn-outline-primary me-2"
+                >
+                  Import
+                  <i class="bi bi-upload">
+                  </i>
+                </a>
+                <a
+                  href="/artists/export"
+                  target="_blank"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  Export
+                  <i class="bi bi-download">
+                  </i>
+                </a>
+              </div>
+              <div class="d-flex justify-content-center">
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-double-left">
+                  </i>
+                  Start
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  <i class="bi bi-chevron-left">
+                  </i>
+                  Previous
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary me-2"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  Next
+                  <i class="bi bi-chevron-right">
+                  </i>
+                </a>
+                <a
+                  class="btn btn-sm btn-outline-primary"
+                  href="/artists?limit=12&amp;page=0"
+                >
+                  End
+                  <i class="bi bi-chevron-double-right">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <section class="mb-4 text-center text-sm-start d-block d-sm-flex">
+            <img
+              class="img-fluid rounded me-sm-5"
+              src="http://example.com"
+              style="aspect-ratio: 1 / 1"
+            >
+            <div>
+              <h3 class="mt-sm-0 mt-2">
+                foo
+              </h3>
+              <div
+                class="modal fade"
+                id="unsub-artist-modal-1"
+                tabindex="-1"
+                aria-labelledby="unsub-artist-modal-1"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5">
+                        Confirm unsubscribe from
+                        <em>
+                          <b>
+                            foo
+                          </b>
+                        </em>
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to unsubscribe from
+                      <em>
+                        <b>
+                          foo
+                        </b>
+                      </em>
+                      ?
+                    </div>
+                    <div class="modal-footer">
+                      <form
+                        action="/artists/1/unsubscribe"
+                        method="post"
+                      >
+                        <button
+                          type="submit"
+                          class="btn btn-outline-primary"
+                        >
+                          Yes
+                        </button>
+                      </form>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-outline-warning d-inline"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#unsub-artist-modal-1"
+              >
+                Unsubscribe
+                <i class="bi bi-person-dash">
+                </i>
+                ?
+              </button>
+            </div>
+          </section>
+          <hr>
+        </div>
+        <div class="col-12">
+          <section class="mb-4 text-center text-sm-start d-block d-sm-flex">
+            <img
+              class="img-fluid rounded me-sm-5"
+              src="http://example.com"
+              style="aspect-ratio: 1 / 1"
+            >
+            <div>
+              <h3 class="mt-sm-0 mt-2">
+                foo
+              </h3>
+              <div
+                class="modal fade"
+                id="unsub-artist-modal-2"
+                tabindex="-1"
+                aria-labelledby="unsub-artist-modal-2"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5">
+                        Confirm unsubscribe from
+                        <em>
+                          <b>
+                            foo
+                          </b>
+                        </em>
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to unsubscribe from
+                      <em>
+                        <b>
+                          foo
+                        </b>
+                      </em>
+                      ?
+                    </div>
+                    <div class="modal-footer">
+                      <form
+                        action="/artists/2/unsubscribe"
+                        method="post"
+                      >
+                        <button
+                          type="submit"
+                          class="btn btn-outline-primary"
+                        >
+                          Yes
+                        </button>
+                      </form>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-outline-warning d-inline"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#unsub-artist-modal-2"
+              >
+                Unsubscribe
+                <i class="bi bi-person-dash">
+                </i>
+                ?
+              </button>
+            </div>
+          </section>
+          <hr>
+        </div>
+        <div class="col-12">
+          <section class="mb-4 text-center text-sm-start d-block d-sm-flex">
+            <img
+              class="img-fluid rounded me-sm-5"
+              src="http://example.com"
+              style="aspect-ratio: 1 / 1"
+            >
+            <div>
+              <h3 class="mt-sm-0 mt-2">
+                foo
+              </h3>
+              <div
+                class="modal fade"
+                id="unsub-artist-modal-3"
+                tabindex="-1"
+                aria-labelledby="unsub-artist-modal-3"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5">
+                        Confirm unsubscribe from
+                        <em>
+                          <b>
+                            foo
+                          </b>
+                        </em>
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      >
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to unsubscribe from
+                      <em>
+                        <b>
+                          foo
+                        </b>
+                      </em>
+                      ?
+                    </div>
+                    <div class="modal-footer">
+                      <form
+                        action="/artists/3/unsubscribe"
+                        method="post"
+                      >
+                        <button
+                          type="submit"
+                          class="btn btn-outline-primary"
+                        >
+                          Yes
+                        </button>
+                      </form>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-outline-warning d-inline"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#unsub-artist-modal-3"
+              >
+                Unsubscribe
+                <i class="bi bi-person-dash">
+                </i>
+                ?
+              </button>
+            </div>
+          </section>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;

@@ -1,0 +1,366 @@
+export const snapshot = {};
+
+snapshot[`global > GET /artists/remote > snapshot > should render page without query 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <form
+            action="/artists/remote"
+            method="get"
+          >
+            <div class="mb-3">
+              <label
+                for="q"
+                class="form-label"
+              >
+                Artists name
+              </label>
+              <input
+                class="form-control "
+                type="text"
+                id="q"
+                name="q"
+                placeholder="Artists name"
+                required
+                value
+              >
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-outline-primary"
+              >
+                Search
+                <i class="bi bi-search">
+                </i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
+
+snapshot[`global > GET /artists/remote > snapshot > should render page with query 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <form
+            action="/artists/remote"
+            method="get"
+          >
+            <div class="mb-3">
+              <label
+                for="q"
+                class="form-label"
+              >
+                Artists name
+              </label>
+              <input
+                class="form-control "
+                type="text"
+                id="q"
+                name="q"
+                placeholder="Artists name"
+                required
+                value="foobar"
+              >
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-outline-primary"
+              >
+                Search
+                <i class="bi bi-search">
+                </i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12">
+          <section class="mb-4 text-center text-sm-start d-block d-sm-flex">
+            <img
+              class="img-fluid rounded me-sm-5"
+              src="https://256x256.com"
+              style="aspect-ratio: 1 / 1"
+            >
+            <div>
+              <h3 lass="mt-sm-0 mt-2">
+                foo bar
+              </h3>
+              <form
+                action="/artists/remote"
+                method="post"
+              >
+                <input
+                  type="hidden"
+                  name="name"
+                  value="foo bar"
+                >
+                <input
+                  type="hidden"
+                  name="id"
+                  value="1"
+                >
+                <input
+                  type="hidden"
+                  name="image"
+                  value="https://256x256.com"
+                >
+                <button
+                  type="submit"
+                  class="btn btn-outline-primary"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
+
+snapshot[`global > GET /artists/remote > snapshot > should render page no results 1`] = `
+'
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a
+        class="navbar-brand"
+        href="/"
+      >
+        Music Follower
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon">
+        </span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              aria-current="page"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/artists"
+            >
+              Artists
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link "
+              href="/releases"
+            >
+              Releases
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <form
+            action="/artists/remote"
+            method="get"
+          >
+            <div class="mb-3">
+              <label
+                for="q"
+                class="form-label"
+              >
+                Artists name
+              </label>
+              <input
+                class="form-control "
+                type="text"
+                id="q"
+                name="q"
+                placeholder="Artists name"
+                required
+                value="foobar"
+              >
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-outline-primary"
+              >
+                Search
+                <i class="bi bi-search">
+                </i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-5">
+      No remote artists found
+    </p>
+  </main>
+  <script
+    type="module"
+    src="/deps/bootstrap/dist/js/bootstrap.bundle.js"
+  >
+  </script>
+</body>
+'
+`;
