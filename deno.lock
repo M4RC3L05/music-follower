@@ -4,7 +4,7 @@
     "jsr:@db/sqlite@0.12.0": "0.12.0",
     "jsr:@denosaurs/plug@1": "1.1.0",
     "jsr:@hono/hono@4.8.4": "4.8.4",
-    "jsr:@jcs224/hono-sessions@0.7.3": "0.7.3",
+    "jsr:@jcs224/hono-sessions@0.8.0": "0.8.0",
     "jsr:@mjackson/multipart-parser@0.10.1": "0.10.1",
     "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@1.0.13": "1.0.13",
@@ -44,9 +44,6 @@
     "jsr:@std/streams@^1.0.9": "1.0.10",
     "jsr:@std/testing@1.0.14": "1.0.14",
     "jsr:@std/text@1.0.15": "1.0.15",
-    "npm:@biomejs/js-api@1": "1.0.0",
-    "npm:@biomejs/wasm-nodejs@^2.0.6": "2.0.6",
-    "npm:@biomejs/wasm-web@^2.0.6": "2.0.6",
     "npm:@mjackson/headers@~0.11.1": "0.11.1",
     "npm:@types/config@3.3.5": "3.3.5",
     "npm:@types/diffable-html@^5.0.2": "5.0.2",
@@ -64,6 +61,7 @@
     "npm:iron-webcrypto@^1.2.1": "1.2.1",
     "npm:jsdom@^26.1.0": "26.1.0",
     "npm:ms@2.1.3": "2.1.3",
+    "npm:ohash@2": "2.0.11",
     "npm:pino-pretty@13.0.0": "13.0.0",
     "npm:pino-std-serializers@7.0.0": "7.0.0"
   },
@@ -87,11 +85,12 @@
     "@hono/hono@4.8.4": {
       "integrity": "dabc0ea1185040fc1e89abfe29906d9e3dd425a4c40f903f9ead78c48917da06"
     },
-    "@jcs224/hono-sessions@0.7.3": {
-      "integrity": "803b5e9cc0c2e2bfc8af38fc01260af18e50e88a942cc7685a6ceb3ba3af71c6",
+    "@jcs224/hono-sessions@0.8.0": {
+      "integrity": "8206fb587ec665a608c381fd7648f837a901e8a56857bac27745c521be69140e",
       "dependencies": [
         "npm:hono",
-        "npm:iron-webcrypto"
+        "npm:iron-webcrypto",
+        "npm:ohash"
       ]
     },
     "@mjackson/multipart-parser@0.10.1": {
@@ -223,15 +222,6 @@
         "@csstools/css-tokenizer",
         "lru-cache"
       ]
-    },
-    "@biomejs/js-api@1.0.0": {
-      "integrity": "sha512-69OfQ7+09AtiCIg+k+aU3rEsGit5o/SJWCS3BeBH/2nJYdJGi0cIx+ybka8i1EK69aNcZxYO1y1iAAEmYMq1HA=="
-    },
-    "@biomejs/wasm-nodejs@2.0.6": {
-      "integrity": "sha512-3Rf2XDnsyUJPtp7Fr8G1IwkfTqd69woX4GsvKY/9vz1FZy6W8tvC4+VGRWJ2dTys4K5rCSsevh4Z9B6NJFEInA=="
-    },
-    "@biomejs/wasm-web@2.0.6": {
-      "integrity": "sha512-D8uNotfmrWWJ6z/fU02GTiIGaXcpMjTgABBndOlQK+dA+b5VwWfk6KxZwQTUCSdfsGIiXsAwV6mZprc0Azo7eQ=="
     },
     "@csstools/color-helpers@5.0.2": {
       "integrity": "sha512-JqWH1vsgdGcw2RR6VliXXdA0/59LttzlU8UlRT/iUUsEeWfYq8I+K0yhihEUTTHLRm1EXvpsCx3083EU15ecsA=="
@@ -603,6 +593,9 @@
     "nwsapi@2.2.20": {
       "integrity": "sha512-/ieB+mDe4MrrKMT8z+mQL8klXydZWGR5Dowt4RAGKbJ3kIGEx3X4ljUo+6V73IXtUPWgfOlU5B9MlGxFO5T+cA=="
     },
+    "ohash@2.0.11": {
+      "integrity": "sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ=="
+    },
     "on-exit-leak-free@2.1.2": {
       "integrity": "sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA=="
     },
@@ -782,7 +775,7 @@
     "dependencies": [
       "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.8.4",
-      "jsr:@jcs224/hono-sessions@0.7.3",
+      "jsr:@jcs224/hono-sessions@0.8.0",
       "jsr:@mjackson/multipart-parser@0.10.1",
       "jsr:@std/assert@1.0.13",
       "jsr:@std/async@1.0.13",
@@ -794,9 +787,6 @@
       "jsr:@std/streams@1.0.10",
       "jsr:@std/testing@1.0.14",
       "jsr:@std/text@1.0.15",
-      "npm:@biomejs/js-api@1",
-      "npm:@biomejs/wasm-nodejs@^2.0.6",
-      "npm:@biomejs/wasm-web@^2.0.6",
       "npm:@types/config@3.3.5",
       "npm:@types/diffable-html@^5.0.2",
       "npm:@types/jsdom@21.1.7",
