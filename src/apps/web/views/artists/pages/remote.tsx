@@ -68,7 +68,7 @@ export const ArtistsRemotePage: FC<{
                       <img
                         class="img-fluid rounded me-sm-5"
                         src={remoteArtist.image}
-                        style="aspect-ratio: 1 / 1"
+                        style={{ aspectRatio: "1 / 1", maxHeight: "256px" }}
                       />
 
                       <div>

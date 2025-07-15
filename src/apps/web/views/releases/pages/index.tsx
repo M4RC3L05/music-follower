@@ -170,7 +170,7 @@ export const ReleasesIndexPage: FC<ReleasesIndexPage> = (
                   <img
                     class="img-fluid rounded me-md-5 mb-2 mb-md-0"
                     src={release.coverUrl}
-                    style={{ aspectRatio: "1 / 1", maxWidth: "250px" }}
+                    style={{ aspectRatio: "1 / 1", maxHeight: "256px" }}
                   />
 
                   <div>

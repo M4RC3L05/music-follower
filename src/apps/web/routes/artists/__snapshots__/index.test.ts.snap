@@ -342,7 +342,7 @@ snapshot[`global > GET /artists > snapshot > render artists index page with arti
             <img
               class="img-fluid rounded me-sm-5"
               src="http://example.com"
-              style="aspect-ratio: 1 / 1"
+              style="aspect-ratio:1 / 1;max-height:256px"
             >
             <div>
               <h3 class="mt-sm-0 mt-2">
@@ -426,7 +426,7 @@ snapshot[`global > GET /artists > snapshot > render artists index page with arti
             <img
               class="img-fluid rounded me-sm-5"
               src="http://example.com"
-              style="aspect-ratio: 1 / 1"
+              style="aspect-ratio:1 / 1;max-height:256px"
             >
             <div>
               <h3 class="mt-sm-0 mt-2">
@@ -510,7 +510,7 @@ snapshot[`global > GET /artists > snapshot > render artists index page with arti
             <img
               class="img-fluid rounded me-sm-5"
               src="http://example.com"
-              style="aspect-ratio: 1 / 1"
+              style="aspect-ratio:1 / 1;max-height:256px"
             >
             <div>
               <h3 class="mt-sm-0 mt-2">

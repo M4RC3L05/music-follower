@@ -20,7 +20,7 @@ const ArtistSection: FC<{ artist: Artist }> = ({ artist }) => (
       <img
         class="img-fluid rounded me-sm-5"
         src={artist.image}
-        style="aspect-ratio: 1 / 1"
+        style={{ aspectRatio: "1 / 1", maxHeight: "256px" }}
       />
 
       <div>

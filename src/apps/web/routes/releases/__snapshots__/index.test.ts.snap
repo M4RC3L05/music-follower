@@ -320,7 +320,7 @@ snapshot[`global > GET /releases > snapshot > should display with releases 1`] =
             <img
               class="img-fluid rounded me-md-5 mb-2 mb-md-0"
               src="http://example.com"
-              style="aspect-ratio:1 / 1;max-width:250px"
+              style="aspect-ratio:1 / 1;max-height:256px"
             >
             <div>
               <span class="badge rounded-pill text-bg-primary mb-2">
@@ -347,7 +347,7 @@ snapshot[`global > GET /releases > snapshot > should display with releases 1`] =
             <img
               class="img-fluid rounded me-md-5 mb-2 mb-md-0"
               src="http://example.com"
-              style="aspect-ratio:1 / 1;max-width:250px"
+              style="aspect-ratio:1 / 1;max-height:256px"
             >
             <div>
               <span class="badge rounded-pill text-bg-primary mb-2">
