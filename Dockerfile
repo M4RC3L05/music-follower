@@ -1,4 +1,4 @@
-FROM docker.io/denoland/deno:alpine-2.4.1
+FROM docker.io/denoland/deno:alpine-2.4.2
 
 RUN mkdir /app
 RUN chown -R deno:deno /app
@@ -10,7 +10,6 @@ WORKDIR /app
 COPY --chown=deno:deno . .
 
 RUN deno install --unstable-npm-lazy-caching --entrypoint src/apps/web/main.ts src/apps/jobs/sync-releases/main.ts src/apps/jobs/sync-artists-image/main.ts
-RUN deno eval "import '@db/sqlite'"
 
 RUN BUILD_DRY_RUN=true DATABASE_PATH=":memory:" timeout 30s deno run -A --cached-only --unstable-npm-lazy-caching src/apps/web/main.ts || true
 RUN BUILD_DRY_RUN=true DATABASE_PATH=":memory:" timeout 30s deno run -A --cached-only --unstable-npm-lazy-caching src/apps/jobs/sync-releases/main.ts || true
