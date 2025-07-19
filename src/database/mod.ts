@@ -1,4 +1,4 @@
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { DatabaseSync } from "node:sqlite";
 import type { SQLInputValue, StatementSync } from "node:sqlite";
@@ -72,7 +72,7 @@ export class CustomDatabase extends DatabaseSync {
 export const makeDatabase = () => {
   log.info("Creating database");
 
-  const db = new CustomDatabase(config.get("database.path"));
+  const db = new CustomDatabase(config.database.path);
 
   db.exec("pragma journal_mode = WAL");
   db.exec("pragma busy_timeout = 5000");

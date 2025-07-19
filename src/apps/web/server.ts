@@ -1,9 +1,9 @@
 import type { Hono } from "@hono/hono";
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import { makeLogger } from "#src/common/logger/mod.ts";
 
 const log = makeLogger("server");
-const { host, port } = config.get<{ host: string; port: number }>("apps.web");
+const { host, port } = config.apps.web;
 
 class Server {
   #server: Deno.HttpServer;

@@ -37,14 +37,12 @@
     "jsr:@std/testing@1.0.14": "1.0.14",
     "jsr:@std/text@1.0.15": "1.0.15",
     "npm:@mjackson/headers@~0.11.1": "0.11.1",
-    "npm:@types/config@3.3.5": "3.3.5",
     "npm:@types/diffable-html@^5.0.2": "5.0.2",
     "npm:@types/jsdom@21.1.7": "21.1.7",
     "npm:@types/node@*": "22.15.15",
     "npm:@vinejs/vine@3.0.1": "3.0.1",
     "npm:bootstrap-icons@1.13.1": "1.13.1",
     "npm:bootstrap@5.3.7": "5.3.7_@popperjs+core@2.11.8",
-    "npm:config@4.0.0": "4.0.0",
     "npm:dbmate@2.27.0": "2.27.0",
     "npm:diffable-html@^6.0.1": "6.0.1",
     "npm:feed@5.1.0": "5.1.0",
@@ -275,9 +273,6 @@
     "@tokenizer/token@0.3.0": {
       "integrity": "sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A=="
     },
-    "@types/config@3.3.5": {
-      "integrity": "sha512-itq2HtXQBrNUKwMNZnb9mBRE3T99VYCdl1gjST9rq+9kFaB1iMMGuDeZnP88qid73DnpAMKH9ZolqDpS1Lz7+w=="
-    },
     "@types/diffable-html@5.0.2": {
       "integrity": "sha512-VS6yWnAFw8Dm1BhrTwt84V5VWbdysOOF32vbCtQJMtJxzpLGAIZ5P+1NfRX0elYluZ70vwPkm9msdrHBB2ijFQ=="
     },
@@ -337,12 +332,6 @@
     },
     "colorette@2.0.20": {
       "integrity": "sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w=="
-    },
-    "config@4.0.0": {
-      "integrity": "sha512-zOzfDfcpaBUMRvTH+pbj111Gfb+1BMvCy9EcE5ckuugfAcks3FIQMyt8TRA30dhuGnZNBxfbPBUKtuM03ih/nA==",
-      "dependencies": [
-        "json5"
-      ]
     },
     "cssstyle@4.6.0": {
       "integrity": "sha512-2z+rWdzbbSZv6/rhtvzvqeZQHrBaqgogqt85sqFNbabZOuFbCVFb8kPeEtZjiKkbrm395irpNKiYeFeLiQnFPg==",
@@ -539,10 +528,6 @@
         "ws",
         "xml-name-validator"
       ]
-    },
-    "json5@2.2.3": {
-      "integrity": "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==",
-      "bin": true
     },
     "lru-cache@10.4.3": {
       "integrity": "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="
@@ -752,13 +737,11 @@
       "jsr:@std/streams@1.0.10",
       "jsr:@std/testing@1.0.14",
       "jsr:@std/text@1.0.15",
-      "npm:@types/config@3.3.5",
       "npm:@types/diffable-html@^5.0.2",
       "npm:@types/jsdom@21.1.7",
       "npm:@vinejs/vine@3.0.1",
       "npm:bootstrap-icons@1.13.1",
       "npm:bootstrap@5.3.7",
-      "npm:config@4.0.0",
       "npm:dbmate@2.27.0",
       "npm:diffable-html@^6.0.1",
       "npm:feed@5.1.0",

@@ -1,5 +1,5 @@
 import { serveStatic } from "@hono/hono/deno";
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import { type ContextVariableMap, Hono } from "@hono/hono";
 import {
   MemoryStore,
@@ -212,7 +212,7 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
   app.use(
     "*",
     csrf({
-      origin: (origin) => new RegExp(config.get("csrf.origin")).test(origin),
+      origin: (origin) => new RegExp(config.csrf.origin).test(origin),
     }),
   );
 

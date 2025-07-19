@@ -1,4 +1,4 @@
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import ms from "ms";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import type { Artist, Release } from "#src/database/types/mod.ts";
@@ -13,7 +13,7 @@ import { delay } from "@std/async";
 const log = makeLogger("sync-releases-job");
 const notBefore = new Date(
   Date.now() -
-    ms(config.get<string>("apps.jobs.sync-releases.max-release-time")),
+    ms(config.apps.jobs.syncReleases.maxReleaseTime),
 );
 
 enum ErrorCodes {

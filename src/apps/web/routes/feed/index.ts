@@ -1,13 +1,11 @@
 import type { Hono } from "@hono/hono";
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import { Feed } from "feed";
 import type { Release } from "#src/database/types/mod.ts";
 import type {
   ItunesLookupAlbumModel,
   ItunesLookupSongModel,
 } from "#src/remote/mod.ts";
-
-const maxReleases = config.get<number>("apps.web.feed.maxReleases");
 
 export const index = (router: Hono) => {
   router.get("/", (c) => {
@@ -20,7 +18,7 @@ export const index = (router: Hono) => {
           where json_each.value = 'feed'
         )
       order by "feedAt" desc
-      limit ${maxReleases ?? 10};
+      limit ${config.apps.web.feed.maxReleases ?? 10};
     `;
 
     const feed = new Feed({

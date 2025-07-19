@@ -1,14 +1,10 @@
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import type {
   ItunesArtistSearchModel,
   ItunesResponseModel,
 } from "#src/remote/itunes/types.ts";
 
-type ItunesSearchConfig = { url: string; searchArtists: { limit: number } };
-
-const itunesSearchConfig = config.get<ItunesSearchConfig>(
-  "remote.itunes.search",
-);
+const itunesSearchConfig = config.remote.itunes.search;
 
 export const searchArtists = async (
   query: string,

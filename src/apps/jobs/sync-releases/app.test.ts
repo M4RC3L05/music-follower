@@ -20,8 +20,8 @@ import {
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { FakeTime } from "@std/testing/time";
 import ms from "ms";
-import config from "config";
 import type { SQLInputValue } from "node:sqlite";
+import config from "#src/common/config/mod.ts";
 
 const syncReleasesJobLog = makeLogger("sync-releases-job");
 let db: CustomDatabase;
@@ -259,11 +259,7 @@ describe("runner()", () => {
 
     describe("usableReleases()", () => {
       it("should exclude old releases", async () => {
-        const maxMs = ms(
-          config.get<string>(
-            "apps.jobs.sync-releases.max-release-time",
-          ),
-        );
+        const maxMs = ms(config.apps.jobs.syncReleases.maxReleaseTime);
         const artists = testFixtures.loadArtist(db);
         const usableAlbum = testFixtures.generateItunesAlbumLookupResultItem({
           releaseDate: new Date(Date.now() + 1000).toISOString(),

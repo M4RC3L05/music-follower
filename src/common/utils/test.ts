@@ -1,7 +1,7 @@
 import type { Hono } from "@hono/hono";
 import { encodeBase64 } from "@std/encoding";
 import { JSDOM } from "jsdom";
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import {
   assertEquals,
   assertExists,
@@ -12,9 +12,7 @@ import {
 import { assertSnapshot } from "@std/testing/snapshot";
 import toDiffableHtml from "diffable-html";
 
-const basicAuth = config.get<{ username: string; password: string }>(
-  "apps.web.basicAuth",
-);
+const basicAuth = config.apps.web.basicAuth;
 
 export const requestAuth = (
   app: Hono,

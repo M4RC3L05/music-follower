@@ -6,7 +6,7 @@ import {
   type ItunesArtistSearchModel,
   itunesRequests,
 } from "#src/remote/mod.ts";
-import config from "config";
+import config from "#src/common/config/mod.ts";
 
 const getRequestQuerySchema = vine.object({
   q: vine.string().trim().optional(),
@@ -55,7 +55,7 @@ export const remote = (router: Hono) => {
       ...artist,
       image: images.at(index) && images.at(index)!.status === "fulfilled"
         ? (images.at(index) as PromiseFulfilledResult<string>).value
-        : config.get("media.remoteArtistsPlaceholderImage"),
+        : config.media.remoteArtistsPlaceholderImage,
       isSubscribed: (c
         .get("database")
         .sql`select id from artists where id = ${artist.artistId}`[0]) !==

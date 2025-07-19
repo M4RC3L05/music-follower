@@ -25,7 +25,7 @@
     },
     "test": {
       "description": "Run tests",
-      "command": "ENV=test NODE_ENV=test deno test --allow-read --allow-env --no-check --trace-leaks --parallel"
+      "command": "ENV=test NODE_ENV=test DATABASE_PATH=':memory:' CSRF_ORIGIN='^https?:\\/\\/localhost$' deno test --allow-read --allow-env --no-check --trace-leaks --parallel"
     },
     "check:fmt": {
       "description": "Run formatting checks",
@@ -85,13 +85,11 @@
     "@std/streams": "jsr:@std/streams@1.0.10",
     "@std/testing": "jsr:@std/testing@1.0.14",
     "@std/text": "jsr:@std/text@1.0.15",
-    "@types/config": "npm:@types/config@3.3.5",
     "@types/diffable-html": "npm:@types/diffable-html@^5.0.2",
     "@types/jsdom": "npm:@types/jsdom@21.1.7",
     "@vinejs/vine": "npm:@vinejs/vine@3.0.1",
     "bootstrap": "npm:bootstrap@5.3.7",
     "bootstrap-icons": "npm:bootstrap-icons@1.13.1",
-    "config": "npm:config@4.0.0",
     "dbmate": "npm:dbmate@2.27.0",
     "diffable-html": "npm:diffable-html@^6.0.1",
     "feed": "npm:feed@5.1.0",

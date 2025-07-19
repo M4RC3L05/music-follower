@@ -1,8 +1,0 @@
-{
-  "database": {
-    "path": ":memory:"
-  },
-  "csrf": {
-    "origin": "^https?:\\/\\/localhost$"
-  }
-}

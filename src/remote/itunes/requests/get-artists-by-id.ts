@@ -1,14 +1,10 @@
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import type {
   ItunesLookupArtistModel,
   ItunesResponseModel,
 } from "#src/remote/itunes/types.ts";
 
-type ItunesLookupConfig = { url: string };
-
-const itunesLookupConfig = config.get<ItunesLookupConfig>(
-  "remote.itunes.lookup",
-);
+const itunesLookupConfig = config.remote.itunes.lookup;
 
 export const getArtistById = async (
   id: number,

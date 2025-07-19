@@ -1,4 +1,4 @@
-import config from "config";
+import config from "#src/common/config/mod.ts";
 import type {
   ItunesLookupAlbumModel,
   ItunesLookupSongModel,
@@ -6,15 +6,7 @@ import type {
 } from "#src/remote/itunes/types.ts";
 import { deadline, retry } from "@std/async";
 
-const itunesLookupConfig = config.get<ItunesLookupConfig>(
-  "remote.itunes.lookup",
-);
-
-type ItunesLookupConfig = {
-  url: string;
-  getLatestsArtistMusicReleases: { limit: number };
-  getLatestsArtistAlbumReleases: { limit: number };
-};
+const itunesLookupConfig = config.remote.itunes.lookup;
 
 export const getLatestReleasesByArtist = async <E extends "song" | "album">(
   artistId: number,
