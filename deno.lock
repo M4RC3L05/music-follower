@@ -1,7 +1,7 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@hono/hono@4.8.4": "4.8.4",
+    "jsr:@hono/hono@4.8.5": "4.8.5",
     "jsr:@jcs224/hono-sessions@0.8.0": "0.8.0",
     "jsr:@mjackson/multipart-parser@0.10.1": "0.10.1",
     "jsr:@std/assert@1.0.13": "1.0.13",
@@ -47,7 +47,7 @@
     "npm:diffable-html@^6.0.1": "6.0.1",
     "npm:feed@5.1.0": "5.1.0",
     "npm:file-type@21.0.0": "21.0.0",
-    "npm:hono@4": "4.8.4",
+    "npm:hono@4": "4.8.5",
     "npm:iron-webcrypto@^1.2.1": "1.2.1",
     "npm:jsdom@^26.1.0": "26.1.0",
     "npm:ms@2.1.3": "2.1.3",
@@ -56,8 +56,8 @@
     "npm:pino-std-serializers@7.0.0": "7.0.0"
   },
   "jsr": {
-    "@hono/hono@4.8.4": {
-      "integrity": "dabc0ea1185040fc1e89abfe29906d9e3dd425a4c40f903f9ead78c48917da06"
+    "@hono/hono@4.8.5": {
+      "integrity": "78f72e532f378e379915a7e1ae7bd8a171b02324bd37b70877fd35375e8c2d6b"
     },
     "@jcs224/hono-sessions@0.8.0": {
       "integrity": "8206fb587ec665a608c381fd7648f837a901e8a56857bac27745c521be69140e",
@@ -253,14 +253,11 @@
     "@mjackson/headers@0.11.1": {
       "integrity": "sha512-uXXhd4rtDdDwkqAuGef1nuafkCa1NlTmEc1Jzc0NL4YiA1yON1NFXuqJ3hOuKvNKQwkiDwdD+JJlKVyz4dunFA=="
     },
-    "@pkgjs/parseargs@0.11.0": {
-      "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="
-    },
     "@popperjs/core@2.11.8": {
       "integrity": "sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A=="
     },
-    "@poppinss/macroable@1.0.4": {
-      "integrity": "sha512-ct43jurbe7lsUX5eIrj4ijO3j/6zIPp7CDnFWXDs7UPAbw1Pu1iH3oAmFdP4jcskKJBURH5M9oTtyeiUXyHX8Q=="
+    "@poppinss/macroable@1.0.5": {
+      "integrity": "sha512-6u61y1HHd090MEk1Av0/1btDmm2Hh/+XoJj+HgFYRh9koUPI822ybJbwLHuqjLNCiY+o1gRykg2igEqOf/VBZw=="
     },
     "@tokenizer/inflate@0.2.7": {
       "integrity": "sha512-MADQgmZT1eKjp06jpI2yozxaU9uVs4GzzgSL+uEq7bVcJ9V1ZXQkeGNql1fsSI0gMy1vhvNTNbUqrx+pZfJVmg==",
@@ -312,8 +309,8 @@
         "validator"
       ]
     },
-    "agent-base@7.1.3": {
-      "integrity": "sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw=="
+    "agent-base@7.1.4": {
+      "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ=="
     },
     "atomic-sleep@1.0.0": {
       "integrity": "sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ=="
@@ -372,8 +369,8 @@
         "ms"
       ]
     },
-    "decimal.js@10.5.0": {
-      "integrity": "sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw=="
+    "decimal.js@10.6.0": {
+      "integrity": "sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg=="
     },
     "diffable-html@6.0.1": {
       "integrity": "sha512-z/AuT6urMKzCl1oz+HalSjjPxPMNKfbnWwzLzx/qWfzTQ3kBL8EnLKSCr2IpOofIpV+BA1Zd+e2eSzxGEQojUw==",
@@ -454,8 +451,8 @@
     "help-me@5.0.0": {
       "integrity": "sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg=="
     },
-    "hono@4.8.4": {
-      "integrity": "sha512-KOIBp1+iUs0HrKztM4EHiB2UtzZDTBihDtOF5K6+WaJjCPeaW4Q92R8j63jOhvJI5+tZSMuKD9REVEXXY9illg=="
+    "hono@4.8.5": {
+      "integrity": "sha512-Up2cQbtNz1s111qpnnECdTGqSIUIhZJMLikdKkshebQSEBcoUKq6XJayLGqSZWidiH0zfHRCJqFu062Mz5UuRA=="
     },
     "html-encoding-sniffer@4.0.0": {
       "integrity": "sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==",
@@ -630,8 +627,8 @@
     "strip-json-comments@3.1.1": {
       "integrity": "sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig=="
     },
-    "strtok3@10.3.1": {
-      "integrity": "sha512-3JWEZM6mfix/GCJBBUrkA8p2Id2pBkyTkVCJKto55w080QBKZ+8R171fGrbiSp+yMO/u6F8/yUh7K4V9K+YCnw==",
+    "strtok3@10.3.2": {
+      "integrity": "sha512-or9w505RhhY66+uoe5YOC5QO/bRuATaoim3XTh+pGKx5VMWi/HDhMKuCjDLsLJouU2zg9Hf1nLPcNW7IHv80kQ==",
       "dependencies": [
         "@tokenizer/token"
       ]
@@ -724,7 +721,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@hono/hono@4.8.4",
+      "jsr:@hono/hono@4.8.5",
       "jsr:@jcs224/hono-sessions@0.8.0",
       "jsr:@mjackson/multipart-parser@0.10.1",
       "jsr:@std/assert@1.0.13",
