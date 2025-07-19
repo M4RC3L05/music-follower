@@ -3,9 +3,12 @@ import { JsonStringifyStream } from "@std/json";
 
 export const exportPage = (router: Hono) => {
   router.get("/export", (c) => {
-    const artists = c.get("database").prepare("select * from artists")
-      .iter();
-    const artistsStream = ReadableStream.from(artists)
+    const artistsStmt = c.get("database").prepare(
+      "select * from artists",
+      false,
+    );
+
+    const artistsStream = ReadableStream.from(artistsStmt.iterate())
       .pipeThrough(new JsonStringifyStream())
       .pipeThrough(new TextEncoderStream())
       .pipeThrough(new CompressionStream("gzip"));

@@ -17,15 +17,22 @@ const runner = async ({
 
   log.info("Begin artist image sync");
 
-  const artists = db.prepare(`
+  const artists = db.prepare(
+    `
     select *, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
     from
       artists,
       (select count(id) as "totalItems" from artists) as ti
     order by id;
-  `).iter() as IterableIterator<Artist & { index: number; totalItems: number }>;
+  `,
+    false,
+  );
 
-  for (const artist of artists) {
+  for (
+    const artist of artists.iterate() as IterableIterator<
+      Artist & { index: number; totalItems: number }
+    >
+  ) {
     const isLastArtist = artist.index >= artist.totalItems;
 
     if (abort.aborted) {

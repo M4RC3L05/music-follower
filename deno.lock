@@ -1,12 +1,9 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@db/sqlite@0.12.0": "0.12.0",
-    "jsr:@denosaurs/plug@1": "1.1.0",
     "jsr:@hono/hono@4.8.4": "4.8.4",
     "jsr:@jcs224/hono-sessions@0.8.0": "0.8.0",
     "jsr:@mjackson/multipart-parser@0.10.1": "0.10.1",
-    "jsr:@std/assert@0.217": "0.217.0",
     "jsr:@std/assert@1.0.13": "1.0.13",
     "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/async@1.0.13": "1.0.13",
@@ -15,13 +12,10 @@
     "jsr:@std/cache@0.2.0": "0.2.0",
     "jsr:@std/cli@^1.0.20": "1.0.20",
     "jsr:@std/data-structures@^1.0.8": "1.0.8",
-    "jsr:@std/encoding@1": "1.0.10",
     "jsr:@std/encoding@1.0.10": "1.0.10",
     "jsr:@std/encoding@^1.0.10": "1.0.10",
-    "jsr:@std/fmt@1": "1.0.8",
     "jsr:@std/fmt@^1.0.5": "1.0.8",
     "jsr:@std/fmt@^1.0.8": "1.0.8",
-    "jsr:@std/fs@1": "1.0.19",
     "jsr:@std/fs@^1.0.11": "1.0.19",
     "jsr:@std/fs@^1.0.18": "1.0.19",
     "jsr:@std/fs@^1.0.19": "1.0.19",
@@ -35,8 +29,6 @@
     "jsr:@std/log@0.224.14": "0.224.14",
     "jsr:@std/media-types@^1.1.0": "1.1.0",
     "jsr:@std/net@^1.0.4": "1.0.4",
-    "jsr:@std/path@0.217": "0.217.0",
-    "jsr:@std/path@1": "1.1.1",
     "jsr:@std/path@^1.1.0": "1.1.1",
     "jsr:@std/path@^1.1.1": "1.1.1",
     "jsr:@std/streams@1.0.10": "1.0.10",
@@ -66,22 +58,6 @@
     "npm:pino-std-serializers@7.0.0": "7.0.0"
   },
   "jsr": {
-    "@db/sqlite@0.12.0": {
-      "integrity": "dd1ef7f621ad50fc1e073a1c3609c4470bd51edc0994139c5bf9851de7a6d85f",
-      "dependencies": [
-        "jsr:@denosaurs/plug",
-        "jsr:@std/path@0.217"
-      ]
-    },
-    "@denosaurs/plug@1.1.0": {
-      "integrity": "eb2f0b7546c7bca2000d8b0282c54d50d91cf6d75cb26a80df25a6de8c4bc044",
-      "dependencies": [
-        "jsr:@std/encoding@1",
-        "jsr:@std/fmt@1",
-        "jsr:@std/fs@1",
-        "jsr:@std/path@1"
-      ]
-    },
     "@hono/hono@4.8.4": {
       "integrity": "dabc0ea1185040fc1e89abfe29906d9e3dd425a4c40f903f9ead78c48917da06"
     },
@@ -98,9 +74,6 @@
       "dependencies": [
         "npm:@mjackson/headers"
       ]
-    },
-    "@std/assert@0.217.0": {
-      "integrity": "c98e279362ca6982d5285c3b89517b757c1e3477ee9f14eb2fdf80a45aaa9642"
     },
     "@std/assert@1.0.13": {
       "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
@@ -132,7 +105,6 @@
     "@std/fs@1.0.19": {
       "integrity": "051968c2b1eae4d2ea9f79a08a3845740ef6af10356aff43d3e2ef11ed09fb06",
       "dependencies": [
-        "jsr:@std/internal@^1.0.9",
         "jsr:@std/path@^1.1.1"
       ]
     },
@@ -178,12 +150,6 @@
     },
     "@std/net@1.0.4": {
       "integrity": "2f403b455ebbccf83d8a027d29c5a9e3a2452fea39bb2da7f2c04af09c8bc852"
-    },
-    "@std/path@0.217.0": {
-      "integrity": "1217cc25534bca9a2f672d7fe7c6f356e4027df400c0e85c0ef3e4343bc67d11",
-      "dependencies": [
-        "jsr:@std/assert@0.217"
-      ]
     },
     "@std/path@1.1.1": {
       "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
@@ -773,7 +739,6 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@db/sqlite@0.12.0",
       "jsr:@hono/hono@4.8.4",
       "jsr:@jcs224/hono-sessions@0.8.0",
       "jsr:@mjackson/multipart-parser@0.10.1",

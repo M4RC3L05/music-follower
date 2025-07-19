@@ -173,7 +173,7 @@ const syncReleases = (
     // yet to be releases but some songs are already available.
     const [album] = db.sql<Release>`
       select * from releases
-      where id = ${collectionId}
+      where id = ${collectionId ?? null}
       and type = 'collection'
       limit 1;
     `;
@@ -213,18 +213,22 @@ const runner = async ({
 
   log.info("Begin releases sync");
 
-  const artists = db.prepare(`
-      select id, name, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
-      from
-        artists,
-        (select count(id) as "totalItems" from artists) as ti
-      order by id;
-    `)
-    .iter() as IterableIterator<
-      Pick<Artist, "id" | "name"> & { index: number; totalItems: number }
-    >;
+  const artists = db.prepare(
+    `
+    select id, name, row_number() over (order by id) as "index", ti."totalItems" as "totalItems"
+    from
+      artists,
+      (select count(id) as "totalItems" from artists) as ti
+    order by id;
+  `,
+    false,
+  );
 
-  for (const artist of artists) {
+  for (
+    const artist of artists.iterate() as IterableIterator<
+      Pick<Artist, "id" | "name"> & { index: number; totalItems: number }
+    >
+  ) {
     const isLastArtist = artist.index >= artist.totalItems;
 
     if (abort.aborted) {
@@ -316,7 +320,7 @@ const runner = async ({
     try {
       log.info("Upserting releases for artist", { id: artist.id });
 
-      db.transaction(() => {
+      await db.transaction(() => {
         // We process albums first so that we can then check if we should include tracks,
         // that are already available but belong to a album that is yet to be released.
         syncReleases(db, releases.filter(({ type }) => type === "collection"), {
@@ -325,7 +329,7 @@ const runner = async ({
         syncReleases(db, releases.filter(({ type }) => type === "track"), {
           noHiddenOverride: true,
         });
-      }).immediate();
+      });
     } catch (error: unknown) {
       log.error("Something wrong ocurred while upserting releases", { error });
     }

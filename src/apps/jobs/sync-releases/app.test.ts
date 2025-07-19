@@ -19,9 +19,9 @@ import {
 } from "@std/testing/mock";
 import { makeLogger } from "#src/common/logger/mod.ts";
 import { FakeTime } from "@std/testing/time";
-import type { RestBindParameters } from "@db/sqlite";
 import ms from "ms";
 import config from "config";
+import type { SQLInputValue } from "node:sqlite";
 
 const syncReleasesJobLog = makeLogger("sync-releases-job");
 let db: CustomDatabase;
@@ -641,7 +641,7 @@ describe("runner()", () => {
           throw new Error("foo");
         }
 
-        return originalDbSql(strings, ...parameters as RestBindParameters);
+        return originalDbSql(strings, ...parameters as SQLInputValue[]);
       });
       using syncReleasesJobLogInfoSpy = spy(syncReleasesJobLog, "info");
       using syncReleasesJobLogErrorSpy = spy(syncReleasesJobLog, "error");

@@ -56,11 +56,10 @@ export const importPage = (router: Hono) => {
 
     let artistsImported = 0;
 
-    c.get("database").exec("begin immediate");
-
     try {
-      for await (const artist of stream as ReadableStream<Artist>) {
-        c.get("database").sql`
+      await c.get("database").transaction(async () => {
+        for await (const artist of stream as ReadableStream<Artist>) {
+          c.get("database").sql`
           insert into artists (id, image, name)
           values (${artist.id}, ${artist.image}, ${artist.name})
           on conflict (id)
@@ -70,12 +69,10 @@ export const importPage = (router: Hono) => {
             name = ${artist.name}
         `;
 
-        artistsImported += 1;
-      }
-      c.get("database").exec("commit");
+          artistsImported += 1;
+        }
+      });
     } catch (error) {
-      c.get("database").exec("rollback");
-
       log.error("Error importing artists to db", { error });
 
       throw new HTTPException(422, {

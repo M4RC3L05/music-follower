@@ -1,23 +1,54 @@
-import { Database, type Statement } from "@db/sqlite";
 import config from "config";
 import { makeLogger } from "#src/common/logger/mod.ts";
+import { DatabaseSync } from "node:sqlite";
+import type { SQLInputValue, StatementSync } from "node:sqlite";
 
 const log = makeLogger("database");
 
-export class CustomDatabase extends Database {
-  #cache = new Map<string, Statement>();
+export class CustomDatabase extends DatabaseSync {
+  #cache = new Map<string, StatementSync>();
 
   #ensureInCache(query: string) {
-    const key = query.trim();
-
-    if (!this.#cache.has(key)) {
-      this.#cache.set(key, super.prepare(key));
+    if (!this.#cache.has(query)) {
+      this.#cache.set(query, super.prepare(query));
     }
 
-    return this.#cache.get(key)!;
+    return this.#cache.get(query)!;
   }
 
-  override prepare(sql: string): Statement {
+  async transaction<T>(fn: () => T | Promise<T>) {
+    try {
+      this.exec("begin immediate");
+      const result = await fn();
+      this.exec("commit");
+
+      return result;
+    } catch (error) {
+      this.exec("rollback");
+
+      throw error;
+    }
+  }
+
+  sql<T extends Record<string, unknown> = Record<string, unknown>>(
+    strings: TemplateStringsArray,
+    ...parameters: SQLInputValue[]
+  ): T[] {
+    const sql = strings.reduce((acc, str, i) => {
+      return acc + str + (i < parameters.length ? "?" : "");
+    }, "").trim();
+
+    try {
+      const stmt = this.prepare(sql);
+      return stmt.all(...parameters) as T[];
+    } catch (error) {
+      this.#cache.delete(sql);
+      throw error;
+    }
+  }
+
+  override prepare(sql: string, cache = true): StatementSync {
+    if (!cache) return super.prepare(sql);
     return this.#ensureInCache(sql);
   }
 
@@ -27,7 +58,7 @@ export class CustomDatabase extends Database {
     this.#cache.clear();
   }
 
-  [Symbol.dispose]() {
+  override [Symbol.dispose]() {
     log.info("Closing database");
 
     this.exec("pragma optimize");
