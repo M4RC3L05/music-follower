@@ -7,10 +7,11 @@ export const MainLayout: FC<
       flashMessages?: SessionFlashMessages | undefined;
       enableNavbar?: boolean;
       path?: string;
+      loggedIn: boolean;
     }
   >
 > = (
-  { path, children, flashMessages, enableNavbar = true },
+  { path, children, flashMessages, enableNavbar = true, loggedIn },
 ) => (
   <html lang="en">
     <head>
@@ -51,7 +52,7 @@ export const MainLayout: FC<
         ? (
           <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container">
-              <a class="navbar-brand" href="/">
+              <a class="navbar-brand" href={loggedIn ? "/" : "/auth/login"}>
                 Music Follower
               </a>
               <button
@@ -67,37 +68,134 @@ export const MainLayout: FC<
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a
-                      class={`nav-link ${
-                        path === "/" || path === "" ? "active" : ""
-                      }`}
-                      aria-current="page"
-                      href="/"
-                    >
-                      Home
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class={`nav-link ${
-                        path?.startsWith("/artists") ? "active" : ""
-                      }`}
-                      href="/artists"
-                    >
-                      Artists
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class={`nav-link ${
-                        path?.startsWith("/releases") ? "active" : ""
-                      }`}
-                      href="/releases"
-                    >
-                      Releases
-                    </a>
-                  </li>
+                  {!loggedIn
+                    ? (
+                      <>
+                        <li class="nav-item">
+                          <a
+                            class={`nav-link ${
+                              path?.startsWith("/auth/login") ? "active" : ""
+                            }`}
+                            href="/auth/login"
+                          >
+                            Login
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class={`nav-link ${
+                              path?.startsWith("/auth/register") ? "active" : ""
+                            }`}
+                            href="/auth/register"
+                          >
+                            Register
+                          </a>
+                        </li>
+                      </>
+                    )
+                    : null}
+                  {loggedIn
+                    ? (
+                      <>
+                        <li class="nav-item">
+                          <a
+                            class={`nav-link ${
+                              path === "/" || path === "" ? "active" : ""
+                            }`}
+                            aria-current="page"
+                            href="/"
+                          >
+                            Home
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class={`nav-link ${
+                              path?.startsWith("/artists") ? "active" : ""
+                            }`}
+                            href="/artists"
+                          >
+                            Artists
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class={`nav-link ${
+                              path?.startsWith("/releases") ? "active" : ""
+                            }`}
+                            href="/releases"
+                          >
+                            Releases
+                          </a>
+                        </li>
+
+                        <div
+                          class="modal fade"
+                          id="confirm-delete-account-modal"
+                          tabindex={-1}
+                        >
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">
+                                  Confirm delete account
+                                </h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                >
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <p>
+                                  Are you sure you want to delet the current
+                                  auth account?
+                                </p>
+                                <p>You will be able to create a new one.</p>
+                              </div>
+                              <div class="modal-footer">
+                                <form method="post" action="/auth/delete">
+                                  <input
+                                    class="btn btn-outline-primary"
+                                    type="submit"
+                                    value="Confirm"
+                                  />
+                                </form>
+
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <li
+                          class="nav-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#confirm-delete-account-modal"
+                        >
+                          <a class="nav-link" style={{ cursor: "pointer" }}>
+                            Delete account?
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <form method="post" action="/auth/logout">
+                            <input
+                              type="submit"
+                              value="Logout"
+                              class="nav-link"
+                            />
+                          </form>
+                        </li>
+                      </>
+                    )
+                    : null}
                 </ul>
               </div>
             </div>

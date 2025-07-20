@@ -21,6 +21,12 @@ CREATE TABLE releases (
 ) strict,
 without rowid;
 
+CREATE TABLE accounts (
+  username text PRIMARY KEY NOT NULL,
+  "password" text NOT NULL
+) strict,
+without rowid;
+
 -- Dbmate schema migrations
 INSERT INTO
   "schema_migrations" (version)
@@ -29,4 +35,5 @@ VALUES
   ('20230829204246'),
   ('20230829204255'),
   ('20231008135420'),
-  ('20250705203401');
+  ('20250705203401'),
+  ('20250720140950');

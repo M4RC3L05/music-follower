@@ -13,6 +13,7 @@ import { assertEquals } from "@std/assert";
 import { testDbUtils } from "#src/common/utils/mod.ts";
 import type { Hono } from "@hono/hono";
 import { makeApp } from "#src/apps/web/app.tsx";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
@@ -21,7 +22,7 @@ beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  app = makeApp({ database: db, sessioStore: new MemoryStore() });
 });
 
 beforeEach(() => {

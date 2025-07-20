@@ -13,19 +13,27 @@ import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
 import type { Artist } from "#src/database/types/mod.ts";
 import type { JSDOM } from "jsdom";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
+let memStore: MemoryStore;
 
 beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  memStore = new MemoryStore();
+  app = makeApp({ database: db, sessioStore: memStore });
 });
 
 beforeEach(() => {
   db.exec("delete from artists");
+  db.exec("delete from accounts");
+  testFixtures.loadAccount(db);
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  memStore.data.clear();
 });
 
 afterAll(() => {
@@ -35,7 +43,10 @@ afterAll(() => {
 describe("GET /artists", () => {
   describe("snapshot", () => {
     it("render artists index page without artists", async (t) => {
-      const res = await testUtils.requestAuth(app, "/artists");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -48,7 +59,10 @@ describe("GET /artists", () => {
       testFixtures.loadArtist(db, { id: 2 });
       testFixtures.loadArtist(db, { id: 3 });
 
-      const res = await testUtils.requestAuth(app, "/artists");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -57,16 +71,18 @@ describe("GET /artists", () => {
     });
   });
 
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/artists");
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should mark artists item in navbar as active", async () => {
-    const res = await testUtils.requestAuth(app, "/artists");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/artists", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -78,7 +94,10 @@ describe("GET /artists", () => {
   });
 
   it("should render artists index page without artists", async () => {
-    const res = await testUtils.requestAuth(app, "/artists");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/artists", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -102,7 +121,10 @@ describe("GET /artists", () => {
   });
 
   it("should render artists index with links with query params", async () => {
-    const res = await testUtils.requestAuth(app, "/artists?q=b");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/artists?q=b", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -156,7 +178,10 @@ describe("GET /artists", () => {
     };
 
     {
-      const res = await testUtils.requestAuth(app, "/artists?page=0&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists?page=0&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -182,7 +207,10 @@ describe("GET /artists", () => {
     }
 
     {
-      const res = await testUtils.requestAuth(app, "/artists?page=1&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists?page=1&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -208,7 +236,10 @@ describe("GET /artists", () => {
     }
 
     {
-      const res = await testUtils.requestAuth(app, "/artists?page=2&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists?page=2&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);

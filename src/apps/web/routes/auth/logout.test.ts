@@ -9,8 +9,8 @@ import { type CustomDatabase, makeDatabase } from "#src/database/mod.ts";
 import { testDbUtils, testUtils } from "#src/common/utils/mod.ts";
 import { makeApp } from "#src/apps/web/app.tsx";
 import type { Hono } from "@hono/hono";
-import { assertEquals } from "@std/assert";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
+import { assertEquals, assertExists } from "@std/assert";
 import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
@@ -26,6 +26,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
+  db.exec("delete from artists");
   db.exec("delete from accounts");
   testFixtures.loadAccount(db);
   // deno-lint-ignore ban-ts-comment
@@ -37,20 +38,31 @@ afterAll(() => {
   db.close();
 });
 
-describe("GET /", () => {
-  it("should redirect to login page if not authenticated", async () => {
-    const res = await app.request("/");
+describe("POST /auth/logout", () => {
+  it("should logout", async () => {
+    const auth = await testUtils.authenticateRequest(app);
+    assertExists(
+      memStore.getSessionById(auth.sid.replace("sid=", ""))?._data.account,
+    );
+
+    const res = await app.request("/auth/logout", {
+      method: "post",
+      headers: { cookie: auth.sid, origin: "http://localhost" },
+    });
 
     assertEquals(res.status, 302);
     assertEquals(res.headers.get("location"), "/auth/login");
-  });
+    assertEquals(
+      memStore.getSessionById(auth.sid.replace("sid=", ""))?._data.account,
+      undefined,
+    );
 
-  it("should render the home page", async (t) => {
-    const auth = await testUtils.authenticateRequest(app);
-    const res = await app.request("/", { headers: { cookie: auth.sid } });
-    const dom = await testUtils.getDom(res);
+    const res2 = await app.request("/auth/login", {
+      headers: { cookie: auth.sid },
+    });
+    const dom = await testUtils.getDom(res2);
 
-    assertEquals(res.status, 200);
-    await testUtils.expectHtmlSnapshot(t, dom, "body main");
+    assertEquals(res2.status, 200);
+    testUtils.assertSeeText(dom, "Successfull logout", "body #flash-messages");
   });
 });
