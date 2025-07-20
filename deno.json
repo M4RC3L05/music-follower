@@ -21,7 +21,7 @@
     },
     "dev:run-migrations": {
       "description": "Run db migrations",
-      "command": "dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations --no-dump-schema up"
+      "command": "dbmate -u 'sqlite:./data/app.db' -d ./src/database/migrations -s ./src/database/schema.sql up"
     },
     "test": {
       "description": "Run tests",
