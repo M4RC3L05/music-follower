@@ -11,19 +11,27 @@ import { makeApp } from "#src/apps/web/app.tsx";
 import type { Hono } from "@hono/hono";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
+let memStore: MemoryStore;
 
 beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  memStore = new MemoryStore();
+  app = makeApp({ database: db, sessioStore: memStore });
 });
 
 beforeEach(() => {
   db.exec("delete from releases");
+  db.exec("delete from accounts");
+  testFixtures.loadAccount(db);
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  memStore.data.clear();
 });
 
 afterAll(() => {
@@ -33,10 +41,11 @@ afterAll(() => {
 describe("GET /releases/:id/:type", () => {
   describe("snapshot", () => {
     it("should display release", async (t) => {
+      const auth = await testUtils.authenticateRequest(app);
       const release = testFixtures.loadRelease(db, { id: 1 });
-      const res = await testUtils.requestAuth(
-        app,
+      const res = await app.request(
         `/releases/${release.id}/${release.type}`,
+        { headers: { cookie: auth.sid } },
       );
       const dom = await testUtils.getDom(res);
 
@@ -45,16 +54,18 @@ describe("GET /releases/:id/:type", () => {
     });
   });
 
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/releases/1/track");
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should return an error page if no release is found", async () => {
-    const res = await testUtils.requestAuth(app, "/releases/1/track");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/releases/1/track", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 404);
@@ -65,9 +76,10 @@ describe("GET /releases/:id/:type", () => {
     const release = testFixtures.loadRelease(db, {
       releasedAt: new Date(0).toISOString(),
     });
-    const res = await testUtils.requestAuth(
-      app,
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request(
       `/releases/${release.id}/${release.type}`,
+      { headers: { cookie: auth.sid } },
     );
     const dom = await testUtils.getDom(res);
 
@@ -92,9 +104,10 @@ describe("GET /releases/:id/:type", () => {
     const release = testFixtures.loadRelease(db, {
       releasedAt: new Date(Date.now() + 60 * 1000).toISOString(),
     });
-    const res = await testUtils.requestAuth(
-      app,
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request(
       `/releases/${release.id}/${release.type}`,
+      { headers: { cookie: auth.sid } },
     );
     const dom = await testUtils.getDom(res);
 
@@ -120,9 +133,10 @@ describe("GET /releases/:id/:type", () => {
       releasedAt: new Date(0).toISOString(),
       metadata: JSON.stringify({ previewUrl: "http://preview.com" }),
     });
-    const res = await testUtils.requestAuth(
-      app,
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request(
       `/releases/${release.id}/${release.type}`,
+      { headers: { cookie: auth.sid } },
     );
     const dom = await testUtils.getDom(res);
 

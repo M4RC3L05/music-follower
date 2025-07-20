@@ -1,14 +1,13 @@
 import { Hono } from "@hono/hono";
-import { basicAuth } from "@hono/hono/basic-auth";
-import config from "#src/common/config/mod.ts";
 import { index } from "#src/apps/web/routes/releases/index.tsx";
 import { show } from "#src/apps/web/routes/releases/show.tsx";
 import { update } from "#src/apps/web/routes/releases/update.ts";
+import { authMiddleware } from "#src/middlewares/mod.ts";
 
 export const releasesRoutes = () => {
   const router = new Hono();
 
-  router.use("*", basicAuth({ ...config.apps.web.basicAuth }));
+  router.use("*", authMiddleware);
 
   index(router);
   show(router);

@@ -11,19 +11,27 @@ import { makeApp } from "#src/apps/web/app.tsx";
 import type { Hono } from "@hono/hono";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
+let memStore: MemoryStore;
 
 beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  memStore = new MemoryStore();
+  app = makeApp({ database: db, sessioStore: memStore });
 });
 
 beforeEach(() => {
   db.exec("delete from artists");
+  db.exec("delete from accounts");
+  testFixtures.loadAccount(db);
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  memStore.data.clear();
 });
 
 afterAll(() => {
@@ -33,7 +41,10 @@ afterAll(() => {
 describe("GET /artists/import", () => {
   describe("snapshots", () => {
     it("should render imports artists page", async (t) => {
-      const res = await testUtils.requestAuth(app, "/artists/import");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists/import", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -43,33 +54,33 @@ describe("GET /artists/import", () => {
 
   it("should return an error page if not authenticated", async () => {
     const res = await app.request("/artists/import");
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 });
 
 describe("POST /artists/import", () => {
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/artists/import", {
       method: "post",
       body: new FormData(),
       headers: { origin: "http://localhost" },
     });
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should redirect and display form errors if no file is provided", async () => {
-    const postRes = await testUtils.requestAuth(app, "/artists/import", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/import", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/import",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: new FormData(),
     });
@@ -80,10 +91,8 @@ describe("POST /artists/import", () => {
       "http://localhost/artists/import",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists/import", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists/import", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
 
@@ -100,12 +109,14 @@ describe("POST /artists/import", () => {
     const fd = new FormData();
     fd.set("file", testFixtures.maxArtistsImportPayload);
 
-    const postRes = await testUtils.requestAuth(app, "/artists/import", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/import", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/import",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: fd,
     });
@@ -116,10 +127,8 @@ describe("POST /artists/import", () => {
       "http://localhost/artists/import",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists/import", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists/import", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
 
@@ -136,12 +145,14 @@ describe("POST /artists/import", () => {
     const fd = new FormData();
     fd.set("file", testFixtures.generateInavlidArtistsFileExport());
 
-    const postRes = await testUtils.requestAuth(app, "/artists/import", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/import", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/import",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: fd,
     });
@@ -152,10 +163,8 @@ describe("POST /artists/import", () => {
       "http://localhost/artists/import",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists/import", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists/import", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
 
@@ -183,12 +192,14 @@ describe("POST /artists/import", () => {
       }]),
     );
 
-    const postRes = await testUtils.requestAuth(app, "/artists/import", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/import", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/import",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: fd,
     });
@@ -199,10 +210,8 @@ describe("POST /artists/import", () => {
       "/artists",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists", {
+      headers: { "cookie": auth.sid },
     });
     const dom = await testUtils.getDom(res);
 

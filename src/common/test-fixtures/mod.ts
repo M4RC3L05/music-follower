@@ -7,6 +7,18 @@ import type {
 } from "#src/remote/mod.ts";
 import { JsonStringifyStream } from "@std/json";
 
+export const loadAccount = (
+  db: CustomDatabase,
+  data?: Partial<{ username: string }>,
+) => {
+  return db.sql<{ username: string }>`
+    insert into accounts (username, password)
+    values (${
+    data?.username ?? "foo"
+  }, '63dfe9ae61a55afecfbfc171aaa3df9a$$ffb59eb0d2a3fc7deb318c7c9a6ffba0f7bd39c763bba72c8f672d2584a796bd')
+  `;
+};
+
 export const loadRelease = (db: CustomDatabase, data?: Partial<Release>) => {
   return db.sql<Release>`
     insert into releases (

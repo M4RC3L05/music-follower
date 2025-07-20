@@ -13,19 +13,27 @@ import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
 import type { Release } from "#src/database/types/mod.ts";
 import type { JSDOM } from "jsdom";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
+let memStore: MemoryStore;
 
 beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  memStore = new MemoryStore();
+  app = makeApp({ database: db, sessioStore: memStore });
 });
 
 beforeEach(() => {
   db.exec("delete from releases");
+  db.exec("delete from accounts");
+  testFixtures.loadAccount(db);
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  memStore.data.clear();
 });
 
 afterAll(() => {
@@ -35,7 +43,10 @@ afterAll(() => {
 describe("GET /releases", () => {
   describe("snapshot", () => {
     it("should display without releases", async (t) => {
-      const res = await testUtils.requestAuth(app, `/releases`);
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request(`/releases`, {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -46,7 +57,10 @@ describe("GET /releases", () => {
       testFixtures.loadRelease(db, { id: 1 });
       testFixtures.loadRelease(db, { id: 2 });
 
-      const res = await testUtils.requestAuth(app, `/releases`);
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request(`/releases`, {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -54,16 +68,18 @@ describe("GET /releases", () => {
     });
   });
 
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/releases");
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should mark releases item in navbar as active", async () => {
-    const res = await testUtils.requestAuth(app, "/releases");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/releases", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -75,7 +91,10 @@ describe("GET /releases", () => {
   });
 
   it("should render releases index page without releases", async () => {
-    const res = await testUtils.requestAuth(app, "/releases");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/releases", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -99,29 +118,31 @@ describe("GET /releases", () => {
   });
 
   it("should render orm errors if invalid search params provided", async () => {
-    const res = await testUtils.requestAuth(app, "/releases?hidden=b", {
-      headers: { referer: "http://localhost/releases" },
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/releases?hidden=b", {
+      headers: { referer: "http://localhost/releases", cookie: auth.sid },
     });
 
     assertEquals(res.status, 302);
     assertEquals(res.headers.get("location"), "http://localhost/releases");
 
-    const res2 = await testUtils.requestAuth(app, "/releases", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": res.headers.get("set-cookie") },
+    const res2 = await app.request("/releases", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res2);
 
     testUtils.assertSee(
       dom,
       '<div class="invalid-feedback"><p key="0">The selected hidden is invalid',
-      "body form",
+      "body header form",
     );
   });
 
   it("should render releases index with links with query params", async () => {
-    const res = await testUtils.requestAuth(app, "/releases?q=b");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/releases?q=b", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -199,7 +220,10 @@ describe("GET /releases", () => {
     };
 
     {
-      const res = await testUtils.requestAuth(app, "/releases?page=0&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/releases?page=0&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -225,7 +249,10 @@ describe("GET /releases", () => {
     }
 
     {
-      const res = await testUtils.requestAuth(app, "/releases?page=1&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/releases?page=1&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -251,7 +278,10 @@ describe("GET /releases", () => {
     }
 
     {
-      const res = await testUtils.requestAuth(app, "/releases?page=2&limit=2");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/releases?page=2&limit=2", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);

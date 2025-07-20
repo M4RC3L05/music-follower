@@ -2,9 +2,10 @@ import { serveStatic } from "@hono/hono/deno";
 import config from "#src/common/config/mod.ts";
 import { type ContextVariableMap, Hono } from "@hono/hono";
 import {
-  MemoryStore,
+  type CookieStore,
   type Session,
   sessionMiddleware,
+  type Store,
 } from "@jcs224/hono-sessions";
 import { csrf } from "@hono/hono/csrf";
 import { jsxRenderer } from "@hono/hono/jsx-renderer";
@@ -36,6 +37,7 @@ declare module "@hono/hono" {
       {
         flashMessages?: SessionFlashMessages;
         flashFormErrors?: SessionFlashFormErrors;
+        account?: string;
       }
     >;
   }
@@ -48,7 +50,9 @@ declare module "@hono/hono" {
   }
 }
 
-export const makeApp = (deps: Partial<ContextVariableMap>) => {
+export const makeApp = (
+  deps: Partial<ContextVariableMap & { sessioStore: Store | CookieStore }>,
+) => {
   const app = new Hono();
 
   app.onError((error, c) => {
@@ -176,8 +180,7 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
   app.use(
     "*",
     sessionMiddleware({
-      store: new MemoryStore(),
-      encryptionKey: "foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar",
+      store: deps.sessioStore!,
       expireAfterSeconds: 60 * 15,
       sessionCookieName: "sid",
       cookieOptions: {
@@ -193,12 +196,14 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
     "*",
     jsxRenderer(({ children, error = false }, c) => {
       const flashMessages = c.get("session").get("flashMessages");
+      const loggedIn = !!c.get("session").get("account");
 
       return (
         <MainLayout
           path={c.req.path}
           flashMessages={flashMessages ?? undefined}
           enableNavbar={!error}
+          loggedIn={loggedIn}
         >
           {children}
         </MainLayout>
@@ -225,6 +230,10 @@ export const makeApp = (deps: Partial<ContextVariableMap>) => {
         warning: ["warning"],
       });
 
+      return c.render("");
+    });
+
+    app.get("/test/index", (c) => {
       return c.render("");
     });
 

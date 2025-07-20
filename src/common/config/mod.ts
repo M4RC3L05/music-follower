@@ -5,10 +5,6 @@ const configSchema = vine.object({
     web: vine.object({
       host: vine.string(),
       port: vine.number(),
-      basicAuth: vine.object({
-        username: vine.string(),
-        password: vine.string(),
-      }),
       feed: vine.object({
         maxReleases: vine.number(),
       }),
@@ -55,10 +51,6 @@ const config = await configSchemaValidator.validate({
     web: {
       host: Deno.env.get("APPS_WEB_HOST") ?? "127.0.0.1",
       port: Deno.env.get("APPS_WEB_PORT") ?? 4321,
-      basicAuth: {
-        username: Deno.env.get("APPS_WEB_BASIC_AUTH_USERNAME") ?? "foo",
-        password: Deno.env.get("APPS_WEB_BASIC_AUTH_PASSWORD") ?? "bar",
-      },
       feed: {
         maxReleases: Deno.env.get("APPS_WEB_FEED_MAX_RELEASES") ?? 50,
       },

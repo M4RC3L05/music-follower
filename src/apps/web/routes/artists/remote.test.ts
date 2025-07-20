@@ -12,19 +12,27 @@ import type { Hono } from "@hono/hono";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
 import { stub } from "@std/testing/mock";
+import { MemoryStore } from "@jcs224/hono-sessions";
 
 let app: Hono;
 let db: CustomDatabase;
+let memStore: MemoryStore;
 
 beforeAll(async () => {
   db = makeDatabase();
   await testDbUtils.runMigrations(db);
 
-  app = makeApp({ database: db });
+  memStore = new MemoryStore();
+  app = makeApp({ database: db, sessioStore: memStore });
 });
 
 beforeEach(() => {
   db.exec("delete from artists");
+  db.exec("delete from accounts");
+  testFixtures.loadAccount(db);
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  memStore.data.clear();
 });
 
 afterAll(() => {
@@ -34,7 +42,10 @@ afterAll(() => {
 describe("GET /artists/remote", () => {
   describe("snapshot", () => {
     it("should render page without query", async (t) => {
-      const res = await testUtils.requestAuth(app, "/artists/remote");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists/remote", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -66,7 +77,10 @@ describe("GET /artists/remote", () => {
         );
       });
 
-      const res = await testUtils.requestAuth(app, "/artists/remote?q=foobar");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists/remote?q=foobar", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -89,7 +103,10 @@ describe("GET /artists/remote", () => {
         );
       });
 
-      const res = await testUtils.requestAuth(app, "/artists/remote?q=foobar");
+      const auth = await testUtils.authenticateRequest(app);
+      const res = await app.request("/artists/remote?q=foobar", {
+        headers: { cookie: auth.sid },
+      });
       const dom = await testUtils.getDom(res);
 
       assertEquals(res.status, 200);
@@ -97,12 +114,11 @@ describe("GET /artists/remote", () => {
     });
   });
 
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/artists/remote");
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should handle no results", async () => {
@@ -121,7 +137,10 @@ describe("GET /artists/remote", () => {
       );
     });
 
-    const res = await testUtils.requestAuth(app, "/artists/remote?q=foo");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/artists/remote?q=foo", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -169,7 +188,10 @@ describe("GET /artists/remote", () => {
       );
     });
 
-    const res = await testUtils.requestAuth(app, "/artists/remote?q=foo");
+    const auth = await testUtils.authenticateRequest(app);
+    const res = await app.request("/artists/remote?q=foo", {
+      headers: { cookie: auth.sid },
+    });
     const dom = await testUtils.getDom(res);
 
     assertEquals(res.status, 200);
@@ -189,24 +211,25 @@ describe("GET /artists/remote", () => {
 });
 
 describe("POST /artists/remote", () => {
-  it("should return an error page if not authenticated", async () => {
+  it("should redirect to login page if not authenticated", async () => {
     const res = await app.request("/artists/remote", {
       method: "post",
       headers: { origin: "http://localhost" },
     });
-    const dom = await testUtils.getDom(res);
 
-    assertEquals(res.status, 401);
-    testUtils.assertSeeText(dom, "Unauthorized", "body");
+    assertEquals(res.status, 302);
+    assertEquals(res.headers.get("location"), "/auth/login");
   });
 
   it("should flash error if invalid data provided", async () => {
-    const postRes = await testUtils.requestAuth(app, "/artists/remote", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/remote", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/remote",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: new URLSearchParams({ name: "foo", image: "foo.bar.com" }),
     });
@@ -217,10 +240,8 @@ describe("POST /artists/remote", () => {
       "http://localhost/artists/remote",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists/remote", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists/remote", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
     testUtils.assertNodeExists(dom, "body #flash-messages .alert-danger");
@@ -232,13 +253,23 @@ describe("POST /artists/remote", () => {
   });
 
   it("should flash error if invalid data provided", async () => {
-    using _ = stub(CustomDatabase.prototype, "sql", () => []);
-    const postRes = await testUtils.requestAuth(app, "/artists/remote", {
+    const originalSql = db.sql.bind(db);
+    using _ = stub(CustomDatabase.prototype, "sql", (...args) => {
+      if ((args[0]?.[0] ?? "").includes("accounts")) {
+        return originalSql(...args);
+      }
+
+      return [];
+    });
+
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/remote", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/remote",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: new URLSearchParams({ id: "1", name: "foo", image: "foo.bar.com" }),
     });
@@ -249,10 +280,8 @@ describe("POST /artists/remote", () => {
       "/artists/remote",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists/remote", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists/remote", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
     testUtils.assertNodeExists(dom, "body #flash-messages .alert-danger");
@@ -264,12 +293,14 @@ describe("POST /artists/remote", () => {
   });
 
   it("should flash success if it was sucessfull at subscribing", async () => {
-    const postRes = await testUtils.requestAuth(app, "/artists/remote", {
+    const auth = await testUtils.authenticateRequest(app);
+    const postRes = await app.request("/artists/remote", {
       redirect: "follow",
       method: "post",
       headers: {
         referer: "http://localhost/artists/remote",
         origin: "http://localhost",
+        cookie: auth.sid,
       },
       body: new URLSearchParams({ id: "1", name: "foo", image: "foo.bar.com" }),
     });
@@ -280,10 +311,8 @@ describe("POST /artists/remote", () => {
       "/artists",
     );
 
-    const res = await testUtils.requestAuth(app, "/artists", {
-      // deno-lint-ignore ban-ts-comment
-      // @ts-ignore
-      headers: { "cookie": postRes.headers.get("set-cookie") },
+    const res = await app.request("/artists", {
+      headers: { cookie: auth.sid },
     });
     const dom = await testUtils.getDom(res);
     testUtils.assertNodeExists(dom, "body #flash-messages .alert-success");

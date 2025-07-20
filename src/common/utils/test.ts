@@ -1,7 +1,5 @@
 import type { Hono } from "@hono/hono";
-import { encodeBase64 } from "@std/encoding";
 import { JSDOM } from "jsdom";
-import config from "#src/common/config/mod.ts";
 import {
   assertEquals,
   assertExists,
@@ -12,29 +10,25 @@ import {
 import { assertSnapshot } from "@std/testing/snapshot";
 import toDiffableHtml from "diffable-html";
 
-const basicAuth = config.apps.web.basicAuth;
+export const getSessionCookie = (response: Response) => {
+  return response.headers.get("set-cookie")?.slice(
+    0,
+    response.headers.get("set-cookie")?.indexOf(";"),
+  ) ?? "";
+};
 
-export const requestAuth = (
-  app: Hono,
-  ...args: Parameters<Hono["request"]>
-) => {
-  const basicAuthHeaderValue = `Basic ${
-    encodeBase64(`${basicAuth.username}:${basicAuth.password}`)
-  }`;
+export const authenticateRequest = async (app: Hono) => {
+  const res = await app.request("/auth/login", {
+    method: "post",
+    redirect: "follow",
+    headers: { origin: "http://localhost" },
+    body: new URLSearchParams({
+      username: "foo",
+      password: "bar",
+    }),
+  });
 
-  args[1] ??= {};
-
-  const newHeaders: Record<string, string> = (
-    args[1].headers instanceof Headers
-      ? Object.fromEntries(args[1].headers.entries())
-      : (args[1].headers ?? {})
-  ) as Record<string, string>;
-
-  newHeaders["authorization"] = basicAuthHeaderValue;
-
-  args[1].headers = newHeaders;
-
-  return app.request(...args);
+  return { sid: getSessionCookie(res), res } as const;
 };
 
 export const getDom = async (response: Response) => {
