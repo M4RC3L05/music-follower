@@ -1,6 +1,6 @@
 {
   "name": "@m4rc3l05/music-follower",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "exports": "./deno.json",
   "tasks": {
     "web": {
