@@ -25,7 +25,7 @@
     },
     "test": {
       "description": "Run tests",
-      "command": "ENV=test NODE_ENV=test DATABASE_PATH=':memory:' CSRF_ORIGIN='^https?:\\/\\/localhost$' deno test --allow-env --allow-read=. --no-check --trace-leaks --parallel"
+      "command": "ENV=test NODE_ENV=test DATABASE_PATH=':memory:' CSRF_ORIGIN='^https?:\\/\\/localhost$' CRYPTO_PBKDF2_ITERATIONS=600000 CRYPTO_PBKDF2_HASH_FUNCTION=SHA-256 deno test --allow-env --allow-read=. --no-check --trace-leaks --parallel"
     },
     "check:fmt": {
       "description": "Run formatting checks",
@@ -83,6 +83,7 @@
     "@std/http": "jsr:@std/http@1.0.19",
     "@std/json": "jsr:@std/json@1.0.2",
     "@std/log": "jsr:@std/log@0.224.14",
+    "@std/msgpack": "jsr:@std/msgpack@1.0.3",
     "@std/streams": "jsr:@std/streams@1.0.10",
     "@std/testing": "jsr:@std/testing@1.0.14",
     "@std/text": "jsr:@std/text@1.0.15",

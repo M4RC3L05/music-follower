@@ -15,7 +15,7 @@ export const loadAccount = (
     insert into accounts (username, password)
     values (${data?.username ?? "foo"
     // bar
-  }, 'VxlxFdqHfDwr+RE0tXAQlw==$$3P8cG8vnJf1s74a66PBW5FL1YqYM3GaOlm60zX0smLA=')
+  }, 'lKdTSEEtMjU2zgAJJ8DEEFGosI4pkaw73+pje1vX1sXEIMrqwGX8mex6+/0Z1U7OOSr9o8FstXPhkOzkoWGuSP2S')
   `;
 };
 
