@@ -43,6 +43,13 @@ const configSchema = vine.object({
   media: vine.object({
     remoteArtistsPlaceholderImage: vine.string(),
   }),
+  crypto: vine.object({
+    pbkdf2: vine.object({
+      iterations: vine.number().min(600_000),
+      hashFunction: vine.enum(["SHA-256", "SHA-384", "SHA-512"]),
+      saltLength: vine.number().min(16),
+    }),
+  }),
 });
 const configSchemaValidator = vine.compile(configSchema);
 
@@ -97,6 +104,15 @@ const config = await configSchemaValidator.validate({
     remoteArtistsPlaceholderImage: Deno.env.get("MEDIA_PLACEHOLDER_IMAGE") ??
       "/public/images/remote-artist-image-default.svg",
   },
+  crypto: {
+    pbkdf2: {
+      iterations: Deno.env.get("CRYPTO_PBKDF2_ITERATIONS") ?? 800_000,
+      hashFunction: Deno.env.get("CRYPTO_PBKDF2_HASH_FUNCTION") ?? "SHA-512",
+      saltLength: Deno.env.get("CRYPTO_PBKDF2_SALT_LENGTH") ?? 16,
+    },
+  },
+}).catch((error) => {
+  throw new Error(error.message, { cause: error?.messages });
 });
 
 export default config;
