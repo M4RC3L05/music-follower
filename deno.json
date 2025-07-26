@@ -1,6 +1,6 @@
 {
   "name": "@m4rc3l05/music-follower",
-  "version": "20.0.0",
+  "version": "20.0.1",
   "exports": "./deno.json",
   "tasks": {
     "web": {
@@ -41,13 +41,16 @@
     },
     "checks": {
       "description": "Run code checks",
-      "dependencies": ["check:fmt", "check:lint", "check:check"]
+      "dependencies": [
+        "check:fmt",
+        "check:lint",
+        "check:check"
+      ]
     }
   },
   "compilerOptions": {
     "jsx": "precompile",
     "jsxImportSource": "@hono/hono/jsx",
-
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": true,
@@ -59,16 +62,28 @@
     "noUnusedParameters": true
   },
   "lint": {
-    "exclude": ["node_modules"],
+    "exclude": [
+      "node_modules"
+    ],
     "rules": {
-      "include": ["verbatim-module-syntax"],
-      "tags": ["recommended", "jsx", "jsr"]
+      "include": [
+        "verbatim-module-syntax"
+      ],
+      "tags": [
+        "recommended",
+        "jsx",
+        "jsr"
+      ]
     }
   },
   "fmt": {
-    "exclude": ["node_modules"]
+    "exclude": [
+      "node_modules"
+    ]
   },
-  "unstable": ["fmt-sql"],
+  "unstable": [
+    "fmt-sql"
+  ],
   "nodeModulesDir": "auto",
   "imports": {
     "#src/": "./src/",
