@@ -1,0 +1,11 @@
+[tools.deno]
+version = "2.4.3"
+backend = "core:deno"
+
+[tools.deno.platforms.linux-x64]
+checksum = "blake3:062998a6c6918fcfe32f635f4fad5107c8fce213d60530d862faba9a60e1eab6"
+size = 44561344
+
+[tools.sqlite]
+version = "3.49.1"
+backend = "asdf:sqlite"

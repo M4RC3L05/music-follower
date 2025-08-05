@@ -1,3 +1,7 @@
+[settings]
+experimental = true
+lockfile = true
+
 [tools]
 sqlite = "3.49.1"
 deno = "2.4.3"
