@@ -12,8 +12,8 @@ import type { Hono } from "@hono/hono";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
 import type { Artist } from "#src/database/types/mod.ts";
-import type { JSDOM } from "jsdom";
 import { MemoryStore } from "@jcs224/hono-sessions";
+import type { HTMLDocument } from "@b-fuze/deno-dom";
 
 let app: Hono;
 let db: CustomDatabase;
@@ -154,7 +154,7 @@ describe("GET /artists", () => {
     const artistFour = testFixtures.loadArtist(db, { id: 4, name: "4buz" });
     const artistFive = testFixtures.loadArtist(db, { id: 5, name: "5bax" });
 
-    const checkArtistInPage = (dom: JSDOM, artist: Artist) => {
+    const checkArtistInPage = (dom: HTMLDocument, artist: Artist) => {
       testUtils.assertNodeExists(
         dom,
         `main img[src="${artist.image}"]`,

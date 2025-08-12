@@ -1,5 +1,5 @@
 import type { Hono } from "@hono/hono";
-import { JSDOM } from "jsdom";
+import { DOMParser, type Element, type HTMLDocument } from "@b-fuze/deno-dom";
 import {
   assertEquals,
   assertExists,
@@ -32,26 +32,27 @@ export const authenticateRequest = async (app: Hono) => {
 };
 
 export const getDom = async (response: Response) => {
-  return new JSDOM(await response.text());
+  return new DOMParser().parseFromString(await response.text(), "text/html");
 };
 
 export const prettyFormatHTML = (input: string) => {
   return toDiffableHtml(input);
 };
 
-const getAssertSeeContent = (ele: Element, textOnly?: boolean) => {
+const getAssertSeeContent = (
+  ele: Element,
+  textOnly?: boolean,
+) => {
   return textOnly ? ele.textContent : ele.outerHTML;
 };
 
 export const assertSeeTextInOrder = (
-  dom: JSDOM,
+  dom: HTMLDocument,
   what: string[],
   where?: string,
 ) => {
   const contentStr = getAssertSeeContent(
-    where
-      ? dom.window.document.querySelector(where)!
-      : dom.window.document as unknown as Element,
+    where ? dom.querySelector(where)! : dom.documentElement!,
     true,
   );
 
@@ -73,11 +74,13 @@ export const assertSeeTextInOrder = (
   }
 };
 
-export const assertSeeText = (dom: JSDOM, what: string, where?: string) => {
+export const assertSeeText = (
+  dom: HTMLDocument,
+  what: string,
+  where?: string,
+) => {
   const contentStr = getAssertSeeContent(
-    where
-      ? dom.window.document.querySelector(where)!
-      : dom.window.document as unknown as Element,
+    where ? dom.querySelector(where)! : dom as unknown as Element,
     true,
   );
 
@@ -92,11 +95,13 @@ export const assertSeeText = (dom: JSDOM, what: string, where?: string) => {
   );
 };
 
-export const assertNotSeeText = (dom: JSDOM, what: string, where?: string) => {
+export const assertNotSeeText = (
+  dom: HTMLDocument,
+  what: string,
+  where?: string,
+) => {
   const contentStr = getAssertSeeContent(
-    where
-      ? dom.window.document.querySelector(where)!
-      : dom.window.document as unknown as Element,
+    where ? dom.querySelector(where)! : dom as unknown as Element,
     true,
   );
 
@@ -107,13 +112,13 @@ export const assertNotSeeText = (dom: JSDOM, what: string, where?: string) => {
 };
 
 export const assertSeeInOrder = (
-  dom: JSDOM,
+  dom: HTMLDocument,
   what: string[],
   where?: string,
 ) => {
   const contentStr = where
-    ? getAssertSeeContent(dom.window.document.querySelector(where)!, false)
-    : dom.serialize();
+    ? getAssertSeeContent(dom.querySelector(where)!, false)
+    : dom.documentElement!.outerHTML;
 
   if (!contentStr) {
     throw new AssertionError("Could not get text content");
@@ -135,10 +140,10 @@ export const assertSeeInOrder = (
   }
 };
 
-export const assertSee = (dom: JSDOM, what: string, where?: string) => {
+export const assertSee = (dom: HTMLDocument, what: string, where?: string) => {
   const contentStr = where
-    ? getAssertSeeContent(dom.window.document.querySelector(where)!, false)
-    : dom.serialize();
+    ? getAssertSeeContent(dom.querySelector(where)!, false)
+    : dom.documentElement!.outerHTML;
 
   if (!contentStr) {
     throw new AssertionError("Could not get text content");
@@ -153,10 +158,14 @@ export const assertSee = (dom: JSDOM, what: string, where?: string) => {
   );
 };
 
-export const assertNotSee = (dom: JSDOM, what: string, where?: string) => {
+export const assertNotSee = (
+  dom: HTMLDocument,
+  what: string,
+  where?: string,
+) => {
   const contentStr = where
-    ? getAssertSeeContent(dom.window.document.querySelector(where)!, false)!
-    : dom.serialize();
+    ? getAssertSeeContent(dom.querySelector(where)!, false)!
+    : dom.documentElement!.outerHTML;
 
   assertThrows(
     () => assertSee(dom, what, where),
@@ -167,13 +176,11 @@ export const assertNotSee = (dom: JSDOM, what: string, where?: string) => {
 };
 
 export const assertNodeNotExists = (
-  dom: JSDOM,
+  dom: HTMLDocument,
   what: string,
   where?: string,
 ) => {
-  const container = where
-    ? dom.window.document.querySelector(where)
-    : dom.window.document;
+  const container = where ? dom.querySelector(where) : dom;
 
   if (!container) {
     throw new AssertionError("Could not get container element");
@@ -183,18 +190,20 @@ export const assertNodeNotExists = (
     container.querySelector(what) ? undefined : true,
     `Could find an element matching:\n\n${what}\n\nin\n${
       prettyFormatHTML(
-        container === dom.window.document
-          ? dom.serialize()
+        container === dom
+          ? dom.documentElement!.outerHTML
           : (container as Element).innerHTML,
       )
     }"`,
   );
 };
 
-export const assertNodeExists = (dom: JSDOM, what: string, where?: string) => {
-  const container = where
-    ? dom.window.document.querySelector(where)
-    : dom.window.document;
+export const assertNodeExists = (
+  dom: HTMLDocument,
+  what: string,
+  where?: string,
+) => {
+  const container = where ? dom.querySelector(where) : dom;
 
   if (!container) {
     throw new AssertionError("Could not get container element");
@@ -204,8 +213,8 @@ export const assertNodeExists = (dom: JSDOM, what: string, where?: string) => {
     container.querySelector(what),
     `Could not find an element matching:\n\n${what}\n\nin\n${
       prettyFormatHTML(
-        container === dom.window.document
-          ? dom.serialize()
+        container === dom
+          ? dom.documentElement!.outerHTML
           : (container as Element).innerHTML,
       )
     }"`,
@@ -214,12 +223,13 @@ export const assertNodeExists = (dom: JSDOM, what: string, where?: string) => {
 
 export const expectHtmlSnapshot = async (
   t: Deno.TestContext,
-  dom: JSDOM,
+  dom: HTMLDocument,
   where?: string,
 ) => {
   const content = where
-    ? dom.window.document.querySelector(where)!.outerHTML
-    : dom.serialize();
+    ? dom.querySelector(where)!.outerHTML
+    : dom.documentElement!.outerHTML;
+
   await assertSnapshot(
     t,
     prettyFormatHTML(content),

@@ -87,6 +87,7 @@
   "nodeModulesDir": "auto",
   "imports": {
     "#src/": "./src/",
+    "@b-fuze/deno-dom": "jsr:@b-fuze/deno-dom@0.1.56",
     "@hono/hono": "jsr:@hono/hono@4.8.12",
     "@jcs224/hono-sessions": "jsr:@jcs224/hono-sessions@0.8.0",
     "@mjackson/multipart-parser": "jsr:@mjackson/multipart-parser@0.10.1",

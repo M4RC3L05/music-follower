@@ -12,8 +12,8 @@ import type { Hono } from "@hono/hono";
 import * as testFixtures from "#src/common/test-fixtures/mod.ts";
 import { assertEquals } from "@std/assert";
 import type { Release } from "#src/database/types/mod.ts";
-import type { JSDOM } from "jsdom";
 import { MemoryStore } from "@jcs224/hono-sessions";
+import type { HTMLDocument } from "@b-fuze/deno-dom";
 
 let app: Hono;
 let db: CustomDatabase;
@@ -192,7 +192,7 @@ describe("GET /releases", () => {
       releasedAt: new Date(0).toISOString(),
     });
 
-    const checkReleaseInPage = (dom: JSDOM, release: Release) => {
+    const checkReleaseInPage = (dom: HTMLDocument, release: Release) => {
       testUtils.assertNodeExists(
         dom,
         `main img[src="${release.coverUrl}"]`,

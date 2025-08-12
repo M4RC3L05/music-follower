@@ -2,7 +2,6 @@ export const snapshot = {};
 
 snapshot[`global > App > snapshots > should render default layout correctly 1`] = `
 '
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -186,7 +185,6 @@ snapshot[`global > App > snapshots > should render default layout correctly 1`] 
 
 snapshot[`global > App > snapshots > should render default layout correctly loggedin 1`] = `
 '
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
