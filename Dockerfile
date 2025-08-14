@@ -1,4 +1,4 @@
-FROM docker.io/denoland/deno:alpine-2.4.3
+FROM docker.io/denoland/deno:alpine-2.4.4
 
 RUN mkdir /app
 RUN chown -R deno:deno /app
