@@ -7,7 +7,7 @@ import {
   describe,
   it,
 } from "@std/testing/bdd";
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertIsError } from "@std/assert";
 import { testDbUtils } from "#src/common/utils/mod.ts";
 import runner from "#src/apps/jobs/sync-artists-image/app.ts";
 import {
@@ -76,7 +76,8 @@ describe("runner()", () => {
 
     assertSpyCalls(fetchSpy, 1);
     assertSpyCalls(logSpy, 1);
-    assertSpyCalls(sqlSpy, 0);
+    assertSpyCalls(sqlSpy, 1);
+    assertSpyCallArgs(sqlSpy, 0, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
     assertSpyCallArg(
       logSpy,
       0,
@@ -106,7 +107,8 @@ describe("runner()", () => {
 
     assertSpyCalls(fetchSpy, 1);
     assertSpyCalls(logSpy, 1);
-    assertSpyCalls(sqlSpy, 0);
+    assertSpyCalls(sqlSpy, 1);
+    assertSpyCallArgs(sqlSpy, 0, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
     assertSpyCallArg(
       logSpy,
       0,
@@ -141,7 +143,8 @@ describe("runner()", () => {
 
     assertSpyCalls(fetchSpy, 2);
     assertSpyCalls(logSpy, 1);
-    assertSpyCalls(sqlSpy, 0);
+    assertSpyCalls(sqlSpy, 1);
+    assertSpyCallArgs(sqlSpy, 0, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
     assertSpyCallArg(
       logSpy,
       0,
@@ -175,11 +178,16 @@ describe("runner()", () => {
       throw new Error("foo");
     });
 
-    await runner({ db, abort: new AbortController().signal });
+    try {
+      await runner({ db, abort: new AbortController().signal });
+    } catch (error) {
+      assertIsError(error);
+      assertEquals(error.message, "foo");
+    }
 
     assertSpyCalls(fetchSpy, 2);
     assertSpyCalls(logSpy, 1);
-    assertSpyCalls(sqlSpy, 1);
+    assertSpyCalls(sqlSpy, 2);
     assertSpyCallArg(
       logSpy,
       0,
@@ -199,6 +207,7 @@ describe("runner()", () => {
       "256x256.com",
       artist.id,
     ]);
+    assertSpyCallArgs(sqlSpy, 1, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
   });
 
   it("should complete if sql update completes", async () => {
@@ -224,7 +233,7 @@ describe("runner()", () => {
 
     assertSpyCalls(fetchSpy, 2);
     assertSpyCalls(logSpy, 0);
-    assertSpyCalls(sqlSpy, 1);
+    assertSpyCalls(sqlSpy, 2);
     assertSpyCallArgs(sqlSpy, 0, [
       [
         "update artists set image = ",
@@ -234,6 +243,7 @@ describe("runner()", () => {
       "256x256.com",
       artist.id,
     ]);
+    assertSpyCallArgs(sqlSpy, 1, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
     assertEquals(
       db.sql`select image from artists where id = ${artist.id}`[0]!.image,
       "256x256.com",
@@ -352,7 +362,7 @@ describe("runner()", () => {
     assertSpyCallArgs(logInfoSpy, 9, ['Sync image from "buz" at 4 of 4']);
     assertSpyCallArgs(logInfoSpy, 10, ["Artist image sync ended"]);
 
-    assertSpyCalls(sqlSpy, 1);
+    assertSpyCalls(sqlSpy, 2);
     assertSpyCallArgs(sqlSpy, 0, [
       [
         "update artists set image = ",
@@ -362,6 +372,7 @@ describe("runner()", () => {
       "256x256.com",
       1,
     ]);
+    assertSpyCallArgs(sqlSpy, 1, [["PRAGMA wal_checkpoint(TRUNCATE);"]]);
 
     assertEquals(
       db.sql`select image from artists where id = ${artistOne.id}`[0]!.image,

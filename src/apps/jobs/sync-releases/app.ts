@@ -341,6 +341,9 @@ const runner = async ({
     }
   }
 
+  // Truncate wal file as to not grow to mutch
+  db.sql`PRAGMA wal_checkpoint(TRUNCATE);`;
+
   log.info("Releases sync ended");
 };
 
