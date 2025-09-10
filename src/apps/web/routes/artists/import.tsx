@@ -48,7 +48,9 @@ export const importPage = (router: Hono) => {
       });
     }
 
-    const stream = ReadableStream.from(file.content)
+    const stream = (ReadableStream.from(file.content) as ReadableStream<
+      Uint8Array<ArrayBuffer>
+    >)
       .pipeThrough(new DecompressionStream("gzip"))
       .pipeThrough(new TextDecoderStream())
       .pipeThrough(new TextLineStream())

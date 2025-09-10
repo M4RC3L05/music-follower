@@ -3,7 +3,7 @@
   "specifiers": {
     "jsr:@b-fuze/deno-dom@0.1.56": "0.1.56",
     "jsr:@denosaurs/plug@1.1.0": "1.1.0",
-    "jsr:@hono/hono@4.9.1": "4.9.1",
+    "jsr:@hono/hono@4.9.6": "4.9.6",
     "jsr:@jcs224/hono-sessions@0.8.0": "0.8.0",
     "jsr:@mjackson/multipart-parser@0.10.1": "0.10.1",
     "jsr:@std/assert@1.0.14": "1.0.14",
@@ -13,7 +13,7 @@
     "jsr:@std/bytes@^1.0.5": "1.0.6",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
     "jsr:@std/cache@0.2.0": "0.2.0",
-    "jsr:@std/cli@^1.0.21": "1.0.21",
+    "jsr:@std/cli@^1.0.21": "1.0.22",
     "jsr:@std/crypto@1.0.5": "1.0.5",
     "jsr:@std/data-structures@^1.0.9": "1.0.9",
     "jsr:@std/encoding@1": "1.0.10",
@@ -34,13 +34,13 @@
     "jsr:@std/log@0.224.14": "0.224.14",
     "jsr:@std/media-types@^1.1.0": "1.1.0",
     "jsr:@std/msgpack@1.0.3": "1.0.3",
-    "jsr:@std/net@^1.0.4": "1.0.4",
-    "jsr:@std/path@1": "1.1.1",
-    "jsr:@std/path@^1.1.1": "1.1.1",
+    "jsr:@std/net@^1.0.4": "1.0.6",
+    "jsr:@std/path@1": "1.1.2",
+    "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/regexp@^1.0.1": "1.0.1",
-    "jsr:@std/streams@1.0.11": "1.0.11",
-    "jsr:@std/streams@^1.0.10": "1.0.11",
-    "jsr:@std/streams@^1.0.9": "1.0.11",
+    "jsr:@std/streams@1.0.12": "1.0.12",
+    "jsr:@std/streams@^1.0.10": "1.0.12",
+    "jsr:@std/streams@^1.0.9": "1.0.12",
     "jsr:@std/testing@1.0.15": "1.0.15",
     "jsr:@std/text@1.0.16": "1.0.16",
     "npm:@mjackson/headers@~0.11.1": "0.11.1",
@@ -49,12 +49,12 @@
     "npm:@types/node@*": "24.2.0",
     "npm:@vinejs/vine@3.0.1": "3.0.1",
     "npm:bootstrap-icons@1.13.1": "1.13.1",
-    "npm:bootstrap@5.3.7": "5.3.7_@popperjs+core@2.11.8",
+    "npm:bootstrap@5.3.8": "5.3.8_@popperjs+core@2.11.8",
     "npm:dbmate@2.28.0": "2.28.0",
     "npm:diffable-html@6.0.1": "6.0.1",
     "npm:feed@5.1.0": "5.1.0",
     "npm:file-type@21.0.0": "21.0.0",
-    "npm:hono@4": "4.9.1",
+    "npm:hono@4": "4.9.6",
     "npm:iron-webcrypto@^1.2.1": "1.2.1",
     "npm:jsdom@26.1.0": "26.1.0",
     "npm:ms@2.1.3": "2.1.3",
@@ -78,8 +78,8 @@
         "jsr:@std/path@1"
       ]
     },
-    "@hono/hono@4.9.1": {
-      "integrity": "d8ad3b296b65eab1a6b34f8701bcbd425246aa3f0e3024029ccb89cbb727fabd"
+    "@hono/hono@4.9.6": {
+      "integrity": "b85abb0013d167a290b1808d1d4d542dee269df31d4f47122023259fdd7e184b"
     },
     "@jcs224/hono-sessions@0.8.0": {
       "integrity": "8206fb587ec665a608c381fd7648f837a901e8a56857bac27745c521be69140e",
@@ -110,8 +110,8 @@
     "@std/cache@0.2.0": {
       "integrity": "63a2ccd5a9e7c03e430f7d34dfcfd0d0cfc90731a1eaf8208f4c66e418fc3035"
     },
-    "@std/cli@1.0.21": {
-      "integrity": "cd25b050bdf6282e321854e3822bee624f07aca7636a3a76d95f77a3a919ca2a"
+    "@std/cli@1.0.22": {
+      "integrity": "50d1e4f87887cb8a8afa29b88505ab5081188f5cad3985460c3b471fa49ff21a"
     },
     "@std/crypto@1.0.5": {
       "integrity": "0dcfbb319fe0bba1bd3af904ceb4f948cde1b92979ec1614528380ed308a3b40"
@@ -178,20 +178,20 @@
         "jsr:@std/bytes@^1.0.5"
       ]
     },
-    "@std/net@1.0.4": {
-      "integrity": "2f403b455ebbccf83d8a027d29c5a9e3a2452fea39bb2da7f2c04af09c8bc852"
+    "@std/net@1.0.6": {
+      "integrity": "110735f93e95bb9feb95790a8b1d1bf69ec0dc74f3f97a00a76ea5efea25500c"
     },
-    "@std/path@1.1.1": {
-      "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
+    "@std/path@1.1.2": {
+      "integrity": "c0b13b97dfe06546d5e16bf3966b1cadf92e1cc83e56ba5476ad8b498d9e3038",
       "dependencies": [
-        "jsr:@std/internal@^1.0.9"
+        "jsr:@std/internal@^1.0.10"
       ]
     },
     "@std/regexp@1.0.1": {
       "integrity": "5179d823465085c5480dafb44438466e83c424fadc61ba31f744050ecc0f596d"
     },
-    "@std/streams@1.0.11": {
-      "integrity": "db583d27e28d133f389f1eec318cffdf4998305e5134c1d4b1c56b361cee6018",
+    "@std/streams@1.0.12": {
+      "integrity": "ae925fa1dc459b1abf5cbaa28cc5c7b0485853af3b2a384b0dc22d86e59dfbf4",
       "dependencies": [
         "jsr:@std/bytes@^1.0.6"
       ]
@@ -225,8 +225,11 @@
         "lru-cache"
       ]
     },
-    "@csstools/color-helpers@5.0.2": {
-      "integrity": "sha512-JqWH1vsgdGcw2RR6VliXXdA0/59LttzlU8UlRT/iUUsEeWfYq8I+K0yhihEUTTHLRm1EXvpsCx3083EU15ecsA=="
+    "@borewit/text-codec@0.1.1": {
+      "integrity": "sha512-5L/uBxmjaCIX5h8Z+uu+kA9BQLkc/Wl06UGR5ajNRxu+/XjonB5i8JpgFMrPj3LXTCPA0pv8yxUvbUi+QthGGA=="
+    },
+    "@csstools/color-helpers@5.1.0": {
+      "integrity": "sha512-S11EXWJyy0Mz5SYvRmY8nJYTFFd1LCNV+7cXyAgQtOOuzb4EsgfqDufL+9esx72/eLhsRdGZwaldu/h+E4t4BA=="
     },
     "@csstools/css-calc@2.1.4_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
       "integrity": "sha512-3N8oaj+0juUw/1H3YwmDDJXCgTB1gKU6Hc/bB502u9zR0q2vd786XJH9QfrKIEgFlZmhZiq6epXl4rHqhzsIgQ==",
@@ -235,8 +238,8 @@
         "@csstools/css-tokenizer"
       ]
     },
-    "@csstools/css-color-parser@3.0.10_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
-      "integrity": "sha512-TiJ5Ajr6WRd1r8HSiwJvZBiJOqtH86aHpUjq5aEKWHiII2Qfjqd/HCWKPOW8EP4vcspXbHnXrwIDlu5savQipg==",
+    "@csstools/css-color-parser@3.1.0_@csstools+css-parser-algorithms@3.0.5__@csstools+css-tokenizer@3.0.4_@csstools+css-tokenizer@3.0.4": {
+      "integrity": "sha512-nbtKwh3a6xNVIp/VRuXV64yTKnb1IjTAEEh3irzS+HkKjAOYLTGNb9pmVNntZ8iVBHcWDA2Dof0QtPgFI1BaTA==",
       "dependencies": [
         "@csstools/color-helpers",
         "@csstools/css-calc",
@@ -328,8 +331,8 @@
     "@types/tough-cookie@4.0.5": {
       "integrity": "sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA=="
     },
-    "@types/validator@13.15.2": {
-      "integrity": "sha512-y7pa/oEJJ4iGYBxOpfAKn5b9+xuihvzDVnC/OSvlVnGxVg0pOqmjiMafiJ1KVNQEaPZf9HsEp5icEwGg8uIe5Q=="
+    "@types/validator@13.15.3": {
+      "integrity": "sha512-7bcUmDyS6PN3EuD9SlGGOxM77F8WLVsrwkxyWxKnxzmXoequ6c7741QBrANq6htVRGOITJ7z72mTP6Z4XyuG+Q=="
     },
     "@vinejs/compiler@3.0.0": {
       "integrity": "sha512-v9Lsv59nR56+bmy2p0+czjZxsLHwaibJ+SV5iK9JJfehlJMa501jUJQqqz4X/OqKXrxtE3uTQmSqjUqzF3B2mw=="
@@ -356,8 +359,8 @@
     "bootstrap-icons@1.13.1": {
       "integrity": "sha512-ijombt4v6bv5CLeXvRWKy7CuM3TRTuPEuGaGKvTV5cz65rQSY8RQ2JcHt6b90cBBAC7s8fsf2EkQDldzCoXUjw=="
     },
-    "bootstrap@5.3.7_@popperjs+core@2.11.8": {
-      "integrity": "sha512-7KgiD8UHjfcPBHEpDNg+zGz8L3LqR3GVwqZiBRFX04a1BCArZOz1r2kjly2HQ0WokqTO0v1nF+QAt8dsW4lKlw==",
+    "bootstrap@5.3.8_@popperjs+core@2.11.8": {
+      "integrity": "sha512-HP1SZDqaLDPwsNiqRqi5NcP0SSXciX2s9E+RyqJIIqGo+vJeN5AJVM98CXmW/Wux0nQ5L7jeWUdplCEf0Ee+tg==",
       "dependencies": [
         "@popperjs/core"
       ]
@@ -385,8 +388,8 @@
     "dateformat@4.6.3": {
       "integrity": "sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA=="
     },
-    "dayjs@1.11.13": {
-      "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
+    "dayjs@1.11.18": {
+      "integrity": "sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA=="
     },
     "dbmate@2.28.0": {
       "integrity": "sha512-kbJ+Aqna/SOsS86RuimX8X/qmo9ItG00EYMUfUQmo3xGoXBac4+PZwOYV0fVPIGakIRljNolhfJySkPAFjmZsA==",
@@ -489,8 +492,8 @@
     "help-me@5.0.0": {
       "integrity": "sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg=="
     },
-    "hono@4.9.1": {
-      "integrity": "sha512-qfvdJ42t6CQE0N/iSCa8KsW8SQqYD67YB+TYbwPHlnALvX+s7ynh8otR1NEk5jXtUg73gpV/B82OSufDmwtX3w=="
+    "hono@4.9.6": {
+      "integrity": "sha512-doVjXhSFvYZ7y0dNokjwwSahcrAfdz+/BCLvAMa/vHLzjj8+CFyV5xteThGUsKdkaasgN+gF2mUxao+SGLpUeA=="
     },
     "html-encoding-sniffer@4.0.0": {
       "integrity": "sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==",
@@ -573,11 +576,11 @@
     "ms@2.1.3": {
       "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
-    "normalize-url@8.0.2": {
-      "integrity": "sha512-Ee/R3SyN4BuynXcnTaekmaVdbDAEiNrHqjQIA37mHU8G9pf7aaAD4ZX3XjBLo6rsdcxA/gtkcNYZLt30ACgynw=="
+    "normalize-url@8.1.0": {
+      "integrity": "sha512-X06Mfd/5aKsRHc0O0J5CUedwnPmnDtLF2+nq+KN9KSDlJHkPuh0JUviWjEWMe0SW/9TDdSLVPuk7L5gGTIA1/w=="
     },
-    "nwsapi@2.2.21": {
-      "integrity": "sha512-o6nIY3qwiSXl7/LuOU0Dmuctd34Yay0yeuZRLFmDPrrdHpXKFndPj3hM+YEPVHYC5fx2otBx4Ilc/gyYSAUaIA=="
+    "nwsapi@2.2.22": {
+      "integrity": "sha512-ujSMe1OWVn55euT1ihwCI1ZcAaAU3nxUiDwfDQldc51ZXaB9m2AyOn6/jh1BLe2t/G8xd6uKG1UBF2aZJeg2SQ=="
     },
     "ohash@2.0.11": {
       "integrity": "sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ=="
@@ -684,9 +687,10 @@
       ],
       "bin": true
     },
-    "token-types@6.0.4": {
-      "integrity": "sha512-MD9MjpVNhVyH4fyd5rKphjvt/1qj+PtQUz65aFqAZA6XniWAuSFRjLk3e2VALEFlh9OwBpXUN7rfeqSnT/Fmkw==",
+    "token-types@6.1.1": {
+      "integrity": "sha512-kh9LVIWH5CnL63Ipf0jhlBIy0UsrMj/NJDfpsy1SqOXlLKEVyXXYrnFxFT1yOOYVGBSApeVnjPw/sBz5BfEjAQ==",
       "dependencies": [
+        "@borewit/text-codec",
         "@tokenizer/token",
         "ieee754"
       ]
@@ -703,8 +707,8 @@
         "punycode"
       ]
     },
-    "uint8array-extras@1.4.1": {
-      "integrity": "sha512-+NWHrac9dvilNgme+gP4YrBSumsaMZP0fNBtXXFIf33RLLKEcBUKaQZ7ULUbS0sBfcjxIZ4V96OTRkCbM7hxpw=="
+    "uint8array-extras@1.5.0": {
+      "integrity": "sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A=="
     },
     "undici-types@7.10.0": {
       "integrity": "sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag=="
@@ -760,7 +764,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@b-fuze/deno-dom@0.1.56",
-      "jsr:@hono/hono@4.9.1",
+      "jsr:@hono/hono@4.9.6",
       "jsr:@jcs224/hono-sessions@0.8.0",
       "jsr:@mjackson/multipart-parser@0.10.1",
       "jsr:@std/assert@1.0.14",
@@ -772,14 +776,14 @@
       "jsr:@std/json@1.0.2",
       "jsr:@std/log@0.224.14",
       "jsr:@std/msgpack@1.0.3",
-      "jsr:@std/streams@1.0.11",
+      "jsr:@std/streams@1.0.12",
       "jsr:@std/testing@1.0.15",
       "jsr:@std/text@1.0.16",
       "npm:@types/diffable-html@5.0.2",
       "npm:@types/jsdom@21.1.7",
       "npm:@vinejs/vine@3.0.1",
       "npm:bootstrap-icons@1.13.1",
-      "npm:bootstrap@5.3.7",
+      "npm:bootstrap@5.3.8",
       "npm:dbmate@2.28.0",
       "npm:diffable-html@6.0.1",
       "npm:feed@5.1.0",
