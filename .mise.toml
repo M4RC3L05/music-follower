@@ -1,3 +1,2 @@
 [tools]
-sqlite = "3.49.1"
 deno = "2.6.0"
